@@ -1,0 +1,208 @@
+#tbh5v0 header div.c-inav section a {
+	display: inline-block;
+}
+#tbh5v0 header div.c-inav section:first-child {
+	min-width: 76px;
+}
+#tbh5v0 .innercontent {
+	margin: 17px 20px 15px 20px; /*登陆表单*/ /*忘记密码*/ /*注册*/ /*激活页面*/ /*注册成功*/
+}
+#tbh5v0 .innercontent .c-form .check-code-img {
+	cursor: pointer;
+}
+#tbh5v0 .innercontent .login-form {
+	width: 280px;
+}
+#tbh5v0 .innercontent .login-form fieldset {
+	border: none;
+}
+#tbh5v0 .innercontent .login-form .c-form-search {
+	width: 100%;
+}
+#tbh5v0 .innercontent .login-form .pwd {
+	margin-top: 10px;
+}
+#tbh5v0 .innercontent .login-form .username input, #tbh5v0 .innercontent .login-form .pwd input {
+	width: 100%;
+	padding-left: 26px;
+	-webkit-box-sizing: border-box;
+	text-indent: 0;
+}
+#tbh5v0 .innercontent .login-form .c-form-search, #tbh5v0 .innercontent .login-form .pwd {
+	position: relative;
+}
+#tbh5v0 .innercontent .login-form .c-form-search:before, #tbh5v0 .innercontent .login-form .pwd:before {
+	content: '';
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 25px;
+	height: 25px;
+}
+#tbh5v0 .innercontent .login-form .c-form-search:after, #tbh5v0 .innercontent .login-form .pwd:after {
+	content: '';
+	position: absolute;
+	left: 0px;
+	top: 2px;
+	width: 25px;
+	height: 25px;
+}
+#tbh5v0 .innercontent .login-form .c-form-search:after, #tbh5v0 .innercontent .login-form .pwd:after {
+	background: url(../img/login2.png) no-repeat;
+	background-size: 56px;
+}
+#tbh5v0 .innercontent .login-form .c-form-search:after {
+	background-position: 8px 8px;
+}
+#tbh5v0 .innercontent .login-form .pwd:after {
+	background-position: 8px -47px;
+}
+#tbh5v0 .innercontent .login-form .submit-btn, #tbh5v0 .innercontent .login-form .login-option {
+	margin-top: 20px;
+}
+#tbh5v0 .innercontent .login-form .login-option {
+	font-size: 14px;
+}
+#tbh5v0 .innercontent .login-form .login-option label {
+	color: #333;
+}
+#tbh5v0 .innercontent .login-form .login-option .reg-find-pwd {
+	float: right;
+	margin-left: 20px;
+}
+#tbh5v0 .innercontent .login-form .login-option .reg-find-pwd .reg, #tbh5v0 .innercontent .login-form .login-option .reg-find-pwd .forget-pwd {
+	color: #004477;
+	text-decoration: none;
+}
+#tbh5v0 .innercontent .login-form .login-option .reg-find-pwd .forget-pwd {
+	margin-left: 15px;
+}
+#tbh5v0 .innercontent .login-form .auth-code {
+	margin-top: 18px;
+	height: 35px;
+}
+#tbh5v0 .innercontent .login-form .auth-code input {
+	width: 179px;
+	float: left;
+	margin-right: 10px;
+}
+#tbh5v0 .innercontent .login-form .auth-code .check-code-img {
+	width: 80px;
+	height: 35px;
+	float: left;
+}
+#tbh5v0 .innercontent .login-form .auth-code-ps {
+	font-size: 12px;
+	color: #A6A6A6;
+	margin-top: 10px;
+	line-height: 1;
+}
+#tbh5v0 .innercontent .forget-step {
+	line-height: 22px;
+	color: #656565;
+}
+#tbh5v0 .innercontent .forget-step b {
+	color: #D30000;
+	font-weight: normal;
+}
+#tbh5v0 .innercontent .forget-step h2 {
+	color: #666;
+	font-size: 16px;
+	font-weight: 700;
+	margin-bottom: 15px;
+}
+#tbh5v0 .innercontent .forget-step .send-to {
+	margin: 22px 0 20px 0;
+	font-size: 24px;
+	color: #656565;
+}
+#tbh5v0 .innercontent .tab-c {
+	margin-top: 25px; /*手机短信注册*/ /*手工注册*/
+}
+#tbh5v0 .innercontent .tab-c .tab-msg-reg {
+	color: #656565;
+	font-size: 16px;
+	line-height: 24px;
+}
+#tbh5v0 .innercontent .tab-c .tab-msg-reg b {
+	color: #D30000;
+}
+#tbh5v0 .innercontent .tab-c .tab-msg-reg .send-tip {
+	font-weight: 700;
+}
+#tbh5v0 .innercontent .tab-c .tab-msg-reg .send-to {
+	font-size: 24px;
+	margin: 22px 0 18px 0;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg fieldset {
+	border: none;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form {
+	width: 280px;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .moblie input {
+	width: 269px;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .username, #tbh5v0 .innercontent .tab-c .tab-reg .reg-form .pwd {
+	margin-top: 10px;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .username input, #tbh5v0 .innercontent .tab-c .tab-reg .reg-form .pwd input {
+	width: 269px;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .submit-btn {
+	margin-top: 20px;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .login-option {
+	margin-top: 20px;
+	line-height: 20px;
+	color: #333;
+}
+#tbh5v0 .innercontent .tab-c .tab-reg .reg-form .login-option .agreement {
+	margin-top: 10px;
+}
+#tbh5v0 .innercontent .activate {
+	line-height: 20px;
+}
+#tbh5v0 .innercontent .activate .method1, #tbh5v0 .innercontent .activate .method2 {
+	margin-top: 20px;
+}
+#tbh5v0 .innercontent .activate .method1 strong, #tbh5v0 .innercontent .activate .method2 strong {
+	color: #656565;
+}
+#tbh5v0 .innercontent .activate .activate-code {
+	margin-top: 10px;
+}
+#tbh5v0 .innercontent .activate .activate-code input {
+	width: 269px;
+}
+#tbh5v0 .innercontent .activate .resend {
+	margin-top: 10px;
+	text-align: right;
+}
+#tbh5v0 .innercontent .activate .resend a {
+	color: #004477;
+	text-decoration: none;
+}
+#tbh5v0 .innercontent .reg-success, #tbh5v0 .innercontent .login-success {
+	color: #656565;
+}
+#tbh5v0 .innercontent .reg-success .name, #tbh5v0 .innercontent .login-success .name {
+	font-size: 16px;
+	font-weight: 700;
+}
+#tbh5v0 .innercontent .reg-success .tips, #tbh5v0 .innercontent .login-success .tips {
+	font-size: 14px;
+}
+#tbh5v0 .innercontent .reg-success .tips, #tbh5v0 .innercontent .login-success .tips, #tbh5v0 .innercontent .reg-success .c-btn-oran-big, #tbh5v0 .innercontent .login-success .c-btn-oran-big {
+	margin-top: 17px;
+}
+#tbh5v0 .innercontent .login-success .success-tip {
+	color: #656565;
+	font-weight: 700;
+	font-size: 16px;
+}
+#tbh5v0 .innercontent .login-success .success-tip .ps {
+	margin-top: 10px;
+	display: block;
+	font-weight: normal;
+}

@@ -1,0 +1,53 @@
+body,h1,h2,h3,h4,h5,h6,p,dl,dt,dd,ul,ol,li,form,button,input,textarea,table,tr,th,td{margin:0;padding:0;}
+body{color:#333;font-family:"微软雅黑","Microsoft YaHei";font-size:14px;}
+input{border:none;}.clear {clear: both;}
+a{color:#8D8D8D;text-decoration:none;}
+ul,ol,li{list-style:none;}
+
+.content1,.content2{width:320px;margin:0 auto;padding-bottom:32px;}
+.content1,.content2{background:#f7f7f7;}
+/*购物车*/
+.shopList{width:278px;margin:10px auto;padding:10px;border:1px solid #e4e4e4;border-radius:5px;background:#fff;}
+.shopList h4,.shopSale h4{font-size:14px;border-bottom:1px dashed #b2b2b2;padding-bottom:10px;}
+.shopList dl{width:100%;margin-top:10px;padding-bottom:10px;overflow:hidden;border-bottom:1px dashed #b2b2b2;}
+.shopList dl dt{float:left;}
+.shopList dl dt a,.shopList dl dt img{display:block;width:74px;height:74px;}
+.shopList dl dt a{border:1px solid #e4e4e6;}
+.shopList dl dd{float:right;width:192px;}
+.shopList dl dd a,.shopList dl dd span,.shopList dl dd font,.shopSale span,.shopSale font{display:block;line-height:19px;}
+.shopList dl dd a{color:#333;}
+.shopList dl dd span,.shopSale font{color:#9b9b9b;}
+.shopList dl dd font,.shopSale span{color:#C00;}
+.shopList dl dd .num{width:192px;overflow:hidden;}
+.shopList dl dd .num p{float:left;overflow:hidden;}
+.shopList dl dd .num p button,.shopList dl dd .num p input{float:left;text-align:center;font-size:15px;}
+.shopList dl dd .num p button{width:23px;height:23px;line-height:23px;color:#929292;border:none;background:#f8f8f8;font-weight:bold;}
+.shopList dl dd .num p button.add{background:url(../img/jian.png) no-repeat;background-size:23px 23px;}
+.shopList dl dd .num p button.upp{background:url(../img/jia.png) no-repeat;background-size:23px 23px;}
+.shopList dl dd .num p input{width:29px;height:21px;line-height:21px;border-top:1px solid #e4e4e4;border-bottom:1px solid #e4e4e4;}
+.shopList dl dd .num img{float:right;margin-top:6px;}
+.shopList dl dd .num span{float:left;border-left:solid 1px #ccc;height:18px;padding-left:5px;margin:3px 0 0 5px;}
+.shopList em{display:block;width:278px;overflow:hidden;font-style:normal;line-height:25px;}
+.shopList em span{float:left;color:#9a9a9a;}
+.shopList em a{float:right;color:#004377;}
+.shopSale{width:278px;margin:10px auto 0;padding:10px;border-bottom:1px solid #e5e5e5;}
+.shopSale h4{color:#505050;background:url(../img/hui.jpg) no-repeat right 6px;background-size:14px 12px;border:none;}
+.sameShop{width:290px;margin:0 auto;}
+.sameShop h4{background:url(../img/more2.jpg) no-repeat right 15px;background-size:14px 9px;line-height:37px;border-top:1px solid #fff;}
+.sameShop ul{width:290px;overflow:hidden;}
+.sameShop ul li{overflow:hidden;}
+.sameShop ul li a{float:left;display:inline;margin-left:6px;width:78px;padding:5px;border:1px solid #e7e7e7; margin-top:10px;}
+.sameShop ul li a img,.sameShop ul li a span{display:block;color:#e60065}
+.sameShop ul li a img{width:78px;height:78px;}
+.addPrice{width:320px;margin-top:15px;overflow:hidden;background:#fff;}
+.addPrice span{float:left;color:#C00;line-height:37px;padding-left:10px;}
+.addPrice a{float:right;width:122px;line-height:37px;background:#C00;text-align:center;color:#fff;border-radius:3px 0 0 3px;font-size:16px;}
+.ms{width:320px;margin:0 auto;background:#F7F7F7;font-family:微软雅黑;color:#313131;font-size:12px;}
+.ms .ms_date{height:33px;background:#E50065;border-bottom:solid 2px #000000;padding-top:2px;}
+.ms .ms_date li{float:left;width:92px;height:33px;line-height:33px;color:#fff;font-size:14px;text-align:center;margin-left:11px;cursor:pointer;}
+.ms .ms_date li.sel{background:url(../img/baidi.png) no-repeat;background-size:92px 34px;color:#000;}
+.ms .ms_inf,.ms .ms_inf .ms_m{width:320px;overflow:hidden;}
+
+.error-content{background: none repeat scroll 0 0 #FFF9D5;border: 1px solid #C9C9C9;border-radius: 5px 5px 5px 5px;color: #EC1855;margin: 6px;padding: 6px;}
+
+

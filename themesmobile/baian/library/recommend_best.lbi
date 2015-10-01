@@ -1,0 +1,47 @@
+{if $best_goods}
+
+<section class="ProductsCategory_show02-d1_c6-41">
+	
+
+<div class="borderTitle">
+	<span class="left">
+		<em class="icon"></em>
+		<em class="borderName">{$lang.best_goods}</em>
+	</span>
+	<span class="right">
+		<em class="moreCont"></em>
+		<em class="active controlBar" style="display: none">
+			<cite class="icon"></cite>
+		</em>
+	</span>
+</div>
+
+		<div class="borderCont category02_c6-02">
+			<div class="twoColStyle">
+						<dl class="rows">
+						
+						
+						
+					{foreach from=$best_goods item=goods name=best_goods}
+							
+								<dd class="active" onClick="javascript:window.location.href='{$goods.url}'">
+								<div class="productatag" href="{$goods.url}">
+								<div class="imgWrap"><img src="{$option.static_path}{$goods.thumb}" alt="{$goods.name|escape:html}"/></div>
+								<div class="infoWrap">
+								<h3 class="productTitle" onClick="javascript:window.location.href='{$goods.url}'"><span class="name">{$goods.short_style_name} </span></h3>
+                                  <font>{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</font></br>
+                                  <em>{$goods.market_price}</em>
+								</div>
+								</div>
+								</dd>
+							
+			       {/foreach}
+								
+							
+						</dl>
+			</div>
+		 </div>
+	</section>
+                
+
+{/if}

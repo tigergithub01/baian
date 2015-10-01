@@ -1,0 +1,18 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="region">
+<div class="focus"> 
+<!--{foreach from=$categories item=cat name=name}-->
+<!--{if $smarty.foreach.name.iteration <=7 }-->
+<a class="tag11p" href="{$cat.url}"> <img src="static/img/category{$smarty.foreach.name.iteration}.jpg"> <span class="focus-name">{$cat.name|truncate:5}</span><br>
+    <span class="focus-info"></span></a>
+    <!--{/if}-->
+     <!--{/foreach}-->
+     
+    <a class="tag11p" href="brand.html"> <img src="static/img/shangpinpp.jpg"> <span class="focus-name">商品品牌</span><br>
+    <span class="focus-info"></span></a>
+    <a class="tag11p" href="brand.html"> <img src="static/img/kehuduan.jpg"> <span class="focus-name">安装客户端</span><br>
+    <span class="focus-info"></span></a>
+    <a class="tag11p" href="/baobao/index.php?ec_uid={$ecs_session.user_id}"> <img src="static/img/xiutai.jpg"> <span class="focus-name">宝宝秀台</span><br>
+    <span class="focus-info"></span></a>
+    </div>
+</div>

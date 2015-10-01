@@ -1,0 +1,7 @@
+<div class="non-standard">
+          <ul class="col">
+           {foreach from=$related_goods item=releated_goods_data name=related_goods}
+          <li><a href="{$releated_goods_data.url}"><div class="summary"><img alt="" src="{$releated_goods_data.goods_thumb}"><div class="price">{if $releated_goods_data.promote_price}{$releated_goods_data.formated_promote_price}{else}{$releated_goods_data.shop_price}{/if}</div></div></a></li>
+      {/foreach}
+          </ul></div>
+          

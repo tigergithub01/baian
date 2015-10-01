@@ -1,0 +1,9 @@
+ <footer class="footer c-footer ">
+      <section class="footer-t c-footer-t">
+        <p class="user-info c-user-info"> <span><a href="user.php?act=login">登录</a></span><span><a href="user.php?act=register">注册</a></span> </p>
+        <p class="gotop c-gotop"><a href="javascript:scroll(0,0)">top<b> </b></a></p>
+      </section>
+      <nav class="footer-l c-footer-l"> <a href="index.php">标准版</a><a href="" title="" style="display:none">电脑版</a>  </nav>
+      <p class="copyright c-copyright">{$copyright}</p>
+      
+    </footer>

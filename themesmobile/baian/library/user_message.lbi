@@ -1,0 +1,127 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<div id="menu1" class="ub tab_menu widt100">
+                    <div id="wdpj1" onClick="setUserTab('wdpj',1,2)"  class="ub-f1 tx-c b-grar-g  t-red-g tab_check">
+                        <span style=" display:inline-block;">{$lang.label_message}</span>
+                    </div>
+                    <div id="wdpj2" onClick="setUserTab('wdpj',2,2)" class="ub-f1 tx-c b-grar-g b-whl-g">
+                        <span style=" display:inline-block;">{$lang.label_comment}</span>
+                    </div>
+                </div>
+
+ <div id="user_wdpj_1" class="goods_list" style="margin-top:0;">
+ 
+    {if $message_list}		
+			{foreach from=$message_list item=message key=key name=message_list}
+            <dl class="order_list">
+            <dt><span class="t-org-g">[{$message.msg_type}]</span>{$message.msg_title} <font>{$message.msg_time}</font></dt>
+            
+            <dd class="price">{$item.total_fee}</dd>
+            <dd><span>{$message.msg_content}{if $message.message_img}<a href="data/feedbackimg/{$message.message_img}" target="_bank">{$lang.view_upload_file}</a>{/if}</span>
+            <font>{$item.handler}</font></dd>
+           {if $message.re_msg_content}
+					<dt><span class="price">{$lang.shopman_reply}</span> <font>{$message.re_msg_time}</font></dt>
+                    <dd><span style="color:#999">{$message.re_msg_content}</span></dd>
+					{/if}
+                    <div class="blank5"></div>
+         </dl>
+            
+			{/foreach}
+		{include file='library/pages.lbi'}
+		{else}
+          <div id="list_0_0" class="alertText font12">{$lang.message_list_empty}</div>
+		{/if}
+      
+      
+    <div class="ub ub-ver up_page mar-top" style=" width:100%;">
+                    <div class="uinn all_clor font14 brand_padd">{$lang.message_form_title}</div>
+                </div>  
+                 <section class="innercontent">
+		<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg" onSubmit="return submitMsg()">
+			
+				{if $order_info}
+                <div class="field no">
+                        <div class="c-form-search st">
+                        {$lang.message_type}：
+                   
+                       <a href ="{$order_info.url}">{$order_info.order_sn}</a>
+                       <input type="hidden" name="msg_type" value="5">
+					<input type="hidden" name="order_id" value="{$order_info.order_id}">
+                    </div>
+                </div>
+				
+				{else}
+                <div class="blank20"></div>
+                 <div class="field no">
+                        <div class="c-form-search st">
+                        {$lang.message_type}：
+                  
+                       <label for="msg_type0"><input type="radio" name="msg_type" value="0" checked="checked" class="radio" id="msg_type0">{$lang.type[0]}</label>
+					<label for="msg_type1"><input type="radio" name="msg_type" value="1" class="radio" id="msg_type1">{$lang.type[1]}</label>
+					<label for="msg_type2"><input type="radio" name="msg_type" value="2" class="radio" id="msg_type2">{$lang.type[2]}</label>
+					<label for="msg_type3"><input type="radio" name="msg_type" value="3" class="radio" id="msg_type3">{$lang.type[3]}</label>
+					<label for="msg_type4"><input type="radio" name="msg_type" value="4" class="radio" id="msg_type4">{$lang.type[4]}</label>
+                    </div>
+                </div>
+				
+				{/if}
+                    
+                    <label for="msg_title">
+                 <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="text" name="msg_title" id="msg_title" class="c-f-text" placeholder="*{$lang.message_title}"/>
+                    </div>
+                </div>
+                    </label>
+                  <div class="field no">
+                        <div class="c-form-search st">
+                    <label for="msg_content">
+                    <span class="t-red-g">*</span>{$lang.message_content}：
+                    <textarea name="msg_content" id="msg_content" class="c-f-text" style="height:100px"></textarea>                      
+                    </label>
+                </div>
+                </div>
+               <div class="field no">
+                        <div class="c-form-search st">
+                        {$lang.upload_img}：
+                    <label for="message_img">
+                        <input type="file" name="message_img" id="message_img" class="c-f-text" />                       
+                    </label>
+                    </div>
+                </div>
+                 <div class="field no">
+                        <div class="c-form-search st">
+                       <span class="directions">{$lang.img_type_list}</span>
+                       
+                    </div>                    
+                </div>
+                  <div class="field submit-btn">
+					<input type="submit" value="{$lang.submit_message}" class="c-btn-oran-big"/>
+                    </div>
+					<input type="hidden" name="act" value="act_add_message">
+			
+		</form>     
+        </section>
+   
+   
+ </div>
+  <div id="user_wdpj_2" class="goods_list" style="margin-top:0; display:none">
+  
+			{foreach from=$comment_list item=comment name=comment_list}
+			<li class="{cycle values="odd,even"}{if $smarty.foreach.comment_list.first} first{/if}">
+				<div class="info">
+					<span class="name">{$comment.formated_add_time}</span>
+					<a href="user.php?act=del_cmt&amp;id={$comment.comment_id}" title="{$lang.drop}" onclick="if (!confirm('{$lang.confirm_remove_msg}')) return false;" class="drop">{$lang.drop}</a>
+				</div>
+				<div class="talk">
+					<p class="title"><span class="type">[{if $comment.comment_type eq '0'}{$lang.goods_comment}{else}{$lang.article_comment}{/if}]</span>{$comment.cmt_name}</p>
+					<p class="text">{$comment.content|escape}</p>
+					{if $comment.reply_content}
+					<blockquote class="reply"><span class="name">{$lang.re_name}</span><span class="text">{$comment.reply_content}</span><span class="time">{$message.re_msg_time}</span></blockquote>
+					{/if}
+				</div>
+			</li>
+			{/foreach}
+		{if !$comment_list}<div id="list_0_0" class="alertText font12">{$lang.no_comments}</div>{/if}
+		{if $comment_list}{include file='library/pages.lbi'}{/if}
+	

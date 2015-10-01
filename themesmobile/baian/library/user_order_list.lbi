@@ -1,0 +1,23 @@
+
+<!--{if $orders}-->
+
+          <!--{foreach from=$orders item=item}-->
+          <dl class="order_list">
+            <dt><a href="user.php?act=order_detail&order_id={$item.order_id}">{$item.order_sn}</a> <font>{$item.order_time}</font></dt>
+            
+            <dd class="price">{$item.total_fee}</dd>
+            <dd><span>{$item.order_status}</span>
+            <font>{$item.handler}</font></dd>
+             <div class="blank5"></div>
+         </dl>
+          <!--{/foreach}-->
+      <!--{else}-->
+        <div id="list_0_0" class="alertText font12">{$lang.order_empty}</div>
+       <!--{/if}-->
+
+		{include file='library/pages.lbi'}
+<script type="text/javascript">
+{foreach from=$lang.merge_order_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+</script>

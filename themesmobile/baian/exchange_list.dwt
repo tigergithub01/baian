@@ -1,0 +1,59 @@
+<!doctype html>
+<!--[if lt IE 7]><html lang="zh_cn" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="zh_cn" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="zh_cn" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh_cn" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="zh_cn" class="no-js"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+	<!--[if IE]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
+	<title>{$page_title}</title>
+				<script type="text/javascript" src="static/js/jquery.js"></script>
+	<script src="static/js/modernizr.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="static/js/selectivizr.js"></script>
+	<![endif]-->
+	<link rel="shortcut icon" href="static/img/favicon.png">
+	<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />	
+                	<!--[if lt IE 10]>
+	<script type="text/javascript" src="static/js/PIE.js"></script>
+	<![endif]-->
+	<!--[if IE 6]>
+	<script type="text/javascript" src="static/js/DD_belatedPNG.js"></script>
+	<script>
+		DD_belatedPNG.fix('#logo img,#header_bar,#main .wrapper,.button,.bright_button span,#cart a em');
+	</script>
+	<![endif]-->
+	</head>
+<body id="page_goods">
+<div id="container">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<div id="main"><div class="wrapper">
+	<h1>{$lang.exchange}</h1>
+	
+	<!-- TemplateBeginEditable name="主栏上方" --><!-- TemplateEndEditable -->
+	<!-- TemplateBeginEditable name="主栏" -->
+	<!-- #BeginLibraryItem "/library/exchange_list.lbi" --><!-- #EndLibraryItem -->
+	<!-- TemplateEndEditable -->
+	<!-- TemplateBeginEditable name="主栏下方" --><!-- TemplateEndEditable -->
+	
+</div></div>
+
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<script type="text/javascript" src="static/js/plugins.js"></script>
+<script type="text/javascript" src="static/js/lang.zh_cn.js"></script>
+<script type="text/javascript" src="static/js/global.js"></script>
+<script type="text/javascript" src="static/js/init.js"></script>
+
+</div>
+</body>
+
+</html>

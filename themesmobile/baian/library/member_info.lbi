@@ -1,0 +1,19 @@
+<div id="append_parent"></div>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $user_info}
+
+<div id="account_area"><p>
+<span>{$lang.hello}</span>
+<a href="user.php">{$user_info.username}</a>
+<a href="user.php?act=logout">退出</a>
+</p></div>
+
+{else}
+
+<div id="account_area"><p>
+<span>{$lang.welcome}</span>
+<a href="user.php?act=register">注册</a>
+<a href="user.php?act=login">登入</a>
+</p></div>
+
+{/if}

@@ -1,0 +1,308 @@
+<!doctype html>
+<!--[if lt IE 7]><html lang="zh_cn" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="zh_cn" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="zh_cn" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh_cn" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="zh_cn" class="no-js">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<!--[if IE]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
+<title>{$page_title}</title>
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<link rel="apple-touch-icon" href="static/js/7017233.png"/>
+
+<link rel="stylesheet" type="text/css" href="static/css/14958983.css"/>
+<link rel="stylesheet" type="text/css" href="static/css/style.css"/>
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+<script type="text/javascript" src="static/js/jquery-1.7.1.min.js"></script>
+<style>
+/*#fake-search{ height:40px;position: fixed; z-index:999;top:0; width:300px;border-top:1px solid #dedede;margin:0 auto;padding-left:0px;text-align:center;}*/
+</style>
+
+</head>
+<body style="">
+<div class="tmall-h5-v2" id="content"> 
+<!-- #BeginLibraryItem "/library/index_ad.lbi" --><!-- #EndLibraryItem -->
+  <header class="region">
+    <div class="content">
+      <div class="top">
+        <img src="static/img/logo.png" width="320px"/>
+      </div>
+      <div style="text-align:center;margin-top:">
+      关注微信商城/服务号：baby123121
+      </div>
+      <div id="fake-search">
+      <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+        <div class="fakeInput" style="width:300px;">
+          <input name="keywords" id="keyword" style="width:256px;float:left;" type="text" class="search_text" onFocus="if(this.value=='请输入搜索文字'){this.value=''}" onBlur="if(this.value==''){this.value='请输入搜索文字'}" value="请输入搜索文字"/>
+          <input type="submit" style="float:left;" class="search_submit" value=""/>
+        </div>
+      </form>
+      </div>
+      <script>
+        $.fn.topFixed = function(top,show){
+            var top = top||0;
+            var _this = $(this);
+            var offsetTop = $(this).offset().top-top;
+            if(!!window.ActiveXObject){
+                offsetTop = $(this).offset().top-top*2;
+            }
+            var offsetLeft = $(this).offset().left;
+            $(window).scroll(function(){
+                if($(this).scrollTop()>=offsetTop){
+                    _this.css({'position':'fixed','top':top+'px','left':offsetLeft,'z-index':999});
+                    if(show){
+                        _this.find(show).fadeIn(200);
+                    }
+                }else {
+                    _this.css({'position':'','top':'0px','left':'0px'})
+                    if(show){
+                        _this.find(show).fadeOut(200);
+                    }
+                }
+            });
+        };
+
+        $('#fake-search').topFixed();
+      </script>
+    </div>
+  </header>
+  <div class="region entry-list"></div>
+  <div class="region entry-list" style="text-align:center;display:none;"> 
+  关注微信号：XXX
+  </div>
+  <div class="test" style="display:none;"> 
+  	<a href="catalog.php"> 
+  	<img alt="商品类目" height="32px" src="static/img/01.png" width="32px"/><br>
+    <span>商品类目</span> </a> 
+    <span class="entry-decollator"></span> 
+    <a href="brand.php"> <img alt="安装客户端" height="32px" src="static/img/02.png" width="32px"/><br>
+    <span>安装客户端</span> </a> 
+    <span class="entry-decollator"></span> 
+    <a href="user.php"> <img alt="登录注册" height="32px" src="static/img/03.png" width="32px"/><br>
+    <span>登录注册</span> </a>
+    <span class="entry-decollator"></span> 
+    <a class="region-fav" href="user.php?act=collection_list"> <img alt="收藏夹" height="32px" src="static/img/04.png" width="32px"><br>
+    <span>收藏夹</span> </a>
+    <!-- 为双11添加 -->
+    <br>
+    <br>
+    <a href="flow.php"> <img alt="购物车" height="32px" src="static/img/05.png" width="36px"/><br>
+    <span>购物车</span> </a> 
+    <span class="entry-decollator"></span> 
+    <a href="share.php"> <img alt="微信关注" height="32px" src="static/img/06.png" width="32px"/><br>
+    <span>微信关注</span> </a> 
+    <span class="entry-decollator"></span> 
+    <a href="map.php"> <img alt="在线客服" height="32px" src="static/img/07.png" width="32px"><br>
+    <span>在线客服</span> </a> <span class="entry-decollator region-fav"></span>
+	<a href="tel:4008048648"> <img alt="宝宝秀台" height="32px" src="static/img/08.png" width="32px"/><br>
+    <span>宝宝秀台</span> </a> 
+    </div>
+  <!-- #BeginLibraryItem "/library/recommend_promotion.lbi" --><!-- #EndLibraryItem --> 
+  <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
+  
+  <!--分类一-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad1 item=ad name=wap_index_ad1}
+       {if $smarty.foreach.wap_index_ad1.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad1 item=ad name=wap_index_ad1}
+       {if $smarty.foreach.wap_index_ad1.iteration>1 && $smarty.foreach.wap_index_ad1.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+     <!--{foreach from=$wap_tree1 item=list name=name}-->
+     {if $smarty.foreach.name.index<3}
+     <A href="{$list.url}" target=_blank >{$list.name}</A>
+     {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=332" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类二-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad2 item=ad name=wap_index_ad2}
+       {if $smarty.foreach.wap_index_ad2.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad2 item=ad name=wap_index_ad2}
+       {if $smarty.foreach.wap_index_ad2.iteration>1 && $smarty.foreach.wap_index_ad2.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree2 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=333" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类三-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad3 item=ad name=wap_index_ad3}
+       {if $smarty.foreach.wap_index_ad3.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad3 item=ad name=wap_index_ad3}
+       {if $smarty.foreach.wap_index_ad3.iteration>1 && $smarty.foreach.wap_index_ad3.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree3 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=336" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类四-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad4 item=ad name=wap_index_ad4}
+       {if $smarty.foreach.wap_index_ad4.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad4 item=ad name=wap_index_ad4}
+       {if $smarty.foreach.wap_index_ad4.iteration>1 && $smarty.foreach.wap_index_ad4.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree4 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=335" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类五-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad5 item=ad name=wap_index_ad5}
+       {if $smarty.foreach.wap_index_ad5.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad5 item=ad name=wap_index_ad5}
+       {if $smarty.foreach.wap_index_ad5.iteration>1 && $smarty.foreach.wap_index_ad5.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree5 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=334" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类六-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad6 item=ad name=wap_index_ad6}
+       {if $smarty.foreach.wap_index_ad6.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad6 item=ad name=wap_index_ad6}
+       {if $smarty.foreach.wap_index_ad6.iteration>1 && $smarty.foreach.wap_index_ad6.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree6 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=337" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+  <!--分类七-->
+  <section class="region mr-t30">
+    <div class="module">
+      <div class="storey-top-tags in-commh"> 
+       {foreach from=$wap_index_ad7 item=ad name=wap_index_ad7}
+       {if $smarty.foreach.wap_index_ad7.iteration<2}
+      <a href="{$ad.url}"> <img alt="" class="" height="150" src="{$ad.image}" width="180"> </a>
+      {/if}
+      {/foreach}
+        <div> 
+        {foreach from=$wap_index_ad7 item=ad name=wap_index_ad7}
+       {if $smarty.foreach.wap_index_ad7.iteration>1 && $smarty.foreach.wap_index_ad7.iteration<4}
+        <a class="complex-tag" href="{$ad.url}"> <img alt="" class="" height="75" src="{$ad.image}" width="120"> </a> 
+         {/if}
+      {/foreach}
+        </div>
+      </div>
+    </div>
+    <div class="module storey-tags">
+      <!--{foreach from=$wap_tree7 item=list name=name}-->
+      {if $smarty.foreach.name.index<3}
+    <A href="{$list.url}" target=_blank >{$list.name}</A>
+    {/if}
+     <!--{/foreach}-->
+     <a href="category.php?id=339" style="float:right;color:rgb(207, 8, 8);">更多&gt;</a>
+     </div>
+  </section>
+   {foreach from=$wap_index_ad_btm item=ad name=wap_index_ad_btm}
+       {if $smarty.foreach.wap_index_ad_btm.index<2}
+  <div class="grid-c module mr-t20"> <a href="{$ad.url}"><img height="75px" src="{$ad.image}" width="300px"></a> </div>
+   {/if}
+      {/foreach}
+  <script type="text/javascript" src="static/js/indexJs.js"></script>
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

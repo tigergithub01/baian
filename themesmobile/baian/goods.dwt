@@ -1,0 +1,453 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>{$page_title}</title>
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<link rel="shortcut icon" href="static/img/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+<link rel="stylesheet" href="static/css/detail.css">
+<link rel="stylesheet" href="static/css/style.css">
+<script type="text/javascript" src="static/js/jquery.js"></script>
+<script type="text/javascript" src="themes/baian/js/script.js" ></script>
+{insert_scripts files='common.js,script.js,lefttime.js,transport1.js'}
+</head>
+<body>
+<script>
+<!--
+/*屏蔽所有的js错误*/
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+  var process_request = "正在处理您的请求...";
+//-->
+function kongzhi(){
+	 var kongzhi = document.getElementById("kongzhi");
+	 var more = document.getElementById("more");
+	 kongzhi.style.display = "block";
+	 more.style.display = "none";
+	}
+function closekongzhi (){
+	 var kongzhi = document.getElementById("kongzhi");
+	 kongzhi.style.display ="none";
+	}
+</script>
+<header class="s-header">
+  <nav>
+    <h1>商品详情页</h1>
+    <a href="javascript:history.back(-1)" class="back">返回</a>
+    <label onClick="kongzhi()" id="more" class="more" style="display:none;">更多</label>
+  </nav>
+  <div class="finder" id="kongzhi" style="display:block;">
+    <form class="search" id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+      <input type="text"  placeholder="请输入搜索文字" autocomplete="off" name="keywords" id="keyword">
+      <button type="submit"></button>
+      <button class="close" onClick="closekongzhi()">搜索</button>
+    </form>
+    <div class="ui-suggest"></div>
+  </div>
+</header>
+
+    <div class="pd_Img">
+    <img  src="{$goods.goods_img}" alt="{$goods.goods_name|escape:'html'}" id="goods_bimg" style="display: inline; "/>
+    </div>
+    {include file='library/goods_gallery.lbi'}
+<div class="blank5"></div>
+
+  <form action="javascript:buy({$goods.goods_id})" method="post" id="purchase_form" name="ECS_FORMBUY">
+<section class="s-summary"> <a class="m-fav" href="javascript:collect({$goods.goods_id})" style="display:none; "><img src="static/img/add_favourite.png"/></a>
+  <div class="title">
+     {if $goods.is_promote and $goods.gmt_end_time}<h1> <em class="double11">促销进行中</em>{/if} {$goods.goods_name} <b></b> </h1>
+  </div>
+  <div class="summary">
+    <ul class="m-prices">
+    {insert_scripts files='lefttime.js'}
+    {if $goods.is_promote and $goods.gmt_end_time}
+      <li class="p-price"> <span class="key">{$lang.promote_price}&nbsp;&nbsp;&nbsp;</span>
+        <div class="value"> <span class="price"><b class="p-price-v" style="color:red;">{$goods.promote_price}</b> &nbsp;&nbsp;<font id="leftTime">{$lang.please_waiting}</font></span> </div>
+      </li>
+      {else}
+       <li class="p-price"> <span class="key">{$lang.shop_price}</span>
+        <div class="value"> <span class="price"><b class="p-price-v" style="color:red;">{$goods.shop_price_formated}</b></span> </div>
+      </li>
+      {/if}
+      {if $cfg.show_marketprice}
+      <li class="o-price"> <span class="key">{$lang.market_price}</span>
+        <div class="value"> <del><span class="o-price-v">{$goods.market_price}</span></del>  </div>
+      </li>
+       {/if}
+       {if $rank_prices}				
+		{foreach from=$rank_prices item=rank_price key=key}
+        <li class="o-price"> 
+         <span class="key">{$rank_price.rank_name}：</span>
+         <div class="value"><span class="p-price-v" style="">{$rank_price.price}</span></div></li>
+     {/foreach}
+    {/if}
+    </ul>
+       {if $cfg.show_goodssn}
+<div class="m-sales"> <span class="key">{$lang.goods_sn}</span><div class="value">{$goods.goods_sn}</div></span></div>
+{/if}
+{if $goods.goods_brand and $cfg.show_brand}
+<div class="m-sales"> <span class="key">{$lang.goods_brand}</span>
+      <div class="value"><a href="{$goods.goods_brand_url}">{$goods.goods_brand}</a></div>
+    </div>
+{/if}
+ <div class="m-sales"> <span class="key">获得积分：</span>
+      <div class="value">{$goods.cost_integral}分</div>
+    </div>
+{if $cfg.show_goodsweight}
+ <div class="m-sales"> <span class="key">{$lang.goods_weight}</span>
+      <div class="value">{$goods.goods_weight}</div>
+    </div>
+{/if}
+{if $cfg.show_addtime}
+ <div class="m-sales"> 
+      <span class="key">{$lang.add_time}</span>
+      <div class="value">{$goods.add_time}</div>
+    </div>
+{/if}
+{if $option.product_click_count_enabled}
+<div class="m-sales"> 
+      <span class="key">{$lang.goods_click_count}</span>
+      <div class="value">{$goods.click_count}</div>
+    </div>
+{/if}
+{if $goods.give_integral gt 0}
+<div class="m-sales"> 
+      <span class="key">{$lang.goods_give_integral}</span>
+      <div class="value">{$goods.give_integral} {$points_name}</div>
+    </div>
+{/if}
+{if $cfg.use_integral00 and $goods.integral}
+ <div class="m-sales"> 
+      <span class="key">{$lang.goods_integral}</span>
+      <div class="value">{$goods.integral} {$points_name}</div>
+    </div>
+{/if}
+{if $goods.bonus_money}
+<div class="m-sales"> 
+      <span class="key">{$lang.goods_bonus}</span>
+      <div class="value">{$goods.bonus_money}</div>
+    </div>
+{/if}
+    
+  {if $goods.goods_brief}
+  <div class="m-promotions"> 
+  <span class="key">简单介绍：</span>
+      <div class="value"> {$goods.goods_brief} </div>
+    </div>
+  {/if}
+
+  </div>
+</section>
+<section class="s-buy open ui-section-box" id="search_ka">
+  <label class="info ui-more" onClick="click_search()" style="display:none;">
+  <div class="notice"> 请选择<span class="property">尺码/颜色分类</span> </div>
+  
+  </label>
+    <div class="fields">
+      
+      <div class="ui-sku">
+         {if $specification}                
+    {foreach from=$specification item=spec key=spec_key name=specification}
+        <div class="ui-sku-prop">
+          <h2>{$lang.please_select}{$spec.name}{$lang.colon}</h2>
+          <div class="items">
+           {foreach from=$spec.values item=value key=key}
+          <a {if $key eq 0}class="hover"{/if} href="javascript:;" name="{$value.id}" onclick="changeAtt(this)">{$value.label}<input style="display:none" id="spec_value_{$value.id}" type="radio" name="spec_{$spec_key}" value="{$value.id}" {if $key eq 0}checked{/if} /></a>
+           {/foreach}
+          </div>
+        </div>
+        {/foreach}
+        {/if}
+      </div>
+      <div class="quantity">
+        <h2>数量：</h2>
+        <div class="items"> <span class="ui-number">
+         <script language="javascript" type="text/javascript">  function goods_cut(){  var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  if(Num>1)Num=Num-1;  num_val.value=Num;  }  function goods_add(){  var num_val=document.getElementById('number');  var new_num=num_val.value;  var Num = parseInt(new_num);  Num=Num+1;  num_val.value=Num;  } </script>
+          <button type="button" class="decrease" onclick="goods_cut();changePrice();">-</button>
+          <input type="number" class="num" id="number" onblur="changePrice();" name="number" value="1" min="1" max="4834"/>
+          <button type="button" class="increase" onclick="goods_add();changePrice();">+</button>
+          </span>
+          <span>{$lang.amount}：<font id="ECS_GOODS_AMOUNT" style="font-size:16px; font-weight:bold; color:#C00;"></font></span>
+		  <span style="display:none;" class="purchase">库存<span class="purchase-v">{$goods.goods_number}</span>件</span>
+           {if $volume_price_list}
+           {foreach from=$volume_price_list item=price_list key=price_key}
+          <span class="purchase">{$price_list.number}：<span class="purchase-v">{$price_list.format_price}</span></span> 
+          {/foreach}
+				{/if}
+                </div>
+      </div>
+    </div>
+    <div class="option">
+      <a class="btn buy" href="javascript:buy({$goods.goods_id})" style="display:none;">立即购买</a>
+      {if ($goods.goods_number eq '0') and ($option.use_storage eq '1')}
+      <a class="btn cart" href="user.php?act=add_booking&id={$goods.goods_id}">{$lang.btn_booking}</a>
+      {else}
+	  <a href="javascript:buy({$goods.goods_id})" class="btn cart" style="line-height:320x;font-size:17px;text-align:center;">
+	  	<img src="static/img/buy_cart.png" style="vertical-align:middle;"><span>{$lang.btn_buy}</span>
+	  </a>
+	  {/if}
+	  <a id="buy_now" href="javascript:buy({$goods.goods_id})" class="btn cart" style="line-height:320x;font-size:17px;text-align:center;display:none;">
+	  	<img src="static/img/buy_cart.png" style="vertical-align:middle;"><span>{$lang.btn_buy}</span>
+	  </a>
+    </div>
+      <script>
+        $.fn.topFixed = function(top,show){
+            var top = top||0;
+            var _this = $(this);
+            var offsetTop = $(this).offset().top-top;
+            if(!!window.ActiveXObject){
+                offsetTop = $(this).offset().top-top*2;
+            }
+            //alert('顶部距离:'+offsetTop+'距头部：'+$(this).offset().top+":"+top);
+            var offsetLeft = $(this).offset().left;
+            //alert(offsetTop+":"+off);
+            $(window).scroll(function(){
+                if($(this).scrollTop()>=880){
+                	//alert($(this).scrollTop()+" and "+offsetTop);
+                    _this.css({'position':'fixed','top':top+'px','left':offsetLeft,'z-index':999,'display':'block'});
+                    if(show){
+                        _this.find(show).fadeIn(200);
+                    }
+                }else {
+                    _this.css({'position':'','top':'0px','left':'0px','display':'none'})
+                    if(show){
+                        _this.find(show).fadeOut(200);
+                    }
+                }
+            });
+        };
+
+        $('#buy_now').topFixed();
+      </script>
+</section>
+</form>
+
+<script type="text/javascript">
+				/*第一种形式 第二种形式 更换显示样式*/
+				function setGoodsTab(name,cursel,n){
+				for(i=1;i<=n;i++){
+				var menu=document.getElementById(name+i);
+				var con=document.getElementById("user_"+name+"_"+i);
+				menu.className=i==cursel?"current":"";
+				con.style.display=i==cursel?"block":"none";
+				}
+				}
+				</script>
+                <script type="text/javascript">
+var obj11 = document.getElementById("inner");
+var top11 = getTop(obj11);
+var isIE6 = /msie 6/i.test(navigator.userAgent);
+window.onscroll = function(){
+ 
+	var bodyScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	if (bodyScrollTop > top11){
+		obj11.style.position = (isIE6) ? "absolute" : "fixed";
+		obj11.style.top = (isIE6) ? bodyScrollTop + "px" : "0px";
+	} else {
+		obj11.style.position = "static";
+	}
+}
+function getTop(e){
+ 
+	var offset = e.offsetTop;
+	if(e.offsetParent != null) offset += getTop(e.offsetParent);
+	return offset;
+}
+</script>
+<section class="s-detail">
+  <header style="height: 40px;" id="inner">
+    <ul style="position: static; top: 0px; left: 0px; right: 0px; z-index: 998; " class="">
+      <li class="current" id="goods_ka1" onClick="setGoodsTab('goods_ka',1,4)"><a >详情</a></li>
+      <li id="goods_ka2" onClick="setGoodsTab('goods_ka',2,4)"><a>评价</a> </li>
+      <li id="goods_ka3" onClick="setGoodsTab('goods_ka',3,4)"><a>售后保障</a></li>
+      <li id="goods_ka4" onClick="setGoodsTab('goods_ka',4,4)"><a>疑问</a></li>
+    </ul>
+  </header>
+  <style type="text/css">
+	#user_goods_ka_1 img { width:100%; height:auto;}
+	
+	</style>
+	
+<?php 
+function get_article_info($article_id)
+{
+    /* 获得文章的信息 */
+    $sql = "SELECT a.*, IFNULL(AVG(r.comment_rank), 0) AS comment_rank ".
+            "FROM " .$GLOBALS['ecs']->table('article'). " AS a ".
+            "LEFT JOIN " .$GLOBALS['ecs']->table('comment'). " AS r ON r.id_value = a.article_id AND comment_type = 1 ".
+            "WHERE a.is_open = 1 AND a.article_id = '$article_id' GROUP BY a.article_id";
+    $row = $GLOBALS['db']->getRow($sql);
+
+    if ($row !== false)
+    {
+        $row['comment_rank'] = ceil($row['comment_rank']);                              // 用户评论级别取整
+        $row['add_time']     = local_date($GLOBALS['_CFG']['date_format'], $row['add_time']); // 修正添加时间显示
+
+        /* 作者信息如果为空，则用网站名称替换 */
+        if (empty($row['author']) || $row['author'] == '_SHOPHELP')
+        {
+            $row['author'] = $GLOBALS['_CFG']['shop_name'];
+        }
+        
+        /*  修正内容 */
+       //$row['content'] = strip_tags($row['content']);
+    }
+    return $row;
+}
+
+$GLOBALS['smarty']->assign('article_baozhang',get_article_info(145)); 
+$GLOBALS['smarty']->assign('article_yiwen',get_article_info(146)); 
+?>
+  <div class="wrap">
+    <div class="scroller" style="-webkit-transition: -webkit-transform 350ms cubic-bezier(0, 0, 0.25, 1); -webkit-transform: translate3d(0px, 0px, 0px); ">
+      <div class="m-desc current" id="detail-desc" style="min-height: 645px; overflow: hidden;">
+        <div class="content" id="user_goods_ka_1" style="display:block">
+         {$goods.goods_desc}
+        </div>
+        <div class="m-review" id="user_goods_ka_2" style="display:none">
+         <div class="content">
+         {include file='library/comments.lbi'}         
+         </div>
+        </div>
+	      <div class="content m-recommend" id="user_goods_ka_x" style="display:none"> 
+	      {include file='library/goods_related.lbi'}          
+	      </div>
+	      <div class="m-shouhou" id="user_goods_ka_3" style="display:none"> 
+	      {$article_baozhang.content}        
+	      </div>
+	      <div class="m-yiwen" id="user_goods_ka_4" style="display:none"> 
+	      {$article_yiwen.content}        
+	      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<script>
+    $(document).ready(function(){
+        NM.touch.checkMoreDetails('#deal-more', '团购详情图片较多，可能会消耗较多流量。是否继续访问？');
+        NM.touch.detailsUnfold();
+        NM.touch.remainingTime("remaining_time", 1366332305568, 1366387199000);
+    });
+</script>
+<script type="text/javascript" src="static/js/plugins.js"></script>
+<script type="text/javascript" src="static/js/lang.zh_cn.js"></script>
+<script type="text/javascript" src="static/js/global.js"></script>
+<script type="text/javascript" src="static/js/init.js"></script>
+<script type="text/javascript">
+var goods_id = {$goods_id};
+var goodsattr_style = {$cfg.goodsattr_style|default:1};
+var gmt_end_time = {$promote_end_time|default:0};
+{foreach from=$lang.goods_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var goodsId = {$goods_id};
+var now_time = {$now_time};
+
+<!-- {literal} -->
+onload = function(){
+
+  changePrice();
+  try { onload_leftTime(); }
+  catch (e) {}
+}
+
+</script>
+<script type="text/javascript">
+var goods_id = {$goods_id};
+var goodsattr_style = {$cfg.goodsattr_style|default:1};
+var gmt_end_time = {$promote_end_time|default:0};
+{foreach from=$lang.goods_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var goodsId = {$goods_id};
+var now_time = {$now_time};
+
+<!-- {literal} -->
+
+{* 代码增加_start     By  www.68ecshop.com *}
+function changeAtt(t,goods_id) {
+t.lastChild.checked='checked';
+for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+	if (t.parentNode.childNodes[i].className == 'cattsel') {
+		t.parentNode.childNodes[i].className = '';
+	}
+}
+
+t.className = "cattsel";
+var formBuy = document.forms['ECS_FORMBUY'];
+spec_arr = getSelectedAttributes(formBuy);
+Ajax.call('goods.php?act=get_products_qq800007396', 'id=' + spec_arr+ '&goods_id=' + goods_id, shows_number, 'GET', 'JSON');
+changePrice();
+}
+function shows_number(result)
+{
+if(result.product_number !=undefined)
+{
+	document.getElementById('shows_number').innerHTML = result.product_number+'{$goods.measure_unit}';
+}
+else
+{
+	document.getElementById('shows_number').innerHTML = '0'+'{$goods.measure_unit}';
+}
+}
+
+/**
+ * 点选可选属性或改变数量时修改商品价格的函数
+ */
+function changePrice()
+{
+  var attr = getSelectedAttributes(document.forms['ECS_FORMBUY']);
+  var qty = document.forms['ECS_FORMBUY'].elements['number'].value;
+
+  Ajax.call('goods.php', 'act=price&id=' + goodsId + '&attr=' + attr + '&number=' + qty, changePriceResponse, 'GET', 'JSON');
+}
+
+/**
+ * 接收返回的信息
+ */
+function changePriceResponse(res)
+{
+  if (res.err_msg.length > 0)
+  {
+    alert(res.err_msg);
+  }
+  else
+  {
+    document.forms['ECS_FORMBUY'].elements['number'].value = res.qty;
+
+    if (document.getElementById('ECS_GOODS_AMOUNT'))
+      document.getElementById('ECS_GOODS_AMOUNT').innerHTML = res.result;
+  }
+}
+
+<!-- {/literal} -->
+  
+  function click_search (){
+	  var search_ka = document.getElementById("search_ka");
+	  if (search_ka.className == "s-buy open ui-section-box"){
+		  search_ka.className = "s-buy ui-section-box";
+		  }else {
+			  search_ka.className = "s-buy open ui-section-box";
+			  }
+	  }
+function changeAtt(t) {
+t.lastChild.checked='checked';
+for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+        if (t.parentNode.childNodes[i].className == 'hover') {
+            t.parentNode.childNodes[i].className = '';
+        }
+    }
+t.className = "hover";
+changePrice();
+}
+
+</script>
+</body>
+</html>

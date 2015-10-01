@@ -1,0 +1,115 @@
+<!doctype html>
+<!--[if lt IE 7]><html lang="zh_cn" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="zh_cn" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="zh_cn" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh_cn" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="zh_cn" class="no-js"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+<title>{$page_title}</title>
+
+	<link rel="shortcut icon" href="static/img/favicon.png">
+	<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />	
+                
+	</head>
+<body class="category_bg">
+<div class="ccontainer">
+<div class="cheader">
+    <div class="chome"> <a class="chome_bg" href="index.php">
+      <nav id="h5back_nick">返回首页</nav>
+      </a> </div>
+    <div class="ctitle">
+      <div><span>分享</span></div>
+    </div>
+  </div>
+
+<div class="clist">
+<script type="text/javascript">
+//<![CDATA[
+	var url="http://127.0.0.1/ec272cn/mobile/68echsop_mobile2";
+	var summary="";
+	var shareTitle="{$page_title}";
+	var pic="";
+
+	$(function(){
+	//中文网站
+	 	$("#qzone").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=qzone&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		$("#sina").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=tsina&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		$("#tengXun").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=tqq&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		$("#wangyi").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=t163&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		$("#pengyou").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=xiaoyou&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+		});
+		$("#renren").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=renren&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		
+		$("#facebook").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=fb&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		$("#twitter").click(function(){
+			location.href="http://www.jiathis.com/send/?webid=twitter&url="+url+"&title="+shareTitle+"&uid=69830b72-0d99-41aa-a3fd-48634b616ffe";
+			
+		});
+		
+		
+	
+		$("#detail_more").tap(function(){
+            if(document.getElementById('box_header').style.display != "block"){
+                document.getElementById('box_header').style.display = "block";
+				columnScroll.refresh();
+				setColumnWidth();
+           	 }else{
+                document.getElementById('box_header').style.display = "none";
+            }
+			});
+		
+		
+	});
+	
+		function returnPage(){
+			history.back(1);
+		}
+// ]]>
+
+</script>
+ <div class="shareWrap" style="min-height:300px">
+						<p class="shareText">请点击分享到相应平台</p>
+						<ul>
+						
+							<li class="active spaceQQ" id="qzone"><span class="icon"></span><span class="text">QQ空间</span></li>
+							<li class="active weiboSina" id="sina"><span class="icon"></span><span class="text">新浪微博</span></li>
+							<li class="active weiboQQ" id="tengXun"><span class="icon"></span><span class="text">腾讯微博</span></li>
+							<li class="active weiboWangyi" id="wangyi"><span class="icon"></span><span class="text">网易微博</span></li>
+							<li class="active friend" id="pengyou"><span class="icon"></span><span class="text">朋友网</span></li>
+							<li class="active renren" id="renren"><span class="icon"></span><span class="text">人人网</span></li>
+							<li class="active facebook" id="facebook"><span class="icon"></span><span class="text">facebook</span></li>
+							<li class="active twitter" id="twitter"><span class="icon"></span><span class="text">twitter</span></li>
+							
+					
+						</ul>
+					</div>
+  </div>
+  </div>
+
+</body>
+
+</html>

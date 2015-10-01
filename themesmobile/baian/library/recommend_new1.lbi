@@ -1,0 +1,26 @@
+{if $new_goods}
+   <div class="title_in clearfix" style="padding-left:10px;"> <span class="tit">{$lang.new_goods}</span></div>
+				{foreach from=$new_goods item=goods name=new_goods}
+				
+ <section> <a href="{$goods.url}">
+					<img src="{$option.static_path}{$goods.thumb}" alt="{$goods.name|escape:html}"/>
+                    <ul>
+                    <li class="main_title">
+                        <b>{$goods.short_style_name}</b>
+                        <i></i>
+                    </li>
+                    <li class="title">{$goods.brief}</li>
+                    <li class="price">
+                        <strong>{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</strong>/
+                        <em>{$goods.market_price}</em>
+                        <i>{$goods.click_count}</i>
+                    </li>
+                </ul>
+                    
+             </a>
+                    </section>
+				{/foreach}
+                
+
+{/if}
+

@@ -1,0 +1,64 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>{$page_title}</title>
+	<meta name="Keywords" content="{$keywords}" />
+	<meta name="Description" content="{$description}" />
+    <script src="static/js/modernizr.js"></script>
+<link rel="shortcut icon" href="static/img/favicon.png">
+	<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="static/css/index.css">
+<link rel="stylesheet" href="static/css/component.css">
+<link rel="stylesheet" href="static/css/login.css">
+
+{insert_scripts files='common.js,utils.js'}
+
+	</head>
+<body>
+<div id="tbh5v0">
+  <div class="screen-wrap fullscreen login">
+  <header id="header">
+      <div class="c-inav">
+        <section>
+          <button class="back" onClick="">
+          <a href="javascript:history.back(-1)">返回</a>
+          </button>
+        </section>
+        <section> <span>系统提示
+                </span> </section>
+        <section></section>
+      </div>
+    </header>
+
+        
+	
+	<div class="content ptop0" style="margin-top:50px;">
+		
+		<div class="con-ct radius shadow fo-con">
+			<ul class="ct-list">
+            <li style="text-align:center">{$message.content}</li>
+			{if $message.url_info}
+			{foreach from=$message.url_info key=info item=url}
+			<li style="text-align:center"><a href="{$url}" class="link"><span>{$info}</span></a></li>
+			{/foreach}
+			{/if}
+			</ul>
+		</div>
+	</div>
+	<!-- #BeginLibraryItem "/library/page_footer1.lbi" --><!-- #EndLibraryItem -->
+</div>
+</div>
+
+
+<script type="text/javascript" src="static/js/plugins.js"></script>
+<script type="text/javascript" src="static/js/lang.zh_cn.js"></script>
+<script type="text/javascript" src="static/js/global.js"></script>
+<script type="text/javascript" src="static/js/init.js"></script>
+
+
+</body>
+
+</html>

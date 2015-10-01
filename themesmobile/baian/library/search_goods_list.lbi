@@ -1,0 +1,81 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if isset($goods_list)}
+<div class="filter" id="J_Filter">
+  <ul class="filter-inner">
+    <li><a>综合</a></li>
+    <li {if $pager.search.sort eq 'goods_id'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page={$pager.page}&sort=goods_id&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list" >上架<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-u{else}f-ico-arrow-d{/if}"></i></a></li>
+    <li {if $pager.search.sort eq 'last_update'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page={$pager.page}&sort=last_update&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list" >更新<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-d{else}f-ico-arrow-u{/if}"></i></a></li>
+    <li {if $pager.search.sort eq 'shop_price'} class="filter-cur"{/if}><a href="search.php?{foreach from=$pager.search key=key item=item}{if $key neq "sort" and $key neq "order"}{$key}={$item}&{/if}{/foreach}page={$pager.page}&sort=shop_price&order={if $pager.search.order eq 'DESC'}ASC{else}DESC{/if}#list">价格<i class="{if $pager.search.order eq 'DESC'}f-ico-arrow-d{else}f-ico-arrow-u{/if}"></i></a></li>
+    <li class="filter-navBtn"><a href="search.php?act=advanced_search" class="j_filterBtn disabled">筛选</a></li>
+  </ul>
+</div>
+    
+    
+
+ <!-- {if $pager.display == 'list'} -->
+ <div class="srp j_autoResponsive_container m-ks-autoResponsive-container m-animation list" id="J_ItemList" style="opacity: 1;">
+ {foreach from=$goods_list item=goods name=goods_list}
+  <div class="product">
+    <div class="pro-inner">
+	 <div class="proIcons" style="display:none;"> <img src="static/img/goods_new.png" /> </div>
+      <div class="proImg-wrap"> <a href="{$goods.url}"> <img src="{$goods.goods_thumb}" alt="{$goods.name|escape:html}"/> </a> </div>
+      <div class="proInfo-wrap">
+        <div class="proTitle"> <a href="{$goods.url}">{$goods.goods_name}</a> </div>
+        <div class="proSKU"> </div>
+        <div class="proPrice"> <em title="658.00">{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</em> <del>{$goods.market_price}</del> </div>
+        
+        <div style="display:none;" class="proSales"> 销量:<em>{$goods.wap_count}</em> </div>
+       <!--{if $goods.promote_price neq "" } -->
+       
+        <!--{/if}-->
+      </div>
+    </div>
+  </div>
+{/foreach}
+</div>
+ <!-- {elseif $pager.display == 'grid'} -->
+ <div style="opacity: 1;" class="srp j_autoResponsive_container m-ks-autoResponsive-container m-animation album">
+{foreach from=$goods_list item=goods name=goods_list}
+  <div class="product">
+    <div class="pro-inner">
+	   <div class="proIcons" style="display:none;"> <img src="static/img/goods_new.png" /> </div>
+      <div class="proImg-wrap"> <a href="{$goods.url}"> <img src="{$goods.goods_thumb}" alt="{$goods.name|escape:html}"/> </a> </div>
+      <div class="proInfo-wrap">
+        <div class="proTitle"> <a href="{$goods.url}">{$goods.goods_name}</a> </div>
+        <div class="proSKU"> </div>
+        <div class="proPrice"> <em>{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</em>  </div>        
+        <div style="display:none;" class="proSales"> 销量:<em>{$goods.wap_count}</em> </div>
+          <!--{if $goods.promote_price neq "" } -->
+
+        <!--{/if}-->
+      </div>
+    </div>
+  </div>
+{/foreach}
+</div>
+   <!-- {elseif $pager.display == 'text'} -->
+   <div class="srp j_autoResponsive_container m-ks-autoResponsive-container m-animation grid" style="opacity: 1; ">
+   {foreach from=$goods_list item=goods name=goods_list}
+  <div class="product">
+    <div class="pro-inner">
+	<div class="proIcons" style="display:none;"> <img src="static/img/goods_new.png" /> </div>
+      <div class="proImg-wrap"> <a href="{$goods.url}"> <img src="{$goods.goods_img}" alt="{$goods.name|escape:html}"/> </a> </div>
+      <div class="proInfo-wrap">
+        <div class="proTitle"> <a href="{$goods.url}">{$goods.goods_name}</a> </div>
+        <div class="proSKU"> </div>
+        <div class="proPrice"> <em>{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</em> <del>{$goods.market_price}</del> </div>
+        
+        <div style="display:none;" class="proSales"> 销量:<em>{$goods.wap_count}</em> </div>
+         <!--{if $goods.promote_price neq "" } -->
+
+        <!--{/if}-->
+      </div>
+    </div>
+  </div>
+{/foreach}
+</div>
+   <!-- {/if} -->
+
+
+		{include file='library/pages.lbi'}
+{/if}

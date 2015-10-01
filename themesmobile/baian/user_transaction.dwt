@@ -1,0 +1,66 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>{$page_title}</title>
+	<meta name="Keywords" content="{$keywords}" />
+	<meta name="Description" content="{$description}" />
+    <script src="static/js/modernizr.js"></script>
+<link rel="shortcut icon" href="static/img/favicon.png">
+	<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+	<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/component.css">
+<link rel="stylesheet" href="static/css/login.css">
+<link rel="stylesheet" href="static/css/register.css">
+    <script src="static/js/jquery.js"></script>
+
+{insert_scripts files='common.js,utils.js,transport1.js'}
+
+	</head>
+<body>
+
+<div id="tbh5v0">
+  <div class="screen-wrap fullscreen login">
+  
+  <header id="header">
+      <div class="c-inav">
+        <section>
+          <button class="back" onClick="">
+          {if  $action eq 'default'}<a href="index.php">首页</a>{else}<a href="javascript:history.back(-1)">返回</a>{/if}
+          </button>
+        </section>
+        <section> <span>{if $action eq 'profile'}信息修改{elseif  $action eq 'default'}用户中心{elseif $action eq 'order_list' or $action eq 'order_detail'}我的订单{elseif $action eq 'account_log' or $action eq 'account_deposit' or $action eq 'account_raply' or $action eq 'account_detail' or $action eq 'act_account' or $action eq 'pay'}资金管理{elseif $action eq 'address_list'}地址管理{/if}
+                </span> </section>
+        <section></section>
+      </div>
+    </header>
+
+    
+   {if  $action eq 'default'}
+         <div class="user_info">
+    <div class="username">{$info.username}</div>
+    </div>
+        {include file='library/user_nav.lbi'}
+        {/if}
+	
+  
+  <section class="innercontent">
+  {if $action eq 'profile'}{include file='library/user_welcome.lbi'}{/if}
+  {if $action eq 'order_list'}{include file='library/user_order_list.lbi'}{/if}
+  {if $action eq 'address_list'}{include file='library/user_address_list.lbi'}{/if}
+</section>
+ {if $action eq 'order_detail'}{include file='library/user_order_detail.lbi'}{/if}
+ {if $action eq "account_raply" || $action eq "account_log" || $action eq "act_account" || $action eq "account_deposit" || $action eq "account_detail"}{include file='library/user_account.lbi'}{/if}
+
+<script type="text/javascript" src="static/js/plugins.js"></script>
+<script type="text/javascript" src="static/js/lang.zh_cn.js"></script>
+<script type="text/javascript" src="static/js/global.js"></script>
+<script type="text/javascript" src="static/js/init.js"></script>
+
+</div>
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+
+</html>

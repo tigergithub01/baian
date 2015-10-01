@@ -1,0 +1,27 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<div class="banner module">
+    <div class="bar_list">
+      <!--头部轮播Start-->
+      <ul class="bar_img" id="ultouch" style="width: 1600px; left: 0px; ">
+       {foreach from=$wap_index_ad item=ad name=wap_index_ad}
+       {if $smarty.foreach.wap_index_ad.iteration<6}
+        <li><a href="{$ad.url}"><img src="{$ad.image}"/></a></li>
+        {/if}
+      {/foreach}
+      </ul>
+      <p>&nbsp;</p>
+      <!--头部轮播End-->
+    </div>
+    <div class="bar_btn">
+      <ul>
+        <li class="cur"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <input type="hidden" id="hidStarttime" value="December 18,2013 14:00:00">
+  <input type="hidden" id="hidEndtime" value="December 18,2013 18:59:00">

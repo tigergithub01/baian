@@ -1,0 +1,18 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $promotion_goods}
+<div class="region">
+<div class="miao">
+    <div class="miao-title"> <span>{$lang.promotion_goods}</span> <span>{$shop_notice|truncate:20}</span> </div>
+    <div class="miao-item"> 
+    {foreach from=$promotion_goods item=goods name=promotion_goods}
+    {if $smarty.foreach.promotion_goods.iteration <4}
+    <a href="{$goods.url}" title="{$goods.name|escape:html}"> <img src="{$option.static_path}{$goods.thumb}" alt="{$goods.name|escape:html}"/>
+      <p class="miao-item-title word">{$goods.short_style_name}</p>
+      <p><span class="miao-item-newprice">{if $goods.promote_price}{$goods.promote_price}{else}{$goods.shop_price}{/if}</span><del class="miao-item-oldprice">{$goods.market_price}</del></p>
+      </a> 
+      {/if}
+      {/foreach}
+      </div>
+  </div>
+</div>
+{/if}

@@ -1,0 +1,167 @@
+<!doctype html>
+<!--[if lt IE 7]><html lang="zh_cn" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="zh_cn" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="zh_cn" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh_cn" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="zh_cn" class="no-js"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+	<!--[if IE]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
+	<title>{$page_title}</title>
+				<script type="text/javascript" src="static/js/jquery.js"></script>
+	<script src="static/js/modernizr.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="static/js/selectivizr.js"></script>
+	<![endif]-->
+	<link rel="shortcut icon" href="static/img/favicon.png">
+	<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+	
+	<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" type="text/css" href="static/css/a.css">
+	<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />	
+          {insert_scripts files='utils.js,common.js,global.js,compare.js'}
+	</head>
+<body>
+
+<div style="margin-left: 0px; margin-right: 0px;" class="page-shadow" id="page">
+  <div class="searchbox">
+    <div class="sb-header"> <a class="sb-back" href="javascript:history.back(-1)">返回</a>
+      <div class="sb-search">
+         <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" class="searchform">
+          <div class="s-combobox s-combobox-shown">
+            
+            <div class="s-combobox-input-wrap">
+              <input  name="keywords" id="keyword" value="请输入搜索文字" onFocus="if(this.value=='请输入搜索文字'){this.value=''}" onBlur="if(this.value==''){this.value='请输入搜索文字'}" class="s-combobox-input"  type="text"/>
+            </div>
+            
+          </div>
+          <input type="submit"/>
+        
+         
+        </form>
+      </div>
+     <form action="search.php" method="post"  class="sb-switchBtn" name="listform" id="form">     
+      <!-- {if $pager.display == 'list'} -->
+      	<a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('grid')" class="sb-switchBtn-grid">切换</a>
+        <!-- {elseif $pager.display == 'grid'} -->
+     	<a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('text')" class="sb-switchBtn-album">切换</a>
+        <!-- {elseif $pager.display == 'text'} -->
+        <a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('list')" class="sb-switchBtn-list">切换</a>
+        <!--{/if}-->
+              <input type="hidden" name="page" value="{$pager.page}" />
+              <input type="hidden" name="display" value="{$pager.display}" id="display" />
+  </form>
+      
+    </div>
+    <div class="sb-category"></div>
+  </div>
+  
+  
+   <!-- {if $action eq "form"} -->
+  <!--  搜索的表单 -->
+  <div class="filter">
+  <ul class="filter-inner">
+    <li>{$lang.advanced_search}</li>
+   </ul>
+   </div>
+      <form action="search.php" method="get" name="advancedSearchForm" id="advancedSearchForm">
+    <table border="0" cellpadding="3" class="search_table">
+      <tr>
+        <td valign="top" align="right" width="100">{$lang.keywords}：</td>
+        <td>
+          <input name="keywords" id="keywords" type="text"  value="{$adv_val.keywords}" />
+           <br />
+          <label for="sc_ds"><input type="checkbox" name="sc_ds" value="1" id="sc_ds" {$scck} />{$lang.sc_ds}</label>
+          <br />{$lang.searchkeywords_notice}
+        </td>
+      </tr>
+      <tr>
+        <td align="right">{$lang.category}：</td>
+        <td><select name="category" id="select" style="border:1px solid #ccc;">
+            <option value="0">{$lang.all_category}</option>{$cat_list}</select>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">{$lang.brand}：</td>
+        <td><select name="brand" id="brand" style="border:1px solid #ccc;">
+            <option value="0">{$lang.all_brand}</option>
+            {html_options options=$brand_list selected=$adv_val.brand}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">{$lang.price}：</td>
+        <td><input name="min_price" type="text" id="min_price"  value="{$adv_val.min_price}" size="10" maxlength="8" />
+          -
+          <input name="max_price" type="text" id="max_price" value="{$adv_val.max_price}" size="10" maxlength="8" />
+        </td>
+      </tr>
+      <!--{if $goods_type_list}-->
+      <tr>
+        <td align="right">{$lang.extension}：</td>
+        <td><select name="goods_type" onchange="this.form.submit()" style="border:1px solid #ccc;">
+            <option value="0">{$lang.all_option}</option>
+            {html_options options=$goods_type_list selected=$goods_type_selected}
+          </select>
+        </td>
+      </tr>
+      <!--{/if}-->
+      <!--{if $goods_type_selected > 0}-->
+      <!--{foreach from=$goods_attributes item=item}-->
+      <!--{if $item.type eq 1}-->
+      <tr>
+        <td align="right">{$item.attr}：</td>
+        <td colspan="3"><input name="attr[{$item.id}]" value="{$item.value}" class="inputBg" type="text" size="20" maxlength="120" /></td>
+      </tr>
+      <!--{/if}-->
+      <!--{if $item.type eq 2}-->
+      <tr>
+        <td align="right">{$item.attr}：</td>
+        <td colspan="3"><input name="attr[{$item.id}][from]" class="inputBg" value="{$item.value.from}" type="text" size="5" maxlength="5" />
+          -
+          <input name="attr[{$item.id}][to]" value="{$item.value.to}"  class="inputBg" type="text" maxlength="5" /></td>
+      </tr>
+      <!--{/if}-->
+      <!--{if $item.type eq 3}-->
+      <tr>
+        <td align="right">{$item.attr}：</td>
+        <td colspan="3"><select name="attr[{$item.id}]" style="border:1px solid #ccc;">
+            <option value="0">{$lang.all_option}</option>
+            {html_options options=$item.options selected=$item.value}
+          </select></td>
+      </tr>
+      <!--{/if}-->
+      <!--{/foreach}-->
+      <!--{/if}-->
+
+      <!-- {if $use_storage eq 1} -->
+      <tr>
+        <td>&nbsp;</td>
+        <td><label for="outstock"><input type="checkbox" name="outstock" value="1" id="outstock" <!-- {if $outstock} -->checked="checked"<!--{/if}-->/> {$lang.hidden_outstock}</label>
+        </td>
+      </tr>
+      <!--{/if}-->
+
+      <tr>
+        <td colspan="4" align="center"><input type="hidden" name="action" value="form" />
+          <input type="submit" name="Submit" class="bnt_blue_1" value="{$lang.button_search}" /></td>
+      </tr>
+    </table>
+  </form>
+  <!-- {/if} -->
+  <div class="minisite-wrapper" id="J_MinisiteWrap"></div>
+  
+ <!-- #BeginLibraryItem "/library/search_goods_list.lbi" --><!-- #EndLibraryItem -->
+
+
+
+
+  <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</div>
+
+</body>
+
+</html>

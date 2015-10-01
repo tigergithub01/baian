@@ -1,0 +1,135 @@
+<!doctype html>
+<!--[if lt IE 7]><html lang="zh_cn" class="no-js ie6"><![endif]-->
+<!--[if IE 7]><html lang="zh_cn" class="no-js ie7"><![endif]-->
+<!--[if IE 8]><html lang="zh_cn" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh_cn" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="zh_cn" class="no-js">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="static/img/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="static/img/website_icon.png">
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" type="text/css" href="static/css/a.css">
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{insert_scripts files='common.js'}
+</head>
+<body>
+<div style="margin-left: 0px; margin-right: 0px;" class="page-shadow" id="BottomSearchDiv">
+  <div class="searchbox">
+    <div class="sb-header"> <a class="sb-back" href="index.php">返回</a>
+      <div class="sb-search">
+        <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" class="searchform">
+          <div class="s-combobox s-combobox-shown">
+            <div class="s-combobox-input-wrap">
+              <input  name="keywords" id="keyword" class="s-combobox-input" value="请输入搜索文字" onFocus="if(this.value=='请输入搜索文字'){this.value=''}" onBlur="if(this.value==''){this.value='请输入搜索文字'}" type="text"/>
+            </div>
+          </div>
+          <input type="submit"/>
+        </form>
+      </div>
+      
+        <form method="GET" name="listform" class="sb-switchBtn">
+      <!-- {if $pager.display == 'list'} -->
+      	<a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('grid')" class="sb-switchBtn-grid">切换</a>
+        <!-- {elseif $pager.display == 'grid'} -->
+     	<a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('text')" class="sb-switchBtn-album">切换</a>
+        <!-- {elseif $pager.display == 'text'} -->
+        <a style="opacity: 1;" href="javascript:;" onClick="javascript:display_mode('list')" class="sb-switchBtn-list">切换</a>
+        <!--{/if}-->
+   <input type="hidden" name="category" value="{$category}" />
+  <input type="hidden" name="display" value="{$pager.display}" id="display" />
+
+  </form>
+      
+     
+      
+     
+    </div>
+    <div class="sb-category"></div>
+  </div>
+  <div class="minisite-wrapper" id="J_MinisiteWrap"></div>
+  <div class="searchbox-placeholder" style="height: 45px; display: none;"></div>
+  <!-- #BeginLibraryItem "/library/goods_list.lbi" --><!-- #EndLibraryItem --> <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem --> </div>
+
+<script>
+function shaixuan (){
+	var Cate_Pop_box = document.getElementById("Cate_Pop_box");
+			Cate_Pop_box.className="";
+	}
+	function closethis (){
+		var Cate_Pop_box = document.getElementById("Cate_Pop_box");
+		Cate_Pop_box.className="hide";
+		}
+</script>
+<script type="text/javascript">
+function get_brand(brand_id)
+{
+	document.getElementById('brand').value = brand_id;
+	var obj = document.getElementById('brands').getElementsByTagName('a');
+	for(var i=0;i<obj.length;i++)
+	{
+		obj[i].className = '';
+	}
+	document.getElementById('brand_'+brand_id).className = 'cur';
+}
+
+function get_price(price_min,price_max)
+{
+	document.getElementById('price_min').value = price_min;
+	document.getElementById('price_max').value = price_max;
+	var obj = document.getElementById('prices').getElementsByTagName('a');
+	for(var i=0;i<obj.length;i++)
+	{
+		obj[i].className = '';
+	}
+	document.getElementById('price_'+price_min).className = 'cur';
+}
+
+function get_attr(attr_id)
+{
+	document.getElementById('filter_attr').value = attr_id;
+	var obj = document.getElementById('attrs').getElementsByTagName('a');
+	for(var i=0;i<obj.length;i++)
+	{
+		obj[i].className = '';
+	}
+	document.getElementById('attr_'+attr_id).className = 'cur';
+}
+
+</script>
+<form method="post" action="category.php">
+<div id="Cate_Pop_box" class="hide">
+  <div class="cate-list cate-list-pop" id="Cate_Choose">
+    <div class="cate-list-title">筛选</div>
+    <input type="hidden" name="brand" id="brand" value="{$brand}"><input type="hidden" name="price_min" id="price_min" value="{$price_min}"><input type="hidden" name="price_max" id="price_max" value="{$price_max}"><input type="hidden" name="filter_attr" id="filter_attr" value="{$filter_attr_str}"><input type="hidden" name="id" value="{$cat_id}">
+     {if $brands.1}
+    <p class="f16 a1 ti10 mt10">{$lang.brand}</p>
+    <div class="type1 type fix" id="brands">
+    {foreach from=$brands item=brand name=brands}<a href="javascript:get_brand('{$brand.brand_id}')" class="{if $brand.selected}cur{/if}" id="brand_{$brand.brand_id}">{$brand.brand_name}<em></em></a>{/foreach}   
+   </div>
+    {/if}
+ {if $price_grade.1}
+    <p class="f16 a1 ti10 mt10">{$lang.price}</p>
+    <div class="type1 type fix" id="prices">
+    {foreach from=$price_grade item=grade name=price_grade}<a href="javascript:get_price('{$grade.formated_start1}','{$grade.formated_end1}')" class="{if $grade.selected}cur{/if}" id="price_{$grade.formated_start1}">{if $smarty.foreach.price_grade.first}{$grade.price_range}{else}{$grade.formated_start} - {$grade.formated_end}{/if}<em></em></a>{/foreach}   
+   </div>
+    {/if}
+    {foreach from=$filter_attr_list item=filter_attr name=filter_attr_list}
+    <p class="f16 a1 ti10 mt10">{$filter_attr.filter_attr_name|escape:html}{$lang.colon}</p>
+		<div class="type1 type fix" id="attrs">
+			{foreach from=$filter_attr.attr_list item=attr name=filter_attr}<a href="javascript:get_attr('{$attr.attr_id}')" class="{if $attr.selected}cur{/if}" id="attr_{$attr.attr_id}">{$attr.attr_value}<em></em></a>{/foreach}
+		</div>
+		{/foreach}
+    <div class="btn-box">
+      <div class="btn btn-sn-d" onclick="closethis()"><a>取消</a></div>
+      <input class="btn btn-sn-b" type="submit" value="确定">
+    </div>
+  </div>
+</div>
+</form>
+</body>
+</html>

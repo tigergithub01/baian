@@ -1,0 +1,138 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+ <div class="ub ub-ver up_page mar-top" style=" width:100%;">
+                    <div class="uinn all_clor font14 brand_padd">{$lang.label_address}</div>
+                </div>
+
+	{foreach from=$consignee_list item=consignee key=sn name=consignee_list}
+         {if !$consignee.consignee}
+         <div class="blank20"></div>
+         <div class="ub ub-ver up_page mar-top" style=" width:100%;">
+                    <div class="uinn all_clor font14 brand_padd">{$lang.add_address}</div>
+                </div>
+                {/if}
+       
+		<form action="user.php" method="post" name="theForm" onsubmit="return checkConsignee(this)">
+           <div class="field no">
+                        <div class="c-form-search st">
+                        {$lang.country_province}：
+                    
+                       	<select name="country" id="selCountries_{$sn}" onchange="regionChanged(this, 1, 'selProvinces_{$sn}')">
+					<option value="0">{$lang.please_select}{$name_of_region[0]}</option>
+					{foreach from=$country_list item=country}
+					<option value="{$country.region_id}"{if $consignee.country eq $country.region_id} selected="selected"{/if}>{$country.region_name}</option>
+					{/foreach}
+					</select>
+					<select name="province" id="selProvinces_{$sn}" onchange="regionChanged(this, 2, 'selCities_{$sn}')">
+					<option value="0">{$lang.please_select}{$name_of_region[1]}</option>
+					{foreach from=$province_list.$sn item=province}
+					<option value="{$province.region_id}"{if $consignee.province eq $province.region_id} selected="selected"{/if}>{$province.region_name}</option>
+					{/foreach}
+				</select>
+				<select name="city" id="selCities_{$sn}" onchange="regionChanged(this, 3, 'selDistricts_{$sn}')">
+					<option value="0">{$lang.please_select}{$name_of_region[2]}</option>
+					{foreach from=$city_list.$sn item=city}
+					<option value="{$city.region_id}"{if $consignee.city eq $city.region_id} selected="selected"{/if}>{$city.region_name}</option>
+					{/foreach}
+					</select>
+					<select name="district" id="selDistricts_{$sn}" {if !$district_list.$sn}style="display:none"{/if}>
+					<option value="0">{$lang.please_select}{$name_of_region[3]}</option>
+					{foreach from=$district_list.$sn item=district}
+					<option value="{$district.region_id}"{if $consignee.district eq $district.region_id} selected="selected"{/if}>{$district.region_name}</option>
+					{/foreach}
+				</select>
+                    </div>
+                </div>
+			
+           
+                   <label for="email_ep"> 
+                   <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="text" name="consignee" value="{$consignee.consignee|escape}" id="consignee_{$sn}" class="c-f-text" placeholder="{$lang.consignee_name}"/>
+                    </div>
+                    </label>
+                   <label for="email_ep"> 
+                  <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="email" name="email" value="{$consignee.email|escape}" id="email_{$sn}" class="c-f-text" placeholder="{$lang.email_address}"/>
+                    </div>
+                    </div>
+                    </label>
+             
+                   <label for="email_ep"> 
+                  <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="text" name="address" value="{$consignee.address|escape}" id="address_{$sn}" class="c-f-text" placeholder="{$lang.detailed_address}"/>
+                    </div>
+                    </div>
+                    </label>
+            
+                   <label for="email_ep"> 
+                   <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="number" name="zipcode" value="{$consignee.zipcode|escape}" id="zipcode_{$sn}" class="c-f-text" placeholder="{$lang.postalcode}"/>
+                    </div>
+                    </div>
+                    </label>
+             
+                   <label for="email_ep"> 
+                   <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="tel" name="tel" value="{$consignee.tel|escape}" id="tel_{$sn}" class="c-f-text" placeholder="{$lang.phone}"/>
+                    </div>
+                    </div>
+                    </label>
+               
+               
+                   <label for="email_ep"> 
+                    <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="tel" name="mobile" value="{$consignee.mobile|escape}" id="mobile_{$sn}" class="c-f-text" placeholder="{$lang.backup_phone}"/>
+                    </div>
+                    </div>
+                    </label>
+               
+            
+                   <label for="email_ep"> 
+                   <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="text" name="sign_building" value="{$consignee.sign_building|escape}" id="sign_building_{$sn}" class="c-f-text" placeholder="{$lang.sign_building}"/>
+                    </div>
+                    </div>
+                    </label>
+           
+                   <label for="email_ep"> 
+                    <div class="field else">
+                        <div class="c-form-search st">
+                        <input type="text" name="best_time" value="{$consignee.best_time|escape}" id="best_time_{$sn}" class="c-f-text" placeholder="{$lang.deliver_goods_time}"/>
+                    </div>
+                    </div>
+                    </label>
+            
+			
+				{if $consignee.consignee && $consignee.email}
+                  <div class="field submit-btn">
+				<input type="submit" value="{$lang.confirm_edit}"  class="c-btn-oran-big"/>
+                </div>
+				<a href="javascript:void(0);" onclick="if (confirm('{$lang.confirm_drop_address}'))location.href='user.php?act=drop_consignee&id={$consignee.address_id}'"  class="c-btn-hui-big"/>{$lang.drop}</a>
+				{else}
+                  <div class="field submit-btn">
+				<input type="submit" value="{$lang.add_address}"  class="c-btn-oran-big" style="margin-top:30px; width:90%;"/>
+                </div>
+				{/if}
+				<input type="hidden" name="act" value="act_edit_address">
+				<input type="hidden" name="address_id" value="{$consignee.address_id}">
+			
+		</form>
+        
+		{/foreach}
+<script type="text/javascript">
+{foreach from=$lang.flow_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+{literal}
+onload = function() {
+	if(!document.all){document.forms['theForm'].reset();}
+}
+{/literal}
+</script>

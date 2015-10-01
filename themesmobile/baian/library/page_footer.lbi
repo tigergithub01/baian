@@ -1,0 +1,28 @@
+<script type='text/javascript' src='http://tb.53kf.com/kf.php?arg=10050422&style=1'></script>
+<div id="elem-PublicConfig_showBottom01-001" name="bottom">
+<footer class="region">
+    <section class="user-panel">
+      <p class="guest"> <a class="login" href="user.php">登陆</a> <a class="register" href="user.php?act=register">注册</a> </p>
+      <a class="fb-top" href="javascript:scroll(0,0)">返回首页
+      <!--回到顶部-->
+      </a> </section>
+    <p class="version"> <a href="index.php">电脑版</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/downloadapp.php" id="btn_go_pc" style="">安装百安客户端</a>
+      
+    </p>
+    <p style="height:15px;"></p>
+    <p class="copyright">{$copyright}</p>
+  </footer>
+</div>
+<style>
+.footer_ { height:40px;position: fixed;z-index:999;bottom:0; width:100%; opacity:0.9;background:#960000;border-top:1px solid #dedede;margin:0 auto;padding-left:0px;text-align:center;}
+.footer_ a{ display:block; width:20%; float:left;  overflow:hidden;}
+.footer_ a img{margin-top:2px;}
+.footer_ a p{font-size:10px;color:white;line-height:12px;}
+</style>
+<div class="footer_">
+	<a href="index.php"><img src="static/img/footer01.png" width="20px"/><p>首页</p></a>
+	<a href=""><img src="static/img/footer02.png" width="20px"/><p>搜索</p></a>
+	<a href="catalog.php"><img src="static/img/footer03.png" width="20px"/><p>商品类目</p></a>
+	<a href="flow.php"><img src="static/img/footer04.png" width="20px"/><p>购物车</p></a>
+	<a href="user.php"><img src="static/img/footer05.png" width="20px"/><p>会员中心</p></a>
+</div>

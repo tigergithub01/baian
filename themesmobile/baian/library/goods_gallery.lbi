@@ -1,0 +1,14 @@
+  <!-- {if $pictures}-->
+  <div class="pd_nav">
+        <span class="thumbs" id="goods_gallery"> 
+         <!-- {foreach from=$pictures item=picture name=pic_foreach}-->
+         {if $smarty.foreach.pic_foreach.index<5}
+         <div class="">
+         <a href="javascript:;" onclick="sw_goodsimg(this)"><img src="{if $picture.thumb_url}{$picture.img_url}{else}{$picture.img_url}{/if}" alt="{$goods.goods_name}"/></a></div>
+         {/if}
+         <!--{/foreach}-->
+        </span>
+    </div>
+  <!-- {/if}-->
+  
+  

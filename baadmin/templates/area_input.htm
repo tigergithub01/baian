@@ -1,0 +1,92 @@
+<!-- $Id: area_list.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js,../js/region.js"}
+<div class="form-div">
+<form method="post" action="area_manage.php" name="theForm" onsubmit="return add_area()">
+地区父类: 国<select id="selCountries" onchange="region.changed(this, 1, 'selProvinces')">
+{foreach from=$region_list item=country}
+<option value="{$country.region_id}">{$country.region_name}</option>
+{/foreach}
+</select> 
+省<select id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
+<option value='0'>{$lang.select_please}</option>
+</select>
+市<select id="selCities" onchange="region.changed(this, 3, 'selDistrict')">
+<option value='0'>{$lang.select_please}</option>
+</select>
+区\县<select id="selDistrict">
+<option value='0'>{$lang.select_please}</option>
+</select>
+
+
+<input type="hidden" name="region_type" value="{$region_type}" />
+<input type="hidden" name="parent_id" value="{$parent_id}" />
+<input type="hidden" name="act" value="insert_input_area" />
+<input type="submit" value="导 入" class="button" />
+<!--<br /><br />
+<span style="color:Red; font-size:16px; font-weight:bold;">注意：</span>-->
+<br /><br />
+要导入的地区<textarea name="txtAreaList" id="txtAreaList" style="width:350px; height:400px;"></textarea>
+</form>
+</div>
+
+
+{literal}
+<script language="JavaScript">
+<!--
+region.isAdmin = true;
+onload = function () {
+
+    region.changed(document.getElementById("selCountries"), 1, 'selProvinces')
+
+  document.forms['theForm'].elements['region_name'].focus();
+  // 开始检查订单
+  startCheckOrder();
+}
+
+/**
+ * 新建区域
+ */
+function add_area()
+{
+    var countries = Utils.trim(document.forms['theForm'].elements['selCountries'].value);
+    var province  = Utils.trim(document.forms['theForm'].elements['selProvinces'].value);
+    var city      = Utils.trim(document.forms['theForm'].elements['selCities'].value);
+    var district  = Utils.trim(document.forms['theForm'].elements['selDistrict'].value);
+
+    if (province == "0" && city == "0" && district == "0") {
+        alert("请选择地区父类！"); return false;
+    }
+
+    var AreaList = Utils.trim(document.forms['theForm'].elements['txtAreaList'].value);
+    if (AreaList == "") {
+        alert("请输入要导入的地区！"); return false;
+    }
+
+    var parent_id = countries;
+    var region_type = "1";
+    if (district != "0") {
+        parent_id = district;
+        region_type = "4";
+    }
+    else if (city != "0") {
+        parent_id = city;
+        region_type = "3";
+    }
+    else if (province != "0") {
+        parent_id = province;
+        region_type = "2";
+    }
+    document.forms['theForm'].elements['region_type'].value = region_type;
+    document.forms['theForm'].elements['parent_id'].value = parent_id;
+
+    //return false;
+}
+
+//-->
+</script>
+{/literal}
+
+{include file="pagefooter.htm"}
+{/if}

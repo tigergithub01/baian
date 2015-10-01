@@ -1,0 +1,96 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+{include file="pageheader.htm"}
+<script charset="utf-8" src="../includes/kindeditor4.4/kindeditor-min.js"></script>
+<script charset="utf-8" src="../includes/kindeditor4.4/lang/zh_CN.js"></script>
+<!-- start add new category form -->
+<div class="main-div">
+  <form action="relative_module.php" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+  <table width="100%" id="general-table">
+      <tr>
+        <td class="narrow-label">{$lang.module_name}:</td>
+        <td><input type='text' name='module_info[module_name]' id="module_name" maxlength="20" value='{$module_info.module_name|escape:html}' size='27' /><font color="red">*</font></td>
+      </tr>
+      <tr>
+        <td class="narrow-label">{$lang.is_show}:</td>
+        <td>
+          <input type="radio" name="module_info[is_show]" value="1" {if $module_info.is_show neq 0} checked="true"{/if}/> {$lang.yes}
+          <input type="radio" name="module_info[is_show]" value="0" {if $module_info.is_show eq 0} checked="true"{/if} /> {$lang.no}
+        </td>
+      </tr>
+      
+       <tr>
+       <td class="narrow-label">顶部设置:</td>
+       <td>
+        <script language="javascript">
+<!--
+var editor;
+KindEditor.ready(function(K) {
+  editor = K.create('textarea[id="header_content"]', {
+	  allowFileManager : true
+  });
+});
+
+-->
+</script>
+       <textarea name="header_content" style="width:85%;height:300px;" id="header_content ">{$module_info.header_content}</textarea>
+
+        
+       </td>
+       </tr>
+
+       <tr>
+       <td class="narrow-label">底部设置:</td>
+       <td>
+          <script language="javascript">
+<!--
+var editor;
+KindEditor.ready(function(K) {
+  editor = K.create('textarea[id="footer_content"]', {
+	  allowFileManager : true
+  });
+});
+
+-->
+</script>
+       <textarea name="footer_content" style="width:85%;height:300px;" id="footer_content ">{$module_info.footer_content}</textarea>
+
+    
+       </td>
+       </tr>
+      
+    
+      </table>
+      <div class="button-div">
+        <input type="submit" class="button" value="{$lang.button_submit}" />
+        <input type="reset"  class="button" value="{$lang.button_reset}" />
+   </div>
+     <input type="hidden" name="old_module_name" value="{$module_info.module_name}" /> 
+      
+    <input type="hidden" name="act" value="{$form_action}" />
+    <input type="hidden" name="id" value="{$module_info.module_id}" />
+  </form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+<script language="JavaScript">
+<!--
+document.forms['theForm'].elements['module_name'].focus();
+/**
+ * 检查表单输入的数据
+ */
+function validate()
+{
+  validator = new Validator("theForm");
+  validator.required("module_name",      no_module_name);
+  return validator.passed();
+}
+onload = function()
+{
+  // 开始检查订单
+  startCheckOrder();
+}
+
+//-->
+</script>
+{/literal}
+{include file="pagefooter.htm"}

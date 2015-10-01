@@ -1,0 +1,111 @@
+<!-- $Id: article_list.htm 16783 2009-11-09 09:59:06Z liuhui $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<div class="form-div">
+  <form action="javascript:searchArticle()" name="searchForm" >
+   搜索 <input type="text" name="keyword" id="keyword" />
+    <input type="submit" value="{$lang.button_search}" class="button" />
+  </form>
+</div>
+
+<form method="POST" action="relative_module.php?act=batch_remove" name="listForm">
+<!-- start cat list -->
+<div class="list-div" id="listDiv">
+{/if}
+
+<table cellspacing='1' cellpadding='3' id='list-table'>
+  <tr>
+    <th><input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox">
+      <a href="javascript:listTable.sort('module_id'); ">{$lang.record_id}</a>{$sort_record_id}</th>
+    <th><a href="javascript:listTable.sort('module_name'); ">{$lang.module_name}</a>{$sort_module_name}</th>
+    <th><a href="javascript:listTable.sort('is_show'); ">{$lang.is_show}</a>{$sort_is_show}</th>
+    <th>{$lang.handler}</th>
+  </tr>
+  {foreach from=$relative_module item=list}
+  <tr>
+    <td><span><input name="checkboxes[]" type="checkbox" value="{$list.module_id}" />{$list.module_id}</span></td>
+    <td class="first-cell">
+      <span onclick="javascript:listTable.edit(this, 'edit_module_name', {$list.module_id})">{$list.module_name|escape:html}</span></td>
+    <td align="center"><img src="images/{if $list.is_show eq '1'}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_is_show', {$list.module_id})" /></td>
+    <td align="center" nowrap="true"><span>
+      <a href="relative_module.php?act=edit&id={$list.module_id}" title="{$lang.edit}"><img src="images/icon_edit.gif" border="0" height="16" width="16" /></a>&nbsp;
+     <a href="javascript:;" onclick="listTable.remove({$list.module_id}, '{$lang.drop_confirm}')" title="{$lang.remove}"><img src="images/icon_drop.gif" border="0" height="16" width="16"></a></span>
+    </td>
+   </tr>
+   {foreachelse}
+    <tr><td class="no-records" colspan="9">{$lang.not_keywords}</td></tr>
+  {/foreach}
+  <tr>
+    <td align="right" nowrap="true" colspan="7">{include file="page.htm"}</td>
+  </tr>
+</table>
+
+{if $full_page}
+</div>
+
+<div>
+  <input type="hidden" name="act" value="batch" />
+  <select name="type" id="selAction" onchange="changeAction()">
+    <option value="">{$lang.select_please}</option>
+    <option value="button_remove">{$lang.button_remove}</option>
+  </select>
+  <input type="submit" value="{$lang.button_submit}" id="btnSubmit" name="btnSubmit" class="button" disabled="true" />
+</div>
+</form>
+<!-- end cat list -->
+<script type="text/javascript" language="JavaScript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+  {literal}
+
+  onload = function()
+  {
+    // 开始检查订单
+    startCheckOrder();
+  }
+	/**
+   * @param: bool ext 其他条件：用于转移分类
+   */
+  function confirmSubmit(frm, ext)
+  {
+      if (frm.elements['type'].value == 'button_remove')
+      {
+          return confirm(drop_confirm);
+      }
+      else
+      {
+          return true;
+      }
+  }
+	 function changeAction()
+  {
+		
+      var frm = document.forms['listForm'];
+
+      // 切换分类列表的显示
+
+      if (!document.getElementById('btnSubmit').disabled &&
+          confirmSubmit(frm, false))
+      {
+          frm.submit();
+      }
+  }
+
+ /* 搜索文章 */
+ function searchArticle()
+ {
+    listTable.filter.keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+    listTable.filter.page = 1;
+    listTable.loadList();
+ }
+
+ {/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

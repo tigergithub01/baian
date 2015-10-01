@@ -1,0 +1,84 @@
+<!-- $Id: goods_list.htm 16529 2009-08-12 05:38:57Z wangleisvn $ -->
+
+{if $full_page}
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+{insert_scripts files="validator.js"}
+<!-- 添加货品 -->
+<div class="list-div" style="margin-bottom: 5px; margin-top: 10px;" id="listDiv">
+
+{/if}
+
+<form method="post" action="goods.php" name="addForm" id="addForm" >
+<input type="hidden" name="goods_id" value="{$goods_id}" />
+<input type="hidden" name="act" value="product_storeroom_exe" />
+  <table width="100%"  cellpadding="3" cellspacing="1" >
+    <tr>
+      <th colspan="20" >{$goods_name}&nbsp;&nbsp;&nbsp;&nbsp;{$goods_sn}</th>
+    </tr>
+    <tr height=25>
+      {foreach from=$result.1 key=key_value item=result_value}
+	  {if $key_value neq 'value' and $key_value neq 'number'}
+        <td ><div align="center"><strong>{$key_value}</strong></div></td>
+		{/if}
+      {/foreach}
+      <td ><div align="center"><strong>{$lang.goods_number}</strong></div></td>
+    </tr>
+
+    {foreach from=$result key=result_key item=result_value}
+    <tr height=25>
+      {foreach from=$result_value key=result_k item=result_val}
+	  {if $result_k neq 'value' and $result_k neq 'number'}
+      <td ><div align="center">{$result_val.attr_value}</div></td>
+	  {/if}
+      {/foreach}
+      <td >
+	  <input type="hidden" name="goods_attr[]" value="{$result_value.value}">
+	  <input type="hidden" name="store_id[]" value="{$result_value.仓库.goods_attr_id}">
+	  <input type="text" name="store_number[]" value="{$result_value.number}">
+	  </td>
+    </tr>
+    {/foreach}
+
+
+
+    <tr>
+      <td align="center" colspan="20">
+        <input type="submit" class="button" value="{$lang.button_save}"  />
+      </td>
+    </tr>
+  </table>
+</form>
+
+{if $full_page}
+
+</div>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+
+{foreach from=$filter item=item key=key}
+listTable.filter.{$key} = '{$item}';
+{/foreach}
+
+listTable.query = 'product_query';
+
+var _attr = new Array;
+{foreach from=$attribute item=attribute_value key=attribute_key}
+_attr[{$attribute_key}] = '{$attribute_value.attr_id}';
+{/foreach}
+
+{literal}
+onload = function()
+{
+  startCheckOrder(); // 开始检查订单
+}
+
+
+
+{/literal}
+</script>
+{include file="pagefooter.htm"}
+
+{/if}

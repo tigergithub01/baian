@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" -->
+
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,global.js,compare.js,transport.js'} 
+
+<link rel="stylesheet" type="text/css" href="themes/baian/images/misc/201007/skin/df/plist20121206.css" media="all" />
+<link rel="stylesheet" type="text/css" href="themes/baian/images/misc/contrast/skin/2012/pop_compare.css" media="all" />
+<link rel="stylesheet" type="text/css" href="themes/baian/images/misc/product/skin/2012/pshow.css" media="all" />
+
+<style>
+/*------商品筛选------*/
+.goods_sxtitle {BORDER-BOTTOM: #CE0000 1px solid;  HEIGHT: 33px; BORDER-TOP: #e4e4e4 1px solid; BORDER-RIGHT: #e4e4e4 1px solid; BORDER-left: #e4e4e4 1px solid; line-height:33px; text-align:left; text-indent:5px; position:relative;}
+.goods_sxtitle span { font-size:14px; font-weight:lighter}
+.goods_sxtitle img { position:absolute; top:10px; left:5px;}
+.blank5{height:5px; line-height:5px;/* _margin:-3px 0;*/ clear:both; visibility:hidden;}
+
+
+/* ======商品比较浮动块 ====== */
+#compareBox { background:url(images/comparebox.gif) #fff no-repeat;
+ width:140px;
+ position: absolute;
+ right:1px;
+ top:200px; padding-top:21px;
+}
+
+#compareBox input {
+    width:140px; height:26px;
+    border:none;
+    background:url(images/compareSub.gif) no-repeat; 
+}
+
+#compareList {
+ padding:0px;
+ width:138px;
+ background:#FFFFFF;
+ border:1px solid #91b3cb; padding-top:5px; border-bottom-color:#FFF;
+}
+
+#compareList li {
+ color: #333;
+ text-align:left;
+ background: #eff8ff;
+ padding: 3px 5px;
+ margin: 0 5px 5px 5px; border:1px solid #dceaf5;
+}
+
+#compareList li img {
+ float:right;
+ padding-top:4px;
+}
+</style>
+
+<script type="text/javascript">window.pageConfig = { compatible: true }; </script>
+</head>
+<body>
+<script language="javascript"> 
+<!--
+/*屏蔽所有的js错误*/
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+//-->
+</script>
+<script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-2011.js"></script>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+
+<div class="w main">
+  <div class="right-extra">
+<div class="box">
+      <h1 class="goods_sxtitle">{$brand.Suit_Name}</h1>
+      
+    </div>
+    <div class="blank5"></div>
+  
+
+<!-- #BeginLibraryItem "/library/momsuit_goods_list.lbi" --><!-- #EndLibraryItem -->
+
+
+  </div>
+
+  <div class="left">
+   <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
+   <div class="blank5"></div>
+   <!-- #BeginLibraryItem "/library/top10.lbi" --><!-- #EndLibraryItem -->
+  <!-- #BeginLibraryItem "/library/history.lbi" --><!-- #EndLibraryItem -->
+    <!--rank end-->
+    <div id="alsobuy" class="hide m m0"></div>
+    <!--关注手机为您推荐-->
+    
+    <!--recent end-->
+    
+  </div>
+  <!--left end-->
+
+  
+  <div style="height:0px; line-height:0px; clear:both;"></div>
+  
+</div>
+
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>
+
+
+
+

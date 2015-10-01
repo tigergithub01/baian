@@ -1,0 +1,41 @@
+
+<!--
+<div class="search">
+
+  <script src="images/page.js" type="text/javascript"></script>
+  <div id="search_tips" style="display:none;position:absolute;z-index:9999;margin-top:27px;background:white;color:black;width:239px;font-size:16px;"></div>
+ 
+					<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+						<input name="keywords" type="text" id="keyword" onClick="this.select();" value="{if $search_keywords}{$search_keywords|escape}{else}请输入关键词{/if}" class="text" style="width:229px;" onfocus="if(this.value=='请输入关键词') this.value='';" onkeyup="STip(this.value);" autocomplete="off"/>
+						<input type="submit" class="button" value="">
+                    </form>
+                </div>
+				<div id="hotwords">
+                    <strong>热搜：</strong> 
+                    {foreach from=$searchkeywords item=val} <a href="search.php?keywords={$val|escape:url}">{$val}</a> {/foreach}
+                </div>  -->
+
+<!-- {if $best_goods} -->
+<div class="s-main-col r" >
+    <div class="sbox">
+                    <h3 class="st2">热卖推荐</h3>
+                    <ul class="s-hotsale-list">
+      <!--{foreach from=$best_goods item=goods name=best_goods}-->
+       <li>
+                            <div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}"><img src="images/sp6.jpg" alt="{$goods.name|escape:html}"></a></div>
+                            <div class="txt">
+                                <h3><a href="{$goods.url}" title="{$goods.name|escape:html}">{$goods.name}</a></h3>
+                                <div class="price"> <!-- {if $goods.promote_price neq ""} -->
+            {$goods.promote_price}
+            <!-- {else}-->
+            {$goods.shop_price}
+            <!--{/if}--></div>
+                                <a href="javascript:addToCart({$goods.id})" class="s-btn">加入购物车</a>
+                            </div>
+                        </li>
+
+      <!--{/foreach}-->
+    </ul>
+  </div>
+
+<!--{/if}-->

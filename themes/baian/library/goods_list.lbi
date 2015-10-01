@@ -1,0 +1,51 @@
+                <div class="h"></div>
+                <div class="filterBox">
+<form method="GET" class="sort" name="listform">
+                    <a class="fSort fSort-cur" href="">默认</a>
+                    <a class="fSort" href="">销量</a>
+                    <a  class="fSort" href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->DESC<!-- {else} -->ASC<!-- {/if} -->#goods_list">价格</a>
+                    <label for=""><input type="checkbox">促销产品</label>
+                    <label for=""><input type="checkbox">可用积分</label>
+                    <label for=""><input type="checkbox">可用红包</label>
+                    <input type="hidden" name="category" value="{$category}" />
+  <input type="hidden" name="display" value="{$pager.display}" id="display" />
+  <input type="hidden" name="brand" value="{$brand_id}" />
+  <input type="hidden" name="price_min" value="{$price_min}" />
+  <input type="hidden" name="price_max" value="{$price_max}" />
+  <input type="hidden" name="filter_attr" value="{$filter_attr}" />
+  <input type="hidden" name="page" value="{$pager.page}" />
+  <input type="hidden" name="sort" value="{$pager.sort}" />
+  <input type="hidden" name="order" value="{$pager.order}" />
+  </form>
+                    <span class="page-state r">
+                        <span class="page-now"><em class="orange">1</em>/50</span>
+                        <a href="" class="prev">&lt;</a>
+                        <a href="" class="next">&gt;</a>
+                    </span>
+                </div>
+                <div class="h"></div> <ul class="s-filter-pro">
+                 <!--{foreach from=$goods_list item=goods}-->
+    <!-- {if $goods.goods_id} -->
+    
+    <li>
+                      <div class="pic"><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
+                        <div class="txt">
+                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
+                            <strong class="price"><!--{if $goods.promote_price neq "" } -->{$goods.promote_price}<!--{else}-->{$goods.shop_price}<!--{/if}--></strong>
+                            <span class="orange r">条评价</span>
+                        </div>
+                        <div class="btnBox">
+                            <a href="javascript:addToCart({$goods.goods_id})">立即购买</a>
+                            <a href="javascript:addToCart({$goods.goods_id})">加入购物车</a>
+                            <a href="javascript:collect({$goods.goods_id});">收藏</a>
+                        </div>
+                        
+    </li>
+    
+     <!--{/if}-->
+    <!--{/foreach}-->
+    </ul>
+               
+                <div class="h"></div>
+
+                

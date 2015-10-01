@@ -1,0 +1,79 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+     <ul class="ul-ping">
+       <!-- {if $comments} -->
+       <!-- {foreach from=$comments item=comment} -->
+       <li>
+									<div class="user">
+										<a href=""><img src="images/user.jpg" alt=""></a>
+									</div>
+									<div class="con">
+										<p><img src="../images/stars{$comment.rank}.gif" alt="{$comment.comment_rank}" /></p>
+										<p>{$comment.content}</p>
+                                        
+										<p><em><img src="images/v1.png" alt=""> <!-- {if $comment.username} -->{$comment.username|escape:html}<!-- {else} -->{$lang.anonymous}<!-- {/if} --></em> <span>{$comment.add_time}</span></p>
+										
+									</div>
+								</li>
+       
+        <!-- {/foreach} -->
+        <!--{else}-->
+        <li>{$lang.no_comments}</li>
+        <!--{/if}-->
+     	</ul>
+							<div class="h"></div>
+       
+       
+       
+       <!--翻页 start-->
+       <div id="pagebar" style="text-align:right;">
+        <form name="selectPageForm" action="{$smarty.server.PHP_SELF}" method="get">
+        <!-- {if $pager.styleid eq 0 } -->
+        <div id="pager">
+          {$lang.pager_1}{$pager.record_count}{$lang.pager_2}{$lang.pager_3}{$pager.page_count}{$lang.pager_4}
+          
+          
+           <span> <a href="{$pager.page_first}">{$lang.page_first}</a> <a href="{$pager.page_prev}">{$lang.page_prev}</a> <a href="{$pager.page_next}">{$lang.page_next}</a> <a href="{$pager.page_last}">{$lang.page_last}</a> </span>
+            <!--{foreach from=$pager.search key=key item=item}-->
+            <input type="hidden" name="{$key}" value="{$item}" />
+            <!--{/foreach}-->
+        </div>
+        <!--{else}-->
+
+        <!--翻页 start-->
+         <div id="pager" class="pagebar" style="text-align:right;">
+          <span class="f_l f6" style="margin-right:10px;">{$lang.total} <b>{$pager.record_count}</b> {$lang.user_comment_num}</span>
+          <!-- {if $pager.page_first} --><a href="{$pager.page_first}">1 ...</a><!-- {/if} -->
+          <!-- {if $pager.page_prev} --><a class="prev" href="{$pager.page_prev}">{$lang.page_prev}</a><!-- {/if} -->
+          <!--{foreach from=$pager.page_number key=key item=item}-->
+                <!-- {if $pager.page eq $key} -->
+                <span class="page_now">{$key}</span>
+                <!-- {else} -->
+                <a href="{$item}">[{$key}]</a>
+                <!-- {/if} -->
+            <!--{/foreach}-->
+
+          <!-- {if $pager.page_next} --><a class="next" href="{$pager.page_next}">{$lang.page_next}</a><!-- {/if} -->
+          <!-- {if $pager.page_last} --><a class="last" href="{$pager.page_last}">...{$pager.page_count}</a><!-- {/if} -->
+          <!-- {if $pager.page_kbd} -->
+            <!--{foreach from=$pager.search key=key item=item}-->
+            <input type="hidden" name="{$key}" value="{$item}" />
+            <!--{/foreach}-->
+            <kbd style="float:left; margin-left:8px; position:relative; bottom:3px;"><input type="text" name="page" onkeydown="if(event.keyCode==13)selectPage(this)" size="3" class="B_blue" /></kbd>
+            <!-- {/if} -->
+        </div>
+        <!--翻页 END-->
+
+        <!-- {/if} -->
+        </form>
+      </div>
+      <!--翻页 END-->
+      
+   
+
+<script type="text/javascript">
+{foreach from=$lang.cmt_lang item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+{literal}
+</script>
+<script type="text/javascript" src="themes/baian/js/goods.comments_list.js"></script>

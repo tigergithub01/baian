@@ -1,0 +1,89 @@
+<div id="fd">
+		<div class="f-top">
+			
+            <?php
+		   $GLOBALS['smarty']->assign('article_rexian',get_my_articles_two(30, 1));
+		  ?>
+	<!-- {foreach from=$article_rexian item=rexian name=ren} -->
+	{$rexian.content}
+	<!-- {/foreach} -->
+            
+		</div>
+		<div class="f-help">
+			<div class="wrap">
+            
+               <!-- {foreach from=$helps item=help_cat name=no} -->
+                 <!--{if $smarty.foreach.no.iteration < 6}-->
+				<dl class="fm1">
+					<dt onClick="javascript:window.location.href='{$help_cat.cat_id}'">{$help_cat.cat_name}</dt>
+                     <!-- {foreach from=$help_cat.article item=item} -->  
+					<dd><a title="{$item.short_title}" rel="nofollow" target="_blank" href="{$item.url}">{$item.short_title}</a></dd>
+				   <!--{/foreach}-->
+				</dl>
+                <!--{/if}-->
+				    <!-- {/foreach} -->
+				<dl class="fm1">
+					<dt>关注我们</dt>
+					<dd><a class="i-sina" rel="nofollow" href="http://weibo.com/baian123121">新浪微博</a></dd>
+					<dd><a class="i-tenx" rel="nofollow" href="http://t.qq.com/baianbaby">腾讯微博</a></dd>
+				</dl>
+				<div class="weix r">
+					<img src="/themes/baian/default/images/weix.jpg" alt="">
+					<p>微信号：baby123121</p>
+				</div>
+			</div>
+		</div>
+        
+    
+        
+		<div class="f-foot">
+			<div class="wrap">
+				<div class="fnav">
+				
+					 <!-- {if $navigator_list.bottom} -->
+        <!-- {foreach name=nav_bottom_list from=$navigator_list.bottom item=nav} -->
+        <a href="{$nav.url}"{if $nav.opennew eq 1} target="_blank"{/if}{if $nav.url eq 'link.html'} {/if}>{$nav.name}</a>
+        <!-- {if !$smarty.foreach.nav_bottom_list.last} -->
+        &nbsp;|&nbsp;
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+        <!-- {/if} -->
+				</div>
+				<p>  {$copyright}</p>
+	
+   
+   
+    <div class="b">
+        <?php
+		       $GLOBALS['smarty']->assign('article_copb',get_my_articles_two(28, 1)); 
+            
+		      ?>
+        <!-- {foreach from=$article_copb item=copb name=c} -->
+        {$copb.content}
+        <!-- {/foreach} -->
+    </div>
+			</div>
+		</div>
+	</div>
+    
+    
+    <div id="float">
+		<ul>
+			<li><a class="s1" href="http://www.123121.com/flow.php" target="_blank"></a></li>
+			<li><a class="s2" href="http://www.123121.com/user.php" target="_blank"></a></li>
+			<li><a class="s3" href="http://www.123121.com/dialog_1.htm" target="_blank"></a></li>
+			<li><a class="s4" href="">
+				<span class="pop">
+					<img src="/themes/baian/default2/images/ma.jpg" alt="">
+				</span>
+			</a></li>
+			 <li><a class="s5 goTop" href="javascript:void(0);"></a></li>
+		</ul>
+	</div>
+   <script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/lib.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery.jqzoom1.0.2.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery.jcarousel.js"></script>
+    	<script type="text/javascript" src="/themes/baian/js/gooddb.js"></script>
+	

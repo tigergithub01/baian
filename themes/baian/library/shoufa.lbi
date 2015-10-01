@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php
+$this->assign( 'top1', get_article_new(array(18),'art_cat',2) );
+?>
+<!--array(18)  18为文章分类的ID。调用的是文章分类 添加文章的时候外部链接添加您链接地址上传文件传一张小广告图片即可 代码最后的10是调用的数量-->
+
+<div id="first" class="m m1">
+		<div class="mt">
+			<h2>本站首发</h2>
+			<div class="extra"></div>
+		</div>
+		<div class="mc">
+<!--{foreach from=$top1 item=ads name=top1}-->
+<div class="item fore{$smarty.foreach.top1.iteration}">
+<div class="p-img"><a href="{$ads.link}" target="_blank" title="{$ads.title}"><img data-lazyload="{$ads.file_url}" width="100" height="100" alt="{$ads.title}" data-img="1"></a></div>
+<div class="p-name"><span>首发</span><a href="{$ads.link}" target="_blank" title="{$ads.title}">{$ads.title}</a></div>
+<div class="p-detail">{$ads.description}</div>
+</div>
+  <!-- {/foreach} -->     
+</div>
+</div>

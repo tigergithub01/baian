@@ -1,0 +1,183 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--收货人地址开始-->
+<div class="o_write">
+<!--地址列表-->
+<div class="adress_list_bl" id="consigneeList">
+<table cellspacing="0" cellpadding="0" border="0" width="100%"
+	style="word-wrap: break-word; table-layout: fixed; line-height: 28px; overflow: hidden; text-overflow: ellipsis;">
+     <tbody>
+	  <!-- {foreach from=$consignee_list item=consignees key=sn name=conitera} -->
+      <tr {if $smarty.foreach.conitera.iteration%2==0}class="hui"{/if}>
+       <td width="3%"> 
+         <input type="radio" id="conaddress_{$consignees.address_id}" onClick="changeAddress('{$consignees.address_id}')" {if $address_id == $consignees.address_id}checked{/if} name="conaddress" value="{$consignees.address_id}"/>
+		</td>
+		<td width="10%">{$consignees.consignee|escape}</td>
+		<td width="77%">
+		    {$consignees.province_name}&nbsp;
+		    {$consignees.city_name}&nbsp;
+		    {$consignees.district_name}&nbsp;
+			{$consignees.town_name}&nbsp;
+	     {$consignees.address|escape}
+	     &nbsp;&nbsp;{$consignees.zipcode|escape}  
+	     &nbsp;&nbsp;{$consignees.mobile|escape}
+	     &nbsp;&nbsp;{$consignees.tel|escape}
+	     &nbsp;&nbsp;{$consignees.best_time|escape}
+		</td>
+		<td width="5%"><a class="ahover" href="javascript:editConginee('{$consignees.address_id}')">编辑</a></td>
+		<td width="5%"><a class="ahover" href="javascript:comfirmDropConginee('{$consignees.address_id}');">删除</a></td>
+      </tr>  
+	 <!-- {/foreach} -->
+    </tbody>
+  </table>
+  </div>
+  <div class="tj_adress">
+	<input type="radio" name="conaddress" id="conaddress" onClick="changeAddress('0')" value="0"/> 添加一个新地址
+  </div>
+  <div id="sendConginee" class="footer">
+     <input type="button" value="" class="shop_sh_btn2" name="sendAddress" id="sendAddress" onclick="confirmConginee()"/>
+  </div>
+ <!--/地址列表-->
+ 
+ 
+
+<!--编辑地址列表-->
+<div id="editConsigneeTable" style="display:none"></div>
+<!--//编辑地址列表--> 
+ 
+ <!--add地址列表-->
+<div id="consigneeTable" style="display:none">
+<div class="middle cmxform" id="addConsignee">
+  <table cellspacing="0" border="0" width="100%">
+   <tr>
+    <td align="right" width="85" valign="middle">
+      <font class="red">*</font>收&nbsp;货 &nbsp;人：
+    </td>
+	<td valign="middle" align="left">
+		<div class="shoplist_txt">
+		  <input name="consignee" id="consignee" type="text" class="required inputbg" onblur="bindBlur(this)" value="" placeholder="请准确填写真实姓名" title="请准确填写真实姓名"/>
+		</div> 
+	</td>
+  </tr>
+  <!-- {if $real_goods_count gt 0} -->
+  <!-- 购物车中存在实体商品显示国家和地区 -->
+  <tr>
+    <td align="right" valign="middle"><font class="red">*</font>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 区：</td>
+    <td align="left" valign="middle">
+     <div class="shoplist_txt"> 
+     <span id="consignee_arae">
+     
+      <select name="province" id="selProvinces" onchange="region.changed(this, 2, 'selCities');changSelectCal('selProvinces')" class="selectbg">
+        <option value="0">--省份/直辖市--</option>
+        <!-- {foreach from=$province_list.0 item=province} -->
+        <option value="{$province.region_id}">{$province.region_name}</option>
+        <!-- {/foreach} -->
+      </select>
+      <select name="city" id="selCities" onchange="region.changed(this, 3, 'selDistricts');changSelectCal('selCities')" class="selectbg">
+        <option value="0">--市--</option>
+        <!-- {foreach from=$city_list.0 item=city} -->
+        <option value="{$city.region_id}">{$city.region_name}</option>
+        <!-- {/foreach} -->
+      </select>
+      <select name="district" id="selDistricts" onchange="region.changed(this, 4, 'selTowns');changSelectCal('selDistricts')" {if !$district_list.0} style="display:none"{/if} class="selectbg">
+        <option value="0">--县/区--</option>
+        <!-- {foreach from=$district_list.0 item=district} -->
+        <option value="{$district.region_id}">{$district.region_name}</option>
+        <!-- {/foreach} -->
+      </select>
+	  <select name="town" id="selTowns" onchange="changSelectCal('selTowns')" {if !$town_list.0}style="display:none"{/if} class="selectbg">
+        <option value="0">--街道--</option>
+        <!-- {foreach from=$town_list.0 item=town} -->
+        <option value="{$town.region_id}">{$town.region_name}</option>
+        <!-- {/foreach} -->
+      </select>
+       </span> 
+      </div>
+       
+      </td>
+  </tr>
+  <!-- {/if} -->
+   
+  <!-- {if $real_goods_count gt 0} -->
+  <!-- 购物车中存在实体商品显示详细地址以及邮政编码 -->
+  <tr>
+    <td align="right" valign="middle"><font class="red">*</font>详细地址：</td>
+    <td align="left" valign="middle">
+	  <div class="shoplist_txt">
+	    <input name="address" type="text" class="required inputbg"  id="address" value="" onblur="bindBlur(this)" style="width: 327px" maxlength="50" placeholder="请填写详细路名及门牌号" title="请填写详细路名及门牌号"/>
+	  </div> 
+	</td>
+  </tr>
+  <!-- {/if} -->
+  
+  <tr>
+	<td align="right" valign="middle"><font class="red" style="display:none;">*</font>{$lang.postalcode}：</td>
+	<td align="left" valign="middle">
+		<div class="shoplist_txt">
+		 <input name="zipcode" type="text" class="number inputbg"  id="zipcode" value="" onblur="bindBlurs(this)" style="width:100px" minlength="6" maxlength="6" placeholder="请填写邮政编码" title="请填写正确的邮政编码"/>
+		</div> 
+		<div class="fl" style="line-height: 2.3;">&nbsp;<font>有助于快速确定送货地址</font></div>
+	</td>
+  </tr>
+  
+  <tr>
+		<td align="right" valign="middle"><font class="red">*</font>手机号码：</td>
+		<td align="left" valign="middle">
+			<div class="shoplist_txt">
+			  <input name="mobile" style="width: 142px;" type="text" class="number inputbg"  minlength="11" maxlength="11" onblur="bindBlur(this)" id="mobile" value="" placeholder="手机和座机至少填写一个" title="手机和座机至少填写一个"/>
+			</div> 
+			<div class="fl" style="line-height: 2.3;">
+			  &nbsp;或者固定电话：
+			  <input name="tel" style="width: 142px;" type="text" class="number inputbg" id="tel" minlength="6" maxlength="21" value="" onblur="bindBlur2(this)" placeholder="手机和座机至少填写一个" title="请输入正确的电话号码"/>	
+		    </div>
+			<div class="fl" style="line-height: 2.3;">&nbsp;<font>用于接收发货通知短信及送货前确认</font></div>
+		</td>
+	</tr>
+	
+  <!--	
+  <tr>
+	<td align="right" valign="middle">邮箱：</td>
+	<td align="left" valign="middle">
+		<div class="shoplist_txt">
+		 <input name="email" type="text" class="inputbg"  id="email" value="" />
+			&nbsp;<font>用来接收订单提醒邮件，便于您及时了解订单状态</font>
+		</div> 
+	</td>
+  </tr>
+  -->
+ 
+  <!-- {if $real_goods_count gt 0} -->
+  <!-- 购物车中存在实体商品显示最佳送货时间及标志行建筑 -->
+  <tr style="display:none;">
+    <!--<td >{$lang.sign_building}:</td>
+    <td ><input name="sign_building" type="text" class="inputbg"  id="sign_building_{$sn}" value="{$consignee.sign_building|escape}" /></td>
+	-->
+    <td align="right" >最佳收货时间：</td>
+    <td  colspan="3"><input name="best_time" type="text"  class="inputbg" id="best_time" value="" /></td>
+  </tr>
+  <!-- {/if} -->
+  <!-- {if $smarty.session.user_id gt 0 } -->
+  <tr>
+	<td align="right" valign="middle"></td>
+	<td align="left" valign="middle">
+		<div class="shoplist_txt">
+			<input type="checkbox" name="isSaveDefault" id="isSaveDefault" value="1">
+			<font>是否保存为默认送货地址</font>
+		</div>
+	</td>
+  </tr>
+  <!-- {/if} -->
+</table>
+</div>
+<div style="padding:5px 0 0 104px">
+    <input type="hidden" name="defaultAddress" id="defaultAddress" value="0"/>
+	<input type="hidden" id="address_id" name="address_id" value=""/>
+	<input type="hidden" name="step" value="consignee"/>
+	<input type="button" value="" class="shop_sh_btn" onclick="javascript:submitHandler();"/>
+</div>
+</div>
+<!--/add地址列表-->
+
+
+</div>
+
+ 

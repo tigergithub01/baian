@@ -1,0 +1,8 @@
+.search{width:322px;height:28px;background-image:url(../images/ba_searchbg.png);background-repeat:no-repeat;padding-left:30px;float:left;margin-bottom:5px;*margin-bottom:5px;_margin-bottom:0px;}
+.search .text{position:relative;z-index:1;width:227px;height:17px;padding:3px;background-color:#F5F5F5;line-height:17px;color:#999;margin-top:3px;font-family:arial,"\5b8b\4f53";font-size:14px;float:left;border:medium none;}
+.search .button{/*position:relative;*/z-index:100;width:79px;height:26px;background-color:transparent;margin:1px 0 0 8px;_margin:1px 0 0 3px;}
+
+#hotwords{height:18px;color:#999;font-size:14px;overflow:hidden;padding:5px 0 0 10px;}
+#hotwords span,#hotwords strong{float:left;font-weight:normal;}
+#hotwords a:link,#hotwords a:visited{float:left;margin-right:10px;color:#999;font:12px/150% Arial,Verdana,"\5b8b\4f53";}
+#hotwords a:hover,#hotwords a:active{color:#e4393c;}

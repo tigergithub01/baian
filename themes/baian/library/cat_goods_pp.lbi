@@ -1,0 +1,124 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php
+$GLOBALS['smarty']->assign('cat_recommend_type',get_cat_recommend_type($GLOBALS['smarty']->_var['goods_cat']['id']));
+
+?>
+<div class="w w1" id="digitals" style="margin-bottom: 0px;">
+  <div class="digitals-topdiv">
+    <span class="jiFdiv">
+      {$goods_cat.id2}F
+    </span>
+    <span class="btdiv">{$goods_cat.name}</span>
+    <span class="loutopyou">
+    </span>
+    <div class="loutoppptj">
+      <strong class="titl">推荐：</strong>
+      <?php
+			$GLOBALS['smarty']->assign('child_cat',get_hot_cat_tree($GLOBALS['smarty']->_var['goods_cat']['id'], 3));
+	    ?>
+      <!--{foreach from=$child_cat item=cat}-->
+      <!-- {if $cat.name} -->
+        <a title="{$cat.name|escape:html}" href="{$cat.url}">{$cat.name|escape:html}</a>
+      <!-- {/if} -->
+      <!--{foreach from=$cat.child item=cat_child}-->
+      <!-- {if $cat_child.name} -->
+        <a title="{$cat_child.name|escape:html}" href="{$cat_child.url}">{$cat_child.name|escape:html}</a>
+      <!-- {/if} -->
+      <!--{/foreach}-->
+      <!--{/foreach}-->
+      
+    </div>
+  </div>
+  <div class="loumidd">
+    <div class="slide">
+      <div class="slide-itemswrap">
+        <div class="slide-items1" id="slide-items{$goods_cat.id}">
+          <ul id="pub_slideplay{$goods_cat.id}">
+            <?php
+		         $GLOBALS['smarty']->assign('index_image',get_advlist('首页-分类ID'.$GLOBALS['smarty']->_var['goods_cat']['id'].'-左边图片', 4));
+	          ?>
+            <!--{foreach from=$index_image item=ad name=index_image}-->
+            <li style="margin: 0; padding: 0;">
+              <a href="{$ad.url}" target="_blank">
+                <img src="{$ad.image}" height="370" width="275">
+              </a>
+            </li>
+            <!-- {/foreach} -->
+          </ul>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        new dk_slideplayer("#pub_slideplay{$goods_cat.id}", { width: "275px", height: "370px", fontsize: "12px", time: "5000" });
+      </script>
+
+    </div>
+    <div class="loucenter">
+      <ul>
+        <?php
+		     //$GLOBALS['smarty']->assign('best_goods', get_cat_recommend_goods('best', get_children($GLOBALS['smarty']->_var['cat_item']['id']), 6));
+         //$screenX = $_COOKIE['screen'];
+         //$count = intval($screenX, 10) > 1210 ? 8 : 8;
+         $count = 8;
+		     $GLOBALS['smarty']->assign('best_goods', get_cat_recommend_goods('best', get_children($GLOBALS['smarty']->_var['goods_cat']['id']), $count));
+		    ?>
+        <!--{foreach from=$best_goods item=goods name=cat_item_goods}-->
+        <li class="li{$smarty.foreach.cat_item_goods.iteration}">
+          <div class="c-img">
+            <a title="{$goods.name|escape:html}" target="_blank" href="{$goods.url}">
+              <img width="130" height="130" data-img="1" alt="{$goods.name|escape:html}" data-lazyload="{$goods.thumb}" alt="{$goods.name|escape:html}"
+                  class="err-product">
+              </a>
+          </div>
+          <div class="c-detail">
+            <div class="name">
+              {$goods.short_style_name}
+              <?php 
+                //echo get_children($GLOBALS['smarty']->_var['goods_cat']['id']) 
+              ?>
+            </div>
+            <div class="price">
+              <!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}-->
+            </div>
+          </div>
+        </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <div class="louright">
+      <?php
+		   $GLOBALS['smarty']->assign('index_image1',get_advlist('首页-分类ID'.$GLOBALS['smarty']->_var['goods_cat']['id'].'-右侧图片', 3));
+	    ?>
+      <!--{foreach from=$index_image1 item=image_right name=right}-->
+      <!-- {if $smarty.foreach.right.first} -->
+      <a target="_blank" href="{$image_right.url}" style="margin-top: 0px;">
+        <img src="{$image_right.image}" />
+      </a>
+      <!-- {else} -->
+      <a target="_blank" href="{$image_right.url}">
+        <img src="{$image_right.image}" />
+      </a>
+      <!-- {/if} -->
+      <!--{/foreach}-->
+    </div>
+  </div>
+  <div class="louggdiv">
+    <?php
+		   $GLOBALS['smarty']->assign('index_image_bottom',get_advlist('首页-分类ID'.$GLOBALS['smarty']->_var['goods_cat']['id'].'-底部图片-左', 1));
+	  ?>
+    <!--{foreach from=$index_image_bottom item=image_bottom name=bottom}-->
+    <a target="_blank" href="{$image_bottom.url}">
+      <img src="{$image_bottom.image}" />
+    </a>
+    <!--{/foreach}-->
+    <div id="kong"></div>
+    <?php
+		   $GLOBALS['smarty']->assign('index_image_bottom2',get_advlist('首页-分类ID'.$GLOBALS['smarty']->_var['goods_cat']['id'].'-底部图片-右', 1));
+	  ?>
+    <!--{foreach from=$index_image_bottom2 item=image_bottom2 name=bottom2}-->
+    <a target="_blank" href="{$image_bottom2.url}">
+      <img src="{$image_bottom2.image}" />
+    </a>
+    <!--{/foreach}-->
+  </div>
+</div>

@@ -1,0 +1,4 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {foreach from=$logdb item=log} -->
+<div onclick="setTip('{$log.word}');" onmouseover="this.className='search_t_div_2';" onmouseout="this.className='search_t_div_1';" style="color:black;height:25px;font-size:16px;" class="search_t_div_1"><span style="float:right;color:red;font-size:">{$log.items} 结果</span>{$log.kword}</div>
+<!-- {/foreach} -->

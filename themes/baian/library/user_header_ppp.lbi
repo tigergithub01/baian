@@ -1,0 +1,57 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+
+  <div id="shortcut">
+    <div class="w">
+      <ul class="fl lh">
+        <li class="fore1 ld">
+          {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} <font id="ECS_MEMBERZONE"> {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </font>
+        </li>
+      </ul>
+      <ul class="fr lh">
+        <!--<li class="fore1 ld loginbar" style="width: 20px;">
+          <b id="gouwuchetu"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="flow.php">购物车</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="flow.php">去结算</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>-->
+        <li class="fore1 ld loginbar">
+          <a target="_blank">安装手机客户端</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="user.php?act=order_list" target="_blank">我的订单</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a target="_blank" href="http://www.kuaidi100.com/">快递查询</a>
+        </li>
+        <!--<li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="">手机版本</a>
+        </li>-->
+        <li class="fore1 ld loginbar" style="width: 25px;">
+          <b id="wbxl"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="">加关注</a>
+        </li>
+        <li class="fore1 ld loginbar" style="width: 22px;">
+          <b id="wbtx"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="">加关注</a>
+        </li>
+      </ul>
+      <span class="clr"></span>
+    </div>
+  </div>
+  
+<SCRIPT type=text/javascript>function showMenu(d,a,c){var b=M.$("#JS_hide_"+a+"_menu_"+c);if(b){M.addClass(b,"hover");}}function hideMenu(d,a,c){var b=M.$("#JS_hide_"+a+"_menu_"+c);if(b){M.removeClass(b,"hover");}}function shoucang(){var b=window.location.href;var a=document.title;try{window.external.addFavorite(b,a);}catch(c){try{window.sidebar.addPanel(a,b,"");}catch(c){alert("加入收藏失败，请使用Ctrl+D进行添加");}}}</SCRIPT>

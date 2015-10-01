@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+        <link rel="stylesheet" href="/themes/baian/css/cui.css" />
+	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
+	<link rel="stylesheet" href="/themes/baian/css/style.css" />
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
+<div id="bd">
+        <div class="wp">
+        <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+            
+
+            <div class="s-side-col l">
+                 <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
+                <div class="h"></div>
+
+                <div class="sbox">
+                    <h3 class="st1">看了还看</h3>
+                    <ul class="s-img-list">
+                       
+                    </ul>
+                </div>
+                <div class="h"></div>
+
+                <div class="sadBox">
+                    <a href=""><img src="images/blank.gif" alt=""></a>
+                </div>
+            </div>
+
+            <div class="s-main-col r">
+                <div class="sbox">
+                    <h3 class="st2">热卖推荐</h3>
+                    <ul class="s-hotsale-list">
+                        
+                    </ul>
+                </div>
+                <div class="h"></div>
+
+                
+   <!-- #BeginLibraryItem "/library/exchange_hot.lbi" --><!-- #EndLibraryItem -->
+    <!-- #BeginLibraryItem "/library/exchange_list.lbi" --><!-- #EndLibraryItem -->
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+                
+                
+               
+                <div class="h20"></div>
+                <div id="huanBox">
+                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
+                    <div class="bor-box bd">
+                        <ul class="ul-pic1 ul-pic1-b">
+                           
+                        </ul>
+                        <div class="h15"></div>
+                    </div>
+                </div>
+                <div class="h"></div>
+                <div class="i-rush r">
+                    <div class="sec-tit">
+                        <a href="" class="r">更多抢购&gt;</a>
+                        <h3 class="stt1">每天限时抢购<span class="datetime">01 : 32 : 24</span></h3>
+                    </div>
+                    <div class="sec-con">
+                        <div id="rushScroll" class="rushScroll">
+                            <a class="prev"></a>
+                            <a class="next"></a>
+                            <div class="bd">
+                                <ul class="img-ul">
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h30"></div>
+    
+    
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

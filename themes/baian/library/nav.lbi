@@ -1,0 +1,163 @@
+<div id="nv">
+        <div class="wp">
+            <div id="side-menu" class="l">
+                <div class="menu-btn">全部商品分类</div>
+                <ul class="menu-ul menu-ul-dn">
+                   <!--{foreach from=array_slice(get_categories_tree(0),0,7) item=cat name=cat0}-->
+					<li>
+						<h3 class="v1"><span class="sv{$smarty.foreach.cat0.iteration}">{$cat.name}</span><p style="width:140px; height:20px; overflow:hidden;"><!--{foreach from=$cat.cat_id item=child2 name=cat_cat_id2}--><a href="/{$child2.url}">{$child2.name|escape:html}</a>&nbsp;<!--{/foreach}-->   </p></h3>
+						<div class="subBox">
+							<div class="left-col">
+                             <!--{foreach from=$cat.cat_id item=child2 name=cat_cat_id2}-->
+       
+								<dl class="sub-dl">
+									<dt><a href="/{$child2.url}" title="{$child2.name|escape:html}">{$child2.name|escape:html}</a></dt>
+									<dd>
+    <!--{foreach from=$child2.cat_id item=child3 name=cat_cat_id3}-->
+    
+										<span><a href="/{$child3.url}">{$child3.name|escape:html}</a></span>
+                 <!--{/foreach}-->                     
+									</dd>
+								</dl>
+                               <!--{/foreach}-->
+                               <!--推荐图片--start-->
+							 
+                    
+                 {if $smarty.foreach.cat0.index == 0}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_11 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_12 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                 {if $smarty.foreach.cat0.index == 1}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_21 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_22 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                    
+                      {if $smarty.foreach.cat0.index == 2}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_31 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_32 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 3}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_41 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_42 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 4}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_51 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_52 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 5}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_61 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_62 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                    
+                      {if $smarty.foreach.cat0.index == 6}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_71 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_72 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                                
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+										
+											 
+                        	<li></li>
+                       				</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+                    
+                  <!--{/foreach}-->  
+                </ul>
+            </div>
+            <ul class="nav-ul l">
+                <li><a href="/">商城首页</a></li>
+                <li><a href="/activity.php">特惠抢购</a></li>
+                <li><a href="/exchange.php">积分商城</a></li>
+                <li><a href="/category.php?id=332">孕妈专区</a></li>
+				<li><a href="/category.php?id=335">婴童服饰</a></li>
+				<li><a href="/category.php?id=337">婴童玩具</a></li>
+				<li><a href="/category.php?id=334">童车童床</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="c"></div>  

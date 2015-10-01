@@ -1,0 +1,46 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<DIV class=proproducts>
+<H3><SPAN><A class=more title=更多 href="search.php?intro=promotion" rel=nofollow target=_blank>更多</A></SPAN></H3>
+</DIV>
+<div id="hi_r_1" style="display:block;" class="rtabc">
+          <div class="roll">
+            <div id="leftbtn1" class="leftbtn"></div>
+            <div id="rollphoto1" class="rollcon">
+            
+              <ul id="show_best_area">
+               <!-- {if $promotion_goods} -->
+<!--{foreach from=$promotion_goods key=key item=goods name="promotion_foreach"}-->
+                <li onMouseOver="this.className='bgColor'" onMouseOut="this.className=''"> 
+                    <a  title="{$goods.name|escape:html}" href="{$goods.url}"><IMG src="{$goods.thumb}" alt="{$goods.name|escape:html}" width="150" height="150" /></a><br />
+                    <p class="name"><a href="{$goods.url}" target="_blank" title="{$goods.name|escape:html}">{$goods.short_style_name}</a></p>
+					<p> <!-- {if $goods.promote_price neq ""} --> <span class="shop">{$goods.promote_price}</span> <!-- {else}-->  <span class="shop">{$goods.shop_price}</span> <!-- {/if} --><span class="oldprice">{$goods.market_price}</span></p>
+                </li>
+      
+<!--{/foreach}-->
+<!-- {/if} --> 
+              </ul>
+               
+            </div>
+            <div id="rightbtn1" class="rightbtn"></div>
+            <script language=javascript type=text/javascript>
+
+		var scrollPic_01 = new ScrollPic();
+		scrollPic_01.scrollContId   = "rollphoto1"; //内容容器ID
+		scrollPic_01.arrLeftId      = "leftbtn1";//左箭头ID
+		scrollPic_01.arrRightId     = "rightbtn1"; //右箭头ID
+
+		scrollPic_01.frameWidth     = 950;//显示框宽度
+		scrollPic_01.pageWidth      = 190; //翻页宽度
+
+		scrollPic_01.speed          = 10; //移动速度(单位毫秒，越小越快)
+		scrollPic_01.space          = 10; //每次移动像素(单位px，越大越快)
+		scrollPic_01.autoPlay       = true; //自动播放
+		scrollPic_01.autoPlayTime   = 3; //自动播放间隔时间(秒)
+
+		scrollPic_01.initialize(); //初始化
+
+</script>
+          </div>
+        </div>

@@ -1,0 +1,40 @@
+<link rel="stylesheet" type="text/css" href="/themes/baian/css/goods.taocan.css">
+<!--组合套餐推荐 START-->
+<!-- {if $package_goods_list} -->
+  <div class="mt m1" id="taocan" style="background-image: url(http://www.123121.com/themes/baian/images/misc/product/skin/2012/i/newicon20121210.png);width:990px;">
+    <ul class="tab">
+      {foreach from=$package_goods_list key=key item=package_goods name=foo}
+      <li {if $key==0}class="curr"{/if} id="taocan{$smarty.foreach.foo.iteration}" onclick="setTabCatGoods('taocan',{$smarty.foreach.foo.iteration},<?php echo count($GLOBALS['smarty']->_var['package_goods_list']);?>)" ><a href="javascript:void(0);">{$lang.remark_package}{$taocan.$key}</a></li>
+      {/foreach}
+    </ul>
+  </div>
+<!-- {foreach from=$package_goods_list item=package_goods name=foo key=k} -->
+<div class="mc" id="con_taocan_{$smarty.foreach.foo.iteration}" {if $k>0}style="display:none;"{/if}>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#dddddd">
+<tr bgcolor="#FFFFFF">
+<td align="center" width="15%" style="padding-top:15px;">
+<a href="goods.php?id={$goods.goods_id}" target="_blank" style="background:transparent" title="{$goods.goods_name|escape:html}"><img src="{$goods.goods_thumb}" width="100" /><br />{$goods.goods_name|truncate:28}</a>
+</td>
+<td align="center" width="5px" height="7px"><img src="images/plus_4.gif" /></td>
+<!-- {foreach from=$package_goods.goods_list item=goods_list} -->
+<!-- {if $goods_list.goods_thumb neq $goods.goods_thumb} -->
+<td align="center" width="15%" style="padding-top:15px;">
+<a href="goods.php?id={$goods_list.goods_id}" target="_blank" style="background:transparent" title="{$goods_list.goods_name|escape:html}"><img src="{$goods_list.goods_thumb}" width="100" /><br />{$goods_list.goods_name|truncate:28}</a>×&nbsp;{$goods_list.goods_number}
+</td>
+<!-- {/if} -->
+<!-- {/foreach} -->
+<td align="right">
+<strong><font>{$package_goods.act_name}</font></strong><br />
+{$lang.old_price}<font class="market">{$package_goods.subtotal}</font><br />
+{$lang.package_price}<font class="fpink">{$package_goods.package_price}</font><br />
+{$lang.then_old_price}<font class="shop">{$package_goods.saving}</font><br />
+<a href="javascript:addPackageToCart({$package_goods.act_id})" style="background:transparent"><img src="images/taocan_bnt.gif" alt="{$lang.add_to_cart}" /></a>
+</td>
+<td width="3%"></td>
+</tr>
+</table>
+</div>
+<!-- {/foreach} -->
+<div class="blank"></div>
+<!-- {/if} -->
+<!--组合套餐推荐 END-->

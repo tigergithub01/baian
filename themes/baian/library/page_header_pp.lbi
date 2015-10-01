@@ -1,0 +1,779 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  
+<script language="javascript">
+    <!--
+/*屏蔽所有的js错误*/
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+//-->
+  var process_request = "正在处理您的请求...";
+</script>
+<?php
+function get_brands1($cat = 0, $app = 'brand')
+{
+    $children = ($cat > 0) ? ' AND ' . get_children($cat) : '';
+
+    $sql = "SELECT b.brand_id, b.brand_name, b.brand_logo, b.brand_desc, COUNT(*) AS goods_num, IF(b.brand_logo > '', '1', '0') AS tag ".
+            "FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+                $GLOBALS['ecs']->table('goods') . " AS g ".
+            "WHERE g.brand_id = b.brand_id $children AND is_show = 1 " .
+            " AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+            "GROUP BY b.brand_id HAVING goods_num > 0 ORDER BY tag DESC, b.sort_order ASC";
+    $row = $GLOBALS['db']->getAll($sql);
+
+    foreach ($row AS $key => $val)
+    {
+        $row[$key]['url'] = build_uri($app, array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
+        $row[$key]['brand_desc'] = htmlspecialchars($val['brand_desc'],ENT_QUOTES);
+    }
+
+    return $row;
+}
+//
+function get_promotion_info1($goods_id = '')
+{
+    $snatch = array();
+    $group = array();
+    $auction = array();
+    $package = array();
+    $favourable = array();
+
+    $gmtime = gmtime();
+    $sql = 'SELECT act_id, act_name, act_type, start_time, end_time FROM ' . $GLOBALS['ecs']->table('goods_activity') . " WHERE is_finished=0 AND start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND goods_id = '$goods_id'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+    foreach ($res as $data)
+    {
+        switch ($data['act_type'])
+        {
+            case GAT_SNATCH: //夺宝奇兵
+                $snatch[$data['act_id']]['act_name'] = $data['act_name'];
+                $snatch[$data['act_id']]['url'] = build_uri('snatch', array('sid' => $data['act_id']));
+                $snatch[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $snatch[$data['act_id']]['sort'] = $data['start_time'];
+                $snatch[$data['act_id']]['type'] = 'snatch';
+                break;
+
+            case GAT_GROUP_BUY: //团购
+                $group[$data['act_id']]['act_name'] = $data['act_name'];
+                $group[$data['act_id']]['url'] = build_uri('group_buy', array('gbid' => $data['act_id']));
+                $group[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $group[$data['act_id']]['sort'] = $data['start_time'];
+                $group[$data['act_id']]['type'] = 'group_buy';
+                break;
+
+            case GAT_AUCTION: //拍卖
+                $auction[$data['act_id']]['act_name'] = $data['act_name'];
+                $auction[$data['act_id']]['url'] = build_uri('auction', array('auid' => $data['act_id']));
+                $auction[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $auction[$data['act_id']]['sort'] = $data['start_time'];
+                $auction[$data['act_id']]['type'] = 'auction';
+                break;
+
+            case GAT_PACKAGE: //礼包
+                $package[$data['act_id']]['act_name'] = $data['act_name'];
+                $package[$data['act_id']]['url'] = 'package.php#' . $data['act_id'];
+                $package[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $package[$data['act_id']]['sort'] = $data['start_time'];
+                $package[$data['act_id']]['type'] = 'package';
+
+                break;
+        }
+    }
+
+    $user_rank = ',' . $_SESSION['user_rank'] . ',';
+    $favourable = array();
+    $sql = 'SELECT act_id, act_range, act_range_ext, act_name, start_time, end_time FROM ' . $GLOBALS['ecs']->table('favourable_activity') . " WHERE start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND CONCAT(',', user_rank, ',') LIKE '%" . $user_rank . "%'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+
+    if(empty($goods_id))
+    {
+        foreach ($res as $rows)
+        {
+            $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+            $favourable[$rows['act_id']]['url'] = 'activity.php';
+            $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+            $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+            $favourable[$rows['act_id']]['type'] = 'favourable';
+        }
+    }
+    else
+    {
+        $sql = "SELECT cat_id, brand_id FROM " . $GLOBALS['ecs']->table('goods') .
+           "WHERE goods_id = '$goods_id'";
+        $row = $GLOBALS['db']->getRow($sql);
+        $category_id = $row['cat_id'];
+        $brand_id = $row['brand_id'];
+
+        foreach ($res as $rows)
+        {
+            if ($rows['act_range'] == FAR_ALL)
+            {
+                $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                $favourable[$rows['act_id']]['url'] = 'activity.php';
+                $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                $favourable[$rows['act_id']]['type'] = 'favourable';
+            }
+            elseif ($rows['act_range'] == FAR_CATEGORY)
+            {
+                /* 找出分类id的子分类id */
+                $id_list = array();
+                $raw_id_list = explode(',', $rows['act_range_ext']);
+                foreach ($raw_id_list as $id)
+                {
+                    $id_list = array_merge($id_list, array_keys(cat_list($id, 0, false)));
+                }
+                $ids = join(',', array_unique($id_list));
+
+                if (strpos(',' . $ids . ',', ',' . $category_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_BRAND)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $brand_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_GOODS)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $goods_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+        }
+    }
+
+    $sort_time = array();
+    $arr = array_merge($snatch, $group, $auction, $package, $favourable);
+    foreach($arr as $key => $value)
+    {
+        $sort_time[] = $value['sort'];
+    }
+    array_multisort($sort_time, SORT_NUMERIC, SORT_DESC, $arr);
+
+    return $arr;
+}
+$this->assign('promotion_info1', get_promotion_info1());
+?>
+<link rel="stylesheet" type="text/css" href="themes/baian/images/misc/lib/skin/2012/base.css" media="all" />
+<link rel="stylesheet" type="text/css" href="themes/baian/css/adv.css">
+<style>
+  .qq_jiesuan, .qq_jiesuan_on {
+  position:relative;
+  cursor:pointer;
+  z-index:1000;
+  }
+  .qq_jiesuan .jiesuan_t {
+  position:absolute;
+  width:300px;
+  border:1px solid #e6e6e6;
+  top:30px;
+  right:0;
+  text-align:center;
+  color:#999;
+  display:none;
+  }
+  #settleup .qq_jiesuan_on dt{	background-position:0 -284px;}
+  .qq_jiesuan_on .jiesuan_t {
+  position:absolute;
+  width:268px;
+  border:1px solid #e6e6e6; border-top:none;
+  top:32px;
+  right:0;
+  text-align:center;
+  color:#999;
+  display:block;
+  background:url(../images/cart_top_line.png) #fff no-repeat left top;
+  z-index:2000;
+  }
+  .cart_info_div {
+  float: left;
+  font-size:12px;
+  width:260px;
+  height:94px;
+  overflow:hidden; margin-left:3px;
+  border-bottom:#ddd 1px dotted;
+  }
+  .cart_info_div a.img_l {
+  float:left;
+  display:block;
+  border:1px solid #e4e4e4;
+  margin:5px;
+  width:82px;
+  height:82px;
+  }
+  .cart_info_div .f_right {
+  width:160px;
+  float:right;
+  padding:5px 0px;
+  }
+  .cart_info_div .f_right p.name {
+  border:0;
+  height:36px;
+  line-height:40px;
+  overflow:hidden;
+  }
+  .cart_info_div .f_right p.name a {
+  text-align:left;
+  border:0;
+  color:#1f1f1f;
+  }
+  .cart_info_div .f_right p a {
+  color:#1f1f1f;
+  font-size:12px;
+  height:30px;
+  line-height:30px
+  }
+  .cart_info_div .f_right p.cheng {
+  color:#1f1f1f;
+  }
+  .cart_info_div .f_right p font {
+  color:#1f1f1f;
+  font-size:12px
+  }
+  .cart_info_div .f_right p {
+  line-height:20px;
+  height:16px;
+  overflow:hidden;
+  text-align:left;
+  }
+  .qq_jiesuan_on .jiesuan_t p.btm {
+  line-height:17px;
+  text-align:right;
+  color:#161616;
+  }
+  .qq_jiesuan_on .jiesuan_t p.btm font {
+  color:#C00;
+  font-weight:bold;
+  font-size:12px;
+  }
+  .blank5 {
+  height:5px;
+  line-height:5px;
+  overflow:hidden;
+  clear:both
+  }
+
+  .divJeepDiv
+  {
+  left: 0px;
+  top: 0px;
+  opacity: 0.1;
+  background: #000;
+  filter: alpha(opacity=10);
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+
+  }
+</style>
+
+  <!--<div class="divJeepDiv"></div>-->
+  <div id="kefu" class="kefudiv">
+    <div class="kl">
+      <a id="kfao"></a>
+    </div>
+    <div class="kr">
+      <ul>
+        <li>
+          {$service_phone}
+        </li>
+        <li>
+          <a href="dialog_1.htm" target="_blank">
+            <img src="themes/baian/images/ba_zxzx.gif" />
+          </a>
+        </li>
+        <?php 
+              $GLOBALS['smarty']->assign('kefu_qq', array_slice(get_qq_no(),0,3));
+          ?>
+        <!--{foreach from=$kefu_qq item=qqk name=qqn}-->
+        <li>
+          <a class="a2"  rel="nofollow" href="tencent://message/?uin={$qqk}">
+            <img alt="" src="http://wpa.qq.com/pa?p=2:{$qqk}:41" />
+          </a>
+          <!--<a rel="nofollow" style="color: #e4525a;" href="tencent://message/?uin={$qqk}">
+              {$qqk}
+            </a>-->
+        </li>
+        <!--{/foreach}-->
+      </ul>
+      <!--<div class="zhijie">
+          <a href="">直接沟通</a>
+        </div>
+        <div class="qgkfdiv">
+          <span>全国客服</span>
+          <a>{$service_phone}</a>
+        </div>-->
+
+      <a href="#" target="_blank" class="zpacss"></a>
+
+      <div class="guanggao">
+        <?php
+		           $GLOBALS['smarty']->assign('ad_kefu',get_advlist('客服栏广告', 1));
+	        ?>
+        <!--{foreach from=$ad_kefu item=adkefu name=adkefun}-->
+        <a title="{$adkefu.name}" target="_blank" href="{$adkefu.url}">
+          <img width="123" height="57" style="display:block" src="{$adkefu.image}">
+          </a>
+        <!--{/foreach}-->
+      </div>
+    </div>
+  </div>
+  <div id="topdiv" class="topdiv">
+    <a href="javascript:tops();" title="点击回顶部" style="width: 27px; height: 92px; float: left;"></a>
+  </div>
+
+  <div id="shortcut">
+    <div class="w">
+      <ul class="fl lh">
+        <li class="fore1 ld">
+          {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} <font id="ECS_MEMBERZONE"> {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </font>
+        </li>
+      </ul>
+      <ul class="fr lh">
+        <!--<li class="fore1 ld loginbar" style="width: 20px;">
+          <b id="gouwuchetu"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="flow.php">购物车</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="flow.php">去结算</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>-->
+        <li class="fore1 ld loginbar">
+          <a target="_blank">安装手机客户端</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="user.php?act=order_list" target="_blank">我的订单</a>
+        </li>
+        <!--<li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a target="_blank" href="http://www.kuaidi100.com/">快递查询</a>
+        </li>-->
+
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore6 menu"   id="JS_hide_topNav_menu_3"  onmouseover="showMenu(this,'topNav',3);" onmouseout="hideMenu(this,'topNav',3);">
+          <dl>
+            <dt class="ld">
+              <a href="#" target="_blank">
+                客户服务<b></b>
+              </a>
+            </dt>
+            <dd class="hideMenu">
+              <div>
+                <a href="help.php" target="_blank">帮助中心</a>
+              </div>
+              <div>
+                <a href="help.php?id=114" target="_blank" rel="nofollow">售后服务</a>
+              </div>
+              <div>
+                <a href="dialog_1.htm" target="_blank" rel="nofollow">在线客服</a>
+              </div>
+              <div>
+                <a href="" target="_blank" rel="nofollow">投诉中心</a>
+              </div>
+              <div>
+                <a href="service.html" target="_blank">客服邮箱</a>
+              </div>
+            </dd>
+          </dl>
+        </li>
+
+
+        <li class="fore6 menu menu2"   id="JS_hide_topNav_menu_3"  onmouseover="showMenu(this,'topNav',3);" onmouseout="hideMenu(this,'topNav',3);">
+          <dl>
+            <dt class="ld">
+              <span id="wxxl"></span>
+              <a href="#" target="_blank">
+                关注微信
+              </a>
+            </dt>
+            <dd class="hideMenu">
+              <div>
+                <img alt="" src="themes/baian/images/ba_bottomerweima.jpg">
+              </div>
+            </dd>
+          </dl>
+        </li>
+        
+        
+        
+        <li class="fore1 ld loginbar" style="width: 25px;">
+          <b id="wbxl"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="http://weibo.com/baian4008048648" target="_blank">加关注</a>
+        </li>
+        <li class="fore1 ld loginbar" style="width: 22px;">
+          <b id="wbtx"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="http://t.qq.com/baian4008048648" target="_blank">加关注</a>
+        </li>
+      </ul>
+      <span class="clr"></span>
+    </div>
+  </div>
+
+
+  <div id="o-header">
+    <div class="w" id="header">
+      <div style="height:88px; float:left;">
+        <div id="logo" class="ld">
+          <a href="index.php" hidefocus="true" title="百安母婴商城_母婴用品送货上门">
+            <img src="themes/baian/images/ba_logo.png" width="267" height="60" alt="百安母婴商城_母婴用品送货上门" />
+          </a>
+        </div>
+        <div id="zcjj">
+        <?php
+		     $GLOBALS['smarty']->assign('ad_zc',get_advlist('顶部专场', 1));
+	      ?>
+        <!--{foreach from=$ad_zc item=image_zc name=zca}-->
+        <a href="{$image_zc.url}" title="{$image_zc.name}" target="_blank">
+          <img src="{$image_zc.image}" width="262" height="88" />
+        </a>
+        <!--{/foreach}-->
+      </div>
+      </div>
+
+            {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} {* ECSHOP 提醒您：根据用户id来调用member_info2.lbi显示不同的界面  *}{insert name='member_info2'}
+      
+      
+      <div id="myxyd" style="height:88px; width:241px; float:right">
+        <?php
+		       $GLOBALS['smarty']->assign('article_rexian',get_my_articles_two(29, 1));
+		      ?>
+        <!-- {foreach from=$article_rexian item=rexian name=ren} -->
+        {$rexian.content}
+        <!-- {/foreach} -->
+        <!--<div class="myx borri borbo">
+          <a id="a1" style="text-decoration: none;">信誉10年品牌</a>
+        </div>
+        <div class="myx borbo">
+          <a id="a2" style="text-decoration: none;">满额免运费</a>
+        </div>
+        <div class="myx borri">
+          <a id="a3" style="text-decoration: none;">注册送20元劵</a>
+        </div>
+        <div class="myx">
+          <a id="a4" style="text-decoration: none;">100%正品保障</a>
+        </div>-->
+      </div>
+    </div>
+    <div class="menus">
+      <script>
+        //var timmer;
+        function showMc()
+        {
+        //clearTimeout(timmer);
+        document.getElementById('categorys').className="hover";
+        }
+        function hideMc()
+        {
+        //timmer = setTimeout(function(){document.getElementById('categorys').className="";},700);
+        document.getElementById('categorys').className="";
+        }
+      </script>
+      <div class="w">
+        <div id="nav">
+          <div id="categorys" style="background-image: url(themes/baian/images/ba_fljx.png);
+                        background-position: 143px 18px; background-repeat: no-repeat; background-color: #41080A;">
+            <div id="categorys" style="background-image: none;" onmouseover="showMc()" onmouseout="hideMc()">
+              <div class="mt ld" style="background-image: none;">
+                <h2>
+                  <a href="catalog.php">
+                    全部商品分类<b style="background-image: none;"></b>
+                  </a>
+                </h2>
+              </div>
+              <div class="mc">
+                <!--{foreach from=array_slice(get_categories_tree(0),0,7) item=cat name=cat0}-->
+                <div {if $smarty.foreach.cat0.first}style='border-top:none;'{/if}
+                class="item fore{$smarty.foreach.categories.iteration}"
+                onMouseOver="this.className='item fore{$smarty.foreach.categories.iteration} hover'"
+                onmouseout="this.className='item fore{$smarty.foreach.categories.iteration}'"
+                id="allser{$smarty.foreach.cat0.iteration}" >
+                <span {if $smarty.foreach.cat0.iteration mod 2 eq 0}style='background-color:#FFFCD6;'{/if}>
+                <h3 style="text-align:left;"  id="allserh{$smarty.foreach.cat0.iteration}">
+                  <a href="{$cat.url}" style="text-decoration:none;font-weight:bold;">{$cat.name|escape:html}</a>
+                </h3>
+                <s {if $smarty.foreach.cat0.iteration mod 2 eq 0}class='s2'{else}class='s1'{/if}></s>
+                <h4>
+                <!--{foreach from=$cat.cat_id item=child2 name=cat_cat_id2}-->
+                <!--{if $smarty.foreach.cat_cat_id2.iteration < 9}-->
+                <!--{if $smarty.foreach.cat_cat_id2.iteration eq 1 or $smarty.foreach.cat_cat_id2.iteration eq 3}-->
+                
+                  <!-- {/if} -->
+                  <a href="{$child2.url}" style="text-decoration:none">{$child2.name|escape:html}</a>
+                  <!--{if $smarty.foreach.cat_cat_id2.iteration eq 2 or $smarty.foreach.cat_cat_id2.last or $smarty.foreach.cat_cat_id2.iteration eq 4}-->
+
+                  <!-- {/if} -->
+                  <!-- {/if} -->
+                  <!--{/foreach}-->
+                </h4>
+                </span>
+                <div class="i-mc" style="top:3px;">
+                  <div class="close" onclick="$(this).parent().parent().removeClass('hover')"></div>
+                  <div class="subitem">
+                    <!--{foreach from=$cat.cat_id item=child name=cat_cat_id}-->
+                    <dl class="fore{$smarty.foreach.cat_cat_id.iteration}">
+                      <dt>
+                        <a href="{$child.url}" style="text-decoration:none">{$child.name|escape:html}</a>
+                      </dt>
+                      <dd>
+                        <!--{foreach from=$child.cat_id item=childer}-->
+                        <em>
+                          <a href="{$childer.url}" style="text-decoration:none">{$childer.name|escape:html}</a>
+                        </em>
+                        <!--{/foreach}-->
+                      </dd>
+                    </dl>
+                    <!--{/foreach}-->
+                  </div>
+                  <div class="fr">
+                    <?php
+	                   $cat_info = get_cat_info_ex($GLOBALS['smarty']->_var['cat']['id']);
+
+	                  $GLOBALS['smarty']->assign('index_image',get_advlist('导航菜单-'.$cat_info['cat_id'].'-右侧-促销专题', 5));
+	                    ?>
+                    <!-- {if $index_image} -->
+                    <dl class="categorys-promotions">
+                      <dt>促销活动</dt>
+                      <dd>
+                        <ul>
+                          {foreach from=$index_image item=ad name=index_image}
+                          <li>
+                            <a target="_blank" href="{$ad.url}">
+                              <img src="{$ad.image}">
+                            </a>
+                          </li>
+                          {/foreach}
+                        </ul>
+                      </dd>
+                    </dl>
+                    <!-- {/if} -->
+                    <dl class="categorys-brands">
+                      <dt>推荐品牌</dt>
+                      <dd>
+                        <ul>
+                          <!--{foreach from=get_brands1($GLOBALS['smarty']->_var['cat']['id']) item=bchilder}-->
+                          <li style="float:left;width:97px;">
+                            <a target="_blank" href="{$bchilder.url}">{$bchilder.brand_name|escape:html}</a>
+                          </li>
+                          <!--{/foreach}-->
+                        </ul>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+              <!--{/foreach}-->
+            </div>
+          </div>
+          <div id="treasure">
+          </div>
+        </div>
+        <div id="treasure">
+        </div>
+        <ul id="navitems">
+
+          <li class="fore1" id="nav-home" class="hover">
+            <a href="index.php">{$lang.home}</a>
+          </li>
+
+          <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+          <li    {if $nav.active eq 1} class="curr fore{$smarty.foreach.nav_middle_list.iteration}"  {else} class="fore{$smarty.foreach.nav_middle_list.iteration}"   onMouseOut="this.className='fore{$smarty.foreach.nav_middle_list.iteration}'" onMouseOver="this.className='fore{$smarty.foreach.nav_middle_list.iteration} hover'" {/if}>
+          <a href="{$nav.url}"
+
+            <!-- {if $nav.opennew eq 1} -->
+            target="_blank"
+            <!-- {/if} -->
+            >{$nav.name}
+          </a>
+          </li>
+          <!-- {/foreach} -->
+
+        </ul>
+        <div id="klcc">
+          <a title="传宝宝照片有奖品" target="_blank" href="">
+            <img alt="传宝宝照片有奖品" src="themes/baian/images/ba_topzp.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+<script type="text/javascript">
+//<![CDATA[
+{literal}
+window.onload = function()
+{
+  fixpng();
+}
+function checkSearchForm()
+{
+    if(document.getElementById('keyword').value)
+    {
+        return true;
+    }
+    else
+    {
+		    alert("请输入关键词！");
+        return false;
+    }
+}
+
+function myValue1()
+{
+	document.getElementById('keyword').value = "请输入商品名称或编号...";
+}
+
+function myValue2()
+{
+	document.getElementById('keyword').value = "";
+}
+
+
+
+
+//document.oncontextmenu=function(e){return false;} 
+
+var myul = document.getElementById('my_main_nav');
+var myli = myul.getElementsByTagName('li');
+for(var i = 0;i<myli.length;i++){
+	
+	if(myli[i].className !='cp'){
+		myli[i].onmouseover = function(){ this.className = 'nav_hover';}
+		myli[i].onmouseout  = function(){this.className ='';}
+	}
+}
+
+{/literal}
+//]]>
+</script>
+<div class="blank10"></div>
+  <script type="text/javascript" src="themes/baian/js/jquery-1.32pack.js"></script>
+<script>
+  //var $$=jQuery.noConflict();
+
+  /* *
+  * 清除购物车购买商品数量
+  */
+  function delet(rec_id)
+  {
+  var formBuy      = document.forms['formCart'];
+  var domname='goods_number_'+rec_id;
+  var attr = getSelectedAttributes(document.forms['formCart']);
+  var qty = parseInt(document.getElementById(domname).innerHTML)==0;
+  Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+}			
+/* *
+ * 增加购物车购买商品数量
+ */
+function addcartnum(rec_id)
+{
+  var attr = getSelectedAttributes(document.forms['formCart']);
+  var domname='goods_number_'+rec_id;
+  var qty = parseInt(document.getElementById(domname).innerHTML)+1;
+  Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+}
+/* *
+ * 减少购买商品数量
+ */
+function lesscartnum(rec_id)
+{
+    var formBuy      = document.forms['formCart'];
+	var domname='goods_number_'+rec_id;
+	var attr = getSelectedAttributes(document.forms['formCart']);
+	var qty = parseInt(document.getElementById(domname).innerHTML)-1;
+	Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+}
+/**
+ * 接收返回的信息
+ */
+function changecartPriceResponse(res)
+{
+  if (res.err_msg.length > 0 )
+  {
+    alert(res.err_msg);
+  }
+  else
+  {
+	var domnum='goods_number_'+res.rec_id;
+	if(res.qty <= 0){
+    document.getElementById('CART_INFO').innerHTML = res.content1;
+    }else{
+    document.getElementById(domnum).innerHTML = res.qty;
+    }
+    document.getElementById('ECS_CARTINFO').innerHTML = res.result;
+    }
+    }
+
+
+    function changallser(allser)
+    {
+    document.getElementById(allser).className='item fore';
+    }
+
+
+
+
+    $(document).ready(function(){
+    $("#kfao").bind("mouseenter",function(event){
+    $("#kefu").animate({width:159},400,function(){});
+    event.stopPropagation();
+    });
+
+    $("#kefu").bind("mouseleave",function(event){
+    $("#kefu").animate({width:24},400,function(){});
+    });
+    });
+
+
+    function tops(){
+    var doc = (document.documentElement.scrollTop) ? document.documentElement : document.body;
+    var time;
+    time = setInterval(function(){
+    doc.scrollTop -= Math.ceil(doc.scrollTop * 0.7);
+    if(doc.scrollTop <= 0)  clearInterval(time);
+    }, 1);
+    }
+  </script>
+
+  <script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-v1.js"></script>
+  <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/lib-v1.js"></script>
+  <!--<script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/lib-v1.js"></script>-->
+
+

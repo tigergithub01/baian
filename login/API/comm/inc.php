@@ -1,0 +1,2 @@
+<?php die('forbidden'); ?>
+{"appid":"100583866","appkey":"0d48968dd87c3c06673a5e8a94d02e4b","callback":"www.123121.com/login/callback.php","scope":"get_user_info","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"root","database":"test"}

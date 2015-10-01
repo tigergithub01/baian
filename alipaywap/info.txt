@@ -1,0 +1,2 @@
+https://mapi.alipay.com/gateway.do?
+	_input_charset=utf-8&extend_param=isv%5Esh22&logistics_fee=0&logistics_payment=BUYER_PAY_AFTER_RECEIVE&logistics_type=EXPRESS&notify_url=http%3A%2F%2Fwww.123121.com%2Frespond.php%3Fcode%3Dalipay&out_trade_no=201402287195995&partner=2088112826700209&payment_type=1&price=171.90&quantity=1&return_url=http%3A%2F%2Fwww.123121.com%2Frespond.php%3Fcode%3Dalipay&seller_email=18927441631&service=create_partner_trade_by_buyer&subject=2014022871959&sign=c9b4e0c7b86765213e8d3c0bd6ca11a0&sign_type=MD5'

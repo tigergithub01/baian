@@ -429,7 +429,8 @@ function exchange_get_goods($children, $min, $max, $ext, $size, $page, $sort, $o
         $arr[$row['goods_id']]['type']              = $row['goods_type'];
         $arr[$row['goods_id']]['goods_thumb']       = get_image_path($row['goods_id'], $row['goods_thumb'], true);
         $arr[$row['goods_id']]['goods_img']         = get_image_path($row['goods_id'], $row['goods_img']);
-        $arr[$row['goods_id']]['url']               = build_uri('exchange_goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+//         $arr[$row['goods_id']]['url']               = build_uri('exchange_goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $arr[$row['goods_id']]['url']               = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
     }
 
     return $arr;
@@ -524,7 +525,8 @@ function get_exchange_recommend_goods($type = '', $cats = '', $min =0,  $max = 0
         $goods[$idx]['exchange_integral'] = $row['exchange_integral'];
         $goods[$idx]['thumb']             = get_image_path($row['goods_id'], $row['goods_thumb'], true);
         $goods[$idx]['goods_img']         = get_image_path($row['goods_id'], $row['goods_img']);
-        $goods[$idx]['url']               = build_uri('exchange_goods', array('gid' => $row['goods_id']), $row['goods_name']);
+//         $goods[$idx]['url']               = build_uri('exchange_goods', array('gid' => $row['goods_id']), $row['goods_name']);
+        $goods[$idx]['url']               = build_uri('goods', array('gid' => $row['goods_id']), $row['goods_name']);
 
         $goods[$idx]['short_style_name']  = add_style($goods[$idx]['short_name'], $row['goods_name_style']);
         $idx++;

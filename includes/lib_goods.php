@@ -1773,6 +1773,7 @@ $arr[$idx]['id'] = $row['ad_id'];
 $arr[$idx]['title'] = $row['ad_name'];
 $arr[$idx]['ad_link'] = $row['ad_link'];
 $arr[$idx]['ad_code'] = "data/afficheimg/".$row['ad_code'];
+$arr[$idx]['description'] = $row['description'];
 }
 return $arr;
 }
@@ -1798,6 +1799,7 @@ $arr[$idx]['add_time'] = local_date($GLOBALS['_CFG']['date_format'], $row['add_t
 $arr[$idx]['url'] = $row['open_type'] != 1 ? 
 build_uri('article', array('aid' => $row['article_id']), $row['title']) : trim($row['file_url']); 
 $arr[$idx]['cat_url'] = build_uri('article_cat', array('acid' => $row['cat_id'])); 
+$arr[$idx]['file_url'] = $row['file_url'];
 } 
 return $arr; 
 } 

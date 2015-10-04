@@ -46,17 +46,17 @@
 			</div>
 		</div>
 	</div>
-      <div class="fixed-ad" style="background:#d40404">
+	<!--{foreach from=$dibu name=ban item=banner}-->
+      <div class="fixed-ad" style="background:{$banner.description}">
 		<div class="wp pr">
 			<span class="show">展开</span>
 			<span class="hide">收起</span>
 			<div class="img">
-				 <!--{foreach from=$dibu name=ban item=banner}-->
 <a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
 			</div>
 		</div>
 	</div> 
+	<!--{/foreach}-->	
     <div id="float">
 		<ul>
 			<li class="mb0"><span></span><a class="s-f" href="#f1"><b>1F</b>孕妈专区</a></li>

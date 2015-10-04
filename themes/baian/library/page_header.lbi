@@ -32,6 +32,8 @@ var process_request = "{$lang.process_request}";
 				<div class="hotwords">
 					<span>热搜：</span>
 					
+					{foreach from=$searchkeywords item=val} <a href="search.php?keywords={$val|escape:url}" rel="nofollow">{$val}</a> {/foreach}
+					
 				</div>
 			</div>
 			<div class="hdr r">

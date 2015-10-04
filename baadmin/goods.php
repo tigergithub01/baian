@@ -21,6 +21,8 @@ include_once(ROOT_PATH . '/includes/cls_image.php');
 $image = new cls_image($_CFG['bgcolor']);
 $exc = new exchange($ecs->table('goods'), $db, 'goods_id', 'goods_name');
 
+$smarty->assign('JYXL_BL', $GLOBALS['_CFG']['JYXL_BL']);
+
 /*------------------------------------------------------ */
 //-- 商品列表，商品回收站
 /*------------------------------------------------------ */
@@ -813,7 +815,9 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $shop_price = !empty($_POST['shop_price']) ? $_POST['shop_price'] : 0;
     $market_price = !empty($_POST['market_price']) ? $_POST['market_price'] : 0;
     $promote_price = !empty($_POST['promote_price']) ? floatval($_POST['promote_price'] ) : 0;
-    $is_promote = empty($promote_price) ? 0 : 1;
+    
+//     $is_promote = empty($promote_price) ? 0 : 1;
+    $is_promote = !empty($_POST['is_promote']) ? intval($_POST['is_promote'] ) : 0;//modified by tiger.guo 20151004
     $promote_start_date = ($is_promote && !empty($_POST['promote_start_date'])) ? local_strtotime($_POST['promote_start_date']) : 0;
     $promote_end_date = ($is_promote && !empty($_POST['promote_end_date'])) ? local_strtotime($_POST['promote_end_date']) : 0;
     $goods_weight = !empty($_POST['goods_weight']) ? $_POST['goods_weight'] * $_POST['weight_unit'] : 0;

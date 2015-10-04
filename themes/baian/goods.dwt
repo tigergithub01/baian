@@ -450,17 +450,21 @@
 						<div class="h15"></div>
 					</div>
 				</div>
+				
+				
+				{if $promotion_goods|@count neq 0}
 				<div class="h"></div>
 				<div class="i-rush r">
 				<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
 				</div>
+				{/if}
 			</div>
 			<!-- End 右侧 -->
 
 			<div class="h5"></div>
-			<div class="f-link">
-				<a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a>
-			</div>
+			
+			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
+			
 		</div>
 	</div>
 	

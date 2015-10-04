@@ -601,7 +601,10 @@ function load_config()
         $arr['invoice_type']         = empty($arr['invoice_type']) ? array('type' => array(), 'rate' => array()) : unserialize($arr['invoice_type']);
         $arr['show_order_type']      = isset($arr['show_order_type']) ? $arr['show_order_type'] : 0;    // 显示方式默认为列表方式
         $arr['help_open']            = isset($arr['help_open']) ? $arr['help_open'] : 1;    // 显示方式默认为列表方式
-
+		
+        //脚印笑脸比例，默认设置为10 added by tiger.guo 2015-10-04
+        $arr['JYXL_BL']=10;
+        
         if (!isset($GLOBALS['_CFG']['ecs_version']))
         {
             /* 如果没有版本号则默认为2.0.5 */

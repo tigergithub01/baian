@@ -590,7 +590,7 @@
 					</div>
 				</div>
 				<div class="right">
-					<h2 class="tit2"><a class="r" href="">更多></a><strong>门店动态</strong></h2>
+					<h2 class="tit2"><a class="r" href="article_cat-33.html">更多></a><strong>门店动态</strong></h2>
 					<div class="bor-box" style="height:210px">
 						<ul class="ul-pic2">
                         <!--{foreach from=$class_articles_33 item=article}--> 
@@ -659,9 +659,9 @@
 				</div>
 			</div>
 			<div class="h5"></div>
-			<div class="f-link">
-				<a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a><a href="" title="产品名字">奶粉品牌</a><a href="" title="产品名字">母婴商城</a>
-			</div>
+			
+			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
+			
 		</div>
 	</div>
     <div class="h20"></div>

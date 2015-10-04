@@ -468,6 +468,14 @@ $smarty->assign('may_like_goods',$may_like_goods);
 $db->query('UPDATE ' . $ecs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");
 
 $smarty->assign('now_time',  gmtime());           // 当前系统时间
+
+
+//底部导航 2015-10-04 added by tiger.guo
+include_once ('includes/extend/cls_article.php');
+$cls_article = new cls_article();
+$nav_bottom_article = $cls_article->get_article(159);
+$smarty->assign('nav_bottom',$nav_bottom_article);
+
 $smarty->display('goods.dwt',      $cache_id);
 
 /*------------------------------------------------------ */

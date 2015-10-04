@@ -48,7 +48,7 @@
  <!-- {foreach from=$artciles_list item=article} -->
                         <ul class="s-article-list">
                             <li>
-                                <div class="pic"><a href="{$article.url}"><img src="/images/sp5.jpg" alt=""></a></div>
+                                <div class="pic"><a href="{$article.url}"><img src="{$article.file_url}" alt=""></a></div>
                                 <div class="txt">
                                     <h3><a href="{$article.url}">{$article.short_title}</a></h3>
                                     <div class="intro">{$article.content}... <a class="orange" href="{$article.url}">详细&gt;&gt;</a> <span class="r pr10">发布日期：{$article.add_time}</span></div>

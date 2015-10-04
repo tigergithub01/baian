@@ -233,7 +233,7 @@ elseif ($_REQUEST['act'] == 'insert')
     }
 
     /* 插入数据 */
-    $sql = "INSERT INTO ".$ecs->table('ad'). " (position_id,media_type,ad_name,ad_link,ad_code,start_time,end_time,link_man,link_email,link_phone,click_count,enabled)
+    $sql = "INSERT INTO ".$ecs->table('ad'). " (position_id,media_type,ad_name,ad_link,ad_code,start_time,end_time,link_man,link_email,link_phone,click_count,enabled,description)
     VALUES ('$_POST[position_id]',
             '$_POST[media_type]',
             '$ad_name',
@@ -245,7 +245,8 @@ elseif ($_REQUEST['act'] == 'insert')
             '$_POST[link_email]',
             '$_POST[link_phone]',
             '0',
-            '1')";
+            '1',
+    		'$_POST[description]')";
 
     $db->query($sql);
     /* 记录管理员操作 */
@@ -452,7 +453,8 @@ elseif ($_REQUEST['act'] == 'update')
             "link_man    = '$_POST[link_man]', ".
             "link_email  = '$_POST[link_email]', ".
             "link_phone  = '$_POST[link_phone]', ".
-            "enabled     = '$_POST[enabled]' ".
+            "enabled     = '$_POST[enabled]', ".
+            "description  = '$_POST[description]' ".
             "WHERE ad_id = '$id'";
     $db->query($sql);
 

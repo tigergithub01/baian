@@ -86,6 +86,7 @@ $_LANG['adsense_js_stats'] = '站外投放JS统计';
 $_LANG['gen_order_amount'] = '产生订单总数';
 $_LANG['confirm_order'] = '有效订单数';
 $_LANG['adsense_js_goods'] = '站外JS调用商品';
+$_LANG['description'] = '描述';
 
 $_LANG['ad_name_empty'] = '广告名称不能为空！';
 $_LANG['ads_stats_info'] = '广告统计信息';

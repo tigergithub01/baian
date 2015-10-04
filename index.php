@@ -355,6 +355,12 @@ foreach($latest_blog_rows as $row)
 
 $smarty->assign('latest_blogs',$latest_blogs);
 
+//底部导航 2015-10-03
+include_once ('includes/extend/cls_article.php');
+$cls_article = new cls_article();
+$nav_bottom_article = $cls_article->get_article(154);
+$smarty->assign('nav_bottom',$nav_bottom_article);
+
 $smarty->display('index.dwt', $cache_id);
 
 /*------------------------------------------------------ */
@@ -1197,7 +1203,9 @@ return $pvnewcomments;
 function get_my_comment( $ids, $count=1 )
 {
 		$arr = array( );
-		$sql = "SELECT c.*, g.goods_id, g.goods_thumb, g.goods_name FROM ".$GLOBALS['ecs']->table( "comment" )." AS c  LEFT JOIN ".$GLOBALS['ecs']->table( "goods" )." AS g ON c.id_value = g.goods_id WHERE g.cat_id in(".$ids.") and c.status=1 order by c.add_time desc limit ".$count;
+		$sql = "SELECT c.*, g.goods_id, g.goods_thumb, g.goods_name FROM ".
+		$GLOBALS['ecs']->table( "comment" )." AS c  LEFT JOIN ".
+		$GLOBALS['ecs']->table( "goods" )." AS g ON c.id_value = g.goods_id WHERE g.cat_id in(".$ids.") and c.status=1 and g.is_on_sale=1 and g.is_delete=0 order by c.add_time desc limit ".$count;
 		$res = $GLOBALS['db']->getAll( $sql );
 		foreach ( $res as $idx => $row )
 		{
@@ -1214,4 +1222,7 @@ function get_my_comment( $ids, $count=1 )
 		}
 		return $arr;
 }
+
+
+
 ?>

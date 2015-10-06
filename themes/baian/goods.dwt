@@ -69,7 +69,9 @@
     <form action="javascript:addToCart({$goods.goods_id})" method="post" name="ECS_FORMBUY" id="ECS_FORMBUY" >
                 <div class="txt-right">
                 	<h1>{$goods.goods_style_name}</h1>
-                	<h4> {$goods.goods_style_name}</h4>
+                	{if isset($goods.goods_title) && (strlen($goods.goods_title) gt 0)}
+                		<h4> {$goods.goods_title}</h4>
+                	{/if}	
                 	<div class="row1">
 	                	<dl>
 	                		<dt>百安价：</dt>

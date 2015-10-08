@@ -61,6 +61,20 @@ class cls_sql_dump
 
     var $db;
 
+    
+    /**
+     *  类的构造函数
+     *
+     * @access  public
+     * @param
+     *
+     * @return void
+     */
+    function __construct(&$db, $max_size =0)
+    {
+    	$this->cls_sql_dump($db, $max_size);
+    }
+    
     /**
      *  类的构造函数
      *
@@ -79,18 +93,7 @@ class cls_sql_dump
 
     }
 
-    /**
-     *  类的构造函数
-     *
-     * @access  public
-     * @param
-     *
-     * @return void
-     */
-    function __construct(&$db, $max_size =0)
-    {
-        $this->cls_sql_dump($db, $max_size);
-    }
+    
 
     /**
      *  获取指定表的定义
@@ -475,7 +478,7 @@ class cls_sql_dump
      *
      * @return      string      $str    随机名称
      */
-    function get_random_name()
+    static function get_random_name()
     {
         $str = date('Ymd');
 

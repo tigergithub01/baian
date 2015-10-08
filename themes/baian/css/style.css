@@ -140,7 +140,7 @@
 .ul-txt1{padding-top: 5px;}
 .ul-txt1 li{height: 20px;line-height: 20px;padding: 0 10px 0 8px;}
 
-.f-link a{display: inline-block;margin: 0 3px;float: left;line-height: 20px;}
+.f-link a{display: inline-block;margin: 0 3px;/*float: left;*/line-height: 20px;}
 
 
 /*购物车*/

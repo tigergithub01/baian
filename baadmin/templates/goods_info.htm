@@ -311,15 +311,27 @@
             <td><input type="checkbox" name="is_alone_sale" value="1" {if $goods.is_alone_sale}checked="checked"{/if} /> {$lang.alone_sale}</td>
           </tr>
 		  <!--add by wanggz商品买满多少件送一件的优惠活动-->
+		  
+		  <tr>
+            <td class="label">买几送几：</td>
+            <td> 买满<input type="text" name="buy_number_activity" value="{$goods.buy_number_activity|escape}" size="5" />件送<input type="text" name="give_number_activity" value="{$goods.give_number_activity|escape}" size="5" />件</td>
+          </tr>
+          <!-- 
           <tr>
             <td class="label">买满多少件送一件：</td>
             <td><input type="text" name="buy_number_activity" value="{$goods.buy_number_activity|escape}" size="40" /></td>
           </tr>
+           -->
           <!--add by wanggz商品买满多少件送一件的优惠活动end-->
            <!--add by wanggz设置某个商品在在某些地区可以包邮，某些地区不能-->
           <tr>
             <td class="label">{$lang.lab_is_free_shipping}</td>
             <td><input type="checkbox" name="is_shipping" value="1" {if $goods.is_shipping}checked="checked"{/if} onclick="showRegion(this)"/> {$lang.free_shipping}</td>
+          </tr>
+          <!-- added by tiger.guo 20151010 -->
+          <tr>
+            <td class="label">可减运费金额：</td>
+            <td><input type="text" name="reduce_ship_amt" value="{$goods.reduce_ship_amt}" size="40" /></td>
           </tr>
          
           <script language="javascript">

@@ -260,7 +260,7 @@ function delete_tag($tag_words, $user_id)
 function get_booking_list($user_id, $num, $start)
 {
     $booking = array();
-    $sql = "SELECT bg.rec_id, bg.goods_id, bg.goods_number, bg.booking_time, bg.dispose_note, g.goods_name ".
+    $sql = "SELECT bg.rec_id, bg.goods_id, bg.goods_number, bg.booking_time, bg.is_dispose, bg.dispose_note, g.goods_name ".
            "FROM " .$GLOBALS['ecs']->table('booking_goods')." AS bg , " .$GLOBALS['ecs']->table('goods')." AS g". " WHERE bg.goods_id = g.goods_id AND bg.user_id = '$user_id' ORDER BY bg.booking_time DESC";
     $res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
 
@@ -273,7 +273,8 @@ function get_booking_list($user_id, $num, $start)
         $booking[] = array('rec_id'       => $row['rec_id'],
                            'goods_name'   => $row['goods_name'],
                            'goods_number' => $row['goods_number'],
-                           'booking_time' => local_date($GLOBALS['_CFG']['date_format'], $row['booking_time']),
+                           'booking_time' => local_date($GLOBALS['_CFG']['time_format'], $row['booking_time']),
+        				   'is_dispose' => $row['is_dispose'],
                            'dispose_note' => $row['dispose_note'],
                            'url'          => build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']));
     }

@@ -719,7 +719,7 @@ function build_attr_html($cat_id, $goods_id = 0)
 		$attr_color_images_html = '';
 		if( $val['goods_attr_id'] && $val['goods_attr_id'] != 0 && $val['goods_attr_id'] != '' && $_REQUEST['act']!='copy')
 		{
-			$attr_color_images_dir = "../".DATA_DIR.'/color/'.get_attachment_www_68ecshop_com($goods_id)."/0-0-".$val['goods_attr_id'].".jpg";
+// 			$attr_color_images_dir = "../".DATA_DIR.'/color/'.get_attachment_www_68ecshop_com($goods_id)."/0-0-".$val['goods_attr_id'].".jpg";
 			file_exists($attr_color_images_dir) && $attr_color_images_html = '<span style="border:1px solid #FF6600;"><img src="'.$attr_color_images_dir.'" width="15" height="15" align="absmiddle"></span>';
 		}
 		$html .= $val['attr_name'] == '颜色' ? '<span>   属性图片：<input style="width: 160px;" type="file" name="attr_images_list[]" value="' . $val['attr_images_list'] . '" /></span> '.$attr_color_images_html : '<span style="display:none;"><input type="file" name="attr_images_list[]" value="" /></span>';

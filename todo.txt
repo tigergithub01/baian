@@ -60,5 +60,13 @@ http://help.jd.com/Vender/question-426.html
 Warning: Illegal string offset 'cat_name' in /www/web/default/public_html/baadmin/articlecat.php on line 24
 
 articlecat.php 241 247
+文章列表中增加:
+174 	免运费说明 	   
+173 	如何快速升级 	
+172 	会员等级说明
+
+分类页面中的筛选是什么意思？
+
+
 
 

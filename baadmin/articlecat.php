@@ -238,13 +238,13 @@ elseif ($_REQUEST['act'] == 'update')
     $dat = $db->getOne("SELECT cat_name, show_in_nav FROM ". $ecs->table('article_cat') . " WHERE cat_id = '" . $_POST['id'] . "'");
     if ($exc->edit("cat_name = '$_POST[cat_name]', cat_desc ='$_POST[cat_desc]', keywords='$_POST[keywords]',parent_id = '$_POST[parent_id]', cat_type='$cat_type', sort_order='$_POST[sort_order]', show_in_nav = '$_POST[show_in_nav]'",  $_POST['id']))
     {
-        if($_POST['cat_name'] != $dat['cat_name'])
+        if(is_array($dat) && $_POST['cat_name'] != $dat['cat_name']) //modified by tiger.guo 20151011
         {
             //如果分类名称发生了改变
             $sql = "UPDATE " . $ecs->table('nav') . " SET name = '" . $_POST['cat_name'] . "' WHERE ctype = 'a' AND cid = '" . $_POST['id'] . "' AND type = 'middle'";
             $db->query($sql);
         }
-        if($_POST['show_in_nav'] != $dat['show_in_nav'])
+        if(is_array($dat) && $_POST['show_in_nav'] != $dat['show_in_nav'])//modified by tiger.guo 20151011
         {
             if($_POST['show_in_nav'] == 1)
             {

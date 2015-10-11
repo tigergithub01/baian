@@ -54,7 +54,11 @@ http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb
 
 www_68ecshop_com
 
+http://help.jd.com/Vender/question-426.html
 
 
+Warning: Illegal string offset 'cat_name' in /www/web/default/public_html/baadmin/articlecat.php on line 24
+
+articlecat.php 241 247
 
 

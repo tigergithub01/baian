@@ -162,8 +162,9 @@ elseif ($action == 'act_register')
         $other['home_phone'] = isset($_POST['extend_field4']) ? $_POST['extend_field4'] : '';
         $other['mobile_phone'] = isset($_POST['extend_field5']) ? $_POST['extend_field5'] : '';
         $sel_question = empty($_POST['sel_question']) ? '' : compile_str($_POST['sel_question']);
-        $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';
-
+        $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';		
+        $reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
+        
 
         $back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
 
@@ -203,8 +204,14 @@ elseif ($action == 'act_register')
                 show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
             }
         }
-
-        if (register($mobile_phone, $password, $email, $other) !== false)
+	
+        //added by tiger.guo 20151012
+        $reg_value = $other['mobile_phone'];
+        if($reg_type==1){
+        	$reg_value = $email;
+        }
+                
+        if (register($reg_value, $password, $email, $other) !== false)
         {
             /*把新注册用户的扩展信息插入数据库*/
             $sql = 'SELECT id FROM ' . $ecs->table('reg_fields') . ' WHERE type = 0 AND display = 1 ORDER BY dis_order, id';   //读出所有自定义扩展字段的id

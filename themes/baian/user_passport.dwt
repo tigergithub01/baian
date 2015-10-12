@@ -83,7 +83,8 @@
                 </div>
                 <form action="user.php" method="post" name="formUser" onsubmit="return register2();">
                     <table>
-                        <tr>
+                    	<tr style='display:none'><input type='hidden' value='0' name='reg_type' id='reg_type'/></tr>
+                        <tr id='row_mobile_phone'>
                             <th>手机号：</th>                               
                             <td>   
                               <!-- {foreach from=$extend_info_list item=field} -->
@@ -91,14 +92,24 @@
 
 
 	<!-- {else} -->
-        <div {if $field.reg_field_name eq '手机'}id="mobile_field"{/if} >  
+        
           <input name="extend_field{$field.id}" id="extend_field{$field.id}" type="text" size="25" class="text" placeholder="手机号" onblur="is_registered(this.value);" /> 
-          </div>
+          <a href='javascript:void(0)' onclick="$('#row_mobile_phone').hide();$('#row_email').show();$('#row_verify_phone').hide();$('#row_verify_email').show();$('#reg_type').val('1');">或邮箱注册</a>
             <!-- <input name="username" type="text" id="username" placeholder="用户名/手机号" onblur="is_registered(this.value);" class="text" />-->
 
- </td>
+ 						</td>
                                
-                        <!--class="text"-->   </tr>
+                        <!--class="text"-->   
+                        </tr>
+                        <tr id='row_email' style='display:none'>
+                        	<th>
+                        		邮箱:
+                        	</th>
+                        	<td>
+                        	<input name="email" type="text" id="email" placeholder="邮箱" onblur="is_registered(this.value);" class="text" /> 
+                        	 <a href='javascript:void(0)' onclick="$('#row_mobile_phone').show();$('#row_email').hide();$('#row_verify_phone').show();$('#row_verify_email').hide();$('#reg_type').val('0');">或手机注册</a>
+                        	</td>
+                        </tr>	
                         <tr>
                             <th>设置密码：</th>
                             <td>
@@ -153,7 +164,7 @@ function noticeAssign(num) {
                         </tr>
                         
                         
-        	<tr> 
+        	<tr id='row_verify_phone'> 
           <span class="label" <!-- {if $field.is_need} -->id="extend_field{$field.id}i"<!--{/if}-->>
           <!-- {if $field.is_need} --><!-- {/if} -->
          <th>短信验证码：</th>
@@ -176,7 +187,16 @@ function noticeAssign(num) {
               </div>
         </div>
        </td>
-                        </tr>
+       </tr>
+                        <tr id='row_verify_email' style='display:none'>
+                     	<th>邮箱验证码：</th>
+                        <td colspan="2">
+                        		<input name="email_code" id="email_code" type="text" style="width:80px;"class="inputBg">
+                        		 <!-- {if $field.reg_field_name eq '手机'} -->
+                        		 <input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();"><!-- {/if} -->
+                        </td>	
+                        	
+                         </tr>
                  <tr>
                             <th>验证码：</th>
                             <td><input type="text" id="captcha" style="width: 80px;" name="captcha" class="text"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>

@@ -41,8 +41,8 @@
                     </div>
                     <div class="txt">
                         <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}:22）</span></p>
-                        <p>会员等级：<span class="vipBox"><b>v</b>1</span><a class="orange" href="">查看等级说明》</a></p>
-                        <p>当前级别：<span class="degreeBox" score="50" total="500"></span><a class="orange" href="">如何快速升级》</a></p>
+                        <p>会员等级：<span class="vipBox"><b>v</b>1</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
+                        <p>当前级别：<span class="degreeBox" score="50" total="500"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
                         <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="">50</a>分</p>
                     </div>
                     </div>

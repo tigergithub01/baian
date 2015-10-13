@@ -845,6 +845,9 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     //goods_title
     $goods_title = isset($_POST['goods_title']) ? $_POST['goods_title'] : null;
     
+    //pinyin
+    $pinyin = isset($_POST['pinyin']) ? $_POST['pinyin'] : null;
+    
     //可减少运费金额 added by tiger.guo 20151010
     $reduce_ship_amt = isset($_POST['reduce_ship_amt']) ? $_POST['reduce_ship_amt'] : 0;
     
@@ -861,13 +864,13 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
-                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity)" .
+                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity,pinyin)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', '$is_on_sale', '$is_alone_sale', $is_shipping, ".
-                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity')";
+                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity','$pinyin')";
         }
         else
         {
@@ -875,13 +878,13 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
-                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity)" .
+                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity,pinyin)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', 0, '$is_on_sale', '$is_alone_sale', $is_shipping, ".
-                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity')";
+                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity','$pinyin')";
         }
     }
     else
@@ -950,6 +953,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "reduce_ship_amt = '$reduce_ship_amt', " .
                 "buy_number_activity = '$buy_number_activity', " .
                 "give_number_activity = '$give_number_activity', " .
+                "pinyin = '$pinyin', " .
                 "goods_type = '$goods_type' " .
                 "WHERE goods_id = '$_REQUEST[goods_id]' LIMIT 1";
     }
@@ -1194,7 +1198,7 @@ else
     $link = array();
     if (check_goods_specifications_exist($goods_id))
     {
-        $link[0] = array('href' => 'goods.php?act=product_storeroom&goods_id=' . $goods_id, 'text' => $_LANG['product']);
+        $link[0] = array('href' => 'goods.php?act=edit&goods_id=' . $goods_id, 'text' => $_LANG['product']);
     }
     if ($code == 'virtual_card')
     {

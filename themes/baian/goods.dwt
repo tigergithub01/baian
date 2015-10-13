@@ -316,27 +316,24 @@
 							</ul><!-- {/if} -->
 
 							<!-- 同品牌 -->
+							<!-- {if $brand_related_random_goods} -->
 							<ul class="ul-pic6">
-                            	<!--{foreach from=$hot_goods item=goods_item name=cat_item_goods}-->
-          <li 
-        <!-- {if $smarty.foreach.cat_item_goods.iteration eq 1} -->
-          class='fore'
-          <!-- {/if} -->
-          > {if $smarty.foreach.cat_item_goods.iteration<4}<span >{$smarty.foreach.cat_item_goods.iteration}</span>{/if}
-          <a href='{$goods_item.url}'><img src="{$goods_item.thumb}" width="50" height="50"/></a>
+                            <!--{foreach from=$brand_related_random_goods item=brand_goods}-->   
+                             
+							
+          <li ><a href='{$brand_goods.url}'><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
           <div class="txt">
-         <p><a href='{$goods_item.url}' title='{$goods_item.name|escape:html}'>{$goods_item.short_style_name}</a></p>
+         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}'>{$brand_goods.short_name}</a></p>
          <p><b class="red f14">
-            <!-- {if $goods_item.promote_price neq ""} -->
-            {$goods_item.promote_price}
+            <!-- {if $brand_goods.promote_price neq 0} -->
+           {$brand_goods.formated_promote_price}
             <!-- {else}-->
-            {$goods_item.shop_price}
+          {$brand_goods.shop_price}
             <!--{/if}-->
            </b></p></div>
           </li>
           <!--{/foreach}-->
-								
-							</ul>
+							</ul><!-- {/if} -->
 
 							<!-- 同价位 -->
 							<ul class="ul-pic6">

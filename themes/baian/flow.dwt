@@ -304,18 +304,20 @@ function update_cart()
 
     <div class="blank"></div>
   <!-- {if $collection_goods} -->
-  <div class="flowBox mod2">
+  <!--
+   <div class="flowBox mod2">
      <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
     <h6><span>{$lang.label_collection}</span></h6>
     <table width="100%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
-      <!-- {foreach from=$collection_goods item=goods} -->
+      {foreach from=$collection_goods item=goods}
           <tr>
             <td bgcolor="#ffffff"><a href="goods.php?id={$goods.goods_id}" class="f6">{$goods.goods_name}</a></td>
             <td bgcolor="#ffffff" align="center" width="100"><a href="javascript:addToCart({$goods.goods_id})" class="f6">{$lang.collect_to_flow}</a></td>
           </tr>
-      <!-- {/foreach} -->
+      {/foreach}
         </table> 
-        </div>
+        </div> 
+        -->
       <!-- {/if} -->
  
     <div class="blank5"></div>

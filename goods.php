@@ -346,6 +346,7 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
 
         $smarty->assign('properties',          $properties['pro']);                              // 商品属性
 		$smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //
+		$smarty->assign('brand_related_random_goods',       brand_related_random_goods($goods['brand_id'])); //
         $smarty->assign('specification',       $properties['spe']);                              // 商品规格
         $smarty->assign('attribute_linked',    get_same_attribute_goods($properties));           // 相同属性的关联商品
         $smarty->assign('related_goods',       $linked_goods);                                   // 关联商品
@@ -988,5 +989,43 @@ function category_related_random_goods($category_id)
         }
     }
     return $arr;
+}
+
+/*同品牌下随机推荐商品*/
+function brand_related_random_goods($brand_id)
+{
+	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
+			"g.is_delete = 0 AND g.brand_id=$brand_id ";
+	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
+			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
+			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .
+			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
+			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
+			"WHERE $where ORDER BY rand() limit 12";
+	$res = $GLOBALS['db']->query($sql);
+	$arr = array();//www.zuimoban.com
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+		$arr[$row['goods_id']]['goods_id']     = $row['goods_id'];
+		$arr[$row['goods_id']]['goods_name']   = $row['goods_name'];
+		$arr[$row['goods_id']]['short_name']   = $GLOBALS['_CFG']['goods_name_length'] > 0 ?
+		sub_str($row['goods_name'], $GLOBALS['_CFG']['goods_name_length']) : $row['goods_name'];
+		$arr[$row['goods_id']]['goods_thumb']  = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+		$arr[$row['goods_id']]['goods_img']    = get_image_path($row['goods_id'], $row['goods_img']);
+		$arr[$row['goods_id']]['market_price'] = price_format($row['market_price']);
+		$arr[$row['goods_id']]['shop_price']   = price_format($row['shop_price']);
+		$arr[$row['goods_id']]['url']          = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+		if ($row['promote_price'] > 0)
+		{
+			$arr[$row['goods_id']]['promote_price'] = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date']);
+			$arr[$row['goods_id']]['formated_promote_price'] = price_format($arr[$row['goods_id']]['promote_price']);
+		}
+		else
+		{
+			$arr[$row['goods_id']]['promote_price'] = 0;
+		}
+	}
+	return $arr;
 }
 ?>

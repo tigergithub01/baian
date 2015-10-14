@@ -306,6 +306,10 @@ $smarty->assign('flash_count',count(get_flash_xml()));
 
     /* 页面中的动态内容 */
     assign_dynamic('index');
+    
+    //猜你喜欢    
+    $may_like_goods = com_sale_get_may_like_goods();
+    $smarty->assign('may_like_goods',$may_like_goods);
 }
 $sql = 'SELECT g.goods_id, g.goods_name, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
@@ -360,6 +364,8 @@ include_once ('includes/extend/cls_article.php');
 $cls_article = new cls_article();
 $nav_bottom_article = $cls_article->get_article(154);
 $smarty->assign('nav_bottom',$nav_bottom_article);
+
+
 
 $smarty->display('index.dwt', $cache_id);
 
@@ -675,16 +681,7 @@ else
     setcookie('ECS[history]', $goods_id, gmtime() + 3600 * 24 * 30);
 }
 
-//猜你喜欢
-$sql = "select goods_id, goods_name, shop_price, goods_thumb, market_price from ".$ecs->table('goods').
-		" where is_on_sale = 1 and is_delete = 0 order by rand() limit 5";
-$may_like_goods = $db->getAll($sql);
-foreach($may_like_goods as $key=>$val){
-	$may_like_goods[$key]['url'] = build_uri('goods', array('gid'=>$val['goods_id']));
-	$may_like_goods[$key]['shop_price_formated'] = '￥'.number_format(floatval($val['shop_price']),2);
-	$may_like_goods[$key]['market_price_formated'] = '￥'.number_format(floatval($val['market_price']),2);
-}
-$smarty->assign('may_like_goods',$may_like_goods);
+
 /* 更新点击次数 */
 $db->query('UPDATE ' . $ecs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");
 

@@ -1806,18 +1806,288 @@ return $arr;
 /*读取下级栏目
 $catid 为父栏目id  0 为一级栏目
 */
-function get_childname($catid){
-	
-$a=get_categories_tree($catid);
-$i=0;
-foreach($a as $value){
-	$pname[$i]['id']=$value['id'];
-	$pname[$i]['name']=$value['name'];
-	$pname[$i]['url']=$value['url'];
-	
-	$i++;
+function get_childname($catid) {
+	$a = get_categories_tree ( $catid );
+	$i = 0;
+	foreach ( $a as $value ) {
+		$pname [$i] ['id'] = $value ['id'];
+		$pname [$i] ['name'] = $value ['name'];
+		$pname [$i] ['url'] = $value ['url'];
+		
+		$i ++;
 	}
-return $pname;
+	return $pname;
+}
+
+/**
+ * 根据价格获取价格区间
+ * @param unknown $cat_id
+ * @param unknown $price
+ * @return unknown|NULL
+ */
+function get_price_grade_by_price($cat_id,$price){
+	$price_grade = get_price_grade($cat_id);
+	if(!empty($price_grade)){
+		foreach ($price_grade as $key => $value) {
+			if($value['start']<=$price && $value['end']>=$price){
+				return $value;
+			}
+		}
 	}
+	return null;
+}
+
+/**
+ * 获得分类的信息
+ *
+ * @param   integer $cat_id
+ *
+ * @return  void
+ */
+function com_sale_get_cat_info_by_cat_id($cat_id)
+{
+	return $GLOBALS['db']->getRow('SELECT cat_name, keywords, cat_desc, style, grade, filter_attr, parent_id FROM ' . $GLOBALS['ecs']->table('category') .
+			" WHERE cat_id = '$cat_id'");
+}
+
+/**
+ * 取得最近的上级分类的grade值
+ *
+ * @access  public
+ * @param   int     $cat_id    //当前的cat_id
+ *
+ * @return int
+ */
+function com_sale_get_parent_grade_by_cat_id($cat_id)
+{
+	static $res = NULL;
+
+	if ($res === NULL)
+	{
+		$data = read_static_cache('cat_parent_grade');
+		if ($data === false)
+		{
+			$sql = "SELECT parent_id, cat_id, grade ".
+					" FROM " . $GLOBALS['ecs']->table('category');
+			$res = $GLOBALS['db']->getAll($sql);
+			write_static_cache('cat_parent_grade', $res);
+		}
+		else
+		{
+			$res = $data;
+		}
+	}
+
+	if (!$res)
+	{
+		return 0;
+	}
+
+	$parent_arr = array();
+	$grade_arr = array();
+
+	foreach ($res as $val)
+	{
+		$parent_arr[$val['cat_id']] = $val['parent_id'];
+		$grade_arr[$val['cat_id']] = $val['grade'];
+	}
+
+	while ($parent_arr[$cat_id] >0 && $grade_arr[$cat_id] == 0)
+	{
+		$cat_id = $parent_arr[$cat_id];
+	}
+
+	return $grade_arr[$cat_id];
+
+}
+	
+function get_price_grade($cat_id){
+	$children = get_children($cat_id);
+
+	$cat = com_sale_get_cat_info_by_cat_id($cat_id);   // 获得分类的相关信息
+
+	/* 获取价格分级 */
+	if ($cat['grade'] == 0  && $cat['parent_id'] != 0)
+	{
+		$cat['grade'] = com_sale_get_parent_grade_by_cat_id($cat_id); //如果当前分类级别为空，取最近的上级分类
+	}
+
+	if ($cat['grade'] > 1)
+	{
+		/* 需要价格分级 */
+
+		/*
+		 算法思路：
+		 1、当分级大于1时，进行价格分级
+		 2、取出该类下商品价格的最大值、最小值
+		 3、根据商品价格的最大值来计算商品价格的分级数量级：
+		 价格范围(不含最大值)    分级数量级
+		 0-0.1                   0.001
+		 0.1-1                   0.01
+		 1-10                    0.1
+		 10-100                  1
+		 100-1000                10
+		 1000-10000              100
+		 4、计算价格跨度：
+		 取整((最大值-最小值) / (价格分级数) / 数量级) * 数量级
+		 5、根据价格跨度计算价格范围区间
+		 6、查询数据库
+
+		 可能存在问题：
+		 1、
+		 由于价格跨度是由最大值、最小值计算出来的
+		 然后再通过价格跨度来确定显示时的价格范围区间
+		 所以可能会存在价格分级数量不正确的问题
+		 该问题没有证明
+		 2、
+		 当价格=最大值时，分级会多出来，已被证明存在
+		 */
+
+		$sql = "SELECT min(g.shop_price) AS min, max(g.shop_price) as max ".
+				" FROM " . $GLOBALS['ecs']->table('goods'). " AS g ".
+				" WHERE ($children OR " . get_extension_goods($children) . ') AND g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1  ';
+		//获得当前分类下商品价格的最大值、最小值
+
+		$row = $GLOBALS['db']->getRow($sql);
+
+		// 取得价格分级最小单位级数，比如，千元商品最小以100为级数
+		$price_grade = 0.0001;
+		for($i=-2; $i<= log10($row['max']); $i++)
+		{
+			$price_grade *= 10;
+		}
+
+		//跨度
+		$dx = ceil(($row['max'] - $row['min']) / ($cat['grade']) / $price_grade) * $price_grade;
+		if($dx == 0)
+		{
+			$dx = $price_grade;
+		}
+
+		for($i = 1; $row['min'] > $dx * $i; $i ++);
+
+		for($j = 1; $row['min'] > $dx * ($i-1) + $price_grade * $j; $j++);
+		$row['min'] = $dx * ($i-1) + $price_grade * ($j - 1);
+
+		for(; $row['max'] >= $dx * $i; $i ++);
+		$row['max'] = $dx * ($i) + $price_grade * ($j - 1);
+
+		$sql = "SELECT (FLOOR((g.shop_price - $row[min]) / $dx)) AS sn, COUNT(*) AS goods_num  ".
+				" FROM " . $GLOBALS['ecs']->table('goods') . " AS g ".
+				" WHERE ($children OR " . get_extension_goods($children) . ') AND g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1 '.
+				" GROUP BY sn ";
+
+		$price_grade = $GLOBALS['db']->getAll($sql);
+
+		foreach ($price_grade as $key=>$val)
+		{
+			$temp_key = $key + 1;
+			$price_grade[$temp_key]['goods_num'] = $val['goods_num'];
+			$price_grade[$temp_key]['start'] = $row['min'] + round($dx * $val['sn']);
+			$price_grade[$temp_key]['end'] = $row['min'] + round($dx * ($val['sn'] + 1));
+			$price_grade[$temp_key]['price_range'] = $price_grade[$temp_key]['start'] . '&nbsp;-&nbsp;' . $price_grade[$temp_key]['end'];
+			$price_grade[$temp_key]['formated_start'] = price_format($price_grade[$temp_key]['start']);
+			$price_grade[$temp_key]['formated_end'] = price_format($price_grade[$temp_key]['end']);
+			$price_grade[$temp_key]['url'] = build_uri('category', array('cid'=>$cat_id, 'bid'=>$brand, 'price_min'=>$price_grade[$temp_key]['start'], 'price_max'=> $price_grade[$temp_key]['end'], 'filter_attr'=>$filter_attr_str), $cat['cat_name']);
+
+			/* 判断价格区间是否被选中 */
+			/* if (isset($_REQUEST['price_min']) && $price_grade[$temp_key]['start'] == $price_min && $price_grade[$temp_key]['end'] == $price_max)
+			 {
+				$price_grade[$temp_key]['selected'] = 1;
+				}
+				else
+				{
+				$price_grade[$temp_key]['selected'] = 0;
+			} */
+		}
+
+		$price_grade[0]['start'] = 0;
+		 $price_grade[0]['end'] = 0;
+		 $price_grade[0]['price_range'] = $_LANG['all_attribute'];
+		 $price_grade[0]['url'] = build_uri('category', array('cid'=>$cat_id, 'bid'=>$brand, 'price_min'=>0, 'price_max'=> 0, 'filter_attr'=>$filter_attr_str), $cat['cat_name']);
+		 $price_grade[0]['selected'] = empty($price_max) ? 1 : 0;
+		return $price_grade;
+	}
+}	
+
+function com_sale_get_may_like_goods()
+{
+	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
+			"g.is_delete = 0 ";
+	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
+			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
+			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .
+			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
+			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
+			"WHERE $where ORDER BY rand() limit 10";
+	$res = $GLOBALS['db']->query($sql);
+	$arr = array();//www.zuimoban.com
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+		$arr[$row['goods_id']]['goods_id']     = $row['goods_id'];
+		$arr[$row['goods_id']]['goods_name']   = $row['goods_name'];
+		$arr[$row['goods_id']]['short_name']   = $GLOBALS['_CFG']['goods_name_length'] > 0 ?
+		sub_str($row['goods_name'], $GLOBALS['_CFG']['goods_name_length']) : $row['goods_name'];
+		$arr[$row['goods_id']]['goods_thumb']  = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+		$arr[$row['goods_id']]['goods_img']    = get_image_path($row['goods_id'], $row['goods_img']);
+		$arr[$row['goods_id']]['market_price'] = price_format($row['market_price']);
+		$arr[$row['goods_id']]['shop_price']   = price_format($row['shop_price']);
+		$arr[$row['goods_id']]['url']          = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+		if ($row['promote_price'] > 0)
+		{
+			$arr[$row['goods_id']]['promote_price'] = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date']);
+			$arr[$row['goods_id']]['formated_promote_price'] = price_format($arr[$row['goods_id']]['promote_price']);
+		}
+		else
+		{
+			$arr[$row['goods_id']]['promote_price'] = 0;
+		}
+	}
+	return $arr;
+}
+
+function com_sale_goods_get_related_brands_by_cat_id($cat_id){
+	$children = get_children($cat_id);
+	
+	$sql = "SELECT b.brand_id, b.brand_name, COUNT(*) AS goods_num ".
+			"FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+			$GLOBALS['ecs']->table('goods') . " AS g LEFT JOIN ". $GLOBALS['ecs']->table('goods_cat') . " AS gc ON g.goods_id = gc.goods_id " .
+			"WHERE g.brand_id = b.brand_id AND ($children) AND b.is_show = 1 " .
+			" AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+			"GROUP BY b.brand_id HAVING goods_num > 0 ORDER BY b.sort_order, b.brand_id ASC";
+	
+	$brands = $GLOBALS['db']->getAll($sql);
+	
+	foreach ($brands AS $key => $val)
+	{
+		$brands[$key]['brand_url'] = build_uri('brand', array('cid' => $cat_id, 'bid' => $val['brand_id']), $val['brand_name']);
+		$brands[$key]['brand_name'] = $val['brand_name'];
+	}
+	return $brands;
+}
+
+function com_sale_goods_get_related_cats_by_cat_id($cat_id){
+	$children = get_children($cat_id);
+
+	$sql = "SELECT b.brand_id, b.brand_name, COUNT(*) AS goods_num ".
+			"FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+			$GLOBALS['ecs']->table('goods') . " AS g LEFT JOIN ". $GLOBALS['ecs']->table('goods_cat') . " AS gc ON g.goods_id = gc.goods_id " .
+			"WHERE g.brand_id = b.brand_id AND ($children) AND b.is_show = 1 " .
+			" AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+			"GROUP BY b.brand_id HAVING goods_num > 0 ORDER BY b.sort_order, b.brand_id ASC";
+
+	$brands = $GLOBALS['db']->getAll($sql);
+
+	foreach ($brands AS $key => $val)
+	{
+		$brands[$key]['url'] = build_uri($app, array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
+		$brands[$key]['brand_name'] = $val['brand_name'];
+	}
+	return $brands;
+}
+
+
+
 
 ?>

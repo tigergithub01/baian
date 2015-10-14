@@ -170,8 +170,8 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
 $this->assign('hot_1',get_hot_cat_goods('promote',12)); //1：对应分类ID ;20：显示数量
 $this->assign('tomorrow',date("Y/m/d",time()+24*3600));
  
-/* 同类品牌*/
-		 $cat_brands = get_cat_brands($this->_var['goods']['cat_id']);
+		/* 同类品牌*/
+		 /* $cat_brands = get_cat_brands($this->_var['goods']['cat_id']);
 		  
 		  $format_cat_brands = array();
 		  foreach($cat_brands as $cat_brand)
@@ -180,7 +180,7 @@ $this->assign('tomorrow',date("Y/m/d",time()+24*3600));
 		  	$format_cat_brands[] = $cat_brand;
 		  }
 		  
-		  $GLOBALS['smarty']->assign('get_cat_brands',$format_cat_brands); 
+		  $GLOBALS['smarty']->assign('get_cat_brands',$format_cat_brands);  */
     }
 
     die($json->encode($res));
@@ -345,8 +345,17 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
         $properties = get_goods_properties($goods_id);  // 获得商品的规格和属性
 
         $smarty->assign('properties',          $properties['pro']);                              // 商品属性
-		$smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //
-		$smarty->assign('brand_related_random_goods',       brand_related_random_goods($goods['brand_id'])); //
+		$smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //同分类
+		$smarty->assign('brand_related_random_goods',       brand_related_random_goods($goods['brand_id'])); //同品牌
+		
+		//所属价格区间，同价位
+		$price_gradex = get_price_grade_by_price($goods['cat_id'], $goods['shop_price']);
+		if(!empty($price_gradex)){
+			$smarty->assign('price_grade_related_random_goods',       price_grade_related_random_goods($goods['cat_id'],$price_gradex['start'],$price_gradex['end'])); //
+		}	
+		
+		$smarty->assign('related_brands_by_cat_id',       com_sale_goods_get_related_brands_by_cat_id($goods['cat_id'])); //相关品牌;
+		
         $smarty->assign('specification',       $properties['spe']);                              // 商品规格
         $smarty->assign('attribute_linked',    get_same_attribute_goods($properties));           // 相同属性的关联商品
         $smarty->assign('related_goods',       $linked_goods);                                   // 关联商品
@@ -456,15 +465,17 @@ else
 }
 
 //猜你喜欢
-$sql = "select goods_id, goods_name, shop_price, goods_thumb, market_price from ".$ecs->table('goods').
+/* $sql = "select goods_id, goods_name, shop_price, goods_thumb, market_price from ".$ecs->table('goods').
 		" where is_on_sale = 1 and is_delete = 0 order by rand() limit 10";
 $may_like_goods = $db->getAll($sql);
 foreach($may_like_goods as $key=>$val){
 	$may_like_goods[$key]['url'] = build_uri('goods', array('gid'=>$val['goods_id']));
 	$may_like_goods[$key]['shop_price_formated'] = '￥'.number_format(floatval($val['shop_price']),2);
 	$may_like_goods[$key]['market_price_formated'] = '￥'.number_format(floatval($val['market_price']),2);
-}
+} */
+$may_like_goods = com_sale_get_may_like_goods();
 $smarty->assign('may_like_goods',$may_like_goods);
+
 /* 更新点击次数 */
 $db->query('UPDATE ' . $ecs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");
 
@@ -931,6 +942,12 @@ function get_article($article_id)
     $row = $GLOBALS['db']->getRow($sql);
     return $row;
 }
+/**
+ * 同类品牌
+ * @param unknown $cat
+ * @param number $num
+ * @param string $app
+ */
  function get_cat_brands( $cat, $num = 0, $app = "category" )
 {
 		$where = "";
@@ -996,6 +1013,44 @@ function brand_related_random_goods($brand_id)
 {
 	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
 			"g.is_delete = 0 AND g.brand_id=$brand_id ";
+	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
+			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
+			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .
+			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
+			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
+			"WHERE $where ORDER BY rand() limit 12";
+	$res = $GLOBALS['db']->query($sql);
+	$arr = array();//www.zuimoban.com
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+		$arr[$row['goods_id']]['goods_id']     = $row['goods_id'];
+		$arr[$row['goods_id']]['goods_name']   = $row['goods_name'];
+		$arr[$row['goods_id']]['short_name']   = $GLOBALS['_CFG']['goods_name_length'] > 0 ?
+		sub_str($row['goods_name'], $GLOBALS['_CFG']['goods_name_length']) : $row['goods_name'];
+		$arr[$row['goods_id']]['goods_thumb']  = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+		$arr[$row['goods_id']]['goods_img']    = get_image_path($row['goods_id'], $row['goods_img']);
+		$arr[$row['goods_id']]['market_price'] = price_format($row['market_price']);
+		$arr[$row['goods_id']]['shop_price']   = price_format($row['shop_price']);
+		$arr[$row['goods_id']]['url']          = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+		if ($row['promote_price'] > 0)
+		{
+			$arr[$row['goods_id']]['promote_price'] = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date']);
+			$arr[$row['goods_id']]['formated_promote_price'] = price_format($arr[$row['goods_id']]['promote_price']);
+		}
+		else
+		{
+			$arr[$row['goods_id']]['promote_price'] = 0;
+		}
+	}
+	return $arr;
+}
+
+/*同价位随机推荐商品*/
+function price_grade_related_random_goods($category_id,$min_price,$max_price)
+{
+	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
+			"g.is_delete = 0 AND g.cat_id=$category_id and (g.shop_price>=$min_price and g.shop_price<=$max_price) ";
 	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
 			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
 			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .

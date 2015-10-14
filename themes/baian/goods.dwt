@@ -278,8 +278,8 @@
 				<div class="sbox">
 					<h3 class="st1">同类品牌</h3>
 					<ul class="ul-txt2-p ul-txt3-p">
-						<!--{foreach from=$get_cat_brands item=brand_cat name=get_cat_brands}-->
-          <li><a href="{$brand_cat.brand_url}" title="{$brand_cat.name}">{$brand_cat.name}</a></li>
+						<!--{foreach from=$related_brands_by_cat_id item=brand_cat name=get_cat_brands}-->
+          <li><a href="{$brand_cat.brand_url}" title="{$brand_cat.brand_name}">{$brand_cat.brand_name}</a></li>
           <!--{/foreach}-->
 					</ul>
 				</div>
@@ -336,34 +336,46 @@
 							</ul><!-- {/if} -->
 
 							<!-- 同价位 -->
+							<!-- {if $brand_related_random_goods} -->
 							<ul class="ul-pic6">
-									<!--{foreach from=$hot_goods item=goods_item name=cat_item_goods}-->
-          <li 
-        <!-- {if $smarty.foreach.cat_item_goods.iteration eq 1} -->
-          class='fore'
-          <!-- {/if} -->
-          > {if $smarty.foreach.cat_item_goods.iteration<4}<span >{$smarty.foreach.cat_item_goods.iteration}</span>{/if}
-          <a href='{$goods_item.url}'><img src="{$goods_item.thumb}" width="50" height="50"/></a>
+                            <!--{foreach from=$price_grade_related_random_goods item=brand_goods}-->   
+                             
+							
+          <li ><a href='{$brand_goods.url}'><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
           <div class="txt">
-         <p><a href='{$goods_item.url}' title='{$goods_item.name|escape:html}'>{$goods_item.short_style_name}</a></p>
+         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}'>{$brand_goods.short_name}</a></p>
          <p><b class="red f14">
-            <!-- {if $goods_item.promote_price neq ""} -->
-            {$goods_item.promote_price}
+            <!-- {if $brand_goods.promote_price neq 0} -->
+           {$brand_goods.formated_promote_price}
             <!-- {else}-->
-            {$goods_item.shop_price}
+          {$brand_goods.shop_price}
             <!--{/if}-->
            </b></p></div>
           </li>
           <!--{/foreach}-->
-							</ul>
+							</ul><!-- {/if} -->
 						</div>
 					</div>
 				</div>
 				<div class="h"></div>
 				<div class="sbox">
                     <h3 class="st1">看了还看</h3>
-                    <ul class="s-img-list">
-                        
+                    <ul class="ul-pic6">
+                        <!--{foreach from=$may_like_goods item=item_goods}-->   
+                             
+							
+          <li ><a href='{$item_goods.url}'><img src="{$item_goods.goods_thumb}" width="50" height="50"/></a>
+          <div class="txt">
+         <p><a href='{$item_goods.url}' title='{$item_goods.short_name}'>{$item_goods.short_name}</a></p>
+         <p><b class="red f14">
+            <!-- {if $item_goods.promote_price neq 0} -->
+           {$item_goods.formated_promote_price}
+            <!-- {else}-->
+          {$item_goods.shop_price}
+            <!--{/if}-->
+           </b></p></div>
+          </li>
+          <!--{/foreach}-->
                     </ul>
                 </div>
                 <div class="h"></div>
@@ -439,12 +451,18 @@
 					<h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
 					<div class="bor-box bd">
 						<ul class="ul-pic1 ul-pic1-b">
-							 {foreach from=$may_like_goods item=data}
-			<li><a href="{$data.url}" title="{$data.goods_name}">
-									<img src="{$data.goods_thumb}" alt="">
+							 {foreach from=$may_like_goods item=item_goods}
+			<li><a href="{$item_goods.url}" title="{$item_goods.short_name}">
+									<img src="{$item_goods.goods_thumb}" alt="">
 								</a>
-								<p><a href="" title="{$data.goods_name}">{$data.goods_name}...</a></p>
-								<p><b>{$data.shop_price_formated}</b></p>
+								<p><a href="{$item_goods.url}" title="{$item_goods.short_name}">{$item_goods.short_name}...</a></p>
+								<p><b> 
+							<!-- {if $item_goods.promote_price neq 0} -->
+           {$item_goods.formated_promote_price}
+            <!-- {else}-->
+          {$item_goods.shop_price}
+            <!--{/if}-->
+            </b></p>
 			</li>
 			{/foreach}
 						</ul>

@@ -93,8 +93,10 @@
 
 	<!-- {else} -->
         
-          <input name="extend_field{$field.id}" id="extend_field{$field.id}" type="text" size="25" class="text" placeholder="手机号" onblur="is_registered(this.value);" /> 
-          <a href='javascript:void(0)' onclick="$('#row_mobile_phone').hide();$('#row_email').show();$('#row_verify_phone').hide();$('#row_verify_email').show();$('#reg_type').val('1');">或邮箱注册</a>
+          <input style="float:left; " name="extend_field{$field.id}" id="extend_field{$field.id}" type="text" size="25" class="text" placeholder="请输入您的手机号码" onblur="is_registered(this.value);" /> 
+          <span style="float: left;">
+          		<a href='javascript:void(0)' style="color: #08c;float: left;" onclick="$('#row_mobile_phone').hide();$('#row_email').show();$('#row_verify_phone').hide();$('#row_verify_email').show();$('#reg_type').val('1');">或邮箱注册</a>
+          </span>
             <!-- <input name="username" type="text" id="username" placeholder="用户名/手机号" onblur="is_registered(this.value);" class="text" />-->
 
  						</td>
@@ -103,11 +105,14 @@
                         </tr>
                         <tr id='row_email' style='display:none'>
                         	<th>
-                        		邮箱:
+                        		邮箱地址:
                         	</th>
                         	<td>
-                        	<input name="email" type="text" id="email" placeholder="邮箱" onblur="is_registered(this.value);" class="text" /> 
-                        	 <a href='javascript:void(0)' onclick="$('#row_mobile_phone').show();$('#row_email').hide();$('#row_verify_phone').show();$('#row_verify_email').hide();$('#reg_type').val('0');">或手机注册</a>
+                        	<input name="email" type="text" id="email" placeholder="请输入您的邮箱" onblur="is_registered(this.value);" class="text" /> 
+                        	
+                        	<span>
+                        	<a href='javascript:void(0)' style="color: #08c;float: left;" onclick="$('#row_mobile_phone').show();$('#row_email').hide();$('#row_verify_phone').show();$('#row_verify_email').hide();$('#reg_type').val('0');">或手机注册</a>
+                        	</span>
                         	</td>
                         </tr>	
                         <tr>
@@ -183,6 +188,7 @@ function noticeAssign(num) {
 	<!-- {/if} -->
 	<!-- {/foreach} -->
     <script type="text/javascript" src="sms/sms.js"></script>    
+     <script type="text/javascript" src="sms/email.js"></script>    
         <span class="clr"></span>
               </div>
         </div>

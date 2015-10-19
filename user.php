@@ -32,7 +32,7 @@ $smarty->assign("yhzc",getads(187,1));
 
 // 不需要登录的操作或自己验证是否登录（如ajax处理）的act
 $not_login_arr =
-array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login');
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login','send_verify_email','validate_email_code');
 
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
@@ -2945,5 +2945,61 @@ elseif ($action == 'act_transform_ucenter_points')
 elseif ($action == 'clear_history')
 {
     setcookie('ECS[history]',   '', 1);
+}/*------------------------------------------------------ */
+//-- 发送测试邮件
+/*------------------------------------------------------ */
+elseif ($action == 'send_verify_email')
+{
+    /* 取得参数 */
+    $email          = trim($_POST['email']);
+    
+    if(empty($email)){
+    	lib_main_make_json_error('邮箱不能为空');
+    }
+    
+    $email_code  = user_random_code(4,1);
+
+    /* 更新配置 */
+    /* $_CFG['mail_service'] = intval($_POST['mail_service']);
+    $_CFG['smtp_host']    = trim($_POST['smtp_host']);
+    $_CFG['smtp_port']    = trim($_POST['smtp_port']);
+    $_CFG['smtp_user']    = json_str_iconv(trim($_POST['smtp_user']));
+    $_CFG['smtp_pass']    = trim($_POST['smtp_pass']);
+    $_CFG['smtp_mail']    = trim($_POST['reply_email']);
+    $_CFG['mail_charset'] = trim($_POST['mail_charset']); */
+    
+    if (send_mail('', $email, '验证码', "您的验证码是：".$email_code."。如非本人操作，请勿理会！", 0))
+    {
+    	$_SESSION['email_code']=$email_code;
+    	lib_main_make_json_result($_LANG['sendemail_success'] . $email);
+    }
+    else
+    {
+        lib_main_make_json_error(join("\n", $err->_message));
+    }
+}elseif ($action == 'validate_email_code')
+{
+    $email_code  = trim($_POST['email_code']);
+    if($email_code==$_SESSION['email_code']){
+    	lib_main_make_json_result('验证成功');
+    }else{
+    	lib_main_make_json_error('邮箱验证码输入错误，请重新输入！');
+    }
+}
+
+
+function user_random_code($length = 6 , $numeric = 0) {
+	PHP_VERSION < '4.2.0' && mt_srand((double)microtime() * 1000000);
+	if($numeric) {
+		$hash = sprintf('%0'.$length.'d', mt_rand(0, pow(10, $length) - 1));
+	} else {
+		$hash = '';
+		$chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789abcdefghjkmnpqrstuvwxyz';
+		$max = strlen($chars) - 1;
+		for($i = 0; $i < $length; $i++) {
+			$hash .= $chars[mt_rand(0, $max)];
+		}
+	}
+	return $hash;
 }
 ?>

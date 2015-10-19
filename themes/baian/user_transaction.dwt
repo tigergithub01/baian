@@ -39,7 +39,8 @@
             var {$key} = "{$item}";
           {/foreach}
         </script>
-      <div class="hyzx"><li>会员资料</li><li class="now">基本信息</li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+     <!--  <div class="hyzx"><li>会员资料</li><li class="now">基本信息</li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div> -->
+      
       <div class="blank"></div>
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
     <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
@@ -118,7 +119,7 @@
      <!--#用户信息界面 end-->
      <!--pgge退换货修改过代码-->
        <!-- {if $action eq 'order_back'} -->
-       <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now">退换货管理</li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+       <!-- <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now">退换货管理</li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div> -->
         <div class="form-div">
           <form action="user.php" name="searchForm" method="get">
             <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
@@ -562,7 +563,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
           var {$key} = "{$item}";
         {/foreach}
       </script>
-      <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li class="now">我的红包</li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
+      <!-- <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li class="now">我的红包</li><li><a href="user.php?act=transform_points">我的积分</a></li></div> -->
       <div class="blank"></div>
      <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
         <tr>
@@ -607,7 +608,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
    <!--用户红包结束-->
       <!--#订单列表界面 start-->
        <!-- {if $action eq 'order_list'} -->
-       <div class="hyzx"><li>交易管理</li><li class="now">我的订单</li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+      <!--  <div class="hyzx"><li>交易管理</li><li class="now">我的订单</li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div> -->
        <div class="blank"></div>
      <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
           <tr align="center">
@@ -1197,7 +1198,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       <!--#会员余额 end-->
       <!--#收货地址页面 -->
       <!--{if $action eq 'address_list'} -->
-   <div class="hyzx"><li>会员资料</li><li><a href="user.php?act=profile">基本信息</a></li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li  class="now">收货地址管理</li></div>
+   <!-- <div class="hyzx"><li>会员资料</li><li><a href="user.php?act=profile">基本信息</a></li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li  class="now">收货地址管理</li></div> -->
         <div class="blank"></div>
          {* 包含脚本文件 *}
             {insert_scripts files='utils.js,transport.js,region.js,shopping_flow.js'}
@@ -1293,7 +1294,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
     <!--#收货地址添加页面 -->
       <!--* 积分兑换-->
        <!--{if $action eq 'transform_points'} -->
- <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div>
+<!--  <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div> -->
              <div class="blank"></div>
        <!--{if $exchange_type eq 'ucenter'}-->
         <form action="user.php" method="post" name="transForm" onsubmit="return calcredit();">

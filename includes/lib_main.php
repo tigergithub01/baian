@@ -2072,4 +2072,59 @@ function url_domain()
     return $root;
 }
 
+/**
+ * 创建一个JSON格式的数据
+ *
+ * @access  public
+ * @param   string      $content
+ * @param   integer     $error
+ * @param   string      $message
+ * @param   array       $append
+ * @return  void
+ */
+function lib_main_make_json_response($status=1, $message='', $content='',  $append=array())
+{
+	include_once(ROOT_PATH . 'includes/cls_json.php');
+
+	$json = new JSON;
+
+	$res = array('status' => $status, 'message' => $message, 'content' => $content);
+
+	if (!empty($append))
+	{
+		foreach ($append AS $key => $val)
+		{
+			$res[$key] = $val;
+		}
+	}
+
+	$val = $json->encode($res);
+
+	exit($val);
+}
+
+/**
+ *
+ *
+ * @access  public
+ * @param
+ * @return  void
+ */
+function lib_main_make_json_result($message,$content, $append=array())
+{
+	lib_main_make_json_response(1,$message,$content,$append);
+}
+
+/**
+ * 创建一个JSON格式的错误信息
+ *
+ * @access  public
+ * @param   string  $msg
+ * @return  void
+ */
+function lib_main_make_json_error($msg)
+{
+	lib_main_make_json_response(-1,$msg);
+}
+
 ?>

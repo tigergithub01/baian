@@ -37,7 +37,7 @@ array('login','act_login','register','act_register','act_edit_password','get_pas
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
-'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 'get_passwd_question', 'check_answer');
+'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 'get_passwd_question', 'check_answer','sign_day');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -98,10 +98,13 @@ if ($action == 'default')
     include_once(ROOT_PATH .'includes/lib_clips.php');
     if ($rank = get_rank_info())
     {
-        $smarty->assign('rank_name', sprintf($_LANG['your_level'], $rank['rank_name']));
+//         $smarty->assign('rank_name', sprintf($_LANG['your_level'], $rank['rank_name']));
+    	$smarty->assign('rank_name', $rank['rank_name']);
+    	$smarty->assign('max_points', $rank['max_points']);
+        
         if (!empty($rank['next_rank_name']))
         {
-            $smarty->assign('next_rank_name', sprintf($_LANG['next_level'], $rank['next_rank'] ,$rank['next_rank_name']));
+        	$smarty->assign('next_rank_name', sprintf($_LANG['next_level'], $rank['next_rank'] ,$rank['next_rank_name']));
         }
     }
     $smarty->assign('info',        get_user_default($user_id));
@@ -2985,6 +2988,21 @@ elseif ($action == 'send_verify_email')
     }else{
     	lib_main_make_json_error('邮箱验证码输入错误，请重新输入！');
     }
+}elseif ($action == 'sign_day')
+{
+	include_once(ROOT_PATH .'includes/lib_clips.php');
+	//每日签到
+	$last_sign_time = lib_clips_get_last_sign_time();
+	if(empty($last_sign_time)){
+		lib_clips_sign_day();
+		lib_main_make_json_result('签到成功');
+	}else{
+		//看看今天是否已经签到
+		$last_sign_date= local_date($GLOBALS['_CFG']['date_format'], $last_sign_time);
+		if($last_sign_date==local_date($GLOBALS['_CFG']['date_format'], gmtime())){
+			lib_main_make_json_error('你今天已经签到！');
+		}
+	}	
 }
 
 

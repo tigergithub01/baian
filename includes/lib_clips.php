@@ -566,7 +566,7 @@ function get_user_default($user_id)
 {
     $user_bonus = get_user_bonus();
 
-    $sql = "SELECT pay_points, user_money, credit_line, last_login, is_validated FROM " .$GLOBALS['ecs']->table('users'). " WHERE user_id = '$user_id'";
+    $sql = "SELECT pay_points, user_money, credit_line, last_login, is_validated, rank_points FROM " .$GLOBALS['ecs']->table('users'). " WHERE user_id = '$user_id'";
     $row = $GLOBALS['db']->getRow($sql);
     $info = array();
     $info['username']  = stripslashes($_SESSION['user_name']);
@@ -576,6 +576,8 @@ function get_user_default($user_id)
     $info['is_validate'] = ($GLOBALS['_CFG']['member_email_validate'] && !$row['is_validated'])?0:1;
     $info['credit_line'] = $row['credit_line'];
     $info['formated_credit_line'] = price_format($info['credit_line'], false);
+    $info['rank_points']= $row['rank_points'];
+    $info['pay_points']= $row['pay_points'];
 
     //如果$_SESSION中时间无效说明用户是第一次登录。取当前登录时间。
     $last_time = !isset($_SESSION['last_time']) ? $row['last_login'] : $_SESSION['last_time'];
@@ -737,7 +739,13 @@ function get_rank_info()
             $rt  = $db->getRow($sql);
             $next_rank_name = $rt['rank_name'];
             $next_rank = $rt['min_points'] - $user_rank;
-            return array('rank_name'=>$rank_name,'next_rank_name'=>$next_rank_name,'next_rank'=>$next_rank);
+            
+            //current rank
+            $sql = "SELECT max_points FROM " . $ecs->table('user_rank') . " WHERE min_points <= '$user_rank' and max_points> '$user_rank' ORDER BY min_points ASC LIMIT 1";
+            $rt  = $db->getRow($sql);
+            $max_points = $rt['max_points'];
+            
+            return array('rank_name'=>$rank_name,'next_rank_name'=>$next_rank_name,'next_rank'=>$next_rank,'max_points'=>$max_points);
         }
     }
     else
@@ -874,5 +882,23 @@ function get_comment_list($user_id, $page_size, $start)
     }
 
     return $comments;
+}
+
+/**
+ * 获取最后一次签到时间
+ */
+function lib_clips_get_last_sign_time(){
+	$sql = "SELECT last_sign_time FROM " . $GLOBALS['ecs']->table('users') . " WHERE user_id = '$_SESSION[user_id]'";
+	return $GLOBALS['db']->getOne($sql);
+}
+/**
+ * 每日签到后后增加10个积分
+ */
+function lib_clips_sign_day(){
+	$sql = "UPDATE " .$GLOBALS['ecs']->table('users'). " SET".
+			" last_sign_time = '" .gmtime(). "',".
+			" rank_points = IFNULL(rank_points,0) + 10 ".
+			" WHERE user_id = '" . $_SESSION['user_id'] . "'";
+	$GLOBALS['db']->query($sql);
 }
 ?>

@@ -59,3 +59,11 @@ a:active {
 .nowrap {
   white-space:nowrap;
 }
+
+table.grid{
+	width: 100%;
+}
+table.grid td{
+	border:solid 1px #BBDDE5;
+	margin: 0px;
+}

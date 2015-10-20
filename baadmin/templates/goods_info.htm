@@ -17,9 +17,10 @@
       <p>
         <span class="tab-front" id="general-tab">{$lang.tab_general}</span><span
         class="tab-back" id="detail-tab">{$lang.tab_detail}</span><span
-        class="tab-back" id="mix-tab">{$lang.tab_mix}</span>{if $goods_type_list}<span
-        class="tab-back" id="properties-tab">{$lang.tab_properties}</span>{/if}<span
-        class="tab-back" id="gallery-tab">{$lang.tab_gallery}</span><span
+        class="tab-back" id="mix-tab">{$lang.tab_mix}</span>
+        {if $goods_type_list}<span class="tab-back" id="properties-tab">{$lang.tab_properties}</span>{/if}
+        {if $goods_type_list}<span class="tab-back" id="properties-sku-tab">商品销售属性</span>{/if}
+        <span class="tab-back" id="gallery-tab">{$lang.tab_gallery}</span><span
         class="tab-back" id="linkgoods-tab">{$lang.tab_linkgoods}</span>{if $code eq ''}<span
         class="tab-back" id="groupgoods-tab">{$lang.tab_groupgoods}</span>{/if}<span
         class="tab-back" id="article-tab">{$lang.tab_article}</span>
@@ -432,6 +433,57 @@
           <tr>
             <td id="tbody-goodsAttr" colspan="2" style="padding:0">{$goods_attr_html}</td>
           </tr>
+        </table>
+        {/if}
+        <!-- 商品sku属性 -->
+        {if $goods_type_list}
+        
+        
+        <table id="properties-sku-table" style="display:none" width="100%"  align="center">
+        	<tr>
+	        	<td width="100%">
+	        		<table class="grid">
+							<tr>
+								<td style="width: 50px;">颜色</td>
+								<td><input type="checkbox" />红色<input type="checkbox" />黄色</td>
+							</tr>
+							<tr>
+								<td>尺码</td>
+								<td><input type="checkbox" />S<input type="checkbox" />M<input type="checkbox" />S<input type="checkbox" />L</td>
+							</tr>
+						</table>
+	        	</td>
+        	</tr>
+        	<tr>
+	        	<td>
+	        		<table class="grid" >
+			          <tr>
+				            <th>颜色</th>
+				            <th>尺码</th>
+				            <th>价格</th>
+				            <th>仓库</th>
+				            <th>库存</th>
+				            <th>货号</th>
+			          </tr>
+			          <tr>
+				            <td>红色</td>
+				            <td>S</td>
+				            <td><input type="text" size="10"></td>
+				            <td><select><option>全国</option><option>深圳</option></select></td>
+				            <td><input type="text" size="10"></td>
+				            <td><input type="text" size="10"></td>
+			          </tr>
+			          <tr>
+				            <td>红色</td>
+				            <td>M</td>
+				            <td><input type="text" size="10"></td>
+				            <td><select><option>全国</option><option>深圳</option></select></td>
+				            <td><input type="text" size="10"></td>
+				            <td><input type="text" size="10"></td>
+			          </tr>
+			        </table>
+	        	</td>
+        	</tr>
         </table>
         {/if}
 

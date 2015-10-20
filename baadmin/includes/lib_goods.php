@@ -710,23 +710,23 @@ function build_attr_html($cat_id, $goods_id = 0)
             $html .= '</select> ';
         }
 
-        $html .= ($val['attr_type'] == 1 || $val['attr_type'] == 2) ?
+       /*  $html .= ($val['attr_type'] == 1 || $val['attr_type'] == 2) ?
             $GLOBALS['_LANG']['spec_price'].' <input type="text" name="attr_price_list[]" value="' . $val['attr_price'] . '" size="5" maxlength="10" />' :
-            ' <input type="hidden" name="attr_price_list[]" value="0" />';
+            ' <input type="hidden" name="attr_price_list[]" value="0" />'; */
 
 
 		/* 代码增加_start  By www.68ecshop.com */
-		$attr_color_images_html = '';
+		/* $attr_color_images_html = '';
 		if( $val['goods_attr_id'] && $val['goods_attr_id'] != 0 && $val['goods_attr_id'] != '' && $_REQUEST['act']!='copy')
 		{
 // 			$attr_color_images_dir = "../".DATA_DIR.'/color/'.get_attachment_www_68ecshop_com($goods_id)."/0-0-".$val['goods_attr_id'].".jpg";
 			file_exists($attr_color_images_dir) && $attr_color_images_html = '<span style="border:1px solid #FF6600;"><img src="'.$attr_color_images_dir.'" width="15" height="15" align="absmiddle"></span>';
-		}
-		$html .= $val['attr_name'] == '颜色' ? '<span>   属性图片：<input style="width: 160px;" type="file" name="attr_images_list[]" value="' . $val['attr_images_list'] . '" /></span> '.$attr_color_images_html : '<span style="display:none;"><input type="file" name="attr_images_list[]" value="" /></span>';
+		} */
+// 		$html .= $val['attr_name'] == '颜色' ? '<span>   属性图片：<input style="width: 160px;" type="file" name="attr_images_list[]" value="' . $val['attr_images_list'] . '" /></span> '.$attr_color_images_html : '<span style="display:none;"><input type="file" name="attr_images_list[]" value="" /></span>';
 		/* 代码增加_end  By www.68ecshop.com */
 
 		/* 代码增加_start by pgge */
-		$html .= '&nbsp;&nbsp;货号:<input type="text" name="product_sn[]" value="" /> &nbsp;&nbsp;&nbsp;&nbsp;库存:<input size="10" type="text" name="product_number[]" value="" />';
+// 		$html .= '&nbsp;&nbsp;货号:<input type="text" name="product_sn[]" value="" /> &nbsp;&nbsp;&nbsp;&nbsp;库存:<input size="10" type="text" name="product_number[]" value="" />';
 		/* 代码增加_end by pgge */
 
         $html .= '</td></tr>';

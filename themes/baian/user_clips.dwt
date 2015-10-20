@@ -14,10 +14,10 @@
 <body>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
-  <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+  
   <div id="bd">
         <div class="wp">
-
+			<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
             <div class="s-side-col l">
                 <div class="snavBox">
                   <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
@@ -35,15 +35,15 @@
             <!-- {if $action eq 'default'} -->
             <div class="s-userBox">
                     <div class="avatar"><img src="images/sp2.jpg" alt=""><a class="orange" href="">【修改个人资料】</a></div>
-                    <div class="signBox">
-                        <a href=""><img src="images/i-sign.png" alt=""></a>
+                    <div class="signBox" onclick="return sign_day();">
+                        <a href="javascript:void(0)"><img src="images/i-sign.png" alt=""></a>
                         <p>每次签到可积累10个成长值哦！</p>
                     </div>
                     <div class="txt">
-                        <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}:22）</span></p>
-                        <p>会员等级：<span class="vipBox"><b>v</b>1</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
-                        <p>当前级别：<span class="degreeBox" score="50" total="500"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
-                        <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="">50</a>分</p>
+                        <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}）</span></p>
+                        <p>会员等级：<span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span><!-- <span class="vipBox"><b>v</b><b>v</b>1</span> --><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
+                        <p>当前级别：<span class="degreeBox" score="{$info.rank_points}" total="{$max_points}"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
+                        <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="">{$info.pay_points}</a>分</p>
                     </div>
                     </div>
                 <div class="h"></div>
@@ -605,5 +605,32 @@ copyToClipboard = function(txt)
 {foreach from=$lang.clips_js item=item key=key}
 var {$key} = "{$item}";
 {/foreach}
+
+function sign_day(){
+	$.ajax({     
+	    url:'user.php?act=sign_day',     
+	    type:'post',  
+	    dataType:'json', 
+	    data:{},     
+	    async :true, 
+	    error:function(){ 
+	    	
+	    },     
+	    success:function(data){ 
+		    if(data.status==1){
+		    	alert(data.message);
+		    }else{
+		    	alert(data.message);
+		    }
+	    }  
+	}); 
+	
+}
+
+	/* $(function(){
+		$('.signBox').click(function(){
+			alert('x');
+		}
+	} */
 </script>
 </html>

@@ -39,9 +39,9 @@
             var {$key} = "{$item}";
           {/foreach}
         </script>
-     <!--  <div class="hyzx"><li>会员资料</li><li class="now">基本信息</li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div> -->
-      
-      <div class="blank"></div>
+					<!--  <div class="hyzx"><li>会员资料</li><li class="now">基本信息</li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div> -->
+
+					<div class="blank"></div>
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
     <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
                 <tr>

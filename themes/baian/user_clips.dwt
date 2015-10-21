@@ -312,7 +312,7 @@
     <!--#收藏商品列表页面 end-->
     <!--*缺货登记列表页面 start-->
     <!--{if $action eq 'booking_list'} -->
- <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now">缺货登记</li></div>
+ <!-- <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now">缺货登记</li></div> -->
     <div class="blank"></div>
     <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
       <tr align="center">

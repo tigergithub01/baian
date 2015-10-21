@@ -8,22 +8,22 @@
                     </ul>
                     <h3 class="snav-t i-user2">账户管理</h3>
                     <ul class="snav-ul">
-                        <li><a href="">我的等级</a></li>
+                    	<li><a href="user.php?act=user_level"{if $action eq 'user_level'}class="curs"{/if}>我的等级</a></li>
                         <li><a href="user.php?act=bonus"{if $action eq 'bonus'}class="curs"{/if}>我的红包</a></li>
-                        <li><a href="">我的积分</a></li>
+                        <li><a href="user.php?act=points"{if $action eq 'points'}class="curs"{/if}>我的积分</a></li>
                     </ul>
                     <h3 class="snav-t i-user3">客户服务</h3>
                     <ul class="snav-ul">
-                        <li><a href="user.php?act=collection_list"{if $action eq 'collection_list'}class="curs"{/if}>我的评价</a></li>
+                        <li><a href="user.php?act=comment_list"{if $action eq 'comment_list'}class="curs"{/if}>我的评价</a></li>
                         <li><a href="user.php?act=message_list"{if $action eq 'message_list'}class="curs"{/if}>咨询&投诉</a></li>
-                        <li><a href="user.php?act=bonus"{if $action eq 'bonus'}class="curs"{/if}>建议有奖</a></li>
+                        <li><a href="user.php?act=advice"{if $action eq 'advice'}class="curs"{/if}>建议有奖</a></li>
                     </ul>
                     <h3 class="snav-t i-user4">会员资料</h3>
                     <ul class="snav-ul">
                         <li><a href="user.php?act=profile"{if $action eq 'profile'}class="curs"{/if}>基本信息</a></li>
-                        <li><a href="">手机邮箱绑定</a></li>
-                        <li><a href="">宝宝生日登记</a></li>
-                        <li><a href="">修改密码</a></li>
+                        <li><a href="user.php?act=secure_verify"{if $action eq 'secure_verify'}class="curs"{/if}>手机邮箱绑定</a></li>
+                        <li><a href="user.php?act=birthday_add"{if $action eq 'birthday_add'}class="curs"{/if}>宝宝生日登记</a></li>
+                        <li><a href="user.php?act=update_pwd"{if $action eq 'update_pwd'}class="curs"{/if}>宝宝生日登记</a></li>
                         <li><a href="user.php?act=address_list"{if $action eq 'address_list'}class="curs"{/if}>收货地址管理</a></li>
                     </ul>
                     

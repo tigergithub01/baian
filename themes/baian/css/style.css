@@ -408,6 +408,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .snav-ul{font-size: 16px;margin-bottom: 10px;}
 .snav-ul li{}
 .snav-ul li a{padding-left: 55px;display: block;line-height: 40px;}
+.snav-ul li a.curs{color: #f00}
 
 .i-user1{background: url(../images/i-user1.png) no-repeat 30px center;}
 .i-user2{background: url(../images/i-user2.png) no-repeat 30px center;}

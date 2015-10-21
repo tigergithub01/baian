@@ -81,6 +81,7 @@ elseif ($_REQUEST['act'] == 'add')
     $smarty->assign('action',      'add');
     $smarty->assign('form_act',    'insert');
     $smarty->assign('province_list', get_province_list());
+    $smarty->assign('countries',        get_regions());
 
     assign_query_info();
     $smarty->display('goods_storeroom_info.htm');
@@ -91,7 +92,7 @@ elseif ($_REQUEST['act'] == 'insert')
     $goods_store['store_name']   = $_POST['store_name'];
     $goods_store['store_desc'] = sub_str($_POST['store_desc'], 255);
     $goods_store['sort_order']    = intval($_POST['sort_order']);
-	$goods_store['store_province']    = $_POST['province'] ? "#" . implode("#",$_POST['province'])."#"  : "";
+	$goods_store['store_province']    =  $_POST['regions'] ? "" . implode(",",$_POST['regions'])  : "";
 
 	$is_only = $exc_wwwecshop120com->is_only('store_name', $_POST['store_name']);
     if (!$is_only)
@@ -130,8 +131,9 @@ elseif ($_REQUEST['act'] == 'edit')
     $smarty->assign('action',      'add');
     $smarty->assign('form_act',    'update');
     $smarty->assign('goods_store',  $goods_store_qq2211707);
-	$smarty->assign('province_list', get_province_list($_GET['store_id']));
-
+	$smarty->assign('regions', get_province_list($_GET['store_id']));
+	$smarty->assign('countries',        get_regions());
+	
     assign_query_info();
     $smarty->display('goods_storeroom_info.htm');
 }
@@ -141,7 +143,7 @@ elseif ($_REQUEST['act'] == 'update')
     $goods_store_wwwECSHOP120com['store_name']   = $_POST['store_name'];
     $goods_store_wwwECSHOP120com['store_desc'] = sub_str($_POST['store_desc'], 255);
 	$goods_store_wwwECSHOP120com['sort_order']    = intval($_POST['sort_order']);
-	$goods_store_wwwECSHOP120com['store_province']    =  $_POST['province'] ? "#" . implode("#",$_POST['province'])."#"  : "";
+	$goods_store_wwwECSHOP120com['store_province']    =  $_POST['regions'] ? "" . implode(",",$_POST['regions'])  : "";
     $store_id                   = intval($_POST['store_id']);
 
 	$is_only = $exc_wwwecshop120com->is_only('store_name', $_POST['store_name'], $_POST['store_id']);
@@ -256,8 +258,31 @@ function get_province_list($store_id='')
 		$sql = "select store_province from ". $GLOBALS['ecs']->table('goods_storeroom') ." where store_id='$store_id' ";
 		$store_province_wwwECshop120com = $GLOBALS['db']->getOne($sql);
 	}
-	$province_list=array();
-	$sql="select * from ". $GLOBALS['ecs']->table("region") ." where region_type=1";
+	$province_list=array();	
+	$province_id_list = explode(',', $store_province_wwwECshop120com);
+	
+	foreach ($province_id_list as $key => $value) {
+		if(empty($value)){
+			continue;
+		}
+		$sql="select * from ". $GLOBALS['ecs']->table("region") ." where region_id = $value";
+		$row=$GLOBALS['db']->getRow($sql);
+		$province_list[$row['region_id']]['name'] = $row['region_name'];
+		/*
+		if ( strstr($store_province_wwwECshop120com, "#".$row['region_id']."#") )
+		{
+			$province_list[$row['region_id']]['sel'] = 1;
+		}
+		else
+		{
+			$province_list[$row['region_id']]['sel'] = 0;
+		}
+		*/
+	}
+	
+	
+	
+	/* $sql="select * from ". $GLOBALS['ecs']->table("region") ." where region_type=1";
 	$res=$GLOBALS['db']->query($sql);
 	while($row=$GLOBALS['db']->fetchRow($res))
 	{
@@ -270,7 +295,7 @@ function get_province_list($store_id='')
 		{
 			$province_list[$row['region_id']]['sel'] = 0;
 		}
-	}
+	} */
 	return $province_list;
 }
 

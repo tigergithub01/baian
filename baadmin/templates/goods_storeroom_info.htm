@@ -33,7 +33,7 @@
   <tr>
     <td id="regionCell">
       {foreach from=$regions item=region key=id}
-      <input type="checkbox" name="regions[]" value="{$id}" checked="true" /> {$region}&nbsp;&nbsp;
+      <input type="checkbox" name="regions[]" value="{$id}" checked="true" /> {$region.name}&nbsp;&nbsp;
       {/foreach}
     </td>
   </tr>

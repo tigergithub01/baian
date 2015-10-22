@@ -31,7 +31,8 @@
             <div class="s-main-col r">
               <div class="h"></div>
  <div class="box_1">
-             <!-- 用户信息界面 start-->
+ 
+             <!-- 基本信息 start-->
          <!--{if $action eq 'profile'}-->
          {insert_scripts files='utils.js'}
         <script type="text/javascript">
@@ -39,7 +40,8 @@
             var {$key} = "{$item}";
           {/foreach}
         </script>
-					<!--  <div class="hyzx"><li>会员资料</li><li class="now">基本信息</li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div> -->
+        
+					 <div class="hyzx"><li>会员资料</li><li class="now"><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 
 					<div class="blank"></div>
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
@@ -116,10 +118,38 @@
       </table>
     </form>
      <!--{/if}-->
-     <!--#用户信息界面 end-->
+     <!--#基本信息 end-->
+     
+     
+      <!-- 手机邮箱绑定  start-->
+       <!--{if $action eq 'bind_mobile_email'}-->
+        
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+					 
+		<!--{/if}-->			 
+     <!--手机邮箱绑定 end-->
+     
+     <!-- 宝宝生日登记  start-->
+       <!--{if $action eq 'baby_birthday'}-->
+        
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li class="now"><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+					 
+		<!--{/if}-->			 
+     <!--宝宝生日登记 end-->
+     
+     <!-- 修改密码  start-->
+       <!--{if $action eq 'modify_pwd'}-->
+        
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+					 
+		<!--{/if}-->			 
+     <!--修改密码 end-->
+     
+     
+     
      <!--pgge退换货修改过代码-->
        <!-- {if $action eq 'order_back'} -->
-       <!-- <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now">退换货管理</li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div> -->
+       <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now"><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
         <div class="form-div">
           <form action="user.php" name="searchForm" method="get">
             <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
@@ -557,13 +587,23 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		  </script>
      <!--{/if}-->  
           <!--pgge退换货修改过代码end-->
+          
+       <!-- 我的等级 start -->
+      <!-- {if $action eq 'user_level'} -->
+      		<div class="hyzx"><li>账户管理</li><li class="now"><a href="/user.php?act=user_level">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
+      		<div class="blank"></div>
+      	
+      <!-- {/if} -->
+       <!-- 我的等级 end -->
+     
+          
      <!-- {if $action eq 'bonus'} 用户的红包列表 start-->
       <script type="text/javascript">
         {foreach from=$lang.profile_js item=item key=key}
           var {$key} = "{$item}";
         {/foreach}
       </script>
-      <!-- <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li class="now">我的红包</li><li><a href="user.php?act=transform_points">我的积分</a></li></div> -->
+      <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=user_level">我的等级</a></li><li class="now">我的红包</li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
       <div class="blank"></div>
      <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
         <tr>
@@ -605,10 +645,12 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
         </div>
       </form>
     <!-- {/if} -->
-   <!--用户红包结束-->
+   <!--用户红包结束 end-->
+   
+   
       <!--#订单列表界面 start-->
        <!-- {if $action eq 'order_list'} -->
-      <!--  <div class="hyzx"><li>交易管理</li><li class="now">我的订单</li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div> -->
+       <div class="hyzx"><li>交易管理</li><li class="now"><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
        <div class="blank"></div>
      <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
           <tr align="center">
@@ -666,6 +708,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
         </form>
        <!--{/if}-->
       <!--#订单列表界面 end-->
+      
+      
+      
        <!--#包裹状态查询界面 start-->
       <!-- {if $action eq 'track_packages'} -->
         <h5><span>{$lang.label_track_packages}</span></h5>
@@ -696,7 +741,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
       <!--{/if}-->
     <!--#包裹状态查询界面 end-->
-     <!-- ==========订单详情页面,包括：订单状态，商品列表，费用总计，收货人信息，支付方式，其它信息========== -->
+    
+    
+     <!-- ==========订单详情页面,包括：订单状态，商品列表，费用总计，收货人信息，支付方式，其它信息==========  start-->
       <!--{if $action eq order_detail} -->
         <h5><span>{$lang.order_status}</span></h5>
         <div class="blank"></div>
@@ -1038,7 +1085,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
           </tr>
         </table>
       <!--{/if} -->
-    <!--#订单详情页 end-->
+    <!-- ==========订单详情页面,包括：订单状态，商品列表，费用总计，收货人信息，支付方式，其它信息==========  end-->
+    
+    
     <!--#会员余额 start-->
       <!--{if $action eq "account_raply" || $action eq "account_log" || $action eq "account_deposit" || $action eq "account_detail"} -->
         <script type="text/javascript">
@@ -1196,9 +1245,10 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
         <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
       <!-- {/if} -->
       <!--#会员余额 end-->
-      <!--#收货地址页面 -->
+      
+      <!--#收货地址页面  start-->
       <!--{if $action eq 'address_list'} -->
-   <!-- <div class="hyzx"><li>会员资料</li><li><a href="user.php?act=profile">基本信息</a></li><li>手机邮箱绑定</li><li>宝宝生日登记</li><li>修改密码</li><li  class="now">收货地址管理</li></div> -->
+   <	<div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li class="now"><a href="/user.php?act=address_list">收货地址管理</a></li></div>
         <div class="blank"></div>
          {* 包含脚本文件 *}
             {insert_scripts files='utils.js,transport.js,region.js,shopping_flow.js'}
@@ -1291,10 +1341,11 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
             </form>
             <!-- {/foreach} -->
       <!--{/if} -->
-    <!--#收货地址添加页面 -->
-      <!--* 积分兑换-->
+    <!--#收货地址添加页面  end-->
+    
+      <!--* 积分兑换 start-->
        <!--{if $action eq 'transform_points'} -->
-<!--  <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=order_list">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div> -->
+		 <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=user_level">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div>
              <div class="blank"></div>
        <!--{if $exchange_type eq 'ucenter'}-->
         <form action="user.php" method="post" name="transForm" onsubmit="return calcredit();">
@@ -1485,25 +1536,231 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        </script>
        <!--{/if}-->
         <!--{/if} -->
-        <!--#积分兑换 -->
+        <!--#积分兑换 end -->
+        
+        
+        <!--*收藏商品列表页面 start-->
+		    <!--{if $action eq 'collection_list'} -->
+		  {insert_scripts files='transport.js,utils.js'}
+		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li class="now"><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+		    <div class="blank"></div>
+		     <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+		      <tr align="center">
+		        <th width="35%" bgcolor="#ffffff">{$lang.goods_name}</th>
+		        <th width="30%" bgcolor="#ffffff">{$lang.price}</th>
+		        <th width="35%" bgcolor="#ffffff">{$lang.handle}</th>
+		      </tr>
+		      <!--{foreach from=$goods_list item=goods}-->
+		      <tr>
+		        <td bgcolor="#ffffff"><a href="{$goods.url}" class="f6">{$goods.goods_name|escape:html}</a></td>
+		        <td bgcolor="#ffffff"><!-- {if $goods.promote_price neq ""} -->
+		          {$lang.promote_price}<span class="goods-price">{$goods.promote_price}</span>
+		          <!-- {else}-->
+		          {$lang.shop_price}<span class="goods-price">{$goods.shop_price}</span>
+		          <!--{/if}-->        </td>
+		        <td align="center" bgcolor="#ffffff">
+		          <!-- {if $goods.is_attention} -->
+		          <a href="javascript:if (confirm('{$lang.del_attention}')) location.href='user.php?act=del_attention&rec_id={$goods.rec_id}'" class="f6">{$lang.no_attention}</a>
+		          <!-- {else} -->
+		          <a href="javascript:if (confirm('{$lang.add_to_attention}')) location.href='user.php?act=add_to_attention&rec_id={$goods.rec_id}'" class="f6">{$lang.attention}</a>
+		          <!-- {/if} -->
+		           <a href="javascript:addToCart({$goods.goods_id})" class="f6">{$lang.add_to_cart}</a> <a href="javascript:if (confirm('{$lang.remove_collection_confirm}')) location.href='user.php?act=delete_collection&collection_id={$goods.rec_id}'" class="f6">{$lang.drop}</a>
+		        </td>
+		      </tr>
+		      <!--{/foreach} -->
+		    </table>
+		    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+		     <div class="blank5"></div>
+		
+		    <h5><span>{$lang.label_affiliate}</span></h5>
+		    <div class="blank"></div>
+		     <form name="theForm" method="post" action="">
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+		    <tr>
+		      <td align="right" bgcolor="#ffffff">{$lang.label_need_image}</td>
+		      <td bgcolor="#ffffff">
+		        <select name="need_image" id="need_image" class="inputBg">
+		          <option value="true" selected>{$lang.need}</option>
+		          <option value="false">{$lang.need_not}</option>
+		        </select>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td align="right" bgcolor="#ffffff">{$lang.label_goods_num}</td>
+		      <td bgcolor="#ffffff"><input name="goods_num" type="text" id="goods_num" value="6" class="inputBg" /></td>
+		    </tr>
+		    <tr>
+		      <td align="right" bgcolor="#ffffff">{$lang.label_arrange}</td>
+		      <td bgcolor="#ffffff"><select name="arrange" id="arrange" class="inputBg">
+		        <option value="h" selected>{$lang.horizontal}</option>
+		        <option value="v">{$lang.verticle}</option>
+		      </select></td>
+		    </tr>
+		    <tr>
+		      <td align="right" bgcolor="#ffffff">{$lang.label_rows_num}</td>
+		      <td bgcolor="#ffffff"><input name="rows_num" type="text" id="rows_num" value="1" class="inputBg" /></td>
+		    </tr>
+		    <tr>
+		      <td align="right" bgcolor="#ffffff">{$lang.label_charset}</td>
+		      <td bgcolor="#ffffff"><select name="charset" id="charset">
+		        {html_options options=$lang_list}
+		      </select></td>
+		    </tr>
+		    <tr>
+		      <td colspan="2" align="center" bgcolor="#ffffff"><input type="button" name="gen_code" value="{$lang.generate}" onclick="genCode()" class="bnt_blue_1" />
+					</td>
+		  </tr>
+		    <tr>
+		      <td colspan="2" align="center" bgcolor="#ffffff"><textarea name="code" cols="80" rows="5" id="code" class="B_blue"></textarea></td>
+		  </tr>
+		  </table>
+		     </form>
+		      <script language="JavaScript">
+		      var elements = document.forms['theForm'].elements;
+		      var url = '{$url}';
+		      var u   = '{$user_id}';
+		      /**
+		       * 生成代码
+		       */
+		      function genCode()
+		      {
+		          // 检查输入
+		          if (isNaN(parseInt(elements['goods_num'].value)))
+		          {
+		              alert('{$lang.goods_num_must_be_int}');
+		              return;
+		          }
+		          if (elements['goods_num'].value < 1)
+		          {
+		              alert('{$lang.goods_num_must_over_0}');
+		              return;
+		          }
+		          if (isNaN(parseInt(elements['rows_num'].value)))
+		          {
+		              alert('{$lang.rows_num_must_be_int}');
+		              return;
+		          }
+		          if (elements['rows_num'].value < 1)
+		          {
+		              alert('{$lang.rows_num_must_over_0}');
+		              return;
+		          }
+		
+		          // 生成代码
+		          var code = '\<script src=\"' + url + 'goods_script.php?';
+		          code += 'need_image=' + elements['need_image'].value + '&';
+		          code += 'goods_num=' + elements['goods_num'].value + '&';
+		          code += 'arrange=' + elements['arrange'].value + '&';
+		          code += 'rows_num=' + elements['rows_num'].value + '&';
+		          code += 'charset=' + elements['charset'].value + '&u=' + u;
+		          code += '\"\>\</script\>';
+		          elements['code'].value = code;
+		          elements['code'].select();
+		          if (Browser.isIE)
+		          {
+		              window.clipboardData.setData("Text",code);
+		          }
+		      }
+			var compare_no_goods = "{$lang.compare_no_goods}";
+		  var btn_buy = "{$lang.btn_buy}";
+		  var is_cancel = "{$lang.is_cancel}";
+		  var select_spe = "{$lang.select_spe}";
+		  </script>
+		  <!--{/if} -->
+		    <!--#收藏商品列表页面 end-->
+		    
+		    <!--*缺货登记列表页面 start-->
+		    <!--{if $action eq 'booking_list'} -->
+		 <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now"><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+		    <div class="blank"></div>
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+		      <tr align="center">
+		        <td width="20%" bgcolor="#ffffff">{$lang.booking_goods_name}</td>
+		        <td width="10%" bgcolor="#ffffff">{$lang.booking_amount}</td>
+		        <td width="20%" bgcolor="#ffffff">{$lang.booking_time}</td>
+		        <td width="35%" bgcolor="#ffffff">{$lang.process_desc}</td>
+		        <td width="15%" bgcolor="#ffffff">{$lang.handle}</td>
+		      </tr>
+		      <!-- {foreach from=$booking_list item=item} -->
+		      <tr>
+		        <td align="left" bgcolor="#ffffff"><a href="{$item.url}" target="_blank" class="f6">{$item.goods_name}</a></td>
+		        <td align="center" bgcolor="#ffffff">{$item.goods_number}</td>
+		        <td align="center" bgcolor="#ffffff">{$item.booking_time}</td>
+		        <td align="left" bgcolor="#ffffff">{$item.dispose_note}</td>
+		        <td align="center" bgcolor="#ffffff">
+			        {if $item.is_dispose == 1}
+			        	已到货
+			        {else}
+			        	<a href="javascript:if (confirm('{$lang.confirm_remove_account}')) location.href='user.php?act=act_del_booking&id={$item.rec_id}'" class="f6">{$lang.drop}</a> 
+			        {/if}
+		        </td>
+		      </tr>
+		      <!--{/foreach}-->
+		    </table>
+		    <!--{/if} -->
+		    <!--*缺货登记列表页面 end-->
+		    
+		    <div class="blank5"></div>
+		    
+		    
+		   <!--#缺货登记页面 start-->
+		  <!--{if $action eq 'add_booking'} -->
+		    {insert_scripts files='utils.js'}
+		    <script type="text/javascript">
+		    {foreach from=$lang.booking_js item=item key=key}
+		    var {$key} = "{$item}";
+		    {/foreach}
+		    </script>
+		    <h5><span>{$lang.add}{$lang.label_booking}</span></h5>
+		    <div class="blank"></div>
+		     <form action="user.php" method="post" name="formBooking" onsubmit="return addBooking();">
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.booking_goods_name}</td>
+		        <td bgcolor="#ffffff">{$info.goods_name}</td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.booking_amount}:</td>
+		        <td bgcolor="#ffffff"><input name="number" type="text" value="{$info.goods_number}" class="inputBg" /></td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.describe}:</td>
+		        <td bgcolor="#ffffff"><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue">{$info.goods_desc|escape}</textarea>
+		        </td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.contact_username}:</td>
+		        <td bgcolor="#ffffff"><input name="linkman" type="text" value="{$info.consignee|escape}" size="25"  class="inputBg"/>
+		        </td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.email_address}:</td>
+		        <td bgcolor="#ffffff"><input name="email" type="text" value="{$info.email|escape}" size="25" class="inputBg" /></td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">{$lang.contact_phone}:</td>
+		        <td bgcolor="#ffffff"><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg" /></td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
+		        <td bgcolor="#ffffff"><input name="act" type="hidden" value="act_add_booking" />
+		          <input name="id" type="hidden" value="{$info.id}" />
+		          <input name="rec_id" type="hidden" value="{$info.rec_id}" />
+		          <input type="submit" name="submit" class="submit" value="{$lang.submit_booking_goods}" />
+		          <input type="reset" name="reset" class="reset" value="{$lang.button_reset}" />
+		        </td>
+		      </tr>
+		    </table>
+		     </form>
+		    <!-- {/if} -->
+    		<!--#缺货登记页面 end -->
 </div>
-                <div class="h"></div>
-                <div id="huanBox">
-                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
-                    <div class="bor-box bd">
-                        <ul class="ul-pic1 ul-pic1-b">
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                          
-                        </ul>
-                        <div class="h15"></div>
-                    </div>
-                </div>
+                 <!-- 猜你喜欢 start -->
+			     <div class="h"></div>
+			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+			             
+			      <!-- 猜你喜欢 end -->
+			      
           </div>
         </div>
     </div>

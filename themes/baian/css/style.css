@@ -646,3 +646,37 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .hyzx{ font-size:16px; font-weight:bold; border-bottom:2px #f08300 solid;height:30px; }
 .hyzx li{ width:120px; float:left; margin-right:10px; border-left:1px solid #CCC; border-top:1px solid #CCC; border-right:1px solid #CCC; list-style:none; height:30px; line-height:30px; text-align:center;}
 .now{ background:#f08300; color:#FFF;}
+
+/***会员中心style start**/
+.user_msg{
+	margin-top: 20px;
+	line-height: 40px;	
+}
+
+.user_msg table th{
+	text-align: left;
+}
+
+.user_msg table tr.title_row{
+	line-height: 10px;
+}
+
+.user_msg td.msg_title{
+	color: #f08300
+}
+
+
+
+.user_msg input.btn_submit{
+	background: #f08300 none repeat scroll 0 0;
+	color: white;
+}
+
+
+
+
+
+/***会员中心style end**/
+
+
+

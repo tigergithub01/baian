@@ -1421,7 +1421,7 @@ cursor: pointer;
                     </table>
                     <div style="padding-left: 16px;float: left;margin-top: 5px;">
                         <!-- {if $anonymous_buy eq 1} 是否允许未登录用户购物 -->
-                        <input type="button" style="width:119px;border-right: 1px solid #ddd;" class="bnt_blue_2" value="不登录，直接购买" onclick="location.href='flow.php?step=checkout&amp;direct_shopping=1'" />
+                        <!-- <input type="button" style="width:119px;border-right: 1px solid #ddd;" class="bnt_blue_2" value="不登录，直接购买" onclick="location.href='flow.php?step=checkout&amp;direct_shopping=1'" /> -->
                         <!-- {/if} -->
                         <input name="act" type="hidden" value="signin" />
                       	</div>

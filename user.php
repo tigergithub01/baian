@@ -37,7 +37,9 @@ array('login','act_login','register','act_register','act_edit_password','get_pas
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
-'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 'get_passwd_question', 'check_answer','sign_day');
+'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
+'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
+'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email','baby_birthday','modify_pwd');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -91,6 +93,11 @@ if (in_array($action, $ui_arr))
     $smarty->assign('action',     $action);
     $smarty->assign('lang',       $_LANG);
 }
+
+
+//猜你喜欢
+$may_like_goods = com_sale_get_may_like_goods();
+$smarty->assign('may_like_goods',$may_like_goods);
 
 //用户中心欢迎页
 if ($action == 'default')
@@ -635,7 +642,7 @@ elseif ($action == 'logout')
     show_message($_LANG['logout'] . $ucdata, array($_LANG['back_up_page'], $_LANG['back_home_lnk']), array($back_act, 'index.php'), 'info');
 }
 
-/* 个人资料页面 */
+/* 基本资料*/
 elseif ($action == 'profile')
 {
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
@@ -777,6 +784,25 @@ elseif ($action == 'act_edit_profile')
         show_message($msg, '', '', 'info');
     }
 }
+
+/* 手机邮箱绑定 */
+elseif ($action == 'bind_mobile_email'){
+	//TODO:
+	$smarty->display('user_transaction.dwt');
+}
+
+/* 宝宝生日登记 */
+elseif ($action == 'baby_birthday'){
+	//TODO:
+	$smarty->display('user_transaction.dwt');
+}
+
+/* 改密码 */
+elseif ($action == 'modify_pwd'){
+	//TODO:
+	$smarty->display('user_transaction.dwt');
+}
+
 
 /* 密码找回-->修改密码界面 */
 elseif ($action == 'get_password')
@@ -970,6 +996,8 @@ elseif ($action == 'act_edit_password')
     }
 
 }
+
+
 
 /* 添加一个红包 */
 elseif ($action == 'act_add_bonus')
@@ -1226,7 +1254,7 @@ elseif ($action == 'collection_list')
     );
     $smarty->assign('lang_list',  $lang_list);
     $smarty->assign('user_id',  $user_id);
-    $smarty->display('user_clips.dwt');
+    $smarty->display('user_transaction.dwt');
 }
 
 /* 删除收藏的商品 */
@@ -1267,7 +1295,7 @@ elseif ($action == 'del_attention')
     ecs_header("Location: user.php?act=collection_list\n");
     exit;
 }
-/* 显示留言列表 */
+/* 咨询&投诉 */
 elseif ($action == 'message_list')
 {
     include_once(ROOT_PATH . 'includes/lib_clips.php');
@@ -1329,7 +1357,9 @@ elseif ($action == 'comment_list')
 elseif ($action == 'act_add_message')
 {
     include_once(ROOT_PATH . 'includes/lib_clips.php');
-
+	
+    //TODO: add order_sn
+    
     $message = array(
         'user_id'     => $user_id,
         'user_name'   => $_SESSION['user_name'],
@@ -1394,7 +1424,7 @@ elseif ($action == 'booking_list')
 
     $smarty->assign('booking_list', get_booking_list($user_id, $pager['size'], $pager['start']));
     $smarty->assign('pager',        $pager);
-    $smarty->display('user_clips.dwt');
+    $smarty->display('user_transaction.dwt');
 }
 /* 添加缺货登记页面 */
 elseif ($action == 'add_booking')
@@ -1429,7 +1459,7 @@ elseif ($action == 'add_booking')
     $smarty->assign('goods_attr', $goods_attr);
 
     $smarty->assign('info', get_goodsinfo($goods_id));
-    $smarty->display('user_clips.dwt');
+    $smarty->display('user_transaction.dwt');
 
 }
 
@@ -3004,6 +3034,25 @@ elseif ($action == 'send_verify_email')
 		}
 	}	
 }
+
+/* 建议有奖 */
+elseif ($action == 'my_advice')
+{
+   $smarty->display('user_clips.dwt');
+}
+/* 退换货管理 */
+elseif ($action == 'order_back')
+{
+	$smarty->display('user_transaction.dwt');
+}
+/* 我的等级 */
+elseif ($action == 'user_level')
+{
+	$smarty->display('user_transaction.dwt');
+}
+
+
+
 
 
 function user_random_code($length = 6 , $numeric = 0) {

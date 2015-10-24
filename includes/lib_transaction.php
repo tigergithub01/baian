@@ -294,22 +294,15 @@ function add_bonus($user_id, $bouns_sn)
  */
 function get_user_orders($user_id, $num = 10, $start = 0)
 {
-    /* 取得订单列表 */
+	/* 取得订单列表 */
     $arr    = array();
-     /*--pgge退换货修改过代码--*/
-    $sql = "SELECT o.*, " .
-           "(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee ".
-           " FROM " .$GLOBALS['ecs']->table('order_info') . ' as o '.
-           " WHERE user_id = '$user_id' $where ORDER BY add_time DESC";
-    $res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
-         /*--pgge退换货修改过代码 end--*/
-/*	 
-    $sql = "SELECT order_id, order_sn, order_status, shipping_status, pay_status, add_time, is_deposit, " .
+
+    $sql = "SELECT order_id, order_sn, order_status, shipping_status, pay_status, add_time,shipping_fee, " .
            "(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee ".
            " FROM " .$GLOBALS['ecs']->table('order_info') .
            " WHERE user_id = '$user_id' ORDER BY add_time DESC";
     $res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
-*/
+
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
         if ($row['order_status'] == OS_UNCONFIRMED)
@@ -347,24 +340,13 @@ function get_user_orders($user_id, $num = 10, $start = 0)
 
         $row['shipping_status'] = ($row['shipping_status'] == SS_SHIPPED_ING) ? SS_PREPARING : $row['shipping_status'];
         $row['order_status'] = $GLOBALS['_LANG']['os'][$row['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$row['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$row['shipping_status']];
-
         $arr[] = array('order_id'       => $row['order_id'],
                        'order_sn'       => $row['order_sn'],
                        'order_time'     => local_date($GLOBALS['_CFG']['time_format'], $row['add_time']),
                        'order_status'   => $row['order_status'],
-		       /*--pgge退换货修改过代码--*/
-		       'shipping_status'   => $row['shipping_status'],
-		      
-	   'pay_status'     => $row['pay_status'],
-					   'back_status'    => $GLOBALS['db']->getOne("SELECT status FROM " . $GLOBALS['ecs']->table('order_back') . " WHERE order_sn = '" . $row['order_sn'] . "'"),
-					   'back_case'      => $GLOBALS['db']->getOne("SELECT `case` FROM " . $GLOBALS['ecs']->table('order_back') . " WHERE order_sn = '" . $row['order_sn'] . "'"),
-					   'back_sn'        => $GLOBALS['db']->getOne("SELECT back_sn FROM " . $GLOBALS['ecs']->table('order_back') . " WHERE order_sn = '" . $row['order_sn'] . "'"),
-					   'diff_time'      => date('d',time()) - date('d',$row['pay_time']),
- /*--pgge退换货修改过代码-end--*/
                        'total_fee'      => price_format($row['total_fee'], false),
-                       'handler'        => $row['handler'],
-                       'is_deposit'     => $row['is_deposit']
-                       );
+        			   'shipping_fee'      => price_format($row['shipping_fee'], false),
+                       'handler'        => $row['handler']);
     }
 
     return $arr;

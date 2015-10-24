@@ -103,6 +103,9 @@ $smarty->assign('may_like_goods',$may_like_goods);
 if ($action == 'default')
 {
     include_once(ROOT_PATH .'includes/lib_clips.php');
+    include_once(ROOT_PATH . 'includes/lib_order.php');
+    include_once(ROOT_PATH . 'includes/lib_transaction.php');
+    
     if ($rank = get_rank_info())
     {
 //         $smarty->assign('rank_name', sprintf($_LANG['your_level'], $rank['rank_name']));
@@ -114,6 +117,22 @@ if ($action == 'default')
         	$smarty->assign('next_rank_name', sprintf($_LANG['next_level'], $rank['next_rank'] ,$rank['next_rank_name']));
         }
     }
+    
+    //获取订单信息added by tiger.guo 20151024
+    $orders = get_user_orders($user_id);
+    foreach ($orders as $index => $order) {
+    	$order_id = $order['order_id'];
+    	$goods_list = order_goods($order_id);
+    	foreach ($goods_list AS $key => $value)
+    	{
+    		$goods_list[$key]['market_price'] = price_format($value['market_price'], false);
+    		$goods_list[$key]['goods_price']  = price_format($value['goods_price'], false);
+    		$goods_list[$key]['subtotal']     = price_format($value['subtotal'], false);
+    	};
+    	$orders[$index]['goods_list']=$goods_list;
+    }
+    
+    $smarty->assign('orders', $orders);
     $smarty->assign('info',        get_user_default($user_id));
     $smarty->assign('user_notice', $_CFG['user_notice']);
     $smarty->assign('prompt',      get_user_prompt($user_id));
@@ -1020,6 +1039,7 @@ elseif ($action == 'act_add_bonus')
 elseif ($action == 'order_list')
 {
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
+    include_once(ROOT_PATH . 'includes/lib_order.php');
 
     $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 
@@ -1028,8 +1048,20 @@ elseif ($action == 'order_list')
     $pager  = get_pager('user.php', array('act' => $action), $record_count, $page);
 
     $orders = get_user_orders($user_id, $pager['size'], $pager['start']);
+    
+    //获取订单明细信息 added by tiger.guo 20151023
+    foreach ($orders as $index => $order) {
+    	$order_id = $order['order_id'];
+    	$goods_list = order_goods($order_id);
+    	foreach ($goods_list AS $key => $value)
+    	{
+    		$goods_list[$key]['market_price'] = price_format($value['market_price'], false);
+    		$goods_list[$key]['goods_price']  = price_format($value['goods_price'], false);
+    		$goods_list[$key]['subtotal']     = price_format($value['subtotal'], false);
+    	};
+    	$orders[$index]['goods_list']=$goods_list;
+    }
     $merge  = get_user_merge($user_id);
-
     $smarty->assign('merge',  $merge);
     $smarty->assign('pager',  $pager);
     $smarty->assign('orders', $orders);
@@ -3031,6 +3063,9 @@ elseif ($action == 'send_verify_email')
 		$last_sign_date= local_date($GLOBALS['_CFG']['date_format'], $last_sign_time);
 		if($last_sign_date==local_date($GLOBALS['_CFG']['date_format'], gmtime())){
 			lib_main_make_json_error('你今天已经签到！');
+		}else{
+			lib_clips_sign_day();
+			lib_main_make_json_result('签到成功');
 		}
 	}	
 }

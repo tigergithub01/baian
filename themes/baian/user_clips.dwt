@@ -48,9 +48,63 @@
                     </div>
                 <div class="h"></div>
 
-                <div class="s-tit1"><a href="" class="r">查看全部订单>></a><h3>我的订单</h3></div>
+                <div class="s-tit1"><a href="user.php?act=order_list" class="r">查看全部订单>></a><h3>我的订单</h3></div>
                 <div class="s-myorder">
-                    <p class="f14 tc grey">您买的东西太少了，这里都空空的，快去挑选合适的商品吧！</p>
+                	 <!--{foreach from=$orders item=order name=orders_foreach}-->
+				       <table class="s-order-table">
+				           <thead>
+				               <tr>
+				                   <th colspan="4">
+				                       <span class="order_num">订单号：<a href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$order.order_sn}</a></span>
+				                       <span class="order_time">下单时间：{$order.order_time}</span>
+				                       本次订单预计获得 <b class="orange">X</b> 积分 <b class="orange">X</b> 成长值
+				                   </th>
+				               </tr>
+				           </thead>
+				           <tbody>
+				           
+				            <!-- {if empty($order.goods_list)} -->
+				            	<tr>
+				               		<td colspan="4">
+				               			无商品信息
+				               		</td>
+				               </tr>	
+				            <!-- {else} -->
+				           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
+				               <tr>
+				                   <td>
+				                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
+				                       <div class="goods_title"><a href="{$goods.goods_url}">{$goods.goods_name}</a></div>
+				                       <div class="unit_price">{$goods.goods_price}</div>
+				                       <div class="goods_num">{$goods.goods_number}</div>
+				                   </td>
+				                   <!-- {if $smarty.foreach.goods_foreach.first } -->
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+				                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
+				                   </td>
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+				                       <div class="order_state">{$order.order_status}</div>
+				                       <a href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
+				                   </td>
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+				                   	  {$order.handler}	
+				                   	   <!-- 	
+				                       <a href="" class="s-btn1">马上支付</a>
+				                       <a href="" class="a-btn">取消订单</a>
+				                        -->
+				                   </td>
+				                   <!-- {/if} -->
+				               </tr>
+				               <!--{/foreach}-->
+				               <!-- {/if} -->
+				               
+				           </tbody>
+				       </table>
+				       
+				       <!-- {foreachelse} -->
+				       	<p class="f14 tc grey">您买的东西太少了，这里都空空的，快去挑选合适的商品吧！</p>
+				       <!--{/foreach}-->
+                    
                 </div>
                 <script type="text/javascript">
                 	<!-- 每日签到 -->

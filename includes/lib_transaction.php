@@ -705,9 +705,7 @@ function get_order_detail($order_id, $user_id = 0)
         {
               include_once($plugin);
               $shipping = new $shipping_code;
-              
-              //修改快递100接口时，一下行注释了
-              //$order['invoice_no'] = $shipping->query($order['invoice_no']);
+              $order['invoice_no'] = $shipping->query($order['invoice_no']);
         }
     }
 
@@ -838,7 +836,31 @@ function get_order_detail($order_id, $user_id = 0)
     {
         $order['shipping_time'] = '';
     }
-
+    
+    $order['order_time'] =  local_date($GLOBALS['_CFG']['time_format'], $row['order_time']);
+    $order['order_status_name'] = $GLOBALS['_LANG']['os'][$order['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$order['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$order['shipping_status']];
+	
+    /**配送地址,**/
+    $sql = "SELECT rg_country.region_name AS country_name, ".
+      			  "rg_province.region_name AS province_name, ".
+      			  "rg_city.region_name AS city_name, ".
+      			  "rg_district.region_name AS district_name ".
+      ' FROM '.$GLOBALS['ecs']->table('order_info') . ' AS o ' .
+      ' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_country ON o.country = rg_country.region_id' .
+      ' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_province ON o.province = rg_province.region_id' .
+      ' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_city ON o.city = rg_city.region_id' .
+      ' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_district ON o.district = rg_district.region_id' .  
+    " WHERE order_id = '$order_id'";
+    $regions = $GLOBALS['db']->getRow($sql);
+    $order['country_name']= $regions['country_name'];
+    $order['province_name']= $regions['province_name'];
+    $order['city_name']= $regions['city_name'];
+    $order['district_name']= $regions['district_name'];
+    
+    $order['shipping_address'] = $order['consignee'].' '.$order['mobile'].' '.$order['tel'].' '.
+      	$order['province_name'].' '.$order['city_name'].' '.$order['district_name'].' '.$order['address'];
+    
+    
     return $order;
 
 }

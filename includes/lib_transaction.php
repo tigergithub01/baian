@@ -1205,7 +1205,7 @@ function save_order_address($address, $user_id)
  */
 function get_user_bouns_list($user_id, $num = 10, $start = 0)
 {
-    $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date ".
+    $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date,u.used_time ".
            " FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
            $GLOBALS['ecs']->table('bonus_type'). " AS b".
            " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'";
@@ -1241,10 +1241,26 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
 
         $row['use_startdate']   = local_date($GLOBALS['_CFG']['date_format'], $row['use_start_date']);
         $row['use_enddate']     = local_date($GLOBALS['_CFG']['date_format'], $row['use_end_date']);
-
+        $row['used_time']     = local_date($GLOBALS['_CFG']['date_format'], $row['used_time']);
+        $row['formated_type_money']   = price_format($row['type_money'], false);
+        
         $arr[] = $row;
     }
     return $arr;
+
+}
+
+function get_user_bouns_sum($user_id)
+{
+	$sql = "SELECT count(1) AS total_count, sum(b.type_money) AS total_money".
+			" FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
+			$GLOBALS['ecs']->table('bonus_type'). " AS b".
+			" WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'";
+	$row = $GLOBALS['db']->getRow($sql);
+	if($row){
+		$row['formated_total_money']   = price_format($row['total_money'], false);
+	}
+	return $row;
 
 }
 

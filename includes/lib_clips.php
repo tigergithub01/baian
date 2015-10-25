@@ -32,7 +32,7 @@ function get_collection_goods($user_id, $num = 10, $start = 0)
 {
     $sql = 'SELECT g.goods_id, g.goods_name, g.market_price, g.shop_price AS org_price, '.
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, ".
-                'g.promote_price, g.promote_start_date,g.promote_end_date, c.rec_id, c.is_attention' .
+                'g.promote_price, g.promote_start_date,g.promote_end_date, c.rec_id, c.is_attention,c.add_time,g.goods_thumb,g.goods_img ' .
             ' FROM ' . $GLOBALS['ecs']->table('collect_goods') . ' AS c' .
             " LEFT JOIN " . $GLOBALS['ecs']->table('goods') . " AS g ".
                 "ON g.goods_id = c.goods_id ".
@@ -61,6 +61,9 @@ function get_collection_goods($user_id, $num = 10, $start = 0)
         $goods_list[$row['goods_id']]['shop_price']    = price_format($row['shop_price']);
         $goods_list[$row['goods_id']]['promote_price'] = ($promote_price > 0) ? price_format($promote_price) : '';
         $goods_list[$row['goods_id']]['url']           = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $goods_list[$row['goods_id']]['add_time']        = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+        $goods_list[$row['goods_id']]['goods_thumb']           =  get_image_path($row['goods_id'], $row['goods_thumb'], true);
+        $goods_list[$row['goods_id']]['goods_img']           =  get_image_path($row['goods_id'], $row['goods_img'], true);
     }
 
     return $goods_list;
@@ -260,7 +263,7 @@ function delete_tag($tag_words, $user_id)
 function get_booking_list($user_id, $num, $start)
 {
     $booking = array();
-    $sql = "SELECT bg.rec_id, bg.goods_id, bg.goods_number, bg.booking_time, bg.is_dispose, bg.dispose_note, g.goods_name ".
+    $sql = "SELECT bg.rec_id, bg.goods_id, bg.goods_number, bg.booking_time, bg.is_dispose, bg.dispose_note, g.goods_name,g.goods_thumb,g.goods_img ".
            "FROM " .$GLOBALS['ecs']->table('booking_goods')." AS bg , " .$GLOBALS['ecs']->table('goods')." AS g". " WHERE bg.goods_id = g.goods_id AND bg.user_id = '$user_id' ORDER BY bg.booking_time DESC";
     $res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
 
@@ -270,12 +273,15 @@ function get_booking_list($user_id, $num, $start)
         {
             $row['dispose_note'] = 'N/A';
         }
+        
         $booking[] = array('rec_id'       => $row['rec_id'],
                            'goods_name'   => $row['goods_name'],
                            'goods_number' => $row['goods_number'],
                            'booking_time' => local_date($GLOBALS['_CFG']['time_format'], $row['booking_time']),
         				   'is_dispose' => $row['is_dispose'],
                            'dispose_note' => $row['dispose_note'],
+        				   'goods_thumb' => get_image_path($row['goods_id'], $row['goods_thumb'], true),
+        		           'goods_img' => get_image_path($row['goods_id'], $row['goods_img'], true),
                            'url'          => build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']));
     }
 

@@ -471,6 +471,13 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-order-table .a-btn{display: block;line-height: 18px;}
 .s-order-table .s-btn1{display: inline-block;margin-bottom: 2px;}
 
+.s-order-table.datalist th{text-align: center}
+.s-order-table.datalist td{text-align: left;}
+.s-order-table input.btn_submit{
+	background: #f08300 none repeat scroll 0 0;
+	color: white;
+}
+
 .s-btn1{display: block;width: 120px;height: 30px;text-align: center;line-height: 30px;background: #f08300;color: #fff;font-size: 14px;}
 .s-btn1:hover{color: #fff;background: #de7900;}
 

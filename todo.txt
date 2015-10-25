@@ -81,4 +81,26 @@ articlecat.php 241 247
 http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001220
 http://localhost:8086/article-126.html
 
+http://localhost:8086/user.php?act=register&XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14453217614701
+
+会员自动登录有问题，不能自动登录。
+取消不登录直接购买
+ob_clean(); //Clears the buffer 
+http://www.php.net/
+
+商品品牌与商品留言都可以上传图片。
+
+http://localhost:8086/baadmin/user_msg.php?act=phpinfo
+/* 管理员登录后可在任何页面使用 act=phpinfo 显示 phpinfo() 信息 */
+
+订单信息中添加订单备注
+限时抢购价没有体现
+积分商城中商品展示时积分体现
+我的收藏的加入购物车要改为ajax形式
+
+
+
+
+
+
 

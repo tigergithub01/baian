@@ -2309,7 +2309,11 @@ elseif ($action == 'bonus')
 
     $pager = get_pager('user.php', array('act' => $action), $record_count, $page);
     $bonus = get_user_bouns_list($user_id, $pager['size'], $pager['start']);
+    
+    //获取汇总信息
+    $total_bonus = get_user_bouns_sum($user_id);
 
+    $smarty->assign('total_bonus', $total_bonus);
     $smarty->assign('pager', $pager);
     $smarty->assign('bonus', $bonus);
     $smarty->display('user_transaction.dwt');
@@ -3084,6 +3088,25 @@ elseif ($action == 'order_back')
 /* 我的等级 */
 elseif ($action == 'user_level')
 {
+	include_once(ROOT_PATH .'includes/lib_clips.php');
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	
+	if ($rank = get_rank_info())
+	{
+		//         $smarty->assign('rank_name', sprintf($_LANG['your_level'], $rank['rank_name']));
+		$smarty->assign('rank_name', $rank['rank_name']);
+		$smarty->assign('max_points', $rank['max_points']);
+		$smarty->assign('next_rank', $rank['next_rank']);
+	
+		if (!empty($rank['next_rank_name']))
+		{
+			$smarty->assign('next_rank_name', sprintf($_LANG['next_level'], $rank['next_rank'] ,$rank['next_rank_name']));
+		}
+	}
+	
+	$smarty->assign('info',        get_user_default($user_id));
+	$smarty->assign('user_notice', $_CFG['user_notice']);
+	$smarty->assign('prompt',      get_user_prompt($user_id));
 	$smarty->display('user_transaction.dwt');
 }
 

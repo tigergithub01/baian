@@ -1140,6 +1140,7 @@ elseif ($action == 'order_detail')
     $order['order_status'] = $_LANG['os'][$order['order_status']];
     $order['pay_status'] = $_LANG['ps'][$order['pay_status']];
     $order['shipping_status'] = $_LANG['ss'][$order['shipping_status']];
+    
 
     $smarty->assign('order',      $order);
     $smarty->assign('goods_list', $goods_list);

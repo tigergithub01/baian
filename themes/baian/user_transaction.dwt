@@ -619,7 +619,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       <div class="blank"></div>
       	
        <div class="s-myorder">
-       	 <div>我的红包</div>
+       	 <div class="title">我的红包</div>
        	 <table class="s-order-table">
 			<tbody>
 				<tr>
@@ -636,7 +636,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			</tbody>
 		</table>
        	 
-       	 <div>最近红包记录</div> 	
+       	 <div class="title">最近红包记录</div> 	
 	     <table class="s-order-table datalist">
                  <thead>
                      <tr>
@@ -679,7 +679,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                      <!--{/foreach} -->
                  </tbody>
              </table>    
-            </div>
+         </div>
                     
 		    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
 		    
@@ -752,8 +752,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
        <div class="blank5"></div>
        <!--{/if}-->
-      <!--#订单列表界面 end-->
-      
+      <!--#订单列表界面 end-->    
       
       
        <!--#包裹状态查询界面 start-->
@@ -1139,195 +1138,73 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       <!--* 积分兑换 start-->
        <!--{if $action eq 'transform_points'} -->
 		 <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=user_level">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div>
-             <div class="blank"></div>
-       <!--{if $exchange_type eq 'ucenter'}-->
-        <form action="user.php" method="post" name="transForm" onsubmit="return calcredit();">
-     <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
-                <tr>
-                    <th width="120" bgcolor="#FFFFFF" align="right" valign="top">{$lang.cur_points}:</th>
-                    <td bgcolor="#FFFFFF">
-                    <label for="pay_points">{$lang.exchange_points.1}:</label><input type="text" size="15" id="pay_points" name="pay_points" value="{$shop_points.pay_points}" style="border:0;border-bottom:1px solid #DADADA;" readonly="readonly" /><br />
-                    <div class="blank"></div>
-                    <label for="rank_points">{$lang.exchange_points.0}:</label><input type="text" size="15" id="rank_points" name="rank_points" value="{$shop_points.rank_points}" style="border:0;border-bottom:1px solid #DADADA;" readonly="readonly" />
-                    </td>
-                    </tr>
-          <tr><td bgcolor="#FFFFFF">&nbsp;</td>
-          <td bgcolor="#FFFFFF">&nbsp;</td>
-          </tr>
-          <tr>
-            <th align="right" bgcolor="#FFFFFF"><label for="amount">{$lang.exchange_amount}:</label></th>
-            <td bgcolor="#FFFFFF"><input size="15" name="amount" id="amount" value="0" onkeyup="calcredit();" type="text" />
-                <select name="fromcredits" id="fromcredits" onchange="calcredit();">
-                  {html_options options=$lang.exchange_points selected=$selected_org}
-                </select>
-            </td>
-          </tr>
-          <tr>
-            <th align="right" bgcolor="#FFFFFF"><label for="desamount">{$lang.exchange_desamount}:</label></th>
-            <td bgcolor="#FFFFFF"><input type="text" name="desamount" id="desamount" disabled="disabled" value="0" size="15" />
-              <select name="tocredits" id="tocredits" onchange="calcredit();">
-                {html_options options=$to_credits_options selected=$selected_dst}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <th align="right" bgcolor="#FFFFFF">{$lang.exchange_ratio}:</th>
-            <td bgcolor="#FFFFFF">1 <span id="orgcreditunit">{$orgcreditunit}</span> <span id="orgcredittitle">{$orgcredittitle}</span> {$lang.exchange_action} <span id="descreditamount">{$descreditamount}</span> <span id="descreditunit">{$descreditunit}</span> <span id="descredittitle">{$descredittitle}</span></td>
-          </tr>
-          <tr><td bgcolor="#FFFFFF">&nbsp;</td>
-          <td bgcolor="#FFFFFF"><input type="hidden" name="act" value="act_transform_ucenter_points" /><input type="submit" name="transfrom" value="{$lang.transform}" /></td></tr>
-  </table>
-        </form>
-       <script type="text/javascript">
-        {foreach from=$lang.exchange_js item=lang_js key=key}
-        var {$key} = '{$lang_js}';
-        {/foreach}
-
-        var out_exchange_allow = new Array();
-        {foreach from=$out_exchange_allow item=ratio key=key}
-        out_exchange_allow['{$key}'] = '{$ratio}';
-        {/foreach}
-
-        function calcredit()
-        {
-            var frm = document.forms['transForm'];
-            var src_credit = frm.fromcredits.value;
-            var dest_credit = frm.tocredits.value;
-            var in_credit = frm.amount.value;
-            var org_title = frm.fromcredits[frm.fromcredits.selectedIndex].innerHTML;
-            var dst_title = frm.tocredits[frm.tocredits.selectedIndex].innerHTML;
-            var radio = 0;
-            var shop_points = ['rank_points', 'pay_points'];
-            if (parseFloat(in_credit) > parseFloat(document.getElementById(shop_points[src_credit]).value))
-            {
-                alert(balance.replace('{%s}', org_title));
-                frm.amount.value = frm.desamount.value = 0;
-                return false;
-            }
-            if (typeof(out_exchange_allow[dest_credit+'|'+src_credit]) == 'string')
-            {
-                radio = (1 / parseFloat(out_exchange_allow[dest_credit+'|'+src_credit])).toFixed(2);
-            }
-            document.getElementById('orgcredittitle').innerHTML = org_title;
-            document.getElementById('descreditamount').innerHTML = radio;
-            document.getElementById('descredittitle').innerHTML = dst_title;
-            if (in_credit > 0)
-            {
-                if (typeof(out_exchange_allow[dest_credit+'|'+src_credit]) == 'string')
-                {
-                    frm.desamount.value = Math.floor(parseFloat(in_credit) / parseFloat(out_exchange_allow[dest_credit+'|'+src_credit]));
-                    frm.transfrom.disabled = false;
-                    return true;
-                }
-                else
-                {
-                    frm.desamount.value = deny;
-                    frm.transfrom.disabled = true;
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-       </script>
-       <!--{else}-->
-        <b>{$lang.cur_points}:</b>
-      <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
-          <tr>
-            <td width="30%" valign="top" bgcolor="#FFFFFF"><table border="0">
-              <!--{foreach from=$bbs_points item=points}-->
-              <tr>
-                <th>{$points.title}:</th>
-                <td width="120" style="border-bottom:1px solid #DADADA;">{$points.value}</td>
-              </tr>
-              <!--{/foreach} -->
-            </table></td>
-            <td width="50%" valign="top" bgcolor="#FFFFFF"><table>
-                    <tr>
-                <th>{$lang.pay_points}:</th>
-                <td width="120" style="border-bottom:1px solid #DADADA;">{$shop_points.pay_points}</td>
-                    </tr>
-              <tr>
-                <th>{$lang.rank_points}:</th>
-                <td width="120" style="border-bottom:1px solid #DADADA;">{$shop_points.rank_points}</td>
-              </tr>
-            </table></td>
-          </tr>
-        </table>
-        <br />
-        <b>{$lang.rule_list}:</b>
-        <ul class="point clearfix">
-          <!-- {foreach from=$rule_list item=rule} -->
-          <li><font class="f1">·</font>"{$rule.from}" {$lang.transform} "{$rule.to}" {$lang.rate_is} {$rule.rate}
-          <!-- {/foreach} -->
-        </ul>
-
-        <form action="user.php" method="post" name="theForm">
-        <table width="100%" border="1" align="center" cellpadding="5" cellspacing="0" style="border-collapse:collapse;border:1px solid #DADADA;">
-          <tr style="background:#F1F1F1;">
-            <th>{$lang.rule}</th>
-            <th>{$lang.transform_num}</th>
-            <th>{$lang.transform_result}</th>
-          </tr>
-          <tr>
-            <td>
-              <select name="rule_index" onchange="changeRule()">
-                <!--{foreach from=$rule_list item=rule key=key}-->
-                <option value="{$key}">{$rule.from}->{$rule.to}</option>
-                <!--{/foreach}-->
-              </select>
-          </td>
-          <td>
-            <input type="text" name="num" value="0" onkeyup="calPoints()"/>
-          </td>
-          <td><span id="ECS_RESULT">0</span></td>
-          </tr>
-          <tr>
-            <td colspan="3" align="center"><input type="hidden" name="act" value="act_transform_points"  /><input type="submit" value="{$lang.transform}" /></td>
-          </tr>
-        </table>
-        </form>
-       <script type="text/javascript">
-          //<![CDATA[
-            var rule_list = new Object();
-            var invalid_input = '{$lang.invalid_input}';
-            {foreach from=$rule_list item=rule key=key}
-            rule_list['{$key}'] = '{$rule.rate}';
-            {/foreach}
-            function calPoints()
-            {
-              var frm = document.forms['theForm'];
-              var rule_index = frm.elements['rule_index'].value;
-              var num = parseInt(frm.elements['num'].value);
-              var rate = rule_list[rule_index];
-
-              if (isNaN(num) || num < 0 || num != frm.elements['num'].value)
-              {
-                document.getElementById('ECS_RESULT').innerHTML = invalid_input;
-                rerutn;
-              }
-              var arr = rate.split(':');
-              var from = parseInt(arr[0]);
-              var to = parseInt(arr[1]);
-
-              if (from <=0 || to <=0)
-              {
-                from = 1;
-                to = 0;
-              }
-              document.getElementById('ECS_RESULT').innerHTML = parseInt(num * to / from);
-            }
-
-            function changeRule()
-            {
-              document.forms['theForm'].elements['num'].value = 0;
-              document.getElementById('ECS_RESULT').innerHTML = 0;
-            }
-          //]]>
-       </script>
-       <!--{/if}-->
+         <div class="blank"></div>
+         
+         <div class="s-myorder">
+       	 	<div class="title">我的积分</div>
+	       	 <table class="s-order-table noborder">
+				<tbody>
+					<tr>
+						<td>
+							{$lang.exchange_points.1}:{$shop_points.pay_points} 
+						</td>
+					</tr>
+					<tr>
+						<td>
+							 {$lang.exchange_points.0}:{$shop_points.rank_points}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		 <div class="title">最近积分记录</div> 	
+	     <table class="s-order-table datalist">
+                 <thead>
+                     <tr>
+                         <th>
+                            	日期
+                         </th>
+                         <th>
+                            	 消费积分
+                         </th>
+                         <th>
+                            	等级积分
+                         </th>
+                         <th>
+                            	备注
+                         </th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 	  <!--{foreach from=$bonus item=item}-->	
+                     <tr>
+                         <td>
+                             {$item.type_name}	
+                         </td>
+                         <td>
+                            {$item.bonus_sn}	
+                         </td>
+                         <td>
+                         	{$item.formated_type_money}	
+                         </td>
+                         <td>
+				           {$item.use_enddate}
+                         </td>
+                     </tr>
+                     <!-- {foreachelse} -->
+                     <tr>
+                         <td colspan="4">
+                             暂无数据
+                         </td>
+                      </tr>   
+                     <!--{/foreach} -->
+                 </tbody>
+             </table>    
+         </div>                    
+		    
+		</div>
+           
+           
         <!--{/if} -->
         <!--#积分兑换 end -->
         

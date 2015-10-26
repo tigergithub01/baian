@@ -39,7 +39,7 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
-'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email','baby_birthday','modify_pwd');
+'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email','baby_info','modify_pwd');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -710,8 +710,8 @@ elseif ($action == 'act_edit_profile')
 {
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
 
-    $birthday = trim($_POST['birthdayYear']) .'-'. trim($_POST['birthdayMonth']) .'-'.
-    trim($_POST['birthdayDay']);
+//     $birthday = trim($_POST['birthdayYear']) .'-'. trim($_POST['birthdayMonth']) .'-'.trim($_POST['birthdayDay']);
+    $birthday = isset($_POST['birthday']) ? trim($_POST['birthday']) : '';
     $email = trim($_POST['email']);
     $other['msn'] = $msn = isset($_POST['extend_field1']) ? trim($_POST['extend_field1']) : '';
     $other['qq'] = $qq = isset($_POST['extend_field2']) ? trim($_POST['extend_field2']) : '';
@@ -759,7 +759,7 @@ elseif ($action == 'act_edit_profile')
     {
          show_message($_LANG['passport_js']['home_phone_invalid']);
     }
-    if (!is_email($email))
+    if (!empty($email)&&!is_email($email))
     {
         show_message($_LANG['msg_email_format']);
     }
@@ -779,9 +779,13 @@ elseif ($action == 'act_edit_profile')
 
     $profile  = array(
         'user_id'  => $user_id,
-        'email'    => isset($_POST['email']) ? trim($_POST['email']) : '',
+//         'email'    => isset($_POST['email']) ? trim($_POST['email']) : '',//TODO:邮箱与手机号码应该验证后才能设定
         'sex'      => isset($_POST['sex'])   ? intval($_POST['sex']) : 0,
         'birthday' => $birthday,
+    	'alias'      => isset($_POST['alias'])   ? $_POST['alias'] : '',
+    	'baby_nickname'      => isset($_POST['baby_nickname'])   ? $_POST['baby_nickname'] : '',
+    	'baby_sex'      => isset($_POST['baby_sex'])   ? intval($_POST['baby_sex']) : 0,
+    	'baby_birthday'      => isset($_POST['baby_birthday'])   ? $_POST['baby_birthday'] : '',
         'other'    => isset($other) ? $other : array()
         );
 
@@ -811,9 +815,46 @@ elseif ($action == 'bind_mobile_email'){
 }
 
 /* 宝宝生日登记 */
-elseif ($action == 'baby_birthday'){
-	//TODO:
-	$smarty->display('user_transaction.dwt');
+elseif ($action == 'baby_info'){
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+
+    $user_info = get_profile($user_id);
+
+    /* 取出注册扩展字段 */
+    $sql = 'SELECT * FROM ' . $ecs->table('reg_fields') . ' WHERE type < 2 AND display = 1 ORDER BY dis_order, id';
+    $extend_info_list = $db->getAll($sql);
+
+    $sql = 'SELECT reg_field_id, content ' .
+           'FROM ' . $ecs->table('reg_extend_info') .
+           " WHERE user_id = $user_id";
+    $extend_info_arr = $db->getAll($sql);
+
+    $temp_arr = array();
+    foreach ($extend_info_arr AS $val)
+    {
+        $temp_arr[$val['reg_field_id']] = $val['content'];
+    }
+
+    foreach ($extend_info_list AS $key => $val)
+    {
+        switch ($val['id'])
+        {
+            case 1:     $extend_info_list[$key]['content'] = $user_info['msn']; break;
+            case 2:     $extend_info_list[$key]['content'] = $user_info['qq']; break;
+            case 3:     $extend_info_list[$key]['content'] = $user_info['office_phone']; break;
+            case 4:     $extend_info_list[$key]['content'] = $user_info['home_phone']; break;
+            case 5:     $extend_info_list[$key]['content'] = $user_info['mobile_phone']; break;
+            default:    $extend_info_list[$key]['content'] = empty($temp_arr[$val['id']]) ? '' : $temp_arr[$val['id']] ;
+        }
+    }
+
+    $smarty->assign('extend_info_list', $extend_info_list);
+
+    /* 密码提示问题 */
+    $smarty->assign('passwd_questions', $_LANG['passwd_questions']);
+
+    $smarty->assign('profile', $user_info);
+    $smarty->display('user_transaction.dwt');
 }
 
 /* 改密码 */

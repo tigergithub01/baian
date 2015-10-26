@@ -309,6 +309,26 @@ class integrate
         {
             $values[] = $this->field_bday . "='" . $cfg['bday'] . "'";
         }
+        
+        if ((!empty($cfg['alias'])))
+        {
+        	$values[] = 'alias' . "='" . $cfg['alias'] . "'";
+        }
+        
+        if ((!empty($cfg['baby_nickname'])))
+        {
+        	$values[] = 'baby_nickname' . "='" . $cfg['baby_nickname'] . "'";
+        }
+        
+        if ((!empty($cfg['baby_sex'])))
+        {
+        	$values[] = 'baby_sex' . "='" . $cfg['baby_sex'] . "'";
+        }
+        
+        if ((!empty($cfg['baby_birthday'])))
+        {
+        	$values[] = 'baby_birthday' . "='" . $cfg['baby_birthday'] . "'";
+        }
 
         if ($values)
         {

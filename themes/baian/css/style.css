@@ -471,22 +471,38 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-order-table .a-btn{display: block;line-height: 18px;}
 .s-order-table .s-btn1{display: inline-block;margin-bottom: 2px;}
 
+/**内容左对齐，th居中显示**/
 .s-order-table.datalist th{text-align: center}
 .s-order-table.datalist td{text-align: left;}
-.s-order-table input.btn_submit{
+.s-myorder input.btn_submit{
 	background: #f08300 none repeat scroll 0 0;
 	color: white;
+	min-width: 100px;height: 40px;font-size: 16px;
+	padding: 5px;
 }
 
-
+/**no border***/
 .s-order-table.noborder td{
 	border: 0px;
 }
 
-.s-myorder .title{
+.s-myorder div.title{
 	color: #f08300;font-size: 14px;font-weight: bold;
 }
 
+.s-order-table.noborder td.title{
+	width: 10%;
+}
+
+/****bady information*/
+.s-myorder .babyinfo{
+	padding:10px;
+	color: #f08300;font-size: 14px;font-weight: bold;
+}
+
+.s-myorder .babyinfo a{
+	color: #f08300;font-size: 14px;font-weight: bold;
+}
 
 
 

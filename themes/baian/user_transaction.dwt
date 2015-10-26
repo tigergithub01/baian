@@ -34,6 +34,8 @@
  
              <!-- 基本信息 start-->
          <!--{if $action eq 'profile'}-->
+         <script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+         <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
          {insert_scripts files='utils.js'}
         <script type="text/javascript">
           {foreach from=$lang.profile_js item=item key=key}
@@ -41,62 +43,140 @@
           {/foreach}
         </script>
         
-					 <div class="hyzx"><li>会员资料</li><li class="now"><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+					 <div class="hyzx"><li>会员资料</li><li class="now"><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 
 					<div class="blank"></div>
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
-    <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
-                <tr>
-                  <td width="28%" align="right" bgcolor="#FFFFFF">{$lang.birthday}： </td>
-                  <td width="72%" align="left" bgcolor="#FFFFFF"> {html_select_date field_order=YMD prefix=birthday start_year=-60 end_year=+1 display_days=true month_format=%m day_value_format=%02d time=$profile.birthday} </td>
-                </tr>
-                <tr>
-                  <td width="28%" align="right" bgcolor="#FFFFFF">{$lang.sex}： </td>
-                  <td width="72%" align="left" bgcolor="#FFFFFF"><input type="radio" name="sex" value="0" {if $profile.sex==0}checked="checked"{/if} />
-                    {$lang.secrecy}&nbsp;&nbsp;
-                    <input type="radio" name="sex" value="1" {if $profile.sex==1}checked="checked"{/if} />
-                    {$lang.male}&nbsp;&nbsp;
-                    <input type="radio" name="sex" value="2" {if $profile.sex==2}checked="checked"{/if} />
-                  {$lang.female}&nbsp;&nbsp; </td>
-                </tr>
-                <tr>
-                  <td width="28%" align="right" bgcolor="#FFFFFF">{$lang.email}： </td>
-                  <td width="72%" align="left" bgcolor="#FFFFFF"><input name="email" type="text" value="{$profile.email}" size="25" class="inputBg" /><span style="color:#FF0000"> *</span></td>
-                </tr>
-        {foreach from=$extend_info_list item=field}
-        <!-- {if $field.id eq 6} -->
-        <tr>
-          <td width="28%" align="right" bgcolor="#FFFFFF">{$lang.passwd_question}：</td>
-          <td width="72%" align="left" bgcolor="#FFFFFF">
-          <select name='sel_question'>
-          <option value='0'>{$lang.sel_question}</option>
-          {html_options options=$passwd_questions selected=$profile.passwd_question}
-          </select>
-          </td>
-        </tr>
-        <tr>
-       <td width="28%" align="right" bgcolor="#FFFFFF" <!-- {if $field.is_need} -->id="passwd_quesetion"<!--{/if}-->>{$lang.passwd_answer}：</td>
-          <td width="72%" align="left" bgcolor="#FFFFFF">
-          <input name="passwd_answer" type="text" size="25" class="inputBg" maxlengt='20' value="{$profile.passwd_answer}"/><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
-          </td>
-        </tr>
-        <!-- {else} -->
-        <tr>
-           <td width="28%" align="right" bgcolor="#FFFFFF" <!-- {if $field.is_need} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}：</td>
-            <td width="72%" align="left" bgcolor="#FFFFFF">
-            <input name="extend_field{$field.id}" type="text" class="inputBg" value="{$field.content}"/><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
-            </td>
-        </tr>
-        <!-- {/if} -->
-		{/foreach}
-                <tr>
-                  <td colspan="2" align="center" bgcolor="#FFFFFF"><input name="act" type="hidden" value="act_edit_profile" />
-                    <input name="submit" type="submit" value="{$lang.confirm_edit}" class="bnt_blue_1" style="border:none;" />
-                  </td>
-                </tr>
-       </table>
-    </form>
-     <form name="formPassword" action="user.php" method="post" onSubmit="return editPassword()" >
+     
+     <div class="s-myorder">
+       	 	 <div class="title">我的信息</div>
+	       	 <table class="s-order-table noborder datalist">
+				<tbody>
+					<tr>
+						<td class="title">头像:</td>
+						<td>
+							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">会员等级:</td>
+						<td>
+							<span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span><!-- <span class="vipBox"><b>v</b>1</span> -->
+						</td>
+					</tr>
+					<tr>
+						<td class="title">账户名:</td>
+						<td>
+							<span class="username">{$profile.user_name}</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">昵称:</td>
+						<td>
+							<input type="text" name="alias" value="{$profile.alias}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">邮箱:</td>
+						<td>
+							{$profile.email}
+							
+							<span style="padding-left: 10px;">
+							<!-- {if $profile.is_validated ==1} -->
+								已绑定
+							<!-- {else} -->	
+								<a href="javascript:void(0)" style="color: #f08300">立即绑定</a>
+							<!-- {/if} -->
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">手机:</td>
+						<td>
+							{$profile.mobile_phone}
+							<span style="padding-left: 10px;">
+							<!-- {if $profile.is_validated_phone ==1} -->
+								已绑定
+							<!-- {else} -->	
+								<a href="javascript:void(0)" style="color: #f08300">立即绑定</a>
+							<!-- {/if} -->
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">性别:</td>
+						<td>
+							<input type="radio" name="sex" value="0" {if $profile.sex==0}checked="checked"{/if} />
+			                    {$lang.secrecy}&nbsp;&nbsp;
+			                    <input type="radio" name="sex" value="1" {if $profile.sex==1}checked="checked"{/if} />
+			                    {$lang.male}&nbsp;&nbsp;
+			                    <input type="radio" name="sex" value="2" {if $profile.sex==2}checked="checked"{/if} />
+			                  {$lang.female}&nbsp;&nbsp; 
+						</td>
+					</tr>
+					<tr>
+						<td class="title">生日:</td>
+						<td>
+							<input type="text" value="{$profile.birthday}" size="12" id="birthday" name="birthday"/>
+							<input type="button" class="button" value="选择" onclick="return showCalendar('birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>      
+		    
+		    <div class="title">宝宝信息</div>
+	       	 <table class="s-order-table noborder datalist">
+				<tbody>
+					<tr>
+						<td class="title">宝宝头像:</td>
+						<td>
+							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
+							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
+							<div class=""><input class="btn_submit" type="button" value="索要生日礼物"/> </div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">宝宝昵称:</td>
+						<td>
+							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">宝宝性别:</td>
+						<td>
+							<input type="radio" name="baby_sex" value="0" {if $profile.baby_sex==0}checked="checked"{/if} />
+			                    {$lang.secrecy}&nbsp;&nbsp;
+			                    <input type="radio" name="baby_sex" value="1" {if $profile.baby_sex==1}checked="checked"{/if} />
+			                    {$lang.male}&nbsp;&nbsp;
+			                    <input type="radio" name="baby_sex" value="2" {if $profile.baby_sex==2}checked="checked"{/if} />
+			                    {$lang.female}&nbsp;&nbsp; 
+						</td>
+					</tr>
+					<tr>
+						<td class="title">生日:</td>
+						<td>
+							<input type="text" value="{$profile.baby_birthday}" size="12" id="baby_birthday" name="baby_birthday"/>
+							<input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+						</td>
+					</tr>
+					<!-- <tr>
+						<td colspan="2">
+							<input name="act" type="hidden" value="act_edit_profile" />
+							<input type="submit" class="btn_submit" value="提交"/>
+						</td>
+					</tr> -->
+				</tbody>
+			</table>
+			<div>
+			<input name="act" type="hidden" value="act_edit_profile" />
+			<input type="submit" style="" class="btn_submit" value="提交"/>
+			</div>
+		</div>
+     </form>
+     
+     <!-- <form name="formPassword" action="user.php" method="post" onSubmit="return editPassword()" >
    <table width="100%" border="0" cellpadding="5"  style="line-height:30px; font-size:14px;">
         <tr>
           <td width="28%" align="right" bgcolor="#FFFFFF">{$lang.old_password}：</td>
@@ -115,7 +195,7 @@
             <input name="submit" type="submit" class="bnt_blue_1" style="border:none;" value="{$lang.confirm_edit}" />
           </td>
         </tr>
-      </table>
+      </table> -->
     </form>
      <!--{/if}-->
      <!--#基本信息 end-->
@@ -124,23 +204,80 @@
       <!-- 手机邮箱绑定  start-->
        <!--{if $action eq 'bind_mobile_email'}-->
         
-		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 					 
 		<!--{/if}-->			 
      <!--手机邮箱绑定 end-->
      
      <!-- 宝宝生日登记  start-->
-       <!--{if $action eq 'baby_birthday'}-->
+       <!--{if $action eq 'baby_info'}-->
+        <script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+         <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
         
-		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li class="now"><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
-					 
+     
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li class="now"><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+		
+		<form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
+     
+     <div class="s-myorder">
+		    
+		    <div class="title">宝宝信息</div>
+	       	 <table class="s-order-table noborder datalist">
+				<tbody>
+					<tr>
+						<td class="title">宝宝头像:</td>
+						<td>
+							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
+							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
+							<div class=""><input class="btn_submit" type="button" value="索要生日礼物"/> </div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">宝宝昵称:</td>
+						<td>
+							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="title">宝宝性别:</td>
+						<td>
+							<input type="radio" name="baby_sex" value="0" {if $profile.baby_sex==0}checked="checked"{/if} />
+			                    {$lang.secrecy}&nbsp;&nbsp;
+			                    <input type="radio" name="baby_sex" value="1" {if $profile.baby_sex==1}checked="checked"{/if} />
+			                    {$lang.male}&nbsp;&nbsp;
+			                    <input type="radio" name="baby_sex" value="2" {if $profile.baby_sex==2}checked="checked"{/if} />
+			                    {$lang.female}&nbsp;&nbsp; 
+						</td>
+					</tr>
+					<tr>
+						<td class="title">生日:</td>
+						<td>
+							<input type="text" value="{$profile.baby_birthday}" size="12" id="baby_birthday" name="baby_birthday"/>
+							<input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+						</td>
+					</tr>
+					<!-- <tr>
+						<td colspan="2">
+							<input name="act" type="hidden" value="act_edit_profile" />
+							<input type="submit" class="btn_submit" value="提交"/>
+						</td>
+					</tr> -->
+				</tbody>
+			</table>
+			<div>
+			<input name="act" type="hidden" value="act_edit_profile" />
+			<input type="submit" style="" class="btn_submit" value="提交"/>
+			</div>
+		</div>
+     </form>			 
 		<!--{/if}-->			 
      <!--宝宝生日登记 end-->
      
      <!-- 修改密码  start-->
        <!--{if $action eq 'modify_pwd'}-->
         
-		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 					 
 		<!--{/if}-->			 
      <!--修改密码 end-->
@@ -1040,7 +1177,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       
       <!--#收货地址页面  start-->
       <!--{if $action eq 'address_list'} -->
-   <	<div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_birthday">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li class="now"><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+   <	<div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li class="now"><a href="/user.php?act=address_list">收货地址管理</a></li></div>
         <div class="blank"></div>
          {* 包含脚本文件 *}
             {insert_scripts files='utils.js,transport.js,region.js,shopping_flow.js'}
@@ -1157,50 +1294,50 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 				</tbody>
 			</table>
 			
-		 <div class="title">最近积分记录</div> 	
-	     <table class="s-order-table datalist">
-                 <thead>
-                     <tr>
-                         <th>
-                            	日期
-                         </th>
-                         <th>
-                            	 消费积分
-                         </th>
-                         <th>
-                            	等级积分
-                         </th>
-                         <th>
-                            	备注
-                         </th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                 	  <!--{foreach from=$bonus item=item}-->	
-                     <tr>
-                         <td>
-                             {$item.type_name}	
-                         </td>
-                         <td>
-                            {$item.bonus_sn}	
-                         </td>
-                         <td>
-                         	{$item.formated_type_money}	
-                         </td>
-                         <td>
-				           {$item.use_enddate}
-                         </td>
-                     </tr>
-                     <!-- {foreachelse} -->
-                     <tr>
-                         <td colspan="4">
-                             暂无数据
-                         </td>
-                      </tr>   
-                     <!--{/foreach} -->
-                 </tbody>
-             </table>    
-         </div>                    
+			 <div class="title">最近积分记录</div> 	
+		     <table class="s-order-table datalist">
+	                 <thead>
+	                     <tr>
+	                         <th>
+	                            	日期
+	                         </th>
+	                         <th>
+	                            	 消费积分
+	                         </th>
+	                         <th>
+	                            	等级积分
+	                         </th>
+	                         <th>
+	                            	备注
+	                         </th>
+	                     </tr>
+	                 </thead>
+	                 <tbody>
+	                 	  <!--{foreach from=$bonus item=item}-->	
+	                     <tr>
+	                         <td>
+	                             {$item.type_name}	
+	                         </td>
+	                         <td>
+	                            {$item.bonus_sn}	
+	                         </td>
+	                         <td>
+	                         	{$item.formated_type_money}	
+	                         </td>
+	                         <td>
+					           {$item.use_enddate}
+	                         </td>
+	                     </tr>
+	                     <!-- {foreachelse} -->
+	                     <tr>
+	                         <td colspan="4">
+	                             暂无数据
+	                         </td>
+	                      </tr>   
+	                     <!--{/foreach} -->
+	                 </tbody>
+	             </table>    
+	         </div>                    
 		    
 		</div>
            

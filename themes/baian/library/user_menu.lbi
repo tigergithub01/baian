@@ -22,7 +22,7 @@
                     <ul class="snav-ul">
                         <li><a href="user.php?act=profile"{if $action eq 'profile'}class="curs"{/if}>基本信息</a></li>
                         <li><a href="user.php?act=bind_mobile_email"{if $action eq 'bind_mobile_email'}class="curs"{/if}>手机邮箱绑定</a></li>
-                        <li><a href="user.php?act=baby_birthday"{if $action eq 'baby_birthday'}class="curs"{/if}>宝宝生日登记</a></li>
+                        <li><a href="user.php?act=baby_info"{if $action eq 'baby_info'}class="curs"{/if}>宝宝生日登记</a></li>
                         <li><a href="user.php?act=modify_pwd"{if $action eq 'modify_pwd'}class="curs"{/if}>修改密码</a></li>
                         <li><a href="user.php?act=address_list"{if $action eq 'address_list'}class="curs"{/if}>收货地址管理</a></li>
                     </ul>

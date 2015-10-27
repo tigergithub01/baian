@@ -1396,7 +1396,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
               {/literal}
             </script>
             
-            <div class="s-myorder" style="padding: 5px 5px 5px 5px">
+            <div class="s-myorder" style="">
 		    
 		     <div class="title">收货地址</div>
 	       	 <table class="s-order-table noborder datalist">

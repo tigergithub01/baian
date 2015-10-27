@@ -266,6 +266,7 @@
 				</tbody>
 			</table>
 			<div>
+			<input name="baby_flag" type="hidden" value="1" />
 			<input name="act" type="hidden" value="act_edit_profile" />
 			<input type="submit" style="" class="btn_submit" value="提交"/>
 			</div>

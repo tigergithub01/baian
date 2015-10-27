@@ -137,69 +137,78 @@
          <!-- {if $action eq 'message_list'} -->
          <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li class="now"><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
-          <!-- 我要提问 start -->
-          <div class="user_msg" style="">
-	          <form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
-					<table class="" width="100%" border="0" cellpadding="3">
-						<tr class="title_row">
-							<td class="msg_title" colspan="2" style="">我要提问</td>
-						</tr>
-						<tr>
-							<th align="right">标题：</th>
-							<td><input name="msg_title" type="text" size="30"
-								class="inputBg" /></td>
-						</tr>
-						<tr>
-							<th align="right" valign="top">内容：</th>
-							<td><textarea name="msg_content" cols="50" rows="4"
-									wrap="virtual" class="B_blue"></textarea></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td><input type="hidden" name="act"
-								value="act_add_message" /> 
-							<input type="submit"
-								value="{$lang.submit}" class="btn_submit" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
+	       <div class="s-myorder">
+	       		<!-- 我要提问 start -->
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+				     <div class="title">我要提问</div>
+			       	 <table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td class="title">标题：</td>
+								<td>
+									<input name="msg_title" type="text" size="30"
+							class="inputBg" />
+								</td>
+							</tr>
+							<tr>
+								<td class="title">内容：</td>
+								<td>
+									<textarea name="msg_content" cols="50" rows="4"
+								wrap="virtual" class="B_blue"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="act" value="act_add_message" /> 
+									<input type="hidden" name="msg_type" value="2" /> 
+									<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+			  </form>
 			<!-- 我要提问 end -->
 			
-		  <!-- 我要投诉 start -->
-          <div class="user_msg" style="">
-	          <form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
-					<table class="" width="100%" border="0" cellpadding="3">
-						<tr class="title_row">
-							<td class="msg_title" colspan="2" style="">我要投诉</td>
+			<!-- 我要投诉 start -->
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+		         <div class="title">我要投诉</div>
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">标题：</td>
+							<td>
+								<input name="msg_title" type="text" size="30"
+						class="inputBg" />
+							</td>
 						</tr>
 						<tr>
-							<th align="right">标题：</th>
-							<td><input name="msg_title" type="text" size="30"
-								class="inputBg" /></td>
+							<td class="title">订单号：</td>
+							<td>
+								<input name="order_sn" type="text" size="30"
+						class="inputBg" />
+							</td>
 						</tr>
 						<tr>
-							<th align="right">订单号：</th>
-							<td><input name="order_sn" type="text" size="30"
-								class="inputBg" /></td>
+							<td class="title">内容：</td>
+							<td>
+								<textarea name="msg_content" cols="50" rows="4"
+							wrap="virtual" class="B_blue"></textarea>
+							</td>
 						</tr>
 						<tr>
-							<th align="right" valign="top">内容：</th>
-							<td><textarea name="msg_content" cols="50" rows="4"
-									wrap="virtual" class="B_blue"></textarea></td>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_add_message" /> 
+								<input type="hidden" name="msg_type" value="1" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
 						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td><input type="hidden" name="act"
-								value="act_add_message" /> 
-							<input type="submit"
-								value="{$lang.submit}" class="btn_submit" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-			<!-- 我要投诉 end -->
-		 		
+					</tbody>
+				 </table>
+		  </form>
+		  <!-- 我要投诉 end -->
+			
+		 </div>
+		 	
          <!-- {/if} -->
          <!--#我的留言 end-->
          
@@ -208,37 +217,43 @@
          <!-- {if $action eq 'my_advice'} -->
          <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li  class="now"><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
-          <div class="user_msg" style="">
-	          <form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
-					<table class="" width="100%" border="0" cellpadding="3">
-						<tr class="title_row">
-							<td class="msg_title" colspan="2" style="">建议有奖</td>
+          <div class="s-myorder">
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+		         <div class="title">建议有奖</div>
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">标题：</td>
+							<td>
+								<input name="msg_title" type="text" size="30"
+						class="inputBg" />
+							</td>
 						</tr>
 						<tr>
-							<th align="right">标题：</th>
-							<td><input name="msg_title" type="text" size="30"
-								class="inputBg" /></td>
+							<td class="title">联系方式：</td>
+							<td>
+								<input name="contact_method" type="text" size="30"
+						class="inputBg" />
+							</td>
 						</tr>
 						<tr>
-							<th align="right">联系方式：</th>
-							<td><input name="contact_method" type="text" size="30"
-								class="inputBg" /></td>
+							<td class="title">内容：</td>
+							<td>
+								<textarea name="msg_content" cols="50" rows="4"
+							wrap="virtual" class="B_blue"></textarea>
+							</td>
 						</tr>
 						<tr>
-							<th align="right" valign="top">内容：</th>
-							<td><textarea name="msg_content" cols="50" rows="4"
-									wrap="virtual" class="B_blue"></textarea></td>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_add_message" /> 
+								<input type="hidden" name="msg_type" value="6" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
 						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td><input type="hidden" name="act"
-								value="act_add_message" /> 
-							<input type="submit"
-								value="{$lang.submit}" class="btn_submit" /></td>
-						</tr>
-					</table>
-				</form>
-			</div>
+					</tbody>
+				 </table>
+		  </form>
+		 </div>
          <!-- {/if} -->
          <!--#我的留言 end-->
          

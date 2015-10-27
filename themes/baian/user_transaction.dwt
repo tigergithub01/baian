@@ -204,7 +204,101 @@
       <!-- 手机邮箱绑定  start-->
        <!--{if $action eq 'bind_mobile_email'}-->
         
-		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+		<div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+		<div class="s-myorder">
+				
+	       		<!-- 手机绑定start -->
+	       		<div class="title">手机绑定</div>
+	       		<!-- {if $profile.is_validated_phone==1} -->
+	       			<table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td>
+									手机号码：{$profile.mobile_phone} 已绑定
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+	       		<!-- {else} -->
+	       		
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+				     
+			       	 <table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td class="title">请填写手机号码：</td>
+								<td>
+									<input name="mobile_phone" type="text" size="30"
+							class="inputBg" />
+								</td>
+							</tr>
+							<tr>
+								<td class="title">短信验证码：</td>
+								<td>
+									<input name="mobile_code" type="text" size="30"
+							class="inputBg" />
+								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="act" value="act_bind_mobile" /> 
+									<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+			  	</form>
+			  	<!-- {/if} -->
+			<!-- 手机绑定 end -->
+			
+			<!-- 邮箱绑定 start -->
+			<div class="title">邮箱绑定</div>
+			<!-- {if $profile.is_validated==1} -->
+	       			
+	       			<table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td>
+									邮箱：{$profile.email} 已绑定
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+	       	<!-- {else} -->
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+		         
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">您的邮件地址：</td>
+							<td>
+								<input name="email" type="text" size="30"
+						class="inputBg" />
+							</td>
+						</tr>
+						<tr>
+							<td class="title">邮箱验证码：</td>
+							<td>
+								<input name="email_code" type="text" size="30"
+						class="inputBg" />
+							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_bind_mobile" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
+						</tr>
+					</tbody>
+				 </table>
+		  </form>
+		  <!-- {/if} -->
+		  <!-- 邮箱绑定 end -->
+			
+		 </div>
+		
 					 
 		<!--{/if}-->			 
      <!--手机邮箱绑定 end-->
@@ -279,7 +373,112 @@
        <!--{if $action eq 'modify_pwd'}-->
         
 		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
-					 
+		
+		<div class="s-myorder">
+				
+	       		<!-- 通过绑定手机号码修改start -->
+	       		<div class="title">通过绑定手机号码修改密码</div>
+	       		<!-- {if $profile.is_validated_phone==0} -->
+	       			<table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td>
+									<a class="link_btn"  href="/user.php?act=bind_mobile_email">请先绑定手机号码</a>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+	       		<!-- {else} -->
+	       		
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+				     
+			       	 <table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td class="title">手机号码：</td>
+								<td>
+									{$profile.mobile_phone}
+								</td>
+							</tr>
+							<tr>
+								<td class="title">短信验证码：</td>
+								<td>
+									<input name="mobile_code" type="text" size="30"
+							class="inputBg" />
+								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();">
+								</td>
+							</tr>
+							<tr>
+							<td class="title">新密码：</td>
+							<td>
+								<input name="password" type="text" size="30"
+						class="inputBg" />
+							</td>
+						</tr>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="act" value="act_modify_pwd" /> 
+									<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+			  	</form>
+			  	<!-- {/if} -->
+			<!-- 通过绑定手机号码修改密码 end -->
+			
+			<!-- 通过绑定邮箱修改密码 start -->
+			<div class="title">通过绑定邮箱修改密码 </div>
+			<!-- {if $profile.is_validated==0} -->
+	       			
+	       			<table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td>
+									<a class="bind_link" href="/user.php?act=bind_mobile_email">请先绑定邮箱</a>
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+	       	<!-- {else} -->
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+		         
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">绑定邮箱：</td>
+							<td>
+								{$profile.email}
+							</td>
+						</tr>
+						<tr>
+							<td class="title">邮箱验证码：</td>
+							<td>
+								<input name="email_code" type="text" size="30"
+						class="inputBg" />
+							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();">
+							</td>
+						</tr>
+						<tr>
+							<td class="title">新密码：</td>
+							<td>
+								<input name="password" type="text" size="30"
+						class="inputBg" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_modify_pwd" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
+						</tr>
+					</tbody>
+				 </table>
+		  </form>
+		  <!-- {/if} -->
+		  <!-- 通过绑定邮箱修改密码  end -->
+			
+		 </div>			 
 		<!--{/if}-->			 
      <!--修改密码 end-->
      

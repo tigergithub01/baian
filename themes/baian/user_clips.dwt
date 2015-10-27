@@ -261,28 +261,65 @@
          <!-- *我的评论 start-->
           <!-- {if $action eq 'comment_list'} -->
           <div class="hyzx"><li>客户服务</li><li class="now"><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
-          <h5><span>{$lang.label_comment}</span></h5>
           <div class="blank"></div>
-          <!--{foreach from=$comment_list item=comment} -->
-          <div class="f_l">
-          <b>{if $comment.comment_type eq '0'}{$lang.goods_comment}{else}{$lang.article_comment}{/if}: </b><font class="f4">{$comment.cmt_name}</font>&nbsp;&nbsp;({$comment.formated_add_time})
-          </div>
-          <div class="f_r">
-          <a href="user.php?act=del_cmt&amp;id={$comment.comment_id}" title="{$lang.drop}" onclick="if (!confirm('{$lang.confirm_remove_msg}')) return false;" class="f6">{$lang.drop}</a>
-          </div>
-          <div class="msgBottomBorder">
-          {$comment.content|escape}<br />
-          <!--{if $comment.reply_content}-->
-          <b>{$lang.reply_comment}：</b><br />
-          {$comment.reply_content}
-           <!--{/if}-->
-          </div>
-          <!-- {/foreach} -->
-          <!-- {if $comment_list}-->
-          <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
-          <!-- {else}-->
-          {$lang.no_comments}
-          <!-- {/if}-->
+          <div class="s-myorder">
+          	<div><a href="javascript:void(0)" class="tab_link selected">已评价</a><span>|</span><a href="javascript:void(0)" class="tab_link">待评价</a></div>
+       	<!--{foreach from=$orders item=order name=orders_foreach}-->
+	       <table class="s-order-table">
+	           <thead>
+	               <tr>
+	                   <th colspan="4">
+	                       <span class="order_num">订单号：<a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$order.order_sn}</a></span>
+	                       <span class="order_time">下单时间：{$order.order_time}</span>
+	                       本次订单预计获得 <b class="orange">X</b> 积分 <b class="orange">X</b> 成长值
+	                   </th>
+	               </tr>
+	           </thead>
+	           <tbody>
+	           
+	            <!-- {if empty($order.goods_list)} -->
+	            	<tr>
+	               		<td colspan="4">
+	               			无商品信息
+	               		</td>
+	               </tr>	
+	            <!-- {else} -->
+	           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
+	               <tr>
+	                   <td>
+	                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
+	                       <div class="goods_title"><a href="{$goods.goods_url}">{$goods.goods_name}</a></div>
+	                       <div class="unit_price">{$goods.goods_price}</div>
+	                       <div class="goods_num">{$goods.goods_number}</div>
+	                   </td>
+	                   <!-- {if $smarty.foreach.goods_foreach.first } -->
+	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+	                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
+	                   </td>
+	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+	                       <div class="order_state">{$order.order_status}</div>
+	                       <a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
+	                   </td>
+	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+	                   	  {$order.handler}	
+	                   	   <!-- 	
+	                       <a href="" class="s-btn1">马上支付</a>
+	                       <a href="" class="a-btn">取消订单</a>
+	                        -->
+	                   </td>
+	                   <!-- {/if} -->
+	               </tr>
+	               <!--{/foreach}-->
+	               <!-- {/if} -->
+	               
+	           </tbody>
+	       </table>
+	       <!--{foreachelse}-->
+	       		<p style="text-align: c">你现在还没有待评价订单</p>
+	       <!--{/foreach}-->
+       </div>
+        <div class="blank5"></div>
+       <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
           <!--{/if} -->
    		<!--#我的评论 end-->
     

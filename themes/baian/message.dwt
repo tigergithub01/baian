@@ -28,7 +28,7 @@ p a{color:#006acd; text-decoration:underline;}
 <div class="block">
   <div class="box">
    <div class="box_1">
-    <h3><span>{$lang.system_info}</span></h3>
+    <!-- <h3><span>{$lang.system_info}</span></h3> -->
     <div class="boxCenterList RelaArticle" align="center">
       <div style="margin:20px auto;">
       <p style="font-size: 14px; font-weight:bold; color: red;">{$message.content}</p>

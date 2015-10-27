@@ -479,6 +479,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 	color: white;
 	min-width: 80px;height: 30px;font-size: 16px;
 	padding: 2px;
+	cursor: pointer;
 }
 
 /**no border***/
@@ -710,6 +711,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .hyzx{ font-size:16px; font-weight:bold; border-bottom:2px #f08300 solid;height:30px; }
 .hyzx li{ width:120px; float:left; margin-right:10px; border-left:1px solid #CCC; border-top:1px solid #CCC; border-right:1px solid #CCC; list-style:none; height:30px; line-height:30px; text-align:center;}
 .now{ background:#f08300; color:#FFF;}
+.now a{color:#FFF;}
 
 /***会员中心style start**/
 .user_msg{

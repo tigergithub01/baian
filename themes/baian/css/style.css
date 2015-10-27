@@ -476,10 +476,14 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-order-table.datalist td{text-align: left;}
 .s-myorder input.btn_submit{
 	background: #f08300 none repeat scroll 0 0;
-	color: white;
 	min-width: 80px;height: 30px;font-size: 16px;
-	padding: 2px;
 	cursor: pointer;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    /* height: 40px; */
+    
 }
 
 /**no border***/

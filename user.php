@@ -720,6 +720,10 @@ elseif ($action == 'act_edit_profile')
     $other['mobile_phone'] = $mobile_phone = isset($_POST['extend_field5']) ? trim($_POST['extend_field5']) : '';
     $sel_question = empty($_POST['sel_question']) ? '' : compile_str($_POST['sel_question']);
     $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';
+    
+    /***宝宝生日登记标示位**/
+    $baby_flag = isset($_POST['baby_flag']) ? intval(trim($_POST['baby_flag'])) : 0;
+    
 
     /* 更新用户扩展字段的数据 */
     $sql = 'SELECT id FROM ' . $ecs->table('reg_fields') . ' WHERE type = 0 AND display = 1 ORDER BY dis_order, id';   //读出所有扩展字段的id
@@ -792,7 +796,12 @@ elseif ($action == 'act_edit_profile')
 
     if (edit_profile($profile))
     {
-        show_message($_LANG['edit_profile_success'], $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+        if($baby_flag==1){
+        	show_message("宝宝信息修改成功！", "查看宝宝信息", 'user.php?act=baby_info', 'info');
+        }else{
+        	show_message($_LANG['edit_profile_success'], $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+        }
+    	
     }
     else
     {
@@ -1432,7 +1441,27 @@ elseif ($action == 'act_add_message')
 {
     include_once(ROOT_PATH . 'includes/lib_clips.php');
 	
-    //TODO: add order_sn
+    $msg_content = isset($_POST['msg_content']) ? trim($_POST['msg_content']) : '';
+    $msg_type = isset($_POST['msg_type']) ? intval($_POST['msg_type']): 0;
+    
+    /****投诉**/
+    if($msg_type==1){
+    	//TODO: 投诉（msg_type = 1）时根据订单号order_sn查询order_id，订单编号不存在的时候要提示
+    	$order_sn = isset($_POST['order_sn']) ? trim($_POST['order_sn']) : '';
+    	if(!empty($order_sn)){
+    		$msg_content= $msg_content." 订单编号: $order_sn";
+    	}
+    }
+    
+    /***建议有奖***/
+    if($msg_type==6){
+    	//TODO:联系方式必填
+    	$contact_method = isset($_POST['contact_method']) ? trim($_POST['contact_method']) : '';
+    	if(!empty($contact_method)){
+    		$msg_content= $msg_content." 联系方式: $contact_method"; 
+    	}
+    }
+    
     
     $message = array(
         'user_id'     => $user_id,
@@ -1440,7 +1469,7 @@ elseif ($action == 'act_add_message')
         'user_email'  => $_SESSION['email'],
         'msg_type'    => isset($_POST['msg_type']) ? intval($_POST['msg_type'])     : 0,
         'msg_title'   => isset($_POST['msg_title']) ? trim($_POST['msg_title'])     : '',
-        'msg_content' => isset($_POST['msg_content']) ? trim($_POST['msg_content']) : '',
+        'msg_content' => $msg_content,
         'order_id'=>empty($_POST['order_id']) ? 0 : intval($_POST['order_id']),
         'upload'      => (isset($_FILES['message_img']['error']) && $_FILES['message_img']['error'] == 0) || (!isset($_FILES['message_img']['error']) && isset($_FILES['message_img']['tmp_name']) && $_FILES['message_img']['tmp_name'] != 'none')
          ? $_FILES['message_img'] : array()
@@ -1448,7 +1477,12 @@ elseif ($action == 'act_add_message')
 
     if (add_message($message))
     {
-        show_message($_LANG['add_message_success'], $_LANG['message_list_lnk'], 'user.php?act=message_list&order_id=' . $message['order_id'],'info');
+        
+    	if($msg_type==6){
+    		show_message($_LANG['add_message_success'], "返回建议有奖", 'user.php?act=my_advice','info');
+    	}else{
+    		show_message($_LANG['add_message_success'], "返回咨询&投诉", 'user.php?act=message_list&order_id=' . $message['order_id'],'info');
+    	}
     }
     else
     {
@@ -3119,7 +3153,7 @@ elseif ($action == 'send_verify_email')
 /* 建议有奖 */
 elseif ($action == 'my_advice')
 {
-   $smarty->display('user_clips.dwt');
+	$smarty->display('user_clips.dwt');
 }
 /* 退换货管理 */
 elseif ($action == 'order_back')

@@ -820,7 +820,25 @@ elseif ($action == 'act_edit_profile')
 /* 手机邮箱绑定 */
 elseif ($action == 'bind_mobile_email'){
 	//TODO:
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	
+	$user_info = get_profile($user_id);
+	
+	/* 密码提示问题 */
+	$smarty->assign('passwd_questions', $_LANG['passwd_questions']);
+	
+	$smarty->assign('profile', $user_info);
 	$smarty->display('user_transaction.dwt');
+}
+/* 手机绑定 */
+elseif ($action == 'act_bind_mobile'){
+	//TODO:
+	show_message("手机号码绑定成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+}
+/* 邮箱绑定 */
+elseif ($action == 'act_bind_email'){
+	//TODO:
+	show_message("邮箱绑定成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
 }
 
 /* 宝宝生日登记 */
@@ -869,7 +887,20 @@ elseif ($action == 'baby_info'){
 /* 改密码 */
 elseif ($action == 'modify_pwd'){
 	//TODO:
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	
+	$user_info = get_profile($user_id);
+	
+	/* 密码提示问题 */
+	$smarty->assign('passwd_questions', $_LANG['passwd_questions']);
+	
+	$smarty->assign('profile', $user_info);
 	$smarty->display('user_transaction.dwt');
+}
+/* 改密码 */
+elseif ($action == 'act_modify_pwd'){
+	//TODO:
+	show_message("密码修改成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
 }
 
 
@@ -1278,6 +1309,7 @@ elseif ($action == 'act_edit_address')
     $address = array(
         'user_id'    => $user_id,
         'address_id' => intval($_POST['address_id']),
+    	'default'    => isset($_POST['default'])   ? intval($_POST['default'])  : 0,	
         'country'    => isset($_POST['country'])   ? intval($_POST['country'])  : 0,
         'province'   => isset($_POST['province'])  ? intval($_POST['province']) : 0,
         'city'       => isset($_POST['city'])      ? intval($_POST['city'])     : 0,
@@ -1315,6 +1347,25 @@ elseif ($action == 'drop_consignee')
         show_message($_LANG['del_address_false']);
     }
 }
+
+/* 设为默认收货地址 */
+elseif ($action == 'default_consignee')
+{
+	include_once('includes/lib_transaction.php');
+
+	$consignee_id = intval($_GET['id']);
+
+	if (default_consignee($consignee_id))
+	{
+		ecs_header("Location: user.php?act=address_list\n");
+		exit;
+	}
+	else
+	{
+		show_message('默认收货地址设置失败！');
+	}
+}
+
 
 /* 显示收藏商品列表 */
 elseif ($action == 'collection_list')

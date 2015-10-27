@@ -216,9 +216,18 @@ function get_profile($user_id)
  */
 function get_consignee_list($user_id)
 {
-    $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('user_address') .
-            " WHERE user_id = '$user_id' LIMIT 5";
-
+    /* $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('user_address') .
+            " WHERE user_id = '$user_id' LIMIT 5"; */
+    $sql = "SELECT ua.*, rg_country.region_name AS country_name, ".
+    		"rg_province.region_name AS province_name, ".
+    		"rg_city.region_name AS city_name, ".
+    		"rg_district.region_name AS district_name ".
+    		' FROM ' . $GLOBALS['ecs']->table('user_address') .' AS ua ' .
+    		' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_country ON ua.country = rg_country.region_id' .
+    		' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_province ON ua.province = rg_province.region_id' .
+    		' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_city ON ua.city = rg_city.region_id' .
+    		' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_district ON ua.district = rg_district.region_id' .
+    		" WHERE user_id = '$user_id' LIMIT 5";
     return $GLOBALS['db']->getAll($sql);
 }
 
@@ -648,6 +657,34 @@ function drop_consignee($id)
 }
 
 /**
+ * 设置默认收货地址
+ *
+ * @access  public
+ * @param   integer $id
+ * @return  boolean
+ */
+function default_consignee($id)
+{
+	
+	
+	$sql = "SELECT user_id FROM " .$GLOBALS['ecs']->table('user_address') . " WHERE address_id = '$id'";
+	$uid = $GLOBALS['db']->getOne($sql);
+
+	if ($uid != $_SESSION['user_id'])
+	{
+		return false;
+	}
+	else
+	{
+		$sql = "UPDATE ".$GLOBALS['ecs']->table('users') .
+			" SET address_id = '".$id."' ".
+			" WHERE user_id = '" .$_SESSION['user_id']. "'";
+		$res = $GLOBALS['db']->query($sql);
+		return $res;
+	}
+}
+
+/**
  *  添加或更新指定用户收货地址
  *
  * @access  public
@@ -658,6 +695,7 @@ function update_address($address)
 {
     $address_id = intval($address['address_id']);
     unset($address['address_id']);
+    
 
     if ($address_id > 0)
     {
@@ -671,7 +709,7 @@ function update_address($address)
         $address_id = $GLOBALS['db']->insert_id();
     }
 
-    if (isset($address['defalut']) && $address['default'] > 0 && isset($address['user_id']))
+    if (isset($address['default']) && $address['default'] > 0 && isset($address['user_id']))
     {
         $sql = "UPDATE ".$GLOBALS['ecs']->table('users') .
                 " SET address_id = '".$address_id."' ".

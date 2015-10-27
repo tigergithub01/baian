@@ -927,7 +927,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
           
        <!-- 我的等级 start -->
       <!-- {if $action eq 'user_level'} -->
-      		<div class="hyzx"><li>账户管理</li><li class="now"><a href="/user.php?act=user_level">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
+      		<div class="hyzx"><li>账户管理</li><li class="now"><a href="/user.php?act=user_level" >我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
       		<div class="blank"></div>
       		<div class="s-myorder">
 	      		<div class="s-userBox">

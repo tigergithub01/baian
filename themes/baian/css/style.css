@@ -514,12 +514,24 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 	border-bottom: 2px solid #f08300
 }
 
+.s-myorder a.link{
+	font-size: 14px;padding:0px 2px 0px 2px; color: #f08300;
+}
 
 .s-myorder a.link_btn{
 	background: #f08300 none repeat scroll 0 0;
 	color: white;
 	min-width: 80px;height: 30px;font-size: 16px;
 	padding: 2px;
+}
+
+/**用户中心收货地址编辑**/
+.addr_box{
+	width: 100%;border: 1px solid #c9caca;margin-bottom: 15px;
+}
+
+.addr_box .required{
+	color: #ff0000;padding: 1px;
 }
 
 

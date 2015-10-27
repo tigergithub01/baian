@@ -477,8 +477,8 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-myorder input.btn_submit{
 	background: #f08300 none repeat scroll 0 0;
 	color: white;
-	min-width: 100px;height: 40px;font-size: 16px;
-	padding: 5px;
+	min-width: 80px;height: 30px;font-size: 16px;
+	padding: 2px;
 }
 
 /**no border***/
@@ -504,6 +504,23 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 	color: #f08300;font-size: 14px;font-weight: bold;
 }
 
+/**我的评价 padding(上右下左)**/
+.s-myorder a.tab_link{
+	font-size: 14px;font-weight: bold;padding:15px 15px 2px 15px;
+}
+
+.s-myorder a.tab_link.selected{
+	color: #f08300;
+	border-bottom: 2px solid #f08300
+}
+
+
+.s-myorder a.link_btn{
+	background: #f08300 none repeat scroll 0 0;
+	color: white;
+	min-width: 80px;height: 30px;font-size: 16px;
+	padding: 2px;
+}
 
 
 .s-btn1{display: block;width: 120px;height: 30px;text-align: center;line-height: 30px;background: #f08300;color: #fff;font-size: 14px;}

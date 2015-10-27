@@ -195,6 +195,8 @@ function add_message($message)
 
         return false;
     }
+    
+    
 
     $message['msg_area'] = isset($message['msg_area']) ? intval($message['msg_area']) : 0;
     $sql = "INSERT INTO " . $GLOBALS['ecs']->table('feedback') .

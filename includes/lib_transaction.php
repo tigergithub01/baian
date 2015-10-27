@@ -64,6 +64,16 @@ function edit_profile($profile)
     {
         $cfg['baby_birthday'] = $profile['baby_birthday'];
     }
+    /**昵称**/
+    if (!empty($profile['alias']))
+    {
+    	$cfg['alias'] = $profile['alias'];
+    }
+    /***宝宝昵称**/
+    if (!empty($profile['baby_nickname']))
+    {
+    	$cfg['baby_nickname'] = $profile['baby_nickname'];
+    }
 
 
     if (!$GLOBALS['user']->edit_user($cfg))
@@ -120,7 +130,8 @@ function get_profile($user_id)
     $info  = array();
     $infos = array();
     $sql  = "SELECT user_name, birthday, sex, baby_sex, baby_birthday, question, answer, rank_points, pay_points,user_money, user_rank,".
-             " msn, qq, office_phone, home_phone, mobile_phone, passwd_question, passwd_answer ".
+             " msn, qq, office_phone, home_phone, mobile_phone, passwd_question, passwd_answer, is_validated, is_validated_phone, alias,  ".
+             " baby_nickname, baby_sex, baby_birthday ".
            "FROM " .$GLOBALS['ecs']->table('users') . " WHERE user_id = '$user_id'";
     $infos = $GLOBALS['db']->getRow($sql);
     $infos['user_name'] = addslashes($infos['user_name']);
@@ -177,6 +188,7 @@ function get_profile($user_id)
     $info['birthday']      = isset($infos['birthday']) ? $infos['birthday'] : '';
     $info['baby_sex']      = isset($infos['baby_sex'])      ? $infos['baby_sex']      : 0;
     $info['baby_birthday'] = isset($infos['baby_birthday']) ? $infos['baby_birthday'] : '';
+    $info['baby_nickname'] = isset($infos['baby_nickname']) ? $infos['baby_nickname'] : '';
     $info['question']      = isset($infos['question']) ? htmlspecialchars($infos['question']) : '';
 
     $info['user_money']      = price_format($info['user_money'], false);
@@ -189,6 +201,9 @@ function get_profile($user_id)
     $info['mobile_phone']    = $infos['mobile_phone'];
     $info['passwd_question'] = $infos['passwd_question'];
     $info['passwd_answer']   = $infos['passwd_answer'];
+    $info['is_validated']   = $infos['is_validated'];
+    $info['is_validated_phone']   = $infos['is_validated_phone'];
+    $info['alias']   = $infos['alias'];
 
     return $info;
 }

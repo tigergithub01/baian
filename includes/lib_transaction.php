@@ -190,6 +190,7 @@ function get_profile($user_id)
     $info['baby_birthday'] = isset($infos['baby_birthday']) ? $infos['baby_birthday'] : '';
     $info['baby_nickname'] = isset($infos['baby_nickname']) ? $infos['baby_nickname'] : '';
     $info['question']      = isset($infos['question']) ? htmlspecialchars($infos['question']) : '';
+    
 
     $info['user_money']      = price_format($info['user_money'], false);
     $info['pay_points']      = $info['pay_points'] . $GLOBALS['_CFG']['integral_name'];
@@ -201,8 +202,8 @@ function get_profile($user_id)
     $info['mobile_phone']    = $infos['mobile_phone'];
     $info['passwd_question'] = $infos['passwd_question'];
     $info['passwd_answer']   = $infos['passwd_answer'];
-    $info['is_validated']   = $infos['is_validated'];
-    $info['is_validated_phone']   = $infos['is_validated_phone'];
+    $info['is_validated']    = isset($infos['is_validated'])  ? intval($infos['is_validated'])  : 0;
+    $info['is_validated_phone']    = isset($infos['is_validated_phone'])  ? intval($infos['is_validated_phone'])  : 0;
     $info['alias']   = $infos['alias'];
 
     return $info;

@@ -390,4 +390,67 @@ function admin_registered( $adminname )
     return $res;
 }
 
+/**
+ * 
+ * @param unknown $username
+ * @param unknown $password
+ * @param unknown $email
+ * @param unknown $mobile_phone
+ * @param unknown $reg_type:（$reg_type==1根据邮箱找回密码）； （$reg_type==0根据手机号码找回密码）； 
+ * @return boolean
+ */
+function update_user_password($username, $password, $email,$mobile_phone,$reg_type)
+{
+	
+	/* 检查username */
+	if (empty($username))
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['username_empty']);
+	}
+
+	if ($GLOBALS['err']->error_no > 0)
+	{
+		return false;
+	}
+	
+	/**检查用户名是否已经注册*/
+	$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('users') .
+			" WHERE user_name = '$username'");
+	if($count==0){
+		$GLOBALS['err']->add("用户名'$username'没有注册，请重新输入用户名。");
+		return false;
+	}
+	
+	/**检查用户名和绑定的邮箱或手机是否匹配*/
+	if($reg_type==1){
+		$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('users') .
+				" WHERE user_name = '$username' AND email='$email' AND is_validated = 1");
+		if($count==0){
+			$GLOBALS['err']->add("注册或绑定的邮箱".$email."不合法，请重新输入邮箱。");
+			return false;
+		}
+	}else{
+		$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('users') .
+				" WHERE user_name = '$username' AND mobile_phone='$mobile_phone' AND is_validated_phone = 1");
+		if($count==0){
+			$GLOBALS['err']->add("注册或绑定的手机号码".$mobile_phone."不合法，请重新输入手机号码。");
+			return false;
+		}
+	}
+	
+	//更新用户密码
+	$sql = "UPDATE ".$GLOBALS['ecs']->table('users'). "
+                    SET password = '" . md5($password) . "'
+                    WHERE user_name = '" . $username . "'";
+	if (!$GLOBALS['db']->query($sql, 'SILENT'))
+	{
+		$msg .= $GLOBALS['db']->error();
+		$GLOBALS['err']->add("修改密码出错:".$msg);
+		return false;
+	}
+	
+	return true;
+}
+
+
 ?>

@@ -442,6 +442,18 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
         $volume_price_list = get_volume_price_list($goods['goods_id'], '1');
         $smarty->assign('volume_price_list',$volume_price_list);    // 商品优惠价格区间
     }
+    
+    //猜你喜欢 &　看了又看
+    /* $sql = "select goods_id, goods_name, shop_price, goods_thumb, market_price from ".$ecs->table('goods').
+     " where is_on_sale = 1 and is_delete = 0 order by rand() limit 10";
+     $may_like_goods = $db->getAll($sql);
+     foreach($may_like_goods as $key=>$val){
+     $may_like_goods[$key]['url'] = build_uri('goods', array('gid'=>$val['goods_id']));
+     $may_like_goods[$key]['shop_price_formated'] = '￥'.number_format(floatval($val['shop_price']),2);
+     $may_like_goods[$key]['market_price_formated'] = '￥'.number_format(floatval($val['market_price']),2);
+     } */
+    $may_like_goods = com_sale_get_may_like_goods();
+    $smarty->assign('may_like_goods',$may_like_goods);
 }
 
 /* 记录浏览历史 */
@@ -464,17 +476,7 @@ else
     setcookie('ECS[history]', $goods_id, gmtime() + 3600 * 24 * 30);
 }
 
-//猜你喜欢
-/* $sql = "select goods_id, goods_name, shop_price, goods_thumb, market_price from ".$ecs->table('goods').
-		" where is_on_sale = 1 and is_delete = 0 order by rand() limit 10";
-$may_like_goods = $db->getAll($sql);
-foreach($may_like_goods as $key=>$val){
-	$may_like_goods[$key]['url'] = build_uri('goods', array('gid'=>$val['goods_id']));
-	$may_like_goods[$key]['shop_price_formated'] = '￥'.number_format(floatval($val['shop_price']),2);
-	$may_like_goods[$key]['market_price_formated'] = '￥'.number_format(floatval($val['market_price']),2);
-} */
-$may_like_goods = com_sale_get_may_like_goods();
-$smarty->assign('may_like_goods',$may_like_goods);
+
 
 /* 更新点击次数 */
 $db->query('UPDATE ' . $ecs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");

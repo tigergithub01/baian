@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head>
 	<meta charset="UTF-8">
-	<title>{$goods.goods_style_name}【图片 价格 评价 正品行货】—百安母婴商城</title>
+	<title>{$goods.goods_name}【图片 价格 评价 正品行货】—百安母婴商城</title>
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

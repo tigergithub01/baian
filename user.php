@@ -32,7 +32,7 @@ $smarty->assign("yhzc",getads(187,1));
 
 // 不需要登录的操作或自己验证是否登录（如ajax处理）的act
 $not_login_arr =
-array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login','send_verify_email','validate_email_code');
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login','send_verify_email','validate_email_code','act_get_password');
 
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
@@ -937,6 +937,96 @@ elseif ($action == 'get_password')
         $smarty->display('user_passport.dwt');
     }
 }
+/**通过邮箱或手机号码找回密码***/
+elseif ($action == 'act_get_password')
+{
+	/* 增加是否关闭注册 */
+	if ($_CFG['shop_reg_closed'])
+	{
+		$smarty->assign('action',     'register');
+		$smarty->assign('shop_reg_closed', $_CFG['shop_reg_closed']);
+		$smarty->display('user_passport.dwt');
+	}
+	else
+	{
+		include_once(ROOT_PATH . 'includes/lib_passport.php');
+	
+		$username = isset($_POST['username']) ? trim($_POST['username']) : '';
+		$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+		$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+		$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
+		$reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
+	
+		$back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
+	
+		/* if(empty($_POST['agreement']))
+		{
+			show_message($_LANG['passport_js']['agreement']);
+		} */
+		// if (strlen($username) < 3)
+		// {
+		//    show_message($_LANG['passport_js']['username_shorter']);
+		//  }
+	
+		if (empty($username))
+		{
+			show_message("用户名不能为空!");
+		}
+		
+		if (strlen($password) < 6)
+		{
+			show_message($_LANG['passport_js']['password_shorter']);
+		}
+	
+		if (strpos($password, ' ') > 0)
+		{
+			show_message($_LANG['passwd_balnk']);
+		}
+	
+		/* 验证码检查 */
+		if ((intval($_CFG['captcha']) & CAPTCHA_REGISTER) && gd_version() > 0)
+		{
+			if (empty($_POST['captcha']))
+			{
+				show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+			}
+	
+			/* 检查验证码 */
+			include_once('includes/cls_captcha.php');
+	
+			$validator = new captcha();
+			if (!$validator->check_word($_POST['captcha']))
+			{
+				show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+			}
+		}
+	
+		//added by tiger.guo 20151012
+		/* $reg_value = $other['mobile_phone'];
+		if($reg_type==1){
+			//根据邮箱注册，更新邮箱验证标记is_validated=1
+			$reg_value = $email;
+			$other['is_validated']='1';
+		}else{
+			//根据手机号码注册，更新手机号码验证标记is_validated_phone=1
+			$other['is_validated_phone']='1';
+		} */
+		
+		if (update_user_password($username, $password, $email, $mobile_phone, $reg_type) !== false)
+		{
+			$user->logout();
+// 			$ucdata = empty($user->ucdata)? "" : $user->ucdata;
+			
+			show_message($_LANG['edit_password_success'], $_LANG['relogin_lnk'], 'user.php?act=login', 'info');
+// 			show_message(sprintf($_LANG['register_success'], $username . $ucdata), array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act, 'user.php'), 'info');
+		}
+		else
+		{
+			$err->show("密码找回", 'user.php?act=get_password');
+		}
+	}
+}
+
 
 /* 密码找回-->输入用户名界面 */
 elseif ($action == 'qpassword_name')
@@ -3240,9 +3330,6 @@ elseif ($action == 'user_level')
 	$smarty->assign('prompt',      get_user_prompt($user_id));
 	$smarty->display('user_transaction.dwt');
 }
-
-
-
 
 
 function user_random_code($length = 6 , $numeric = 0) {

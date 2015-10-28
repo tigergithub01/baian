@@ -442,7 +442,7 @@ function register()
   var qq = frm.elements['extend_field2'] ? Utils.trim(frm.elements['extend_field2'].value) : '';
   var home_phone = frm.elements['extend_field4'] ? Utils.trim(frm.elements['extend_field4'].value) : '';
   var office_phone = frm.elements['extend_field3'] ? Utils.trim(frm.elements['extend_field3'].value) : '';
-  var mobile_phone = frm.elements['extend_field5'] ? Utils.trim(frm.elements['extend_field5'].value) : '';
+  var mobile_phone = frm.elements['mobile_phone'] ? Utils.trim(frm.elements['mobile_phone'].value) : '';
   var passwd_answer = frm.elements['passwd_answer'] ? Utils.trim(frm.elements['passwd_answer'].value) : '';
   var sel_question =  frm.elements['sel_question'] ? Utils.trim(frm.elements['sel_question'].value) : '';
 
@@ -853,4 +853,29 @@ function calResult()
       notice.innerHTML = notice_result + parseInt(result + 0.5);
     }
   }
+}
+
+/**
+ * 根据手机号码或者邮箱进行注册
+ * reg_type==1：根据邮箱注册
+ */
+function register_user() {
+	var reg_type = document.getElementById('reg_type').value;
+	if (reg_type == '1') {
+		return register_by_email();
+	}
+
+	var mobile = document.getElementById('mobile_phone').value;
+	if (mobile != '') {
+		var mobile_code = document.getElementById("mobile_code").value;
+		var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
+				+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
+		if (result.code == 2) {
+			return register();
+		} else {
+			alert(result.msg);
+			return false;
+		}
+	}
+	return register();
 }

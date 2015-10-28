@@ -1,5 +1,5 @@
 function sendSms() {
-	var mobile = document.getElementById(mobile_field).value;
+	var mobile = document.getElementById('mobile_phone').value;
 	Ajax.call('sms/sms.php?act=send', 'mobile=' + mobile, sendSmsResponse,
 			'POST', 'JSON');
 }
@@ -17,33 +17,11 @@ function sendSmsResponse(result) {
 		}
 	}
 }
-function register2() {
-	//add by wanggz
-	//			return register();
-	var reg_type = document.getElementById('reg_type').value;
-	if (reg_type == '1') {
-		return register_by_email();
-	}
-
-	var mobile = document.getElementById(mobile_field).value;
-	if (mobile_field != '') {
-		var mobile_code = document.getElementById("mobile_code").value;
-		var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
-				+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
-		if (result.code == 2) {
-			return register();
-		} else {
-			alert(result.msg);
-			return false;
-		}
-	}
-	return register();
-}
 
 
 function validateMobileCode() {
-	var mobile = document.getElementById(mobile_field).value;
-	if (mobile_field != '') {
+	var mobile = document.getElementById('mobile_phone').value;
+	if (mobile != '') {
 		var mobile_code = document.getElementById("mobile_code").value;
 		var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
 				+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);

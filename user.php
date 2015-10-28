@@ -185,11 +185,11 @@ elseif ($action == 'act_register')
         $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
         $email    = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $other['msn'] = isset($_POST['extend_field1']) ? $_POST['extend_field1'] : '';
+        /* $other['msn'] = isset($_POST['extend_field1']) ? $_POST['extend_field1'] : '';
         $other['qq'] = isset($_POST['extend_field2']) ? $_POST['extend_field2'] : '';
         $other['office_phone'] = isset($_POST['extend_field3']) ? $_POST['extend_field3'] : '';
-        $other['home_phone'] = isset($_POST['extend_field4']) ? $_POST['extend_field4'] : '';
-        $other['mobile_phone'] = isset($_POST['extend_field5']) ? $_POST['extend_field5'] : '';
+        $other['home_phone'] = isset($_POST['extend_field4']) ? $_POST['extend_field4'] : ''; */
+        $other['mobile_phone'] = isset($_POST['mobile_phone']) ? $_POST['mobile_phone'] : '';
         $sel_question = empty($_POST['sel_question']) ? '' : compile_str($_POST['sel_question']);
         $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';		
         $reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
@@ -237,7 +237,12 @@ elseif ($action == 'act_register')
         //added by tiger.guo 20151012
         $reg_value = $other['mobile_phone'];
         if($reg_type==1){
+        	//根据邮箱注册，更新邮箱验证标记is_validated=1
         	$reg_value = $email;
+        	$other['is_validated']='1';
+        }else{
+        	//根据手机号码注册，更新手机号码验证标记is_validated_phone=1
+        	$other['is_validated_phone']='1';
         }
                 
         if (register($reg_value, $password, $email, $other) !== false)

@@ -2193,6 +2193,9 @@ else
     $parent_list = $GLOBALS['db']->getCol($sql);
 
     $fittings_list = get_goods_fittings($parent_list);
+    
+    $may_like_goods = com_sale_get_may_like_goods();
+	$smarty->assign('may_like_goods',$may_like_goods);
 
     $smarty->assign('fittings_list', $fittings_list);
 }

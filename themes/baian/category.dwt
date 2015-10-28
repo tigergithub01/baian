@@ -31,14 +31,11 @@
 
             <div class="s-side-col l">
                  <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
-                <div class="h"></div>
-
-                <div class="sbox">
-                    <h3 class="st1">看了还看</h3>
-                    <ul class="s-img-list">
-                       
-                    </ul>
-                </div>
+               <!-- 看了还看 start -->
+     			<div class="h"></div>
+             	<!-- #BeginLibraryItem "/library/look_other_goods.lbi" --><!-- #EndLibraryItem -->   
+      			<!-- 看了还看 end -->
+      			
                 <div class="h"></div>
 
                 <div class="sadBox">
@@ -196,18 +193,12 @@
     <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
         </div>
                 
-                
-               
-                <div class="h20"></div>
-                <div id="huanBox">
-                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
-                    <div class="bor-box bd">
-                        <ul class="ul-pic1 ul-pic1-b">
-                           
-                        </ul>
-                        <div class="h15"></div>
-                    </div>
-                </div>
+                 <!-- 猜你喜欢 start -->
+			     <div class="h20"></div>
+			             <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+			             
+			      <!-- 猜你喜欢 end -->
+      
                 <div class="h"></div>
                 <div class="i-rush r">
                     <div class="sec-tit">

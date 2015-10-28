@@ -357,27 +357,16 @@
 						</div>
 					</div>
 				</div>
+				
+				
 				<div class="h"></div>
-				<div class="sbox">
-                    <h3 class="st1">看了还看</h3>
-                    <ul class="ul-pic6">
-                        <!--{foreach from=$may_like_goods item=item_goods}-->   
-                             
-							
-          <li ><a href='{$item_goods.url}'><img src="{$item_goods.goods_thumb}" width="50" height="50"/></a>
-          <div class="txt">
-         <p><a href='{$item_goods.url}' title='{$item_goods.short_name}'>{$item_goods.short_name}</a></p>
-         <p><b class="red f14">
-            <!-- {if $item_goods.promote_price neq 0} -->
-           {$item_goods.formated_promote_price}
-            <!-- {else}-->
-          {$item_goods.shop_price}
-            <!--{/if}-->
-           </b></p></div>
-          </li>
-          <!--{/foreach}-->
-                    </ul>
-                </div>
+				
+				 <!-- 看了还看 start -->
+     			<div class="h"></div>
+             	<!-- #BeginLibraryItem "/library/look_other_goods.lbi" --><!-- #EndLibraryItem -->   
+      			<!-- 看了还看 end -->
+                
+                
                 <div class="h"></div>
                 <div class="sadBox">
                    <!--{foreach from=$xqzc name=ban item=banner}-->
@@ -447,29 +436,9 @@
 					</div>
 				</div>
 				<div class="h"></div>
-				<div id="huanBox">
-					<h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
-					<div class="bor-box bd">
-						<ul class="ul-pic1 ul-pic1-b">
-							 {foreach from=$may_like_goods item=item_goods}
-			<li><a href="{$item_goods.url}" title="{$item_goods.short_name}">
-									<img src="{$item_goods.goods_thumb}" alt="">
-								</a>
-								<p><a href="{$item_goods.url}" title="{$item_goods.short_name}">{$item_goods.short_name}...</a></p>
-								<p><b> 
-							<!-- {if $item_goods.promote_price neq 0} -->
-           {$item_goods.formated_promote_price}
-            <!-- {else}-->
-          {$item_goods.shop_price}
-            <!--{/if}-->
-            </b></p>
-			</li>
-			{/foreach}
-						</ul>
-						<div class="h15"></div>
-					</div>
-				</div>
-				
+				<!-- 猜你喜欢 start -->
+				<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
+				 <!-- 猜你喜欢 end -->
 				
 				{if $promotion_goods|@count neq 0}
 				<div class="h"></div>

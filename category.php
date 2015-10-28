@@ -396,6 +396,10 @@ if (!$smarty->is_cached('category.dwt', $cache_id))
 
     assign_pager('category',            $cat_id, $count, $size, $sort, $order, $page, '', $brand, $price_min, $price_max, $display, $filter_attr_str); // 分页
     assign_dynamic('category'); // 动态内容
+    
+    //猜你喜欢 &　看了又看
+    $may_like_goods = com_sale_get_may_like_goods();
+    $smarty->assign('may_like_goods',$may_like_goods);
 }
 
 $smarty->display('category.dwt', $cache_id);

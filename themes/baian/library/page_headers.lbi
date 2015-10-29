@@ -1,4 +1,4 @@
-<div id="top" style="display: none;">
+<div id="top">
 		<div class="wp">
 			<div class="welcome l">
 				{insert name='member_info'} 第三方登录：<a class="qq" href="/login"></a> <a class="zfb" href="/login/alipay"></a> <a class="wb" href="/login/xlweiboconnect"></a>

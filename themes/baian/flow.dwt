@@ -56,8 +56,9 @@
 			  {foreach from=$lang.password_js item=item key=key}
 			    var {$key} = "{$item}";
 			  {/foreach}
-			 
 			   <!--add by wanggz可以从购物车中选择商品购买功能-->
+			   
+			   
 			  function selectAll(obj, chk)
 			{
 			  if (chk == null)
@@ -86,16 +87,17 @@
 		
 		<form id="formCart" name="formCart" method="post" action="flow.php">
            <table class="c-table1">
-           <th class="tl" width="110"> <label class="sc_box"><input type="checkbox" value="全选" name="checkbox" class="selcall" onclick='selectAll(this, "checkboxes")'>&nbsp;全选</label></th>
-						<th width="180">商品信息</th>
-						<th width="160">单价（元）</th>
-						<th width="120">库存</th>
-						<th width="180">数量</th>
-						<th width="150">小计（元）</th>
-						<th>操作</th>
-						
+	           <th class="tl" width="110"> 
+	           <label class="sc_box">
+	           		<input type="checkbox" value="全选" name="checkbox" class="selcall" checked="checked">&nbsp;全选</label>
+	           </th>
+				<th width="180">商品信息</th>
+				<th width="160">单价（元）</th>
+				<th width="120">库存</th>
+				<th width="180">数量</th>
+				<th width="150">小计（元）</th>
+				<th>操作</th>
             <!-- {foreach from=$goods_list item=goods} -->
-             
             <tr class="bg">
             <td  class="tl">
              
@@ -106,18 +108,18 @@
 					  <!-- {if $show_goods_thumb eq 1} -->
 						
 					  <!-- {elseif $show_goods_thumb eq 2} -->
-						<a href="goods.php?id={$goods.goods_id}" target="_blank"><img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+						<a  href="{$goods.goods_url}" target="_blank"><img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 					  <!-- {else} -->
-						<a href="goods.php?id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
+						<a  href="{$goods.goods_url}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
 						
 					  <!-- {/if} -->
 				   <!-- {elseif $goods.is_momsuit eq 1} -->
 					  <!-- {if $show_goods_thumb eq 1} -->
 						
 					  <!-- {elseif $show_goods_thumb eq 2} -->
-						<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+						<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 					  <!-- {else} -->
-						<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
+						<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
 						
 					  <!-- {/if} -->
 				   <!-- {/if} -->
@@ -128,7 +130,7 @@
                   <!-- {if $goods.is_gift gt 0} 赠品 -->
                   <span style="color:#FFFDEE">（{$lang.largess}）</span>
                   <!-- {/if} -->
-                <!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+                  <!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
                   <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#DD0000;">（{$lang.remark_package}）</span></a>
                   <div id="suit_{$goods.goods_id}" style="display:none">
                       <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
@@ -138,23 +140,20 @@
                 <!-- {else} 优惠活动 -->
                   {$goods.goods_name}
                 <!-- {/if} -->
-                   <!--add by wanggz商品买满多少件送一件的优惠活动-->
                 <!-- {if $goods.gift_goods_number gt 0}  -->
                 <br />
-                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+                <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
                 <!-- {/if} -->
                    <!--add by wanggz商品买满多少件送一件的优惠活动end-->
-             
             </td>
             <!--add by wanggz可以从购物车中选择商品购买功能end-->
               <td>
-             		<a href="goods.php?id={$goods.goods_id}" target="_blank" >{$goods.goods_name}</a>
+             		<a class="tit" href="{$goods.goods_url}" target="_blank" >{$goods.goods_name}</a>
               </td>
               <td >{$goods.goods_price} </td>
               <td>{$goods.is_youhuo_wwwECSHOP120com}</td>
               <td >
                 <!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
-                                        
                    <script language="javascript" type="text/javascript">
 						function goods_cut($val){
 						var num_val=document.getElementById('number'+$val);
@@ -173,9 +172,14 @@
 						num_val.value=Num;
 						document.getElementById('updatecart').click();}
 					</script>
-				<span class="goods_cut" onclick="goods_cut('{$goods.rec_id}');" style="margin-left:42px;"></span>
-				<span style="float:left;padding-top:8px;"><input type="text" name="goods_number[{$goods.rec_id}]" id="number{$goods.rec_id}" value="{$goods.goods_number}" size="4" class="number" onblur="if(isNaN(this.value)){alert('请输入数字');return false}else{document.getElementById('updatecart').click();}" title="{$lang.goods_number_tip}" style=""/></span>
-				<span style="" class="goods_add" onclick="goods_add('{$goods.rec_id}');"></span>
+				<span class="jian" onclick="goods_cut('{$goods.rec_id}');">-</span>
+				
+				<input type="text"  name="goods_number[{$goods.rec_id}]" 
+				id="number{$goods.rec_id}" value="{$goods.goods_number}" size="4" 
+				class="inp" onblur="if(isNaN(this.value)){alert('请输入数字');return false}else{document.getElementById('updatecart').click();}"
+				title="{$lang.goods_number_tip}" style=""/>
+				
+				<span class="jia" onclick="goods_add('{$goods.rec_id}');">+</span>
                 <!-- {else} -->
                 {$goods.goods_number}
                 <!-- {/if} -->
@@ -183,18 +187,72 @@
            
               <td><b>{$goods.subtotal}</b></td>
               <td>
+                <p>
                 <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_goods&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0;">{$lang.drop}</a>
+                </p>
+                
                 <!-- {if $smarty.session.user_id gt 0 && $goods.extension_code neq 'package_buy'} 如果登录了，可以加入收藏 -->
+                <p>
                 <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_to_collect&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0">{$lang.drop_to_collect}</a>
+                </p>
                 <!-- {/if} -->            
                </td>
             </tr>
           
             <!-- {/foreach} -->
             </table>
+			
+			<div class="h20"></div>
+			<div class="c-jie1">
+				<span class="r">
+					已选择 <b>{$total.goods_number}</b> 件商品　总价（不含运费）：<strong>{$total.goods_amount}</strong>
+					<input type="hidden" name="step" value="update_cart" />
+					<a class="btn" style=" font-size:14px" href="javascript:checkout();" id="toSettlement" >去结算</a></span>
+				<input type="checkbox"   class="selcall" checked="checked"> 全选　　<a href="">删除选中商品</a>　　<a href="">移入收藏夹</a>
+			</div>
+			<div class="h20"></div>
+               
+     </form>
+	
+	<!-- 猜你喜欢 start -->
+	<div class="h"></div>
+	<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
+	<!-- 猜你喜欢 end -->
+            <script type="text/javascript">
+            $(function(){
+            	/***全部选择**/
+	            $('.selcall').click(function(){
+	            	if($(this).attr("checked")) {     
+	            		$(".check_goods").attr("checked",'true');
+	            		$(".selcall").attr("checked",'true');
+	            	} else{     
+	            		$(".check_goods").removeAttr("checked"); 
+	            		$(".selcall").removeAttr("checked"); 
+	            	}    
+	        		//recomputeTotal();
+	        	});
+				
+	            /***选择商品**/
+	        	$('.check_goods').click(function(){
+	        		var allChecked  = true;	
+	        		$.each($('.check_goods'),function(i,v){
+	        			if(!$(v).attr("checked")){
+	        				allChecked = false;
+	        				return false;
+	        			}
+	        		});
+	        		if(allChecked){
+	        			$(".selcall").attr("checked",'true');
+	        		}else{
+	        			$(".selcall").removeAttr("checked"); 
+	        		}		
+	
+	        		//recomputeTotal();
+	        	});
+            });
             
-			<script>
-			function checkout()
+            /**去结算**/
+            function checkout()
 			{
 				document.formCart.step.value='checkout';
 				//formCart.submit();
@@ -202,46 +260,38 @@
 				//$("#formCart").submit();
 				//alert(document.getElementById('formCart').submit());
 			}
+            
+            /**更新购物车**/
 			function update_cart()
 			{
 				document.formCart.step.value='update_cart';
 				document.getElementById('formCart').submit();
 			}
-			</script>
-			
-				<div class="h20"></div>
-				<div class="c-jie1">
-					<span class="r">
-						已选择 <b></b> 件商品　{$shopping_money} <input type="hidden" name="step" value="update_cart" /><a class="btn" style=" font-size:14px" href="javascript:checkout();" id="toSettlement" >去结算</a></span>
-					<input type="checkbox"> 全选　　<a href="">删除选中商品</a>　　<a href="">移入收藏夹</a>
-				</div>
-				<div class="h20"></div>
-                
-     </form>
-	
-	<!-- 猜你喜欢 start -->
-	<div class="h"></div>
-	<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
-	<!-- 猜你喜欢 end -->
             
-		<script language=javascript type=text/javascript>
-		
-				var scrollPic_01 = new ScrollPic();
-				scrollPic_01.scrollContId   = "rollphoto1"; //内容容器ID
-				scrollPic_01.arrLeftId      = "recommend-left";//左箭头ID
-				scrollPic_01.arrRightId     = "recommend-rigth"; //右箭头ID
-		
-				scrollPic_01.frameWidth     = 878;//显示框宽度
-				scrollPic_01.pageWidth      = 874; //翻页宽度
-		
-				scrollPic_01.speed          = 10; //移动速度(单位毫秒，越小越快)
-				scrollPic_01.space          = 10; //每次移动像素(单位px，越大越快)
-				scrollPic_01.autoPlay       = true; //自动播放
-				scrollPic_01.autoPlayTime   = 3; //自动播放间隔时间(秒)
-		
-				scrollPic_01.initialize(); //初始化
-		
-		</script>
+            
+            
+            
+			
+            /*
+            var scrollPic_01 = new ScrollPic();
+			scrollPic_01.scrollContId   = "rollphoto1"; //内容容器ID
+			scrollPic_01.arrLeftId      = "recommend-left";//左箭头ID
+			scrollPic_01.arrRightId     = "recommend-rigth"; //右箭头ID
+	
+			scrollPic_01.frameWidth     = 878;//显示框宽度
+			scrollPic_01.pageWidth      = 874; //翻页宽度
+	
+			scrollPic_01.speed          = 10; //移动速度(单位毫秒，越小越快)
+			scrollPic_01.space          = 10; //每次移动像素(单位px，越大越快)
+			scrollPic_01.autoPlay       = true; //自动播放
+			scrollPic_01.autoPlayTime   = 3; //自动播放间隔时间(秒)
+	
+			scrollPic_01.initialize(); //初始化
+			*/
+			
+			
+			
+         </script>
 		
        <!-- {if $smarty.session.user_id gt 0} -->
        {insert_scripts files='transport1.js'}

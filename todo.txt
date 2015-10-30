@@ -16,10 +16,12 @@ http://www.123121.com
 分类页
 http://www.123121.com/category-344-b0.html
 http://www.123121.com/category-333-b0-min0-max0-attr0-3-goods_id-DESC.html
+http://localhost:8086/category-344-b0.html
 
 品牌页
 http://www.123121.com/brand-43-c0.html
 http://www.123121.com/brand-33-c0.html
+http://localhost:8086/brand-33-c0.html
 
 文章页
 http://localhost:8086/article_cat-33.html
@@ -97,6 +99,7 @@ http://localhost:8086/baadmin/user_msg.php?act=phpinfo
 限时抢购价没有体现
 积分商城中商品展示时积分体现
 我的收藏的加入购物车要改为ajax形式
+添加到购物车时，如果有重复的商品应该增加数量，而不是添加重复商品。
 
 
 

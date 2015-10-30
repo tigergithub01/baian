@@ -2133,7 +2133,7 @@ elseif ($_REQUEST['step'] == 'add_package_to_cart')
     $result['confirm_type'] = !empty($_CFG['cart_confirm']) ? $_CFG['cart_confirm'] : 2;
     die($json->encode($result));
 }
-else
+elseif ($_REQUEST['step'] == "cart")
 {
     /* 标记购物流程为普通商品 */
     $_SESSION['flow_type'] = CART_GENERAL_GOODS;

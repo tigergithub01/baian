@@ -1607,7 +1607,6 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
         
         <!--*收藏商品列表页面 start-->
 		    <!--{if $action eq 'collection_list'} -->
-		  {insert_scripts files='transport1.js'}
 		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li class="now"><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
 		    <div class="blank"></div>
 		    

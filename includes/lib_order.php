@@ -1670,10 +1670,18 @@ function get_cart_goods()
     );
 
     /* 循环、统计 */
+    //如果用户已经登录，则根据用户编号获取购物车的内容；如果用户没有登录，则根据session_id获取用户编号
     $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
-            " FROM " . $GLOBALS['ecs']->table('cart') . " " .
-            " WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
-            " ORDER BY pid, parent_id";
+    		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
+    		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
+    		" ORDER BY pid, parent_id";
+    if(isset($_SESSION['user_id']) && $_SESSION['user_id']>0){
+    	$sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
+    			" FROM " . $GLOBALS['ecs']->table('cart') . " " .
+    			" WHERE user_id = '" . $_SESSION['user_id'] . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
+    			" ORDER BY pid, parent_id";
+    }
+    
     $res = $GLOBALS['db']->query($sql);
 
     /* 用于统计购物车中实体商品和虚拟商品的个数 */
@@ -1684,6 +1692,7 @@ function get_cart_goods()
     {
         $total['goods_price']  += $row['goods_price'] * $row['goods_number'];
         $total['market_price'] += $row['market_price'] * $row['goods_number'];
+        $total['goods_number'] +=  $row['goods_number'];
 
         $row['subtotal']     = price_format($row['goods_price'] * $row['goods_number'], false);
         $row['goods_price']  = price_format($row['goods_price'], false);
@@ -1720,6 +1729,10 @@ function get_cart_goods()
         {
             $row['package_goods_list'] = get_package_goods($row['goods_id']);
         }
+        
+        /**商品链接**/
+        $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        
         $goods_list[] = $row;
     }
     $total['goods_amount'] = $total['goods_price'];
@@ -1729,6 +1742,7 @@ function get_cart_goods()
         $total['save_rate'] = $total['market_price'] ? round(($total['market_price'] - $total['goods_price']) *
         100 / $total['market_price']).'%' : 0;
     }
+    $total['goods_amount']  = price_format($total['goods_amount'], false);
     $total['goods_price']  = price_format($total['goods_price'], false);
     $total['market_price'] = price_format($total['market_price'], false);
     $total['real_goods_count']    = $real_goods_count;

@@ -1,4 +1,4 @@
-<div id="fd" style="display: none;">
+<div id="fd">
         <div class="f-top">
             <div class="wrap">
                 <span class="i-hand">十年品牌  正品有保证</span>
@@ -143,6 +143,8 @@
      <script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
     <script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
     <script type="text/javascript" src="/themes/baian/js/lib.js"></script>
+    <script type="text/javascript" src="js/jquery.json.min.js"></script>
+    
 
     <script>
         jQuery("#huanBox").slide({mainCell:".bd ul",autoPlay:false,effect:"left",vis:5,scroll:5,autoPage:true,trigger:"click"});

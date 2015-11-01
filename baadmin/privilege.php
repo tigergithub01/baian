@@ -721,8 +721,20 @@ function clear_cart()
     $valid_sess = $GLOBALS['db']->getCol($sql);
 
     // 删除cart中无效的数据
-    $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
-            " WHERE session_id NOT " . db_create_in($valid_sess);
+    /* $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
+            " WHERE session_id NOT " . db_create_in($valid_sess); */
+    $sql2="select distinct(c.goods_id) from".$GLOBALS['ecs']->table('cart').
+    "as c left join".$GLOBALS['ecs']->table('goods').
+    "as g on c.goods_id=g.goods_id where g.is_on_sale =0 AND c.extension_code='' ";
+    $data = $GLOBALS['db'] -> getAll($sql2);
+    
+    if($data){
+    	foreach ($data as $k=>$v){
+    		$sql="delete from".$GLOBALS['ecs']->table('cart').
+    		"where goods_id = '".$v['goods_id']."'";
+    		$GLOBALS['db'] -> query($sql);
+    	}
+    }
     $GLOBALS['db']->query($sql);
 }
 

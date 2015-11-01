@@ -316,6 +316,7 @@
             		    if(data.status==1){
             		    	$.each(data.content.goods_list,function(i,v){
                     			if(v.rec_id == rec_id){
+                    				$("#number"+rec_id).val(v.goods_number);
                     				$("#sub_total_"+rec_id).text(v.subtotal);
                     				return false;
                     			}

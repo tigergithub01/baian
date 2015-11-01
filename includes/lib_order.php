@@ -902,7 +902,16 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
         $arr[$key]['formated_market_price'] = price_format($value['market_price'], false);
         $arr[$key]['formated_goods_price']  = price_format($value['goods_price'], false);
         $arr[$key]['formated_subtotal']     = price_format($value['subtotal'], false);
-/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+        
+        //商品图片
+        $goods_thumb = $GLOBALS['db']->getOne("SELECT `goods_thumb` FROM " . $GLOBALS['ecs']->table('goods') . " WHERE `goods_id`='{$arr[$key]['goods_id']}'");
+        $arr[$key]['goods_thumb'] = get_image_path($arr[$key]['goods_id'], $goods_thumb, true);
+        
+        /**商品链接**/
+        $arr[$key]['goods_url'] = build_uri('goods', array('gid'=>$arr[$key]['goods_id']), $arr[$key]['goods_name']);
+        
+        
+		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
 		if($value['is_shipping']==1)
 		{
 			

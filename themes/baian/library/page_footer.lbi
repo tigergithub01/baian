@@ -143,7 +143,7 @@
      <script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
     <script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
     <script type="text/javascript" src="/themes/baian/js/lib.js"></script>
-    <script type="text/javascript" src="js/jquery.json.min.js"></script>
+    <script type="text/javascript" src="/themes/baian/js/jquery.json.min.js"></script>
     
 
     <script>

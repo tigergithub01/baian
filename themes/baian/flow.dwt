@@ -674,7 +674,8 @@
 
 
 		<!-- {if $step eq "consignee"} -->
-        <!-- 开始收货人信息填写界面 --><div id="hd">
+        <!-- #开始收货人信息填写界面 -->
+    <div id="hd">
 		<div class="wp2">
 			<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
 			<div class="hdr r">
@@ -686,8 +687,7 @@
 			</div>
 		</div>
 	</div>
-  <div class="c"></div>
-  
+  	<div class="c"></div>
         {insert_scripts files='region.js,utils.js'}
         <script type="text/javascript">
           region.isAdmin = false;
@@ -711,21 +711,25 @@
         </form>
         <!-- {/foreach} -->
         <!-- {/if} -->
+		<!-- #结束收货人信息填写界面 -->
 
-        <!-- {if $step eq "checkout"} 开始订单确认界面 -->
-<div id="hd">
-		<div class="wp2">
-			<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
-			<div class="hdr r">
-				<ul class="ul-step">
-					<li>1.我的购物车 ></li>
-					<li class="on">2.确认订单信息 ></li>
-					<li>3.提交订单 ></li>
-				</ul>
+
+        <!-- {if $step eq "checkout"}  -->
+        <!-- #订单确认界面开始 -->
+		<div id="hd">
+			<div class="wp2">
+				<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
+				<div class="hdr r">
+					<ul class="ul-step">
+						<li>1.我的购物车 ></li>
+						<li class="on">2.确认订单信息 ></li>
+						<li>3.提交订单 ></li>
+					</ul>
+				</div>
 			</div>
-		</div>
-	</div>
-  <div class="c"></div>
+	  </div>
+	  
+    <div class="c"></div>
 	<div id="bd">
 		<div class="wp2">
 			<div class="c-tit1">
@@ -735,196 +739,53 @@
 			<div class="h15"></div>
 
 	  {insert_scripts files='showdiv.js'}
-  <script type="text/javascript">
-  {foreach from=$lang.password_js item=item key=key}
-    var {$key} = "{$item}";
-  {/foreach}
-
-  </script>
+	  <script type="text/javascript">
+	  {foreach from=$lang.password_js item=item key=key}
+	    var {$key} = "{$item}";
+	  {/foreach}
+	
+	  </script>
 	 
         {insert_scripts files='region.js,utils.js'}
 	
         <script type="text/javascript">
-          region.isAdmin = false;
-          {foreach from=$lang.flow_js item=item key=key}
-          var {$key} = "{$item}";
-          {/foreach}
-
-          {literal}
-          onload = function() {
-            if (!document.all)
-            {
-              document.forms['theForm'].reset();
-            }
-          }
-          {/literal}
-        </script>
-
-        <script type="text/javascript">
-        var flow_no_payment = "{$lang.flow_no_payment}";
-        var flow_no_shipping = "{$lang.flow_no_shipping}";
-
-	function formSubmit(fcart)
-	{
-		fcart.submit();
-	}
-        </script>
-      <form id="formCart" name="formCart" method="post" action="flow.php" autocomplete="off">
-		<input type="hidden" name="step" value="checkout"/>
-        <table width="100%" align="center" border="0" cellpadding="2" cellspacing="0"  class="c-table2">
-            <tr>
-              <th style="text-align:center;height:27px;line-height:27px;">图片</th>
-              <th style="text-align:left;height:27px;line-height:27px;">{$lang.goods_name}</th>
-              <th style="text-align:left;height:27px;line-height:27px;">{$lang.goods_attr}</th>
-              <!-- {if $show_marketprice} -->
-              <th style="text-align:left;height:27px;line-height:27px;">{$lang.market_prices}</th>
-              <!-- {/if} -->
-              <th style="text-align:left;height:27px;line-height:27px;">{if $gb_deposit}{$lang.deposit}{else}{$lang.shop_prices}{/if}</th>
-              <th style="text-align:left;height:27px;line-height:27px;">购买数量</th>
-	      {*代码增加 By www.ecshop120.com 多城市多仓库*}
-	      <th style="text-align:left;height:27px;line-height:27px;">仓库库存</th>
-	      {* 代码增加_end By www.ecshop120.com *}                 
-              <th style="text-align:left;height:27px;line-height:27px;">{$lang.subtotal}</th>
-	      <th style="text-align:left;height:27px;line-height:27px;">操作</th>
-            </tr>
-
-            <!-- {foreach from=$goods_list item=goods} -->
-            <tr style="background-color:#fffeee">
-            <td align=center>
-            {if $goods.is_momsuit eq 1}
-            <a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img style="width:70px;height:70px;" src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
-            {elseif $goods.is_momsuit eq 0}
-	        <a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="goods.php?id={$goods.goods_id}" target="_blank" ><img src="{$goods.goods_thumb}" width="70" height="70" border=0 ></a>
-            {/if}
-            </td>
-              <td>
-	      <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
-	      <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
-	      <div id="suit_{$goods.goods_id}" style="display:none">
-	          <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-		    <a href="goods.php?id={$package_goods_list.goods_id}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
-	          <!-- {/foreach} -->
-	      </div>
-	      <!-- { else } -->
-	      		{if $goods.is_momsuit eq 1}
-	      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-	      		{elseif $goods.is_momsuit eq 0}
-	      		<a href="goods.php?id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-	      		{/if}
-                <!-- {if $goods.parent_id > 0} -->
-                <span style="color:#FF0000">（{$lang.accessories}）</span>
-               <!-- {elseif $goods.is_gift} -->
-                <span style="color:#FF0000">（{$lang.largess}）</span>
-                <!-- {/if} -->
-          <!-- {/if} -->
-          <!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
-              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
-                <!-- {if $goods.gift_goods_number gt 0}  -->
-                <br />
-                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
-                <!-- {/if} -->
-                
-               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
-	      </td>
-              <td align="left">{$goods.goods_attr|nl2br}</td>
-              <!-- {if $show_marketprice} -->
-              <td align="left"><font class="market">{$goods.formated_market_price}</a></td>
-              <!-- {/if} -->
-              <td align="left">{$goods.formated_goods_price}</td>
-              <td align="left">	      
-	      <!--修改代码_start  By www.ecshop120.com-->                
-		<a href="javascript:minus_num(document.getElementById('formCart'), {$goods.rec_id});"><img src="images/bag_close.gif" border=0></a><input type="text" onKeyDown='if(event.keyCode == 13) event.returnValue = false' name="goods_number[{$goods.rec_id}]" id="goods_number_{$goods.rec_id}" value="{$goods.goods_number}" size="4" class="inputBg" style="text-align:center;" onblur="formSubmit(this.form)"/><input type="hidden" id="hidden_{$goods.rec_id}" value="{$goods.goods_number}"><a href="javascript:add_num(document.getElementById('formCart'),{$goods.rec_id})" ><img src="images/bag_open.gif" border=0></a>
-		<!--修改代码_end  By www.ecshop120.com-->	      
-	      </td>
-		      {* 代码增加_start By www.ecshop120.com 多城市多仓库*}
-		      <td align="left">有货</td>
-		      {* 代码增加_end By www.ecshop120.com *}   
-		      	      
-              <td align="left" id="subtotal_{$goods.rec_id}" >{$goods.formated_subtotal}</td>
-	      <td align="left"><a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_goods&amp;id={$goods.rec_id}'; " class="f6">{$lang.drop}</a></td>
-            </tr>
-            <!-- {/foreach} -->
-            <!-- {if !$gb_deposit} 团购且有保证金时不显示 -->
-
-	    <tr>
-              <td style="background-color:#fffeee" colspan="9">
-	      <hr size=1 width="98%" color="#d4edfc">
-	      </td>
-	     </tr>
-            
-            <!-- {/if} -->
-          </table>
-
-	  <!--增加代码_start By www.ecshop120.com-->
-	  <script>
-	  function add_num(f, rec_id)
-	 {
-		document.getElementById("goods_number_"+rec_id+"").value++;
-		//var number = document.getElementById("goods_number_"+rec_id+"").value;
-		//Ajax.call('flow.php', 'step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
-		f.submit();
-	 }
-
-	function minus_num(f, rec_id)
-	{
-		if (document.getElementById("goods_number_"+rec_id+"").value>1)
-		{
-			document.getElementById("goods_number_"+rec_id+"").value--;
-		}
-		//var number = document.getElementById("goods_number_"+rec_id+"").value;
-		//Ajax.call('flow.php', 'step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
-		f.submit();
-	}
-
-function change_price(rec_id,goods_id)
-{
-	var r = /^[1-9]+[0-9]*]*$/;
-	var number = document.getElementById("goods_number_"+rec_id+"").value;
-	if (!r.test(number))
-	{
-		alert("您输入的格式不正确！");
-		document.getElementById("goods_number_"+rec_id+"").value=document.getElementById("hidden_"+rec_id+"").value;
-	}
-	else
-	{
-		Ajax.call('flow.php','step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
-	}
-}
-
-function changePriceResponse(result)
-{
-if(result.error == 1)
-{
-	alert(result.content);
-	document.getElementById("goods_number_"+result.rec_id+"").value =result.number;
-	document.getElementById("hidden_"+result.rec_id+"").value =result.number;
-}
-else
-{
-	document.getElementById("hidden_"+result.rec_id+"").value =result.number;
-	document.getElementById('subtotal_'+result.rec_id).innerHTML = result.subtotal;//商品总价
-	document.getElementById('cart_amount_desc').innerHTML = result.cart_amount_desc;//购物车商品总价说明
-	document.getElementById('market_amount_desc').innerHTML = result.market_amount_desc;//购物车商品总市价说明
-	show_div_text = "恭喜您！ 商品数量修改成功！ ";
-	showdiv(document.getElementById("goods_number_"+result.rec_id));
-}
-
-}
-</script>
-<!--增加代码_end By www.ecshop120.com-->
-	  <input type="hidden" name="step" value="update_cart" />
-	  </form>
-      <div class="blank"></div>
-      <div class="blank"></div>
-
+	          region.isAdmin = false;
+	          {foreach from=$lang.flow_js item=item key=key}
+	          var {$key} = "{$item}";
+	          {/foreach}
 	
+	          {literal}
+	          onload = function() {
+	            if (!document.all)
+	            {
+	              document.forms['theForm'].reset();
+	            }
+	          }
+	          {/literal}
+	        </script>
+	
+	        <script type="text/javascript">
+	        var flow_no_payment = "{$lang.flow_no_payment}";
+	        var flow_no_shipping = "{$lang.flow_no_shipping}";
+	
+		function formSubmit(fcart)
+		{
+			fcart.submit();
+		}
+	    </script>
+	    
       
+	  
+	  
+	  
+      <div class="blank"></div>
+      <div class="blank"></div>
+
       <div>      
-<!--修改代码 by pgge  start -->
+			<!--修改代码 by pgge  start -->
            <!--收货人地址开始-->
-			<div class="shoplist_shtit" style="">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收货人信息&nbsp;<font id="addressFont">{if $consignee}<a style="color:#004ea2;" href="javascript:editAddress()">[修改]</a>{/if}</font> 
-			</div>
+           
+           <h3 class="c-tit3">收货人信息{if $consignee} <a class="xg1" href="javascript:editAddress()">修改</a>{/if}</h3>	
 			
             <!-- 如果有收货地址，循环显示用户的收获地址 -->
             
@@ -938,10 +799,10 @@ else
             
             
 	      <!--收货人地址结束-->
-<!--修改代码 by pgge  end -->
+		<!--修改代码 by pgge  end -->
       </div>
      
-<div class="h15"></div>
+		<div class="h15"></div>
 			<h3 class="c-tit3">配送及支付方式 <a class="xg2" href="javascript:void(0);">修改</a></h3>
             <div class="ps-zf">
 				<p class="tishi">请先保存收货人信息</p>
@@ -950,283 +811,446 @@ else
                      <!--{if $total.real_goods_count neq 0}-->
 					<ul class="ul-radio">
 						
-   <form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkOrderForm(this)">
-    <div class="flowBox-0" >
-    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="shippingTable">
-    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >
-    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配送方式 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<font id="shippingBox_msg" style="font-weight:normal;color:#f08300;">注：请先选择配送区域（省市县），再选择配送方式</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		{if $mes==1}<font style="font-weight:bold;color:red;">本地区购物未积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，如需免运费请继续购物！</font>{/if}
-		{if $mes==2}<font style="font-weight:bold;color:red;">恭喜！本地区购物已积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，配送方式选择汇通快递或汇通(货到付款) 时免运费！</font>{/if}</th>
-  
-    <tr><td width=10% height="15"></td><td width="90%" >&nbsp;</td></tr>            
-            <tr>
-	      <td width="10%" align="right" valign="top"></td>
-	      <td width="90%" valign=top>
-		<div  id="shippingBox">
-			<table width="100%"  cellpadding="0" cellspacing="0" >
-			<!-- {foreach from=$shipping_list name=shipping_list item=shipping} 循环配送方式 -->
-			<tr><td width="30%" height=25  valign=top>
-			<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
-			[{$shipping.format_shipping_fee}]
-			</td>
-			<td width="70%" valign=top>
-			{$shipping.shipping_desc}
-			</td>
-			</tr>
-			<!-- {/foreach} 循环配送方式 -->
-			</table>
-		</div>
-	      </td>	      
-            </tr>            
-            <tr>
-              <td colspan="2" align="right"><label for="ECS_NEEDINSURE" style="display:none;">
-                <input name="need_insure" id="ECS_NEEDINSURE" type="checkbox"  onclick="selectInsure(this.checked)" value="1" {if $order.need_insure}checked="true"{/if} {if $insure_disabled}disabled="true"{/if}  />
-                {$lang.need_insure} </label>&nbsp;</td>
-            </tr>
-          </table>
-    </div>
-        <!--{else}-->
-        <input name = "shipping" type="radio" value = "-1" checked="checked"  style="display:none"/>
-        <!--{/if}-->
-	</ul>
-					<div class="h"></div>
-					<h4 class="c-tit4">支付方式</h4>
-					<ul class="ul-radio">
-    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
-    <div >
-    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
-    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
-	<tr><td colspan=6 height="15">&nbsp;</td></tr>
-            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
-            <!-- 循环支付方式，不包含微信支付 -->
-            {if $payment.pay_id != 18}
-            <tr>
-	    	<td width="10%" height="25">&nbsp;</td>
-              <td valign="top" height=25 width="27%"><input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> {$payment.pay_name}</td>              
-              <td valign="top" >{$payment.pay_desc}</td>
-            </tr>
-            {/if}
-            <!-- {/foreach} 循环支付方式 -->
-          </table>
-    </div>
-    <!--{else}-->
-        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
-    <!--{/if}-->
-</ul>
-					<div class="h"></div>
-					<input type="submit" class="btn" value="保存配送及支付方式">
-				</div>
-				<p class="info dn">配送方式： {$shipping.shipping_name} 　　支付方式：{$payment.pay_name}</p>
+	   <form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkOrderForm(this)">
+	    <div class="flowBox-0" >
+	    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="shippingTable">
+	    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >
+	    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配送方式 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<font id="shippingBox_msg" style="font-weight:normal;color:#f08300;">注：请先选择配送区域（省市县），再选择配送方式</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			{if $mes==1}<font style="font-weight:bold;color:red;">本地区购物未积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，如需免运费请继续购物！</font>{/if}
+			{if $mes==2}<font style="font-weight:bold;color:red;">恭喜！本地区购物已积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，配送方式选择汇通快递或汇通(货到付款) 时免运费！</font>{/if}</th>
+	  
+	    <tr><td width=10% height="15"></td><td width="90%" >&nbsp;</td></tr>            
+	            <tr>
+		      <td width="10%" align="right" valign="top"></td>
+		      <td width="90%" valign=top>
+			<div  id="shippingBox">
+				<table width="100%"  cellpadding="0" cellspacing="0" >
+				<!-- {foreach from=$shipping_list name=shipping_list item=shipping} 循环配送方式 -->
+				<tr><td width="30%" height=25  valign=top>
+				<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
+				[{$shipping.format_shipping_fee}]
+				</td>
+				<td width="70%" valign=top>
+				{$shipping.shipping_desc}
+				</td>
+				</tr>
+				<!-- {/foreach} 循环配送方式 -->
+				</table>
 			</div>
-             
-           <div align="center" style="margin:8px auto;">
-            <input type="hidden" name="step" value="done" />
-            </div>
-            <div class="h15"></div>
-			<h3 class="c-tit3">结算信息</h3>
- <div class="h"></div>
-			<div class="jsxx">
-	<!-- 最终付款结算 -->
-<p>
-			<!-- {if $allow_use_bonus} 是否使用红包 -->
-                  <!-- {foreach from=$bonus_list item=bonus} -->
-                  <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus}<span id="bonus_surplus">{$order_max_bonus}</span>
-                  <!-- {/foreach} -->
-                 
-                  <br>
-				{foreach from=$spec_bonus_list item=spec_bonus}
-				<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
-				{/foreach}
-               <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
-                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" />              
-            <!-- {/if} 是否使用红包 -->
-    </p>
-	<!-- #BeginLibraryItem "/Library/order_total_flow.lbi" --><!-- #EndLibraryItem -->	
-	<div id="ECS_ORDERTOTAL" >
-	<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
-	</div>	
+		      </td>	      
+	            </tr>            
+	            <tr>
+	              <td colspan="2" align="right"><label for="ECS_NEEDINSURE" style="display:none;">
+	                <input name="need_insure" id="ECS_NEEDINSURE" type="checkbox"  onclick="selectInsure(this.checked)" value="1" {if $order.need_insure}checked="true"{/if} {if $insure_disabled}disabled="true"{/if}  />
+	                {$lang.need_insure} </label>&nbsp;</td>
+	            </tr>
+	          </table>
+	    </div>
+	        <!--{else}-->
+	        <input name = "shipping" type="radio" value = "-1" checked="checked"  style="display:none"/>
+	        <!--{/if}-->
+		</ul>
+						<div class="h"></div>
+						<h4 class="c-tit4">支付方式</h4>
+						<ul class="ul-radio">
+	    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+	    <div >
+	    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
+	    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
+		<tr><td colspan=6 height="15">&nbsp;</td></tr>
+	            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
+	            <!-- 循环支付方式，不包含微信支付 -->
+	            {if $payment.pay_id != 18}
+	            <tr>
+		    	<td width="10%" height="25">&nbsp;</td>
+	              <td valign="top" height=25 width="27%"><input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> {$payment.pay_name}</td>              
+	              <td valign="top" >{$payment.pay_desc}</td>
+	            </tr>
+	            {/if}
+	            <!-- {/foreach} 循环支付方式 -->
+	          </table>
+	    </div>
+	    <!--{else}-->
+	        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
+	    <!--{/if}-->
+	</ul>
+						<div class="h"></div>
+						<input type="submit" class="btn" value="保存配送及支付方式">
+					</div>
+					<p class="info dn">配送方式： {$shipping.shipping_name} 　　支付方式：{$payment.pay_name}</p>
+				</div>
+	             
+	           <div align="center" style="margin:8px auto;">
+	            <input type="hidden" name="step" value="done" />
+	            </div>
+	            
+	            
+	            
+	  <!-- 商品信息start -->          
+	  <div class="h15"></div>
+	  <h3 class="c-tit3">商品信息</h3>
+      <form id="formCart" name="formCart" method="post" action="flow.php" autocomplete="off">
+		<input type="hidden" name="step" value="checkout"/>
+        <table class="c-table1 c-table2">
+            <tr>
+              <th class="tl" width="110"></th>	
+              <th width="180">商品信息</th>
+              <th width="150"></th>
+              <th style="display: none;">{$lang.goods_attr}</th>
+              <th width="150">商品价格（元）</th>
+              <th width="90">数量</th>
+              <th width="150">促销</th>
+		      {*代码增加 By www.ecshop120.com 多城市多仓库*}
+		      <th>库存</th>
+		      {* 代码增加_end By www.ecshop120.com *}                 
+            </tr>
 
+            <!-- {foreach from=$goods_list item=goods} -->
+            <tr class="bg">
+	            <td class="tr">
+		            {if $goods.is_momsuit eq 1}
+		            	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}" target="_blank">
+		            	<img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+		            {elseif $goods.is_momsuit eq 0}
+			        	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="{$goods.goods_url}" target="_blank" >
+			        	<img src="{$goods.goods_thumb}"  border=0 ></a>
+		            {/if}
+	            </td>
+              <td>
+			      <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+			     		 <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+			      		<div id="suit_{$goods.goods_id}" style="display:none">
+				          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+					    		<a href="goods.php?id={$package_goods_list.goods_id}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+				          	<!-- {/foreach} -->
+			     		 </div>
+			      <!-- { else } -->
+			      		{if $goods.is_momsuit eq 1}
+			      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+			      		{elseif $goods.is_momsuit eq 0}
+			      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+			      		{/if}
+		                <!-- {if $goods.parent_id > 0} -->
+		                <span style="color:#FF0000">（{$lang.accessories}）</span>
+		               <!-- {elseif $goods.is_gift} -->
+		                <span style="color:#FF0000">（{$lang.largess}）</span>
+		                <!-- {/if} -->
+		          <!-- {/if} -->
+		          
+        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
+              	
+              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
+                <!-- {if $goods.gift_goods_number gt 0}  -->
+                <br />
+                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+                <!-- {/if} -->
+                
+               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
+	          </td>
+              <td style="">{$goods.goods_attr|nl2br}</td>
+              <td><b>{$goods.formated_goods_price}</b></td>
+              <td>{$goods.goods_number}</td>
+              <td style="display: none;">	      
+			      <!--修改代码_start  By www.ecshop120.com-->                
+				<a href="javascript:minus_num(document.getElementById('formCart'), {$goods.rec_id});">
+				<img src="images/bag_close.gif" border=0></a>
+				<input type="text" onKeyDown='if(event.keyCode == 13) event.returnValue = false' name="goods_number[{$goods.rec_id}]" id="goods_number_{$goods.rec_id}" value="{$goods.goods_number}" size="4" class="inputBg" style="text-align:center;" onblur="formSubmit(this.form)"/>
+				<input type="hidden" id="hidden_{$goods.rec_id}" value="{$goods.goods_number}"><a href="javascript:add_num(document.getElementById('formCart'),{$goods.rec_id})" >
+				<img src="images/bag_open.gif" border=0></a>
+				<!--修改代码_end  By www.ecshop120.com-->	      
+		      </td>
+		      <td>
+					<div class="cuxiao">
+					<p>买5送1</p>
+					<p><a href="" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a><a href="" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a><a href="" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a></p>
+					</div>
+				</td>
+		      {* 代码增加_start By www.ecshop120.com 多城市多仓库*}
+		      <td>有货</td>
+		      {* 代码增加_end By www.ecshop120.com *}   
+		      	      
+              <td align="left" style="display: none;" id="subtotal_{$goods.rec_id}" >{$goods.formated_subtotal}</td>
+            </tr>
+            <!-- {/foreach} -->
+            <!-- {if !$gb_deposit} 团购且有保证金时不显示 -->
 
+            
+            <!-- {/if} -->
+          </table>
+
+	  <!--增加代码_start By www.ecshop120.com-->
+	  <script>
+		  function add_num(f, rec_id)
+		 {
+			document.getElementById("goods_number_"+rec_id+"").value++;
+			//var number = document.getElementById("goods_number_"+rec_id+"").value;
+			//Ajax.call('flow.php', 'step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
+			f.submit();
+		 }
 	
-     
-
-					
-   
-	<script>
-	function selectBonus(bonus_id){
-	//取消选中，添加参数为cancel
-	var cancel='';
-	if(!$('#bonus_'+bonus_id).attr('checked')){
-		cancel='yes';
-	}
-	var order_max_bonus={$order_max_bonus};
-	//可用红包金额为零，不允许使用红包
-	if(order_max_bonus==0){
-		alert('抱歉，以上商品不能使用此红包！');return false;
-	}
-	var bonus_surplus=$('#bonus_surplus').html();
-	//可用红包金额为零，不允许重复使用红包(不为取消的时候)
-	if(bonus_surplus==0 && cancel==''){
-		//bonus_surplus=15;
-		alert('抱歉，以上商品不能多次使用红包！');return false;
-	}
-	
-	$.ajax({
-		url:'/flow.php?step=validate_bonus_ids',
-		type:'get',
-		data:{'bonus_id':bonus_id,'bonus_surplus':bonus_surplus,'cancel':cancel},
-		dataType:'json',
-		success:function(rs){
-			if(rs=='bonus_amount_beyond'){
-				if(!window.confirm("本红包金额高于可用金额，只能使用一次，不找零哦！是否继续使用？")){
-					$('#bonus_'+bonus_id).removeAttr("checked");
-				}else{
-					sure(bonus_id);
-				}
+		function minus_num(f, rec_id)
+		{
+			if (document.getElementById("goods_number_"+rec_id+"").value>1)
+			{
+				document.getElementById("goods_number_"+rec_id+"").value--;
 			}
-			if(rs.success=='yes'){
-				$('#bonus_surplus').html(rs.bonus_surplus);
-				document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
+			//var number = document.getElementById("goods_number_"+rec_id+"").value;
+			//Ajax.call('flow.php', 'step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
+			f.submit();
+		}
+
+		function change_price(rec_id,goods_id)
+		{
+			var r = /^[1-9]+[0-9]*]*$/;
+			var number = document.getElementById("goods_number_"+rec_id+"").value;
+			if (!r.test(number))
+			{
+				alert("您输入的格式不正确！");
+				document.getElementById("goods_number_"+rec_id+"").value=document.getElementById("hidden_"+rec_id+"").value;
+			}
+			else
+			{
+				Ajax.call('flow.php','step=update_group_cart&rec_id=' + rec_id +'&number=' + number+'&goods_id=' + goods_id, changePriceResponse, 'GET', 'JSON');
 			}
 		}
-	});
-	}
-	function sure(bonus_id){
+		
+		function changePriceResponse(result)
+		{
+		if(result.error == 1)
+		{
+			alert(result.content);
+			document.getElementById("goods_number_"+result.rec_id+"").value =result.number;
+			document.getElementById("hidden_"+result.rec_id+"").value =result.number;
+		}
+		else
+		{
+			document.getElementById("hidden_"+result.rec_id+"").value =result.number;
+			document.getElementById('subtotal_'+result.rec_id).innerHTML = result.subtotal;//商品总价
+			document.getElementById('cart_amount_desc').innerHTML = result.cart_amount_desc;//购物车商品总价说明
+			document.getElementById('market_amount_desc').innerHTML = result.market_amount_desc;//购物车商品总市价说明
+			show_div_text = "恭喜您！ 商品数量修改成功！ ";
+			showdiv(document.getElementById("goods_number_"+result.rec_id));
+		}
+		
+		}
+		</script>
+		<!--增加代码_end By www.ecshop120.com-->
+	  <input type="hidden" name="step" value="update_cart" />
+	  </form>
+	  <!-- 商品信息end -->          
+	  
+	  <!-- 结算信息start -->        
+	            <div class="h15"></div>
+				<h3 class="c-tit3">结算信息</h3>
+				 <div class="h"></div>
+				<div class="jsxx">
+		<!-- 最终付款结算 -->
+			<p>
+				<!-- {if $allow_use_bonus} 是否使用红包 -->
+	                  <!-- {foreach from=$bonus_list item=bonus} -->
+	                  <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus}<span id="bonus_surplus">{$order_max_bonus}</span>
+	                  <!-- {/foreach} -->
+	                 
+	                  <br>
+					{foreach from=$spec_bonus_list item=spec_bonus}
+					<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
+					{/foreach}
+	               <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
+	                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" />              
+	            <!-- {/if} 是否使用红包 -->
+	    	</p>
+		<!-- #BeginLibraryItem "/Library/order_total_flow.lbi" --><!-- #EndLibraryItem -->	
+		<div id="ECS_ORDERTOTAL" >
+		<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
+		</div>	
+	
+	
+		
+	     
+	
+						
+	   
+		<script>
+		function selectBonus(bonus_id){
+		//取消选中，添加参数为cancel
+		var cancel='';
+		if(!$('#bonus_'+bonus_id).attr('checked')){
+			cancel='yes';
+		}
+		var order_max_bonus={$order_max_bonus};
+		//可用红包金额为零，不允许使用红包
+		if(order_max_bonus==0){
+			alert('抱歉，以上商品不能使用此红包！');return false;
+		}
+		var bonus_surplus=$('#bonus_surplus').html();
+		//可用红包金额为零，不允许重复使用红包(不为取消的时候)
+		if(bonus_surplus==0 && cancel==''){
+			//bonus_surplus=15;
+			alert('抱歉，以上商品不能多次使用红包！');return false;
+		}
+		
 		$.ajax({
 			url:'/flow.php?step=validate_bonus_ids',
 			type:'get',
-			data:{'bonus_id':bonus_id,'bonus_surplus':$('#bonus_surplus').html(),'confirm':'yes'},
+			data:{'bonus_id':bonus_id,'bonus_surplus':bonus_surplus,'cancel':cancel},
 			dataType:'json',
 			success:function(rs){
+				if(rs=='bonus_amount_beyond'){
+					if(!window.confirm("本红包金额高于可用金额，只能使用一次，不找零哦！是否继续使用？")){
+						$('#bonus_'+bonus_id).removeAttr("checked");
+					}else{
+						sure(bonus_id);
+					}
+				}
 				if(rs.success=='yes'){
 					$('#bonus_surplus').html(rs.bonus_surplus);
 					document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
 				}
 			}
 		});
-	}
-	function selectSpecBonus(bonus_id){
-		//取消选中，添加参数为cancel
-		var cancel='';
-		if(!$('#bonus_'+bonus_id).attr('checked')){
-			cancel='yes';
 		}
-		specAjax(bonus_id,cancel);
-	}
-	function specAjax(bonus_id,cancel){
-		$.ajax({
-			url:'/flow.php?step=validate_bonus_ids',
-			type:'get',
-			data:{'bonus_id':bonus_id,'tag':'spec_bonus','cancel':cancel},
-			dataType:'json',
-			success:function(rs){
-				if(rs.error){
-					alert(rs.error);
+		function sure(bonus_id){
+			$.ajax({
+				url:'/flow.php?step=validate_bonus_ids',
+				type:'get',
+				data:{'bonus_id':bonus_id,'bonus_surplus':$('#bonus_surplus').html(),'confirm':'yes'},
+				dataType:'json',
+				success:function(rs){
+					if(rs.success=='yes'){
+						$('#bonus_surplus').html(rs.bonus_surplus);
+						document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
+					}
 				}
-				if(rs.success=='yes'){
-					//$('#ECS_ORDERTOTAL').html(rs.content);
-					document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
-				}
+			});
+		}
+		function selectSpecBonus(bonus_id){
+			//取消选中，添加参数为cancel
+			var cancel='';
+			if(!$('#bonus_'+bonus_id).attr('checked')){
+				cancel='yes';
 			}
-			
-		});
-	}
-	</script>
-    	
-   <p>
-    
-      		<!-- {if $allow_use_surplus} 是否使用余额 -->
-            <strong>{$lang.use_surplus}: </strong>
-             <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
-              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
-            <!-- {/if} 是否使用余额 -->
-            <!-- {if $allow_use_integral} 是否使用积分 -->
-            <p><input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
-              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></p>
-           
-            <!-- {/if} 是否使用积分 -->
-            <!-- {if $inv_content_list} 能否开发票 -->
-            <p><strong style="display:none;">{$lang.invoice}:</strong>
-                <input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
-              
-                <!-- {if $inv_type_list} -->
-                &nbsp;{$lang.invoice}:&nbsp;{$lang.invoice_type}
-                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
-                {html_options options=$inv_type_list selected=$order.inv_type}</select>
-                <!-- {/if} -->
-                {$lang.invoice_title}
-                <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
-                {$lang.invoice_content}
-              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
-                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
-                </select></p>
-        
-            <!-- {/if} --></div>
-    <div class="c-jie1 c-jie2">
-    
-   	<span class="r">
-					<input type="submit" class="btn" value="提交订单">
-				</span>
-    </div>
-              <table style="display:none;" width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
-      		<!-- {if $allow_use_surplus} 是否使用余额 -->
-            <tr>
-              <td width="20%" bgcolor="#ffffff"><strong>{$lang.use_surplus}: </strong></td>
-              <td bgcolor="#ffffff"><input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
-              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></td>
-            </tr>
-            <!-- {/if} 是否使用余额 -->
-            <!-- {if $allow_use_integral} 是否使用积分 -->
-            <tr>
-              <td bgcolor="#ffffff"><strong>{$lang.use_integral}</strong></td>
-              <td bgcolor="#ffffff"><input name="integral" type="text" class="input" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
-              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></td>
-            </tr>
-            <!-- {/if} 是否使用积分 -->
-            <!-- {if $inv_content_list} 能否开发票 -->
-            <tr>
-              <td bgcolor="#ffffff"><strong>{$lang.invoice}:</strong>
-                <input name="need_inv" type="checkbox"  class="input" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
-              </td>
-              <td bgcolor="#ffffff">
-                <!-- {if $inv_type_list} -->
-                {$lang.invoice_type}
-                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
-                {html_options options=$inv_type_list selected=$order.inv_type}</select>
-                <!-- {/if} -->
-                {$lang.invoice_title}
-                <input name="inv_payee" type="text"  class="input" id="ECS_INVPAYEE" size="20" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
-                {$lang.invoice_content}
-              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
-                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
-                </select></td>
-            </tr>
-            <!-- {/if} -->
-          </table>
-			
-             </div>  </div>
-
- <div class="h"></div>
-    </form>
+			specAjax(bonus_id,cancel);
+		}
+		function specAjax(bonus_id,cancel){
+			$.ajax({
+				url:'/flow.php?step=validate_bonus_ids',
+				type:'get',
+				data:{'bonus_id':bonus_id,'tag':'spec_bonus','cancel':cancel},
+				dataType:'json',
+				success:function(rs){
+					if(rs.error){
+						alert(rs.error);
+					}
+					if(rs.success=='yes'){
+						//$('#ECS_ORDERTOTAL').html(rs.content);
+						document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
+					}
+				}
+				
+			});
+		}
+		</script>
+	    	
+	   <p>
+	    
+	      		<!-- {if $allow_use_surplus} 是否使用余额 -->
+	            <strong>{$lang.use_surplus}: </strong>
+	             <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
+	              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
+	            <!-- {/if} 是否使用余额 -->
+	            <!-- {if $allow_use_integral} 是否使用积分 -->
+	            <p><input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
+	              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></p>
+	           
+	            <!-- {/if} 是否使用积分 -->
+	            <!-- {if $inv_content_list} 能否开发票 -->
+	            <p><strong style="display:none;">{$lang.invoice}:</strong>
+	                <input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
+	              
+	                <!-- {if $inv_type_list} -->
+	                &nbsp;{$lang.invoice}:&nbsp;{$lang.invoice_type}
+	                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
+	                {html_options options=$inv_type_list selected=$order.inv_type}</select>
+	                <!-- {/if} -->
+	                {$lang.invoice_title}
+	                <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
+	                {$lang.invoice_content}
+	              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
+	                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
+	                </select></p>
+	        
+	            <!-- {/if} --></div>
+	    <div class="c-jie1 c-jie2">
+	    
+	   	<span class="r">
+						<input type="submit" class="btn" value="提交订单">
+					</span>
+	    </div>
+	              <table style="display:none;" width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	      		<!-- {if $allow_use_surplus} 是否使用余额 -->
+	            <tr>
+	              <td width="20%" bgcolor="#ffffff"><strong>{$lang.use_surplus}: </strong></td>
+	              <td bgcolor="#ffffff"><input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
+	              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></td>
+	            </tr>
+	            <!-- {/if} 是否使用余额 -->
+	            <!-- {if $allow_use_integral} 是否使用积分 -->
+	            <tr>
+	              <td bgcolor="#ffffff"><strong>{$lang.use_integral}</strong></td>
+	              <td bgcolor="#ffffff"><input name="integral" type="text" class="input" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
+	              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></td>
+	            </tr>
+	            <!-- {/if} 是否使用积分 -->
+	            <!-- {if $inv_content_list} 能否开发票 -->
+	            <tr>
+	              <td bgcolor="#ffffff"><strong>{$lang.invoice}:</strong>
+	                <input name="need_inv" type="checkbox"  class="input" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
+	              </td>
+	              <td bgcolor="#ffffff">
+	                <!-- {if $inv_type_list} -->
+	                {$lang.invoice_type}
+	                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
+	                {html_options options=$inv_type_list selected=$order.inv_type}</select>
+	                <!-- {/if} -->
+	                {$lang.invoice_title}
+	                <input name="inv_payee" type="text"  class="input" id="ECS_INVPAYEE" size="20" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
+	                {$lang.invoice_content}
+	              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
+	                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
+	                </select></td>
+	            </tr>
+	            <!-- {/if} -->
+	          </table>
+				
+	             </div>  
+	             </div>
+	
+	 			<div class="h"></div>
+	    </form>
         <!-- {/if} -->
+        <!-- #订单确认界面结束 -->
+        
+        
+        
 
         <!-- {if $step eq "done"} -->
-        <!-- 订单提交成功 -->
-<div id="hd">
-		<div class="wp2">
-			<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
-			<div class="hdr r">
-				<ul class="ul-step">
-					<li>1.我的购物车 ></li>
-					<li>2.确认订单信息 ></li>
-					<li class="on">3.提交订单 ></li>
-				</ul>
+        <!-- #订单提交成功开始 -->
+		<div id="hd">
+			<div class="wp2">
+				<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
+				<div class="hdr r">
+					<ul class="ul-step">
+						<li>1.我的购物车 ></li>
+						<li>2.确认订单信息 ></li>
+						<li class="on">3.提交订单 ></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-	</div>
-  <div class="c"></div>
-   <div class="flowBox mod2">
+		
+	  <div class="c"></div>
+	   <div class="flowBox mod2">
          <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
          
          <h6 style="text-align:center; margin-top:20px; border-bottom:#C91422 2px solid; padding-bottom:10px;">{$lang.remember_order_number}: <font style="color:red">{$order.order_sn}</font></h6>
@@ -1245,30 +1269,33 @@ else
               <!--{if $order.shipping_name}-->{$lang.select_shipping}: <strong>{$order.shipping_name}</strong>，<!--{/if}-->{$lang.select_payment}: <strong>{$order.pay_name}</strong>。{$lang.order_amount}: <strong style="color: red;font-size: 19px;font-weight: bold;">{$total.amount_formated}</strong>
               </td>
             </tr>
+            
             <!-- {if $pay_online} -->
             <!-- 如果是线上支付则显示支付按钮 -->
             <tr class="online_pay">
               <td align="center" bgcolor="#FFFFFF">{$pay_online}</td>
             </tr>
-            <!-- {/if} -->            
+            <!-- {/if} -->  
+                      
             <tr>
               <td align="center" bgcolor="#FFFFFF">{$order.pay_desc}</td>
             </tr>
-<style type="text/css">
-.online_pay input[type="submit"],.online_pay input[type="button"]{
-background-color: red;
-color: white;
-height: 40px;
-line-height: 40px;
-width: 180px;
-font-size: 16px;
-font-weight: bolder;
-border: 2px solid;
-border-radius: 6px;
-cursor: pointer;
- }
-</style>
+			<style type="text/css">
+				.online_pay input[type="submit"],.online_pay input[type="button"]{
+				background-color: red;
+				color: white;
+				height: 40px;
+				line-height: 40px;
+				width: 180px;
+				font-size: 16px;
+				font-weight: bolder;
+				border: 2px solid;
+				border-radius: 6px;
+				cursor: pointer;
+				 }
+			</style>
           </table>
+          
           <!--{if $virtual_card}-->
           <div style="text-align:center;overflow:hidden;border:1px solid #E2C822;background:#FFF9D7;margin:10px;padding:10px 50px 30px;">
           <!--{foreach from=$virtual_card item=vgoods}-->
@@ -1292,14 +1319,16 @@ cursor: pointer;
           <!--{/foreach}-->
           </div>
           <!--{/if}-->
+          
           <p style="text-align:center; margin-bottom:20px;" class="submit_back">{$order_submit_back}</p>
           </div>
           <style>
           .submit_back a{ color:#F00;}
           </style>
-        <!-- {/if} -->
          </div>
          
+         <!-- {/if} -->
+         <!-- #订单提交成功结束 -->
          
          
         <!-- {if $step eq "deposit"} -->

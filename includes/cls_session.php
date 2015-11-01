@@ -79,7 +79,17 @@ class cls_session
         $this->session_data_table = $session_data_table;
 
         $this->db  = &$db;
-        $this->_ip = real_ip();
+//         $this->_ip = real_ip();
+		//换IP时不影响购物车
+        if(isset($_COOKIE['real_ipd']) && !empty($_COOKIE['real_ipd']))
+        {
+        	$this->_ip = $_COOKIE['real_ipd'];
+        }
+        else
+        {
+        	$this->_ip = real_ip();
+        	setcookie("real_ipd", $this->_ip, time()+864000, $this->session_cookie_path);
+        }
 
         if ($session_id == '' && !empty($_COOKIE[$this->session_name]))
         {
@@ -267,7 +277,9 @@ class cls_session
         /* ECSHOP 鑷?畾涔夋墽琛岄儴鍒 */
         if (!empty($GLOBALS['ecs']))
         {
-            $this->db->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '$this->session_id'");
+//             $this->db->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '$this->session_id'");
+        	//不自动清空会员的购物车.   
+        	$this->db->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '$this->session_id' AND user_id = ''");
         }
         /* ECSHOP 鑷?畾涔夋墽琛岄儴鍒 */
 

@@ -881,7 +881,7 @@ function get_order_sn()
  * @return  array   购物车商品数组
  */
 /*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
-function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array())
+function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_checked)
 {
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
     $sql = "SELECT rec_id, user_id, goods_id, goods_name, goods_sn, goods_number, " .
@@ -890,6 +890,9 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array())
             "FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' " .
             "AND rec_type = '$type'";
+    if(isset($is_checked)){
+    	$sql = $sql." AND is_checked = '$is_checked'";
+    } 
 
     $arr = $GLOBALS['db']->getAll($sql);
 
@@ -1113,8 +1116,12 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
     /* 如果是作为配件添加到购物车的，需要先检查购物车里面是否已经有基本件 */
     if ($parent > 0)
     {
-        $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('cart') .
+        
+    	$sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('cart') .
                 " WHERE goods_id='$parent' AND session_id='" . SESS_ID . "' AND extension_code <> 'package_buy'";
+        
+        
+        
         if ($GLOBALS['db']->getOne($sql) == 0)
         {
             $GLOBALS['err']->add($GLOBALS['_LANG']['no_basic_goods'], ERR_NO_BASIC_GOODS);
@@ -1201,7 +1208,8 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
         'extension_code'=> $goods['extension_code'],
         'is_gift'       => 0,
         'is_shipping'   => $goods['is_shipping'],
-        'rec_type'      => CART_GENERAL_GOODS
+        'rec_type'      => CART_GENERAL_GOODS,
+    	'is_checked'	=> 1	
     );
 
     /* 如果该配件在添加为基本件的配件时，所设置的“配件价格”比原价低，即此配件在价格上提供了优惠， */
@@ -1675,12 +1683,6 @@ function get_cart_goods()
     		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
     		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
     		" ORDER BY pid, parent_id";
-    if(isset($_SESSION['user_id']) && $_SESSION['user_id']>0){
-    	$sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
-    			" FROM " . $GLOBALS['ecs']->table('cart') . " " .
-    			" WHERE user_id = '" . $_SESSION['user_id'] . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
-    			" ORDER BY pid, parent_id";
-    }
     
     $res = $GLOBALS['db']->query($sql);
 
@@ -1690,23 +1692,28 @@ function get_cart_goods()
 
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
-        $total['goods_price']  += $row['goods_price'] * $row['goods_number'];
-        $total['market_price'] += $row['market_price'] * $row['goods_number'];
-        $total['goods_number'] +=  $row['goods_number'];
+        if(isset($row['is_checked']) && (intval($row['is_checked'])==1)){
+        	$total['goods_price']  += $row['goods_price'] * $row['goods_number'];
+        	$total['market_price'] += $row['market_price'] * $row['goods_number'];
+        	$total['goods_number'] +=  $row['goods_number'];
+        }
+    	
 
         $row['subtotal']     = price_format($row['goods_price'] * $row['goods_number'], false);
         $row['goods_price']  = price_format($row['goods_price'], false);
         $row['market_price'] = price_format($row['market_price'], false);
 
         /* 统计实体商品和虚拟商品的个数 */
-        if ($row['is_real'])
-        {
-            $real_goods_count++;
-        }
-        else
-        {
-            $virtual_goods_count++;
-        }
+        if(isset($row['is_checked']) && (intval($row['is_checked'])==1)){
+	        if ($row['is_real'])
+	        {
+	            $real_goods_count++;
+	        }
+	        else
+	        {
+	            $virtual_goods_count++;
+	        }
+	        }
 
         /* 查询规格 */
         if (trim($row['goods_attr']) != '')
@@ -1744,6 +1751,7 @@ function get_cart_goods()
     }
     $total['goods_amount']  = price_format($total['goods_amount'], false);
     $total['goods_price']  = price_format($total['goods_price'], false);
+    $total['goods_number']  = isset($total['goods_number'])?$total['goods_number']:0;
     $total['market_price'] = price_format($total['market_price'], false);
     $total['real_goods_count']    = $real_goods_count;
     $total['virtual_goods_count'] = $virtual_goods_count;
@@ -3160,4 +3168,31 @@ function get_not_free_shipping_count($region_id_list)
     return $GLOBALS['db']->getOne($sql);
 }
 /*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
+
+
+/**
+ * 选中，反选购物车内容
+ * @param unknown $rec_id
+ * @param unknown $is_checked
+ */
+function check_cart_goods($rec_id,$is_checked){
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
+			"is_checked = '" .$is_checked . "' " .
+			"WHERE rec_id = '" . $rec_id . "'" ;
+	return $GLOBALS['db']->query($sql);
+}
+
+/**
+ * 选中，反选全部购物车内容
+ * @param unknown $rec_id
+ * @param unknown $is_checked
+ */
+function check_all_cart_goods($is_checked){
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
+			"is_checked = '" .$is_checked . "' " .
+			"WHERE session_id = '" . SESS_ID . "'" ;
+	return $GLOBALS['db']->query($sql);
+}
+
+
 ?>

@@ -101,6 +101,32 @@ function update_user_info()
            " last_login = '" .gmtime(). "'".
            " WHERE user_id = '" . $_SESSION['user_id'] . "'";
     $GLOBALS['db']->query($sql);
+    
+    
+    /**更新购物车内容***/
+    $sql = "update ".$GLOBALS['ecs']->table('cart')." set user_id =".
+    		$_SESSION['user_id']." where session_id = '".SESS_ID."'";
+    $GLOBALS['db'] -> query($sql);
+    
+    
+    $sql1 = "update ".$GLOBALS['ecs']->table('cart')." set session_id ='".
+    		SESS_ID."' where user_id = '".$_SESSION['user_id']."'";
+    $GLOBALS['db'] -> query($sql1);
+    
+    
+    $sql2="select distinct(c.goods_id) from".$GLOBALS['ecs']->table('cart').
+    "as c left join".$GLOBALS['ecs']->table('goods').
+    "as g on c.goods_id=g.goods_id where g.is_on_sale =0 AND c.user_id = '".
+    $_SESSION['user_id']."'";
+    $data = $GLOBALS['db'] -> getAll($sql2);
+    
+    if($data){
+    	foreach ($data as $k=>$v){
+    		$sql="delete from".$GLOBALS['ecs']->table('cart').
+    		"where goods_id = '".$v['goods_id']."'";
+    		$GLOBALS['db'] -> query($sql);
+    	}
+    }
 }
 
 /**

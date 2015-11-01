@@ -100,8 +100,11 @@
             <!-- {foreach from=$goods_list item=goods} -->
             <tr class="bg">
             <td  class="tl">
-             
+             		<!-- {if ($goods.is_checked eq 1)} -->	
                      <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods" checked="checked">
+                     <!-- {else} -->
+                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods">
+                     <!-- {/if} -->
                         <!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
 				  
 				  <!-- {if $goods.is_momsuit eq 0} -->
@@ -154,29 +157,11 @@
               <td>{$goods.is_youhuo_wwwECSHOP120com}</td>
               <td >
                 <!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
-                   <script language="javascript" type="text/javascript">
-						function goods_cut($val){
-						var num_val=document.getElementById('number'+$val);
-						var new_num=num_val.value;
-						if(isNaN(new_num)){alert('请输入数字');return false}
-						var Num = parseInt(new_num);
-						if(Num>1)Num=Num-1;
-						num_val.value=Num;
-						document.getElementById('updatecart').click();}
-						function goods_add($val){
-						var num_val=document.getElementById('number'+$val);
-						var new_num=num_val.value;
-						if(isNaN(new_num)){alert('请输入数字');return false}
-						var Num = parseInt(new_num);
-						Num=Num+1;
-						num_val.value=Num;
-						document.getElementById('updatecart').click();}
-					</script>
 				<span class="jian" onclick="goods_cut('{$goods.rec_id}');">-</span>
 				
 				<input type="text"  name="goods_number[{$goods.rec_id}]" 
 				id="number{$goods.rec_id}" value="{$goods.goods_number}" size="4" 
-				class="inp" onblur="if(isNaN(this.value)){alert('请输入数字');return false}else{document.getElementById('updatecart').click();}"
+				class="inp" onblur="change_goods_number('{$goods.rec_id}');" onchange=""
 				title="{$lang.goods_number_tip}" style=""/>
 				
 				<span class="jia" onclick="goods_add('{$goods.rec_id}');">+</span>
@@ -185,7 +170,7 @@
                 <!-- {/if} -->
               </td>
            
-              <td><b>{$goods.subtotal}</b></td>
+              <td><b id="sub_total_{$goods.rec_id}">{$goods.subtotal}</b></td>
               <td>
                 <p>
                 <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_goods&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0;">{$lang.drop}</a>
@@ -193,7 +178,7 @@
                 
                 <!-- {if $smarty.session.user_id gt 0 && $goods.extension_code neq 'package_buy'} 如果登录了，可以加入收藏 -->
                 <p>
-                <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_to_collect&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0">{$lang.drop_to_collect}</a>
+                <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_to_collect&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0">移入收藏夹</a>
                 </p>
                 <!-- {/if} -->            
                </td>
@@ -205,10 +190,14 @@
 			<div class="h20"></div>
 			<div class="c-jie1">
 				<span class="r">
-					已选择 <b>{$total.goods_number}</b> 件商品　总价（不含运费）：<strong>{$total.goods_amount}</strong>
-					<input type="hidden" name="step" value="update_cart" />
-					<a class="btn" style=" font-size:14px" href="javascript:checkout();" id="toSettlement" >去结算</a></span>
-				<input type="checkbox"   class="selcall" checked="checked"> 全选　　<a href="">删除选中商品</a>　　<a href="">移入收藏夹</a>
+					已选择 <b id="total_goods_number">{$total.goods_number}</b> 件商品　总价（不含运费）：<strong id="total_goods_amount">{$total.goods_amount}</strong>
+					<input type="hidden" name="step" id="step" value="update_cart" />
+					<a class="btn" style=" font-size:14px" href="javascript:void(0)" onclick="return checkout();" id="toSettlement" >去结算</a></span>
+				<input type="checkbox"   class="selcall" checked="checked"> 全选　　<a href="javascript:void(0)" onclick="return drop_goods_batch();">删除选中商品</a>　　
+				<!-- {if $smarty.session.user_id gt 0} 如果登录了，可以加入收藏 -->
+				<a href="javascript:void(0)" onclick="return drop_to_collect_batch();">移入收藏夹</a>
+				<!-- {/if} -->            
+				
 			</div>
 			<div class="h20"></div>
                
@@ -220,6 +209,10 @@
 	<!-- 猜你喜欢 end -->
             <script type="text/javascript">
             $(function(){
+            	
+            	//自动选中，反选“全部”复选框 
+            	autoCheckAll();
+            	
             	/***全部选择**/
 	            $('.selcall').click(function(){
 	            	if($(this).attr("checked")) {     
@@ -229,32 +222,171 @@
 	            		$(".check_goods").removeAttr("checked"); 
 	            		$(".selcall").removeAttr("checked"); 
 	            	}    
-	        		//recomputeTotal();
+	            	
+	            	//选中，反选商品更新购物车
+	            	check_all_cart_goods(($(this).attr("checked"))?1:0);
 	        	});
 				
 	            /***选择商品**/
 	        	$('.check_goods').click(function(){
-	        		var allChecked  = true;	
-	        		$.each($('.check_goods'),function(i,v){
-	        			if(!$(v).attr("checked")){
-	        				allChecked = false;
-	        				return false;
-	        			}
-	        		});
-	        		if(allChecked){
-	        			$(".selcall").attr("checked",'true');
-	        		}else{
-	        			$(".selcall").removeAttr("checked"); 
-	        		}		
-	
-	        		//recomputeTotal();
+	        		//选中，反选商品更新购物车
+	        		check_cart_goods($(this).val(),($(this).attr("checked"))?1:0);
+	        		
+	        		
+	        		autoCheckAll();
 	        	});
             });
+            
+            
+            /**
+            	自动选中，反选“全部”复选框 
+            **/
+            
+            function autoCheckAll(){
+            	var allChecked  = true;	
+        		$.each($('.check_goods'),function(i,v){
+        			if(!$(v).attr("checked")){
+        				allChecked = false;
+        				return false;
+        			}
+        		});
+        		if(allChecked){
+        			$(".selcall").attr("checked",'true');
+        		}else{
+        			$(".selcall").removeAttr("checked"); 
+        		}	
+            }
+            
+            /***选中，反选购物车内的商品***/
+            function check_cart_goods(rec_id,is_checked){
+            	$.ajax({     
+            	    url:'flow.php?step=check_cart_goods',     
+            	    type:'post',  
+            	    dataType:'json', 
+            	    data:{'rec_id':rec_id,'is_checked':is_checked},     
+            	    async :true, 
+            	    error:function(){ 
+            	    	alert('更新出错！');
+            	    },     
+            	    success:function(data){ 
+            		    if(data.status==1){
+            		    	$("#total_goods_number").text(data.content.total.goods_number);
+            		    	$("#total_goods_amount").text(data.content.total.goods_price);
+            		    }else{
+            		    	alert(data.message);
+            		    }
+            	    }  
+            	}); 
+            }
+            
+            /***选中，反选购物车内的全部商品***/
+            function check_all_cart_goods(is_checked){
+            	$.ajax({     
+            	    url:'flow.php?step=check_all_cart_goods',     
+            	    type:'post',  
+            	    dataType:'json', 
+            	    data:{'is_checked':is_checked},     
+            	    async :true, 
+            	    error:function(){ 
+            	    	alert('更新出错！');
+            	    },     
+            	    success:function(data){ 
+            		    if(data.status==1){
+            		    	$("#total_goods_number").text(data.content.total.goods_number);
+            		    	$("#total_goods_amount").text(data.content.total.goods_price);
+            		    }else{
+            		    	alert(data.message);
+            		    }
+            	    }  
+            	}); 
+            }
+            
+            /***更新购物车内某商品的数量***/
+            function flow_update_cart_goods(rec_id,goods_number){
+            	$.ajax({     
+            	    url:'flow.php?step=flow_update_cart_goods',     
+            	    type:'post',  
+            	    dataType:'json', 
+            	    data:{'rec_id':rec_id,'goods_number':goods_number},     
+            	    async :true, 
+            	    error:function(){ 
+            	    	alert('更新出错！');
+            	    },     
+            	    success:function(data){ 
+            		    if(data.status==1){
+            		    	$.each(data.content.goods_list,function(i,v){
+                    			if(v.rec_id == rec_id){
+                    				$("#sub_total_"+rec_id).text(v.subtotal);
+                    				return false;
+                    			}
+                    		});
+            		    	
+            		    	$("#total_goods_number").text(data.content.total.goods_number);
+            		    	$("#total_goods_amount").text(data.content.total.goods_price);
+            		    }else{
+            		    	alert(data.message);
+            		    	//更新出错，还原本行数据
+            		    	if(data.content!=null){
+            		    		if(rec_id!=null){
+            		    			$.each(data.content.goods_list,function(i,v){
+                            			if(v.rec_id == rec_id){
+                            				$("#number"+rec_id).val(v.goods_number);
+                            				$("#sub_total_"+rec_id).text(v.subtotal);
+                            				return false;
+                            			}
+                            		});
+            		    		}
+                		    	$("#total_goods_number").text(data.content.total.goods_number);
+                		    	$("#total_goods_amount").text(data.content.total.goods_price);
+            		    	}
+            		    }
+            	    }  
+            	}); 
+            }
+            
+            
+            function get_cart_goods(rec_id){
+            	$.ajax({     
+            	    url:'flow.php?step=get_cart_goods',     
+            	    type:'post',  
+            	    dataType:'json', 
+            	    data:{},     
+            	    async :true, 
+            	    error:function(){ 
+            	    	alert('更新出错！');
+            	    },     
+            	    success:function(data){ 
+            		    if(data.status==1){
+            		    	if(data.content!=null){
+            		    		if(rec_id!=null){
+            		    			$.each(data.content.goods_list,function(i,v){
+                            			if(v.rec_id == rec_id){
+                            				$("#sub_total_"+rec_id).text(v.subtotal);
+                            				return false;
+                            			}
+                            		});
+            		    		}
+                		    	$("#total_goods_number").text(data.content.total.goods_number);
+                		    	$("#total_goods_amount").text(data.content.total.goods_price);
+            		    	}
+            		    }else{
+            		    	//alert(data.message);
+            		    }
+            	    }  
+            	}); 
+            }
             
             /**去结算**/
             function checkout()
 			{
-				document.formCart.step.value='checkout';
+            	//根据name查找选中的checkbox
+				 var checked_list = $("input[name='checkboxes[]']:checked");
+				 if(checked_list.length==0){
+					 alert('请先选择您要结算的商品!');
+					 return false;
+				 }
+				 
+            	document.formCart.step.value='checkout';
 				//formCart.submit();
 				document.forms['formCart'].submit();
 				//$("#formCart").submit();
@@ -268,7 +400,79 @@
 				document.getElementById('formCart').submit();
 			}
             
-            
+            /**更新购物车-减少商品数量***/
+			function goods_cut($val){
+				var num_val=document.getElementById('number'+$val);
+				var new_num=num_val.value;
+				if(isNaN(new_num)){alert('请输入数字');return false}
+				var Num = parseInt(new_num);
+				if(Num>1){
+					Num=Num-1;
+					flow_update_cart_goods($val,Num);
+				}else{
+					num_val.value=Num;
+				}
+			}
+			
+			/***更新购物车-增加商品数量**/
+			function goods_add($val){
+				var num_val=document.getElementById('number'+$val);
+				var new_num=num_val.value;
+				if(isNaN(new_num)){alert('请输入数字');return false}
+				var Num = parseInt(new_num);
+				Num=Num+1;
+				num_val.value=Num;
+				//document.getElementById('updatecart').click();
+				flow_update_cart_goods($val,Num);
+			}
+			
+			/**直接改变购物车中商品数量**/
+			function change_goods_number(rec_id){
+				var goods_number = $("#number"+rec_id).val();
+				
+				if(isNaN(goods_number)){
+					//alert('请输入数字');
+					$("#number"+rec_id).val("1");
+				}
+				
+				if($("#number"+rec_id).val()<=1){
+					$("#number"+rec_id).val("1");
+				}
+				flow_update_cart_goods(rec_id,$("#number"+rec_id).val());
+			}
+			
+			 /*批量删除购物车中商品信息***/
+			function drop_goods_batch(){
+				 //根据name查找选中的checkbox
+				 var checked_list = $("input[name='checkboxes[]']:checked");
+				 if(checked_list.length==0){
+					 alert('请先选择您要操作的商品!');
+					 return false;
+				 }
+				 
+				if(!confirm('您确实要把选中的商品移出购物车吗?')){
+					return false;
+				}
+				$("#step").val('drop_goods_batch');
+				$("#formCart").submit();
+			}
+			
+			 /*批量删除购物车中商品信息***/
+			function drop_to_collect_batch(){
+				//根据name查找选中的checkbox
+				 var checked_list = $("input[name='checkboxes[]']:checked");
+				 if(checked_list.length==0){
+					 alert('请先选择您要操作的商品!');
+					 return false;
+				 }
+				 
+				if(!confirm('您确实要把选中的商品移出购物车吗?')){
+					return false;
+				}
+				$("#step").val('drop_to_collect_batch');
+				$("#formCart").submit();
+			}
+			
             
             
 			

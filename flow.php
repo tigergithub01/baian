@@ -469,8 +469,49 @@ elseif ($_REQUEST['step'] == 'checkout')
         exit;
     }
 
-    $consignee = get_consignee($_SESSION['user_id']);
+    
 
+    include_once(ROOT_PATH . 'includes/lib_transaction.php');
+    /* 取得国家列表、商店所在国家、商店所在国家的省列表 */
+    $smarty->assign('country_list',       get_regions());
+    $smarty->assign('shop_province_list', get_regions(1, $_CFG['shop_country']));
+    /* 获得用户所有的收货人信息 */
+    $consignee_list = get_consignee_list($_SESSION['user_id']);
+    
+    if (count($consignee_list) < 5 && $_SESSION['user_id'] > 0)
+    {
+    	/* 如果用户收货人信息的总数小于5 则增加一个新的收货人信息 */
+    	$consignee_list[] = array('country' => $_CFG['shop_country'], 'email' => isset($_SESSION['email']) ? $_SESSION['email'] : '');
+    }
+    
+    $smarty->assign('consignee_list', $consignee_list);
+    
+    //取得国家列表，如果有收货人列表，取得省市区列表
+    foreach ($consignee_list AS $region_id => $consignee)
+    {
+    	$consignee['country']  = isset($consignee['country'])  ? intval($consignee['country'])  : 0;
+    	$consignee['province'] = isset($consignee['province']) ? intval($consignee['province']) : 0;
+    	$consignee['city']     = isset($consignee['city'])     ? intval($consignee['city'])     : 0;
+    
+    	$province_list[$region_id] = get_regions(1, $consignee['country']);
+    	$city_list[$region_id]     = get_regions(2, $consignee['province']);
+    	$district_list[$region_id] = get_regions(3, $consignee['city']);
+    }
+    
+    /* 获取默认收货ID */
+    $address_id  = $db->getOne("SELECT address_id FROM " .$ecs->table('users'). " WHERE user_id='".$_SESSION['user_id']."'");
+    
+    $smarty->assign('shop_country',     $_CFG['shop_country']);
+    $smarty->assign('shop_province',    get_regions(1, $_CFG['shop_country']));
+    $smarty->assign('province_list',    $province_list);
+    $smarty->assign('address',          $address_id);
+    $smarty->assign('city_list',        $city_list);
+    $smarty->assign('district_list',    $district_list);
+    
+    
+    
+    /*获取收货人信息，先获取session内的收货人信息，如果没有则获取默认收货人信息*/
+    $consignee = get_consignee($_SESSION['user_id']);
     /* 检查收货人信息是否完整 */
   //  if (!check_consignee_info($consignee, $flow_type))
   //  {
@@ -536,9 +577,9 @@ elseif ($_REQUEST['step'] == 'checkout')
      * 取得订单信息
      */
     $order = flow_order_info();
-$order['shipping_id'] = 1; //默认配送方式ID
-$order['pay_id'] = 1; //默认支付方式ID
-$smarty->assign('order', $order);
+	$order['shipping_id'] = 1; //默认配送方式ID
+	$order['pay_id'] = 1; //默认支付方式ID
+	$smarty->assign('order', $order);
 
     /* 计算折扣 */
     if ($flow_type != CART_EXCHANGE_GOODS && $flow_type != CART_GROUP_BUY_GOODS)
@@ -944,6 +985,65 @@ elseif ($_REQUEST['step'] == 'select_payment')
 
     echo $json->encode($result);
     exit;
+}
+elseif ($_REQUEST['step'] == 'order_pay')
+{
+	/*------------------------------------------------------ */
+	//-- 订单支付
+	/*------------------------------------------------------ */
+	//TODO:订单提交后，支付，待完善。
+	
+	include_once('includes/cls_json.php');
+	$json = new JSON;
+	$result = array('error' => '', 'content' => '', 'need_insure' => 0, 'payment' => 1);
+
+	/* 取得购物类型 */
+	$flow_type = isset($_SESSION['flow_type']) ? intval($_SESSION['flow_type']) : CART_GENERAL_GOODS;
+
+	/* 获得收货人信息 */
+	$consignee = get_consignee($_SESSION['user_id']);
+
+	/* 对商品信息赋值 */
+	$cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+
+	if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
+	{
+		$result['error'] = $_LANG['no_goods_in_cart'];
+	}
+	else
+	{
+		/* 取得购物流程设置 */
+		$smarty->assign('config', $_CFG);
+
+		/* 取得订单信息 */
+		$order = flow_order_info();
+
+		$order['pay_id'] = intval($_REQUEST['payment']);
+		$payment_info = payment_info($order['pay_id']);
+		$result['pay_code'] = $payment_info['pay_code'];
+
+		/* 保存 session */
+		$_SESSION['flow_order'] = $order;
+
+		/* 计算订单的费用 */
+		$total = order_fee($order, $cart_goods, $consignee);
+		$smarty->assign('total', $total);
+
+		/* 取得可以得到的积分和红包 */
+		$smarty->assign('total_integral', cart_amount(false, $flow_type) - $total['bonus'] - $total['integral_money']);
+		$smarty->assign('total_bonus',    price_format(get_total_bonus(), false));
+
+		/* 团购标志 */
+		if ($flow_type == CART_GROUP_BUY_GOODS)
+		{
+			$smarty->assign('is_group_buy', 1);
+		}
+
+		$result['content'] = $smarty->fetch('library/order_total.lbi');
+	}
+
+	echo $json->encode($result);
+	exit;
 }
 elseif ($_REQUEST['step'] == 'select_pack')
 {
@@ -1351,6 +1451,17 @@ elseif ($_REQUEST['step'] == 'done')
 {
     include_once('includes/lib_clips.php');
     include_once('includes/lib_payment.php');
+    include_once('includes/lib_transaction.php');
+    
+    //TODO:
+    //$_SESSION['flow_consignee']
+    $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : null;
+    $consignee = get_address($address_id);
+    $_SESSION['flow_consignee'] = stripslashes_deep($consignee);
+    
+    
+    
+    
 
     /* 取得购物类型 */
     $flow_type = isset($_SESSION['flow_type']) ? intval($_SESSION['flow_type']) : CART_GENERAL_GOODS;

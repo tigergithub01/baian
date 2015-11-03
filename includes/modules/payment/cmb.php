@@ -67,6 +67,12 @@ if (isset($set_modules) && $set_modules == TRUE)
  */
 class cmb
 {
+    
+	function __construct()
+	{
+		// $this->yeepay_cmbchina();
+	}
+	
     /**
      * 构造函数
      *
@@ -80,10 +86,7 @@ class cmb
         //$this->frpid = 'CMBCHINA-NET';
     }
 
-    function __construct()
-    {
-       // $this->yeepay_cmbchina();
-    }
+    
 
     /**
      * 生成支付代码

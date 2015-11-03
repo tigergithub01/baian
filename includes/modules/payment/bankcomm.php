@@ -62,6 +62,10 @@ if (isset($set_modules) && $set_modules == TRUE)
  */
 class bankcomm
 {
+	function __construct()
+	{
+		$this->bankcomm();
+	}
     /**
      * 构造函数
      *
@@ -95,10 +99,7 @@ class bankcomm
         }
     }
 
-    function __construct()
-    {
-        $this->bankcomm();
-    }
+    
 
     /**
      * 提交函数

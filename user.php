@@ -1400,6 +1400,8 @@ elseif ($action == 'act_edit_address')
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
     include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
     $smarty->assign('lang', $_LANG);
+    $is_ajax = isset($_POST['is_ajax']) ? intval($_POST['is_ajax']) : 0;
+    
 
     $address = array(
         'user_id'    => $user_id,
@@ -1418,11 +1420,25 @@ elseif ($action == 'act_edit_address')
         'sign_building' => isset($_POST['sign_building']) ? compile_str(trim($_POST['sign_building'])) : '',
         'zipcode'       => isset($_POST['zipcode'])       ? compile_str(make_semiangle(trim($_POST['zipcode']))) : '',
         );
-
-    if (update_address($address))
-    {
-        show_message($_LANG['edit_address_success'], $_LANG['address_list_lnk'], 'user.php?act=address_list');
-    }
+	
+    
+     if($is_ajax==1){
+     	$address_id = update_address($address);
+     	if ($address_id){
+     		//save flow_consignee for order
+     		$consignee = get_address($address_id);
+//      		$_SESSION['flow_consignee'] = stripslashes_deep($consignee);
+     		lib_main_make_json_result('收货地址修改成功。',get_address($address_id));
+     	}else{
+     		lib_main_make_json_error('收货地址修改失败！');
+     	}
+      }else{
+        	if (update_address($address)){
+        		show_message($_LANG['edit_address_success'], $_LANG['address_list_lnk'], 'user.php?act=address_list');
+        	}
+        	
+      }
+    	
 }
 
 /* 删除收货地址 */
@@ -1430,17 +1446,28 @@ elseif ($action == 'drop_consignee')
 {
     include_once('includes/lib_transaction.php');
 
-    $consignee_id = intval($_GET['id']);
+    $consignee_id = intval($_REQUEST['id']);
 
-    if (drop_consignee($consignee_id))
-    {
-        ecs_header("Location: user.php?act=address_list\n");
-        exit;
-    }
-    else
-    {
-        show_message($_LANG['del_address_false']);
-    }
+    $is_ajax = isset($_POST['is_ajax']) ? intval($_POST['is_ajax']) : 0;
+    
+    
+    if($is_ajax==1){
+    	if (drop_consignee($consignee_id)){
+    		lib_main_make_json_result('收货地址删除成功。');
+	    }else{
+	    	lib_main_make_json_error('收货地址删除失败！');
+	    }
+	}else{
+		if (drop_consignee($consignee_id))
+		{
+			ecs_header("Location: user.php?act=address_list\n");
+			exit;
+		}
+		else
+		{
+			show_message($_LANG['del_address_false']);
+		}
+	}
 }
 
 /* 设为默认收货地址 */
@@ -1448,17 +1475,28 @@ elseif ($action == 'default_consignee')
 {
 	include_once('includes/lib_transaction.php');
 
+	$is_ajax = isset($_POST['is_ajax']) ? intval($_POST['is_ajax']) : 0;
+	
 	$consignee_id = intval($_GET['id']);
 
-	if (default_consignee($consignee_id))
-	{
-		ecs_header("Location: user.php?act=address_list\n");
-		exit;
+	if($is_ajax==1){
+		if (default_consignee($consignee_id)){
+			lib_main_make_json_result('默认收货地址设置成功。');
+		}else{
+			lib_main_make_json_error('默认收货地址设置失败！');
+		}
+	}else{
+		if (default_consignee($consignee_id))
+		{
+			ecs_header("Location: user.php?act=address_list\n");
+			exit;
+		}
+		else
+		{
+			show_message('默认收货地址设置失败！');
+		}
 	}
-	else
-	{
-		show_message('默认收货地址设置失败！');
-	}
+	
 }
 
 

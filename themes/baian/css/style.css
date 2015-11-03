@@ -202,6 +202,7 @@
 .jsxx .jf p .inp,.jsxx .hb p .inp{width: 58px;height: 22px;border: 1px solid #dcdddd;text-align: center;font-size: 12px;font-family:"微软雅黑","Microsoft Yahei";margin: 0 2px;}
 .jsxx .jf p a,.jsxx .hb p a{display: inline-block;background-color: #f08300;color: #fff;width: 58px;height: 24px;line-height: 24px;text-align: center;color:#fff;}
 .jsxx .show-btn{display: inline-block;padding-left: 18px;background: url(../images/ic9.png) no-repeat left center;cursor: pointer;}
+.jsxx .show-btn.ok{background: url(../images/ic10.png) no-repeat left center;}
 .jsxx .he{color: #575757;}
 .c-cur-bor{border: 1px solid #f08300;}
 .c-jie2{padding-left: 60px;}
@@ -521,6 +522,10 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 
 .s-myorder a.link{
 	font-size: 14px;padding:0px 2px 0px 2px; color: #f08300;
+}
+
+.s-order-table a.link{
+	padding:0px 2px 0px 2px; 
 }
 
 .s-myorder a.link_btn{

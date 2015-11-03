@@ -829,7 +829,7 @@ function order_fee($order, $goods, $consignee)
     }
     else
     {
-        $total['will_get_integral'] = get_give_integral($goods);
+        $total['will_get_integral'] = get_give_integral($goods,1);
     }
     $total['will_get_bonus']        = $order['extension_code'] == 'exchange_goods' ? 0 : price_format(get_total_bonus(), false);
     $total['formated_goods_price']  = price_format($total['goods_price'], false);
@@ -2688,7 +2688,7 @@ function compute_discount()
  * 取得购物车该赠送的积分数
  * @return  int     积分数
  */
-function get_give_integral()
+function get_give_integral($is_checked)
 {
         $sql = "SELECT SUM(c.goods_number * IF(g.give_integral > -1, g.give_integral, c.goods_price))" .
                 "FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " .
@@ -2700,6 +2700,10 @@ function get_give_integral()
                 "AND c.rec_type = 0 " .
                 "AND c.is_gift = 0";
 
+        if(isset($is_checked)){
+        	$sql = $sql." AND c.is_checked = '$is_checked'";
+        }
+        
         return intval($GLOBALS['db']->getOne($sql));
 }
 

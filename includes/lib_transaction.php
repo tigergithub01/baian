@@ -717,7 +717,26 @@ function update_address($address)
         $GLOBALS['db'] ->query($sql);
     }
 
-    return true;
+//     return true;	
+	return $address_id;
+}
+
+
+function get_address($address_id)
+{
+	/* $sql = "SELECT * FROM " . $GLOBALS['ecs']->table('user_address') .
+	 " WHERE user_id = '$user_id' LIMIT 5"; */
+	$sql = "SELECT ua.*, rg_country.region_name AS country_name, ".
+			"rg_province.region_name AS province_name, ".
+			"rg_city.region_name AS city_name, ".
+			"rg_district.region_name AS district_name ".
+			' FROM ' . $GLOBALS['ecs']->table('user_address') .' AS ua ' .
+			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_country ON ua.country = rg_country.region_id' .
+			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_province ON ua.province = rg_province.region_id' .
+			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_city ON ua.city = rg_city.region_id' .
+			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_district ON ua.district = rg_district.region_id' .
+			" WHERE address_id = '$address_id' LIMIT 1";
+	return $GLOBALS['db']->getRow($sql);
 }
 
 /**

@@ -1,0 +1,124 @@
+<!--#订单确认收货地址包含页面，无样式  start-->
+<table class="s-order-table noborder datalist address_list" style="border: 0px;">
+<tbody>
+	 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
+	 <!-- {if $consignee.address_id} -->
+	<tr id="row_address_{$consignee.address_id}">
+		<td>
+			
+			<!-- {if $selected_address eq $consignee.address_id} -->
+			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
+			<!-- {else} -->
+			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
+			<!-- {/if} -->
+			<span style="padding-left: 5px;">{$consignee.consignee}</span>
+			<span style="padding-left: 10px;">{$consignee.mobile}</span>
+			<span style="padding-left: 5px;">{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}</span>
+		</td>
+		<td>
+			<a class="link update_address" href="javascript:void(0)" onclick="edit_address('{$consignee.address_id}');">修改</a> 
+			<a class="link" onclick="return drop_consignee('{$consignee.address_id}');" href="javascript:void(0)">删除</a> 
+			<!-- {if $address eq $consignee.address_id} -->
+			<a class="link" style="color: red;font-weight: bold;" href="javascript:void(0)">默认</a>
+			<!-- {else} -->
+			<a class="link" href="javascript:void(0)" onclick="return default_consignee('{$consignee.address_id}');">设为默认</a>
+			<!-- {/if} -->
+			
+		</td>
+	</tr>
+	<!-- {else} -->
+	<tr>
+		<td>
+			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee"/><span style="padding-left: 5px;">添加新地址</span>
+		</td>
+	</tr>
+	<!-- {/if} -->
+	
+	<!-- {if $selected_address neq $consignee.address_id} -->
+	<tr id="addr_box_{$consignee.address_id}" class="address_row old" style="display: none;">
+	<!-- {else} -->
+	<tr id="addr_box_{$consignee.address_id}" class="address_row new">
+	<!-- {/if} -->
+		<td colspan="4">
+			<div class="addr_box" style="border: 0px;">
+				<form action="user.php" method="post" name="address_form" id="address_form_{$consignee.address_id}">
+		            <table>
+		                <tr>
+		                  <td><span class="required">*</span>收货人：</td>
+		                  <td><input name="consignee" type="text" class="inputBg" id="consignee_{$sn}" value="{$consignee.consignee|escape}" />
+		                  </td>
+		                </tr>
+		                <tr>
+		                   	  <td><span class="required">*</span>{$lang.backup_phone}：</td>
+			                  <td>
+			                  <input name="mobile" type="text" class="inputBg" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
+			                  {$lang.phone}：<input name="tel" type="text" class="inputBg" id="tel_{$sn}" value="{$consignee.tel|escape}" />
+			                  </td>
+		                </tr>
+		                <tr>
+		                  <td><span class="required">*</span>{$lang.country_province}：</td>
+		                  <td colspan="3"><select name="country" id="selCountries_{$sn}" onchange="region.changed(this, 1, 'selProvinces_{$sn}')">
+		                      <option value="0">{$lang.please_select}{$name_of_region[0]}</option>
+		                      <!-- {foreach from=$country_list item=country} -->
+		                      <option value="{$country.region_id}" {if $consignee.country eq $country.region_id}selected{/if}>{$country.region_name}</option>
+		                      <!-- {/foreach} -->
+		                    </select>
+		                    <select name="province" id="selProvinces_{$sn}" onchange="region.changed(this, 2, 'selCities_{$sn}')">
+		                      <option value="0">{$lang.please_select}{$name_of_region[1]}</option>
+		                      <!-- {foreach from=$province_list.$sn item=province} -->
+		                      <option value="{$province.region_id}" {if $consignee.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
+		                      <!-- {/foreach} -->
+		                    </select>
+		                    <select name="city" id="selCities_{$sn}" onchange="region.changed(this, 3, 'selDistricts_{$sn}')">
+		                      <option value="0">{$lang.please_select}{$name_of_region[2]}</option>
+		                      <!-- {foreach from=$city_list.$sn item=city} -->
+		                      <option value="{$city.region_id}" {if $consignee.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
+		                      <!-- {/foreach} -->
+		                    </select>
+		                    <select name="district" id="selDistricts_{$sn}" {if !$district_list.$sn}style="display:none"{/if}>
+		                      <option value="0">{$lang.please_select}{$name_of_region[3]}</option>
+		                      <!-- {foreach from=$district_list.$sn item=district} -->
+		                      <option value="{$district.region_id}" {if $consignee.district eq $district.region_id}selected{/if}>{$district.region_name}</option>
+		                      <!-- {/foreach} -->
+		                    </select>
+		                  </td>
+		                </tr>
+		                <tr>
+		                  <td><span class="required">*</span>{$lang.detailed_address}：</td>
+		                  <td>
+		                  	<input name="address" size="50" type="text" class="inputBg" id="address_{$sn}" value="{$consignee.address|escape}" />
+		                  </td>
+		                </tr>
+		                <tr>
+		                	<td>
+		                	</td>
+		                  <td>
+			                  	<!-- {if $address eq $consignee.address_id} -->
+								<input type="checkbox" checked="checked" value="1" name="default"/>
+								<!-- {else} -->
+								<input type="checkbox" value="1" name="default"/>
+								<!-- {/if} -->
+		                  	设为默认收货地址
+		                  </td>
+		                </tr>
+		                <tr>
+		                  <td>&nbsp;</td>
+		                  <td colspan="3" align="center" bgcolor="#ffffff"><!-- {if $consignee.address_id} -->
+		                    <input type="button" name="submit" class="btn" value="保存收货人信息" onclick="return select_address('{$consignee.address_id}');" />
+		                    <!-- {else} -->
+		                    <input type="button" name="submit" class="btn"  value="新增收货人信息" onclick="return select_address('{$consignee.address_id}');"/>
+		                    <!-- {/if} -->
+		                    <input type="hidden" name="is_ajax" value="1" />
+		                    <input name="address_id" type="hidden" value="{$consignee.address_id}" />
+		                  </td>
+		                </tr>
+		              </table>
+	            </form>
+            </div>
+            
+		</td>
+	</tr>
+	<!-- {/foreach} -->
+	</tbody>
+</table>
+<!--#订单确认收货地址包含页面，无样式  end-->

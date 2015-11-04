@@ -1501,7 +1501,6 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 				                  	设为默认收货地址
 				                  	
 				                  </td>
-				                  </td>
 				                </tr>
 				                <tr>
 				                  <td>&nbsp;</td>

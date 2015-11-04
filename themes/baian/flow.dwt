@@ -789,7 +789,7 @@
       <div>      
 			<!--修改代码 by pgge  start -->
            <!--收货人地址开始-->
-           <h3 class="c-tit3">收货人信息 <a class="xg1" href="javascript:editAddress()">修改</a></h3>	
+           <h3 class="c-tit3">收货人信息 <a class="xg1" href="javascript:void(0)">修改</a></h3>	
 			
             <!-- 如果有收货地址，循环显示用户的收货地址 -->
              <div class="shou-info c-cur-bor">
@@ -798,125 +798,10 @@
              		<span id="mobile" style="padding-left: 10px;">13724347765</span>  
              		<span id="address" style="padding-left: 5px;">7777777</span>
 	             </p>
+		       	 <div id="order_address_list" class="">
+		       	 <!-- #BeginLibraryItem "/Library/order_address_list.lbi" --><!-- #EndLibraryItem -->
+		       	 </div>
 		       	 
-		       	 <table class="s-order-table noborder datalist address_list" style="border: 0px;">
-					<tbody>
-						 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
-						 <!-- {if $consignee.address_id} -->
-						<tr id="row_address_{$consignee.address_id}">
-							<td>
-								
-								<!-- {if $address eq $consignee.address_id} -->
-								<input type="radio" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
-								<!-- {else} -->
-								<input type="radio" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
-								<!-- {/if} -->
-								<span style="padding-left: 5px;">{$consignee.consignee}</span>
-								<span style="padding-left: 10px;">{$consignee.mobile}</span>
-								<span style="padding-left: 5px;">{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}</span>
-							</td>
-							<td>
-								<a class="link update_address" href="javascript:void(0)" onclick="edit_address('{$consignee.address_id}');">修改</a> 
-								<a class="link" onclick="return drop_consignee('{$consignee.address_id}');" href="javascript:void(0)">删除</a> 
-								
-							</td>
-						</tr>
-						<!-- {else} -->
-						<tr>
-							<td>
-								<input type="radio" class="consignee_radio" value="{$consignee.address_id}" name="consignee"/><span style="padding-left: 5px;">添加新地址</span>
-							</td>
-						</tr>
-						<!-- {/if} -->
-						
-						<!-- {if $address neq $consignee.address_id} -->
-						<tr id="addr_box_{$consignee.address_id}" class="address_row old" style="display: none;">
-						<!-- {else} -->
-						<tr id="addr_box_{$consignee.address_id}" class="address_row new">
-						<!-- {/if} -->
-							<td colspan="4">
-								<div class="addr_box" style="border: 0px;">
-									<form action="user.php" method="post" name="address_form" id="address_form_{$consignee.address_id}">
-							            <table>
-							                <tr>
-							                  <td><span class="required">*</span>收货人：</td>
-							                  <td><input name="consignee" type="text" class="inputBg" id="consignee_{$sn}" value="{$consignee.consignee|escape}" />
-							                  </td>
-							                </tr>
-							                <tr>
-							                   	  <td><span class="required">*</span>{$lang.backup_phone}：</td>
-								                  <td>
-								                  <input name="mobile" type="text" class="inputBg" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
-								                  {$lang.phone}：<input name="tel" type="text" class="inputBg" id="tel_{$sn}" value="{$consignee.tel|escape}" />
-								                  </td>
-							                </tr>
-							                <tr>
-							                  <td><span class="required">*</span>{$lang.country_province}：</td>
-							                  <td colspan="3"><select name="country" id="selCountries_{$sn}" onchange="region.changed(this, 1, 'selProvinces_{$sn}')">
-							                      <option value="0">{$lang.please_select}{$name_of_region[0]}</option>
-							                      <!-- {foreach from=$country_list item=country} -->
-							                      <option value="{$country.region_id}" {if $consignee.country eq $country.region_id}selected{/if}>{$country.region_name}</option>
-							                      <!-- {/foreach} -->
-							                    </select>
-							                    <select name="province" id="selProvinces_{$sn}" onchange="region.changed(this, 2, 'selCities_{$sn}')">
-							                      <option value="0">{$lang.please_select}{$name_of_region[1]}</option>
-							                      <!-- {foreach from=$province_list.$sn item=province} -->
-							                      <option value="{$province.region_id}" {if $consignee.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
-							                      <!-- {/foreach} -->
-							                    </select>
-							                    <select name="city" id="selCities_{$sn}" onchange="region.changed(this, 3, 'selDistricts_{$sn}')">
-							                      <option value="0">{$lang.please_select}{$name_of_region[2]}</option>
-							                      <!-- {foreach from=$city_list.$sn item=city} -->
-							                      <option value="{$city.region_id}" {if $consignee.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
-							                      <!-- {/foreach} -->
-							                    </select>
-							                    <select name="district" id="selDistricts_{$sn}" {if !$district_list.$sn}style="display:none"{/if}>
-							                      <option value="0">{$lang.please_select}{$name_of_region[3]}</option>
-							                      <!-- {foreach from=$district_list.$sn item=district} -->
-							                      <option value="{$district.region_id}" {if $consignee.district eq $district.region_id}selected{/if}>{$district.region_name}</option>
-							                      <!-- {/foreach} -->
-							                    </select>
-							                  </td>
-							                </tr>
-							                <tr>
-							                  <td><span class="required">*</span>{$lang.detailed_address}：</td>
-							                  <td>
-							                  	<input name="address" size="50" type="text" class="inputBg" id="address_{$sn}" value="{$consignee.address|escape}" />
-							                  </td>
-							                </tr>
-							                <tr>
-							                	<td>
-							                	</td>
-							                  <td>
-								                  	<!-- {if $address eq $consignee.address_id} -->
-													<input type="checkbox" checked="checked" value="1" name="default"/>
-													<!-- {else} -->
-													<input type="checkbox" value="1" name="default"/>
-													<!-- {/if} -->
-							                  	设为默认收货地址
-							                  </td>
-							                </tr>
-							                <tr>
-							                  <td>&nbsp;</td>
-							                  <td colspan="3" align="center" bgcolor="#ffffff"><!-- {if $consignee.address_id} -->
-							                    <input type="button" name="submit" class="btn" value="保存收货人信息" onclick="return act_edit_address('{$consignee.address_id}');" />
-							                    <!-- {else} -->
-							                    <input type="button" name="submit" class="btn"  value="新增收货人信息" onclick="return act_edit_address('{$consignee.address_id}');"/>
-							                    <!-- {/if} -->
-							                    <input type="hidden" name="act" value="act_edit_address" />
-							                    <input type="hidden" name="is_ajax" value="1" />
-							                    <input name="address_id" type="hidden" value="{$consignee.address_id}" />
-							                  </td>
-							                </tr>
-							              </table>
-						            </form>
-					            </div>
-					            
-							</td>
-						</tr>
-						<!-- {/foreach} -->
-					</tbody>
-				</table>
 		</div>
 	      <!--收货人地址结束-->
 	      
@@ -954,6 +839,8 @@
 														<td width="30%" height=25  valign=top>
 															<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
 														[{$shipping.format_shipping_fee}]
+														
+														<input type="hidden" id="shipping_name_{$shipping.shipping_id}" value="{$shipping.shipping_name}"/>
 														</td>
 														<td width="70%" valign=top>
 															{$shipping.shipping_desc}
@@ -993,6 +880,8 @@
 						              <td valign="top" height=25 width="27%">
 						              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
 						              		{$payment.pay_name}
+						              		
+						              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>
 						              </td>              
 						              <td valign="top" >{$payment.pay_desc}</td>
 						            </tr>
@@ -1005,10 +894,10 @@
 						    <!--{/if}-->
 						</ul>
 						<div class="h"></div>
-						<input type="button" class="btn" value="保存配送及支付方式">
+						<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
 						
 					</div>
-					<p class="info dn">配送方式： {$shipping.shipping_name} 　　支付方式：{$payment.pay_name}</p>
+					<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
 				</div>
 	            
 	  <!-- 商品信息start -->          
@@ -1111,7 +1000,7 @@
 				<div class="jsxx">
 				
 				<!-- 最终付款结算 -->
-				<p>本次订单可使用积分：<em>1000分</em>，使用红包：<em>￥10.00</em></p>
+				<!-- <p>本次订单可使用积分：<em>1000分</em>，使用红包：<em>￥</em></p>
 					<div class="jf">
 						<span class="show-btn">使用积分</span>
 						<p>您有积分<span>1000分</span>，本次可用<span>100分</span>　使用<input type="text" class="inp"> 积分　<a href="">使用</a></p>
@@ -1122,9 +1011,9 @@
 					</div>
 					<p class="tr he">商品总计：￥2000.00 + 运费：￥10.00 - 积分：100分 - 红包： ￥5.00</p>
 					
-				<p>
+				<p> -->
 				
-				<!-- {if $allow_use_bonus} 是否使用红包 -->
+					 <!-- {if $allow_use_bonus} 是否使用红包 -->
 	                  <!-- {foreach from=$bonus_list item=bonus} -->
 	                  <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus}<span id="bonus_surplus">{$order_max_bonus}</span>
 	                  <!-- {/foreach} -->
@@ -1133,7 +1022,7 @@
 					{foreach from=$spec_bonus_list item=spec_bonus}
 					<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
 					{/foreach}
-	               <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
+	                 <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
 	                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" />              
 	            <!-- {/if} 是否使用红包 -->
 	    	</p>
@@ -1147,9 +1036,6 @@
 		$(function(){
 			/***保存收货地址**/
 			$(".shou-info .btn").click(function(){
-				
-				
-				
 				/* $(".shou-info").removeClass("c-cur-bor");
 				$(".shou-info .address_list").hide();
 				$(".shou-info .info").show();
@@ -1161,10 +1047,14 @@
 			
 			/***保存配送以及支付方式**/
 			$(".ps-zf .btn").click(function(){
-				$(this).parents(".form").hide();
-				$(this).parents(".form").next(".info").show();
+				/* $(this).parents(".form").hide();
+				$(this).parents(".form").next(".info").show(); */
+				
+				/* $(".ps-zf .form").hide();
+		    	$(".ps-zf .info").show();
+		    	
 				$(".xg2").show();
-				$(".ps-zf").removeClass("c-cur-bor");
+				$(".ps-zf").removeClass("c-cur-bor"); */
 			});
 			
 			/***点击修改收货地址链接***/
@@ -1177,7 +1067,7 @@
 				$(".ps-zf .form").hide();
 				$(".ps-zf .info").show();
 				
-				
+				refresh_address_list();
 			});
 			
 			/***点击修改配送已经支付方式链接***/
@@ -1197,28 +1087,37 @@
 		   		}
 		   	});
 		   	
-		   	$(".consignee_radio").click(function(){
+		   	
+		   	/* $(".consignee_radio").click(function(){
 		   		var address_id = $(this).val();
 		   		$(".address_row").hide();
 		   		$("#addr_box_"+address_id).show();
 		   		
 		   		
-		   	});
+		   	}); */
 		   	
 		});
+		
+		
+		function click_address_row(address_id){
+			$(".address_row").hide();
+	   		$("#addr_box_"+address_id).show();
+		} 
+		
 		
 		function edit_address(address_id){
 			if($('#addr_box_'+address_id).css('display')=='none'){
 				$(".address_row").hide();
 				$('#addr_box_'+address_id).show();
+				$('#radio_'+address_id).prop('checked',true);
 	   		}
 		}
 		
 		
-		/***保存收货人信息***/
-        function act_edit_address(address_id){
+		/***选择收货人，收货地址***/
+        function select_address(address_id){
         	$.ajax({     
-        	    url:'user.php?act=act_edit_address',     
+        	    url:'flow.php?step=select_consignee',     
         	    type:'post',  
         	    dataType:'json', 
         	    data:$("#address_form_"+address_id).serialize(),     
@@ -1240,7 +1139,7 @@
         				$(".ps-zf .form").show();
         				
         				//设置选中的地址
-        				$("#address_id").val(data.content.address_id);
+        				//$("#address_id").val(data.content.address_id);
         				
         				//设置显示值
         				$("#consignee").text(data.content.consignee);
@@ -1271,7 +1170,8 @@
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
-        		    	$("#row_address_"+address_id).remove();
+        		    	//$("#row_address_"+address_id).remove();
+        		    	refresh_address_list();
         		    }else{
         		    	if(data!=null){
         		    		alert(data.message);
@@ -1283,6 +1183,96 @@
         	    }  
         	}); 
         }
+        
+        
+        /***设置默认货人信息***/
+        function default_consignee(address_id){
+        	$.ajax({     
+        	    url:'user.php?act=default_consignee',     
+        	    type:'post',  
+        	    dataType:'json', 
+        	    data:{"id":address_id,'is_ajax':'1'},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        		    if(data.status==1){
+        		    	//$("#row_address_"+address_id).remove();
+        		    	refresh_address_list();
+        		    }else{
+        		    	if(data!=null){
+        		    		alert(data.message);
+        		    	}else{
+        		    		alert(data);
+        		    	}
+        		    	
+        		    }
+        	    }  
+        	}); 
+        }
+        
+        /**重新加载地址列表****/
+        function refresh_address_list(){
+        	$.ajax({     
+        	    url:'flow.php?step=address_list',     
+        	    type:'post',  
+        	    dataType:'html', 
+        	    data:{},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        		    $("#order_address_list").html(data);
+        	    }  
+        	}); 
+        }
+        
+        
+        /**改变配送方式和支付方式****/
+        function select_shipping_payment(){
+        	var shipping_id = $("input[name='shipping']:checked").val();
+        	var pay_id = $("input[name='payment']:checked").val();
+        	console.debug(shipping_id);
+        	console.debug(pay_id);
+        	
+        	$.ajax({     
+        		url:'flow.php?step=select_shipping_payment',     
+        	    type:'post',  
+        	    dataType:'json', 
+        	    data:{"shipping_id":shipping_id,'pay_id':pay_id},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        		    if(data.status==1){
+        		    	//$("#row_address_"+address_id).remove();
+        		    	
+        		    	$(".ps-zf .form").hide();
+        		    	$(".ps-zf .info").show();
+        				$(".xg2").show();
+        				$(".ps-zf").removeClass("c-cur-bor");
+        		    	
+        				
+        				
+        				$("#txt_shipping_name").text($("#shipping_name_"+shipping_id).val());
+        				$("#txt_payment_name").text($("#payment_name_"+pay_id).val());
+        		    	
+        		    }else{
+        		    	if(data!=null){
+        		    		alert(data.message);
+        		    	}else{
+        		    		alert(data);
+        		    	}
+        		    	
+        		    }
+        	    }  
+        	}); 
+        }
+        
+        
 		
 	   	
 		function add_num(f, rec_id)
@@ -1460,11 +1450,7 @@
 	    
 	   				<span class="r">
 	   					<form action="flow.php" method="post" name="theForm"> 
-					 		<input type="hidden" name="address_id" value="{$consignee.address_id}" id="address_id"/>
-					 		 
 					 		<input type="hidden" name="step" value="done"/>
-					 		
-					 		
 					 		<input type="submit" class="btn" value="提交订单">
 					    </form>
 						

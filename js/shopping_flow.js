@@ -1349,7 +1349,7 @@ function orderSelectedResponse(result)
 
     alert(result.error);
 
-    location.href = './';
+    //location.href = './';
 
   }
 

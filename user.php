@@ -1392,6 +1392,7 @@ elseif ($action == 'address_list')
     $smarty->assign('name_of_region',   array($_CFG['name_of_region_1'], $_CFG['name_of_region_2'], $_CFG['name_of_region_3'], $_CFG['name_of_region_4']));
 
     $smarty->display('user_transaction.dwt');
+    
 }
 
 /* 添加/编辑收货地址的处理 */
@@ -1477,7 +1478,7 @@ elseif ($action == 'default_consignee')
 
 	$is_ajax = isset($_POST['is_ajax']) ? intval($_POST['is_ajax']) : 0;
 	
-	$consignee_id = intval($_GET['id']);
+	$consignee_id = intval($_REQUEST['id']);
 
 	if($is_ajax==1){
 		if (default_consignee($consignee_id)){

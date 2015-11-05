@@ -730,7 +730,7 @@
 					</ul>
 				</div>
 			</div>
-	  </div>
+	   </div>
 	  
     <div class="c"></div>
 	<div id="bd">
@@ -802,13 +802,14 @@
 		       	 <!-- #BeginLibraryItem "/Library/order_address_list.lbi" --><!-- #EndLibraryItem -->
 		       	 </div>
 		       	 
-		</div>
+			</div>
 	      <!--收货人地址结束-->
 	      
 	      
 		<!--修改代码 by pgge  end -->
       </div>
-     
+     	
+     	<form action="flow.php" method="post" name="theForm" onsubmit="return checkOrder();"> 
 		<div class="h15"></div>
 			<h3 class="c-tit3">配送及支付方式 <a class="xg2" href="javascript:void(0);">修改</a></h3>
             <div class="ps-zf">
@@ -864,46 +865,48 @@
 					</ul>
 					
 					
-						<div class="h"></div>
-						<h4 class="c-tit4">支付方式</h4>
-						<ul class="ul-radio">
-						    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
-						    <div >
-						    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
-						    	<th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
-								<tr><td colspan=6 height="15">&nbsp;</td></tr>
-						            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
-						            <!-- 循环支付方式，不包含微信支付 -->
-						            {if $payment.pay_id != 18}
-						            <tr>
-							    	<td width="10%" height="25">&nbsp;</td>
-						              <td valign="top" height=25 width="27%">
-						              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
-						              		{$payment.pay_name}
-						              		
-						              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>
-						              </td>              
-						              <td valign="top" >{$payment.pay_desc}</td>
-						            </tr>
-						            {/if}
-						            <!-- {/foreach} 循环支付方式 -->
-						          </table>
-						    </div>
-						    <!--{else}-->
-						        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
-						    <!--{/if}-->
-						</ul>
-						<div class="h"></div>
-						<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
-						
-					</div>
-					<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+					<div class="h"></div>
+					<h4 class="c-tit4">支付方式</h4>
+					<ul class="ul-radio">
+					    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+					    <div >
+					    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
+					    	<th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
+							<tr><td colspan=6 height="15">&nbsp;</td></tr>
+					            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
+					            <!-- 循环支付方式，不包含微信支付 -->
+					            {if $payment.pay_id != 18}
+					            <tr>
+						    	<td width="10%" height="25">&nbsp;</td>
+					              <td valign="top" height=25 width="27%">
+					              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
+					              		{$payment.pay_name}
+					              		
+					              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>
+					              </td>              
+					              <td valign="top" >{$payment.pay_desc}</td>
+					            </tr>
+					            {/if}
+					            <!-- {/foreach} 循环支付方式 -->
+					          </table>
+					    </div>
+					    <!--{else}-->
+					        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
+					    <!--{/if}-->
+					</ul>
+					<div class="h"></div>
+					<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
+					
 				</div>
+				
+				
+				<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+		</div>
+	 
 	            
 	  <!-- 商品信息start -->          
 	  <div class="h15"></div>
 	  <h3 class="c-tit3">商品信息</h3>
-		<input type="hidden" name="step" value="checkout"/>
         <table class="c-table1 c-table2">
             <tr>
               <th class="tl" width="110"></th>	
@@ -991,71 +994,122 @@
             <!-- {/if} -->
           </table>
 
-	  <!-- 商品信息end -->          
+	  <!-- 商品信息end -->    
 	  
-	  <!-- 结算信息start -->        
-	            <div class="h15"></div>
-				<h3 class="c-tit3">结算信息</h3>
-				<div class="h"></div>
-				<div class="jsxx">
+	  <!-- 订单备注 start-->
+	  <div class="h15"></div>
+	  <h3 class="c-tit3">订单备注</h3>
+	  <div class="postscript">
+      		<input name="postscript" type="text" value="" size="90" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"	/>	
+	  </div>     
+	  <!-- 订单备注end -->
+	  
+	  
+	  <!-- 发票信息start -->
+	  <div class="h15"></div>
+	  <h3 class="c-tit3">发票信息</h3>
+	  <div class="inv">
+       <p>
+       	<strong style="display:none;">{$lang.invoice}:</strong>
+           <input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
+         
+           <!-- {if $inv_type_list} -->
+           &nbsp;{$lang.invoice}:&nbsp;{$lang.invoice_type}
+           <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
+           {html_options options=$inv_type_list selected=$order.inv_type}</select>
+           <!-- {/if} -->
+           {$lang.invoice_title}
+           <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
+           
+         	<!-- 
+         	{$lang.invoice_content}
+         	 -->
+         	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;display: none;">
+           {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
+           </select>
+        </p>
+	  </div>     
+	  <!-- 发票信息end -->      
+	  
+	  
+	    <!-- 结算信息start -->   
+        <div class="h15"></div>
+		<h3 class="c-tit3">结算信息</h3>
+		<div class="h"></div>
+		<div class="jsxx">
+		   <p>本次订单可使用积分：<em>{$order_max_integral}{$points_name}</em>，使用红包：<em>￥{$order_max_bonus|default:0}</em></p>
+			<!-- {if $allow_use_integral} 是否使用积分 -->
+			<div class="jf">
+				<span class="show-btn">使用积分</span>
+				<p>
+					您有积分<span>{$your_integral|default:0} {$points_name}</span>，本次可用<span>{$order_max_integral}{$points_name}</span>　
+					使用	<input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />积分　
+					<span id="ECS_INTEGRAL_NOTICE" class="notice"></span>
+				</p>
+			</div>
+			 <!-- {/if} 是否使用积分 -->
+			 
+			 <!-- {if $allow_use_bonus} 是否使用红包 -->
+			<div class="hb">
+				<span class="show-btn">使用红包</span>
 				
-				<!-- 最终付款结算 -->
-				<!-- <p>本次订单可使用积分：<em>1000分</em>，使用红包：<em>￥</em></p>
-					<div class="jf">
-						<span class="show-btn">使用积分</span>
-						<p>您有积分<span>1000分</span>，本次可用<span>100分</span>　使用<input type="text" class="inp"> 积分　<a href="">使用</a></p>
-					</div>
-					<div class="hb">
-						<span class="show-btn">使用红包</span>
-						<p>您有红包<span>￥10.00</span>，本次可用<span>￥5.00</span>　使用<input type="text" class="inp"> 红包　<a href="">使用</a></p>
-					</div>
-					<p class="tr he">商品总计：￥2000.00 + 运费：￥10.00 - 积分：100分 - 红包： ￥5.00</p>
-					
-				<p> -->
-				
-					 <!-- {if $allow_use_bonus} 是否使用红包 -->
-	                  <!-- {foreach from=$bonus_list item=bonus} -->
-	                  <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus}<span id="bonus_surplus">{$order_max_bonus}</span>
-	                  <!-- {/foreach} -->
-	                 
-	                  <br>
-					{foreach from=$spec_bonus_list item=spec_bonus}
-					<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
-					{/foreach}
-	                 <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
-	                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" />              
-	            <!-- {/if} 是否使用红包 -->
-	    	</p>
-	    	
-			<!-- #BeginLibraryItem "/Library/order_total_flow.lbi" --><!-- #EndLibraryItem -->	
-			<div id="ECS_ORDERTOTAL" >
-			<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
-			</div>	
-	
-		<script>
-		$(function(){
-			/***保存收货地址**/
-			$(".shou-info .btn").click(function(){
-				/* $(".shou-info").removeClass("c-cur-bor");
-				$(".shou-info .address_list").hide();
-				$(".shou-info .info").show();
-				$(".ps-zf").addClass("c-cur-bor");
-				$(".ps-zf .tishi").hide();
-				$(".xg1").show();
-				$(".ps-zf .form").show(); */
-			});
+				<p>
+				<!-- 您有红包<span>￥10.00</span>，本次可用<span>￥{$order_max_bonus|default:0}</span>　 -->
+				<!-- {foreach from=$bonus_list item=bonus} -->
+                 <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus|default:0}<span id="bonus_surplus">{$order_max_bonus|default:0}</span>
+               	<!-- {/foreach} -->
+                 
+                 <br/>
+                 
+				{foreach from=$spec_bonus_list item=spec_bonus}
+				<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
+				{/foreach}
 			
-			/***保存配送以及支付方式**/
-			$(".ps-zf .btn").click(function(){
-				/* $(this).parents(".form").hide();
-				$(this).parents(".form").next(".info").show(); */
-				
-				/* $(".ps-zf .form").hide();
-		    	$(".ps-zf .info").show();
-		    	
-				$(".xg2").show();
-				$(".ps-zf").removeClass("c-cur-bor"); */
-			});
+                <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
+                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" /> 
+                
+				<!-- {/if} 是否使用红包 -->
+				</p>
+			</div>
+		<p> 
+		
+   	   </p>
+   	   
+ 	   	<!-- {if $allow_use_surplus} 是否使用余额start -->
+         <strong>{$lang.use_surplus}: </strong>
+          <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
+           {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
+        <!-- {/if} 是否使用余额end -->
+   		
+   		<!-- 订单付款汇总start -->
+		<div id="ECS_ORDERTOTAL" >
+		<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
+		</div>	
+		<!-- 订单付款汇总end -->
+           
+       </div>
+       <!-- 结算信息end -->
+	         
+        <!-- 订单提交start -->
+        <div class="h"></div>
+        <div class="c-jie1 c-jie2">	
+			<span class="r">
+			<input type="hidden" value="" id="address_id"/>
+	 		<input type="hidden" name="step" value="done"/>
+	 		<input type="submit" class="btn" value="提交订单"/>
+			</span>
+ 		</div> 
+ 		<!-- 订单提交end -->
+   			
+   		</form>  
+   			
+	     </div>
+	</div>
+	
+	 	<div class="h"></div>
+	 	
+	 	<script type="text/javascript">
+		$(function(){
 			
 			/***点击修改收货地址链接***/
 			$(".xg1").click(function(){
@@ -1139,7 +1193,7 @@
         				$(".ps-zf .form").show();
         				
         				//设置选中的地址
-        				//$("#address_id").val(data.content.address_id);
+        				$("#address_id").val(data.content.address_id);
         				
         				//设置显示值
         				$("#consignee").text(data.content.consignee);
@@ -1255,8 +1309,6 @@
         				$(".xg2").show();
         				$(".ps-zf").removeClass("c-cur-bor");
         		    	
-        				
-        				
         				$("#txt_shipping_name").text($("#shipping_name_"+shipping_id).val());
         				$("#txt_payment_name").text($("#payment_name_"+pay_id).val());
         		    	
@@ -1272,9 +1324,6 @@
         	}); 
         }
         
-        
-		
-	   	
 		function add_num(f, rec_id)
 		 {
 			document.getElementById("goods_number_"+rec_id+"").value++;
@@ -1311,62 +1360,63 @@
 		
 		function changePriceResponse(result)
 		{
-		if(result.error == 1)
-		{
-			alert(result.content);
-			document.getElementById("goods_number_"+result.rec_id+"").value =result.number;
-			document.getElementById("hidden_"+result.rec_id+"").value =result.number;
-		}
-		else
-		{
-			document.getElementById("hidden_"+result.rec_id+"").value =result.number;
-			document.getElementById('subtotal_'+result.rec_id).innerHTML = result.subtotal;//商品总价
-			document.getElementById('cart_amount_desc').innerHTML = result.cart_amount_desc;//购物车商品总价说明
-			document.getElementById('market_amount_desc').innerHTML = result.market_amount_desc;//购物车商品总市价说明
-			show_div_text = "恭喜您！ 商品数量修改成功！ ";
-			showdiv(document.getElementById("goods_number_"+result.rec_id));
-		}
+			if(result.error == 1)
+			{
+				alert(result.content);
+				document.getElementById("goods_number_"+result.rec_id+"").value =result.number;
+				document.getElementById("hidden_"+result.rec_id+"").value =result.number;
+			}
+			else
+			{
+				document.getElementById("hidden_"+result.rec_id+"").value =result.number;
+				document.getElementById('subtotal_'+result.rec_id).innerHTML = result.subtotal;//商品总价
+				document.getElementById('cart_amount_desc').innerHTML = result.cart_amount_desc;//购物车商品总价说明
+				document.getElementById('market_amount_desc').innerHTML = result.market_amount_desc;//购物车商品总市价说明
+				show_div_text = "恭喜您！ 商品数量修改成功！ ";
+				showdiv(document.getElementById("goods_number_"+result.rec_id));
+			}
 		
 		}
 		
 		function selectBonus(bonus_id){
-		//取消选中，添加参数为cancel
-		var cancel='';
-		if(!$('#bonus_'+bonus_id).attr('checked')){
-			cancel='yes';
-		}
-		var order_max_bonus=<!--{if $order_max_bonus} -->{$order_max_bonus}<!--{else}-->0<!--{/if}-->;
-		//可用红包金额为零，不允许使用红包
-		if(order_max_bonus==0){
-			alert('抱歉，以上商品不能使用此红包！');return false;
-		}
-		var bonus_surplus=$('#bonus_surplus').html();
-		//可用红包金额为零，不允许重复使用红包(不为取消的时候)
-		if(bonus_surplus==0 && cancel==''){
-			//bonus_surplus=15;
-			alert('抱歉，以上商品不能多次使用红包！');return false;
-		}
+			//取消选中，添加参数为cancel
+			var cancel='';
+			if(!$('#bonus_'+bonus_id).attr('checked')){
+				cancel='yes';
+			}
+			var order_max_bonus=<!--{if $order_max_bonus} -->{$order_max_bonus}<!--{else}-->0<!--{/if}-->;
+			//可用红包金额为零，不允许使用红包
+			if(order_max_bonus==0){
+				alert('抱歉，以上商品不能使用此红包！');return false;
+			}
+			var bonus_surplus=$('#bonus_surplus').html();
+			//可用红包金额为零，不允许重复使用红包(不为取消的时候)
+			if(bonus_surplus==0 && cancel==''){
+				//bonus_surplus=15;
+				alert('抱歉，以上商品不能多次使用红包！');return false;
+			}
 		
-		$.ajax({
-			url:'/flow.php?step=validate_bonus_ids',
-			type:'get',
-			data:{'bonus_id':bonus_id,'bonus_surplus':bonus_surplus,'cancel':cancel},
-			dataType:'json',
-			success:function(rs){
-				if(rs=='bonus_amount_beyond'){
-					if(!window.confirm("本红包金额高于可用金额，只能使用一次，不找零哦！是否继续使用？")){
-						$('#bonus_'+bonus_id).removeAttr("checked");
-					}else{
-						sure(bonus_id);
+			$.ajax({
+				url:'/flow.php?step=validate_bonus_ids',
+				type:'get',
+				data:{'bonus_id':bonus_id,'bonus_surplus':bonus_surplus,'cancel':cancel},
+				dataType:'json',
+				success:function(rs){
+					if(rs=='bonus_amount_beyond'){
+						if(!window.confirm("本红包金额高于可用金额，只能使用一次，不找零哦！是否继续使用？")){
+							$('#bonus_'+bonus_id).removeAttr("checked");
+						}else{
+							sure(bonus_id);
+						}
+					}
+					if(rs.success=='yes'){
+						$('#bonus_surplus').html(rs.bonus_surplus);
+						document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
 					}
 				}
-				if(rs.success=='yes'){
-					$('#bonus_surplus').html(rs.bonus_surplus);
-					document.getElementById("ECS_ORDERTOTAL").innerHTML=rs.content;
-				}
-			}
-		});
+			});
 		}
+		
 		function sure(bonus_id){
 			$.ajax({
 				url:'/flow.php?step=validate_bonus_ids',
@@ -1381,6 +1431,7 @@
 				}
 			});
 		}
+		
 		function selectSpecBonus(bonus_id){
 			//取消选中，添加参数为cancel
 			var cancel='';
@@ -1389,6 +1440,7 @@
 			}
 			specAjax(bonus_id,cancel);
 		}
+		
 		function specAjax(bonus_id,cancel){
 			$.ajax({
 				url:'/flow.php?step=validate_bonus_ids',
@@ -1408,98 +1460,29 @@
 			});
 		}
 		
-		
-		
-		
-		
-		
-		
+		/***订单提交验证***/
+		function checkOrder(){
+			var address_id = $("#address_id").val();
+			if(address_id==null || address_id==''){
+				alert('请选择收货人信息。');
+				return false;
+			}
+			
+			var shipping_id = $("input[name='shipping']:checked").val();
+			if(shipping_id==null){
+				alert('请选择配送方式。');
+				return false;
+			}
+			
+        	var pay_id = $("input[name='payment']:checked").val();
+        	if(pay_id==null){
+				alert('请选择支付方式。');
+				return false;
+			}
+        	
+			return true;
+		}
 		</script>
-	    	
-	   <p>
-	    
-	      		<!-- {if $allow_use_surplus} 是否使用余额 -->
-	            <strong>{$lang.use_surplus}: </strong>
-	             <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
-	              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
-	            <!-- {/if} 是否使用余额 -->
-	            <!-- {if $allow_use_integral} 是否使用积分 -->
-	            <p><input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
-	              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></p>
-	           
-	            <!-- {/if} 是否使用积分 -->
-	            <!-- {if $inv_content_list} 能否开发票 -->
-	            <p><strong style="display:none;">{$lang.invoice}:</strong>
-	                <input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
-	              
-	                <!-- {if $inv_type_list} -->
-	                &nbsp;{$lang.invoice}:&nbsp;{$lang.invoice_type}
-	                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
-	                {html_options options=$inv_type_list selected=$order.inv_type}</select>
-	                <!-- {/if} -->
-	                {$lang.invoice_title}
-	                <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
-	                {$lang.invoice_content}
-	              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
-	                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
-	                </select></p>
-	            <!-- {/if} -->
-	        </div>
-	            
-	    			<div class="c-jie1 c-jie2">
-	    
-	   				<span class="r">
-	   					<form action="flow.php" method="post" name="theForm"> 
-					 		<input type="hidden" name="step" value="done"/>
-					 		<input type="submit" class="btn" value="提交订单">
-					    </form>
-						
-					</span>
-	    			</div>
-	              
-	              
-	            <table style="display:none;" width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
-	      		<!-- {if $allow_use_surplus} 是否使用余额 -->
-	            <tr>
-	              <td width="20%" bgcolor="#ffffff"><strong>{$lang.use_surplus}: </strong></td>
-	              <td bgcolor="#ffffff"><input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
-	              {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></td>
-	            </tr>
-	            <!-- {/if} 是否使用余额 -->
-	            <!-- {if $allow_use_integral} 是否使用积分 -->
-	            <tr>
-	              <td bgcolor="#ffffff"><strong>{$lang.use_integral}</strong></td>
-	              <td bgcolor="#ffffff"><input name="integral" type="text" class="input" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />
-	              {$lang.can_use_integral}:{$your_integral|default:0} {$points_name}，{$lang.noworder_can_integral}{$order_max_integral}  {$points_name}. <span id="ECS_INTEGRAL_NOTICE" class="notice"></span></td>
-	            </tr>
-	            <!-- {/if} 是否使用积分 -->
-	            <!-- {if $inv_content_list} 能否开发票 -->
-	            <tr>
-	              <td bgcolor="#ffffff"><strong>{$lang.invoice}:</strong>
-	                <input name="need_inv" type="checkbox"  class="input" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
-	              </td>
-	              <td bgcolor="#ffffff">
-	                <!-- {if $inv_type_list} -->
-	                {$lang.invoice_type}
-	                <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
-	                {html_options options=$inv_type_list selected=$order.inv_type}</select>
-	                <!-- {/if} -->
-	                {$lang.invoice_title}
-	                <input name="inv_payee" type="text"  class="input" id="ECS_INVPAYEE" size="20" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
-	                {$lang.invoice_content}
-	              	<select name="inv_content" id="ECS_INVCONTENT" {if $order.need_inv neq 1}disabled="true"{/if}  onchange="changeNeedInv()" style="border:1px solid #ccc;">
-	                {html_options values=$inv_content_list output=$inv_content_list selected=$order.inv_content}
-	                </select></td>
-	            </tr>
-	            <!-- {/if} -->
-	          </table>
-	          
-	          
-				
-	     </div>  
-	     </div>
-	
-	 	<div class="h"></div>
 	 	
         <!-- {/if} -->
         <!-- #订单确认界面结束 -->

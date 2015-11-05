@@ -219,6 +219,8 @@
 .ul-radio li.on{border: 1px solid #fcd7a1;background-color: #fffeee;}
 .ps-zf .btn{margin-left: 20px;width: 200px;height: 30px;background-color: #f08300;color: #fff;font-size: 18px;font-weight: bold;font-family:"微软雅黑","Microsoft Yahei";border: 0;cursor: pointer;}
 .ps-zf  p.info{padding: 15px 0 15px 50px;}
+.inv{border: 1px solid #dcdddd;padding:10px 50px 10px 80px;color: #f08300;}
+.postscript{border: 1px solid #dcdddd;padding:10px 50px 10px 80px;color: #f08300;}
 
 /*详情页*/
 #mycarousel li{margin-left: 9px; }

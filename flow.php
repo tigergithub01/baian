@@ -468,6 +468,10 @@ elseif ($_REQUEST['step'] == 'checkout')
         ecs_header("Location: flow.php?step=login\n");
         exit;
     }
+    
+    
+   
+    
 
     
 
@@ -507,21 +511,22 @@ elseif ($_REQUEST['step'] == 'checkout')
     $smarty->assign('address',          $address_id);
     $smarty->assign('city_list',        $city_list);
     $smarty->assign('district_list',    $district_list);
-    
+    $smarty->assign('selected_address',  $address_id);
     
     
     /*获取收货人信息，先获取session内的收货人信息，如果没有则获取默认收货人信息*/
     $consignee = get_consignee($_SESSION['user_id']);
     /* 检查收货人信息是否完整 */
-  //  if (!check_consignee_info($consignee, $flow_type))
-  //  {
-        /* 如果不完整则转向到收货人信息填写界面 */
-   //     ecs_header("Location: flow.php?step=consignee\n");
-   //     exit;
-  //  }
-
+    //  if (!check_consignee_info($consignee, $flow_type))
+    //  {
+    /* 如果不完整则转向到收货人信息填写界面 */
+    //     ecs_header("Location: flow.php?step=consignee\n");
+    //     exit;
+    //  }
+    
     $_SESSION['flow_consignee'] = $consignee;
     $smarty->assign('consignee', $consignee);
+    
 
     /* 对商品信息赋值 */
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
@@ -745,8 +750,10 @@ elseif ($_REQUEST['step'] == 'checkout')
         && $_SESSION['user_id'] > 0
         && $user_info['user_money'] > 0)
     {
-        // 能使用余额
-        $smarty->assign('allow_use_surplus', 1);
+        // 能使用余额,
+        //TODO：关闭使用余额功能，现在暂时不开放使用余额功能 tiger.guo 20151105
+        
+        $smarty->assign('allow_use_surplus', 0);
         $smarty->assign('your_surplus', $user_info['user_money']);
     }
 
@@ -812,6 +819,134 @@ elseif ($_REQUEST['step'] == 'checkout')
     /* 保存 session */
     $_SESSION['flow_order'] = $order;
 }
+/* 收货地址列表界面*/
+elseif ($_REQUEST['step'] == 'address_list')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
+	$smarty->assign('lang',  $_LANG);
+
+	/* 取得国家列表、商店所在国家、商店所在国家的省列表 */
+	$smarty->assign('country_list',       get_regions());
+	$smarty->assign('shop_province_list', get_regions(1, $_CFG['shop_country']));
+
+	/* 获得用户所有的收货人信息 */
+	$consignee_list = get_consignee_list($_SESSION['user_id']);
+
+	if (count($consignee_list) < 5 && $_SESSION['user_id'] > 0)
+	{
+		/* 如果用户收货人信息的总数小于5 则增加一个新的收货人信息 */
+		$consignee_list[] = array('country' => $_CFG['shop_country'], 'email' => isset($_SESSION['email']) ? $_SESSION['email'] : '');
+	}
+
+	$smarty->assign('consignee_list', $consignee_list);
+
+	//取得国家列表，如果有收货人列表，取得省市区列表
+	foreach ($consignee_list AS $region_id => $consignee)
+	{
+		$consignee['country']  = isset($consignee['country'])  ? intval($consignee['country'])  : 0;
+		$consignee['province'] = isset($consignee['province']) ? intval($consignee['province']) : 0;
+		$consignee['city']     = isset($consignee['city'])     ? intval($consignee['city'])     : 0;
+
+		$province_list[$region_id] = get_regions(1, $consignee['country']);
+		$city_list[$region_id]     = get_regions(2, $consignee['province']);
+		$district_list[$region_id] = get_regions(3, $consignee['city']);
+	}
+
+	/* 获取默认收货ID */
+	$address_id  = $db->getOne("SELECT address_id FROM " .$ecs->table('users'). " WHERE user_id='".$_SESSION['user_id']."'");
+	
+	/*订单确认选中的地址*/
+	$consignee = get_consignee($_SESSION['user_id']);
+	if(isset($consignee) && isset($consignee['address_id'])){
+		$selected_address = $consignee['address_id'];
+	}
+
+	//赋值于模板
+	$smarty->assign('real_goods_count', 1);
+	$smarty->assign('shop_country',     $_CFG['shop_country']);
+	$smarty->assign('shop_province',    get_regions(1, $_CFG['shop_country']));
+	$smarty->assign('province_list',    $province_list);
+	$smarty->assign('address',          $address_id);
+	$smarty->assign('selected_address',          $selected_address);
+	$smarty->assign('city_list',        $city_list);
+	$smarty->assign('district_list',    $district_list);
+	$smarty->assign('currency_format',  $_CFG['currency_format']);
+	$smarty->assign('integral_scale',   $_CFG['integral_scale']);
+	$smarty->assign('name_of_region',   array($_CFG['name_of_region_1'], $_CFG['name_of_region_2'], $_CFG['name_of_region_3'], $_CFG['name_of_region_4']));
+
+	$smarty->display('library/order_address_list.lbi');
+	exit;
+}
+elseif ($_REQUEST['step'] == 'select_consignee')
+{
+	/*------------------------------------------------------ */
+	//-- 选择配送地址
+	/*------------------------------------------------------ */
+	
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
+	$smarty->assign('lang', $_LANG);
+	
+	$address = array(
+			'user_id'    => $_SESSION['user_id'],
+			'address_id' => intval($_POST['address_id']),
+			'default'    => isset($_POST['default'])   ? intval($_POST['default'])  : 0,
+			'country'    => isset($_POST['country'])   ? intval($_POST['country'])  : 0,
+			'province'   => isset($_POST['province'])  ? intval($_POST['province']) : 0,
+			'city'       => isset($_POST['city'])      ? intval($_POST['city'])     : 0,
+			'district'   => isset($_POST['district'])  ? intval($_POST['district']) : 0,
+			'address'    => isset($_POST['address'])   ? compile_str(trim($_POST['address']))    : '',
+			'consignee'  => isset($_POST['consignee']) ? compile_str(trim($_POST['consignee']))  : '',
+			'email'      => isset($_POST['email'])     ? compile_str(trim($_POST['email']))      : '',
+			'tel'        => isset($_POST['tel'])       ? compile_str(make_semiangle(trim($_POST['tel']))) : '',
+			'mobile'     => isset($_POST['mobile'])    ? compile_str(make_semiangle(trim($_POST['mobile']))) : '',
+			'best_time'  => isset($_POST['best_time']) ? compile_str(trim($_POST['best_time']))  : '',
+			'sign_building' => isset($_POST['sign_building']) ? compile_str(trim($_POST['sign_building'])) : '',
+			'zipcode'       => isset($_POST['zipcode'])       ? compile_str(make_semiangle(trim($_POST['zipcode']))) : '',
+	);
+	
+	
+	$address_id = update_address($address);
+	if ($address_id){
+		$consignee = get_address($address_id);
+		$_SESSION['flow_consignee'] = stripslashes_deep($consignee);
+		lib_main_make_json_result('收货地址修改成功。',get_address($address_id));
+	}else{
+		lib_main_make_json_error('收货地址修改失败！');
+	}
+		exit;	
+}
+elseif ($_REQUEST['step'] == 'select_shipping_payment')
+{
+	/*------------------------------------------------------ */
+	//-- 改变配送方式和支付方式
+	/*------------------------------------------------------ */
+	
+	$shipping_id = isset($_REQUEST['shipping_id'])   ? $_REQUEST['shipping_id'] : null;
+	$pay_id = isset($_REQUEST['pay_id'])   ? $_REQUEST['pay_id'] : null;
+	
+	
+	if(!isset($shipping_id)){
+		lib_main_make_json_error('配送方式设置失败！');
+		exit;
+	}
+	
+	if(!isset($pay_id)){
+		lib_main_make_json_error('支付方式设置失败！');
+		exit;
+	}
+	
+	//TODO:有其它的业务在这里完成 added by tiger.guo 20151105
+	
+	/* $order = isset($_SESSION['flow_order']) ? $_SESSION['flow_order'] : array();
+	$order['shipping_id'] = intval($shipping_id);
+	$order['pay_id'] = intval($pay_id);
+	$_SESSION['flow_order'] = $order; */
+	
+	lib_main_make_json_result('收配送方式和支付方式设置成功。');
+}
+
 elseif ($_REQUEST['step'] == 'select_shipping')
 {
     /*------------------------------------------------------ */
@@ -828,7 +963,7 @@ elseif ($_REQUEST['step'] == 'select_shipping')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -889,7 +1024,7 @@ elseif ($_REQUEST['step'] == 'select_insure')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -945,7 +1080,7 @@ elseif ($_REQUEST['step'] == 'select_payment')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -1004,7 +1139,7 @@ elseif ($_REQUEST['step'] == 'order_pay')
 	$consignee = get_consignee($_SESSION['user_id']);
 
 	/* 对商品信息赋值 */
-	$cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+	$cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
 	if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
 	{
@@ -1062,7 +1197,7 @@ elseif ($_REQUEST['step'] == 'select_pack')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -1118,7 +1253,7 @@ elseif ($_REQUEST['step'] == 'select_card')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -1183,7 +1318,7 @@ elseif ($_REQUEST['step'] == 'change_surplus')
         $consignee = get_consignee($_SESSION['user_id']);
 
         /* 对商品信息赋值 */
-        $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+        $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
         if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
         {
@@ -1247,7 +1382,7 @@ elseif ($_REQUEST['step'] == 'change_integral')
         $consignee = get_consignee($_SESSION['user_id']);
 
         /* 对商品信息赋值 */
-        $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+        $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
         if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
         {
@@ -1289,7 +1424,7 @@ elseif ($_REQUEST['step'] == 'change_bonus')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -1350,7 +1485,7 @@ elseif ($_REQUEST['step'] == 'change_needinv')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {
@@ -1455,9 +1590,9 @@ elseif ($_REQUEST['step'] == 'done')
     
     //TODO:
     //$_SESSION['flow_consignee']
-    $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : null;
+   /*  $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : null;
     $consignee = get_address($address_id);
-    $_SESSION['flow_consignee'] = stripslashes_deep($consignee);
+    $_SESSION['flow_consignee'] = stripslashes_deep($consignee); */
     
     
     
@@ -1469,7 +1604,7 @@ elseif ($_REQUEST['step'] == 'done')
     /* 检查购物车中是否有商品 */
     $sql = "SELECT COUNT(*) FROM " . $ecs->table('cart') .
         " WHERE session_id = '" . SESS_ID . "' " .
-        "AND parent_id = 0 AND is_gift = 0 AND rec_type = '$flow_type'";
+        "AND parent_id = 0 AND is_gift = 0 AND is_checked = 1 AND rec_type = '$flow_type'";
     if ($db->getOne($sql) == 0)
     {
         show_message($_LANG['no_goods_in_cart'], '', '', 'warning');
@@ -1517,7 +1652,9 @@ elseif ($_REQUEST['step'] == 'done')
     $_POST['inv_payee'] = isset($_POST['inv_payee']) ? compile_str($_POST['inv_payee']) : '';
     $_POST['inv_content'] = isset($_POST['inv_content']) ? compile_str($_POST['inv_content']) : '';
     $_POST['postscript'] = isset($_POST['postscript']) ? compile_str($_POST['postscript']) : '';
-
+	
+    //TODO:可以使用多个红包，bonus_id赋值待优化
+    //TODO:inv_type应该保存的是发票类型，如“普通发票”、“增值税发票”
     $order = array(
         'shipping_id'     => intval($_POST['shipping']),
         'pay_id'          => intval($_POST['payment']),
@@ -1613,7 +1750,7 @@ elseif ($_REQUEST['step'] == 'done')
     }
 
     /* 订单中的商品 */
-    $cart_goods = cart_goods($flow_type);
+    $cart_goods = cart_goods($flow_type,null,1);
 
     if (empty($cart_goods))
     {
@@ -1921,8 +2058,9 @@ elseif ($_REQUEST['step'] == 'done')
 
     }
 
-    /* 清空购物车 */
-    clear_cart($flow_type);
+    /* 清空购物车-清空购物车中选择的商品 */
+    clear_cart($flow_type,1);
+    
     /* 清除缓存，否则买了商品，但是前台页面读取缓存，商品数量不减少 */
     clear_all_files();
 
@@ -2113,7 +2251,7 @@ elseif ($_REQUEST['step'] == 'validate_bonus')
     $consignee = get_consignee($_SESSION['user_id']);
 
     /* 对商品信息赋值 */
-    $cart_goods = cart_goods($flow_type); // 取得商品列表，计算合计
+    $cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
 
     if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
     {

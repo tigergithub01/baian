@@ -1365,13 +1365,18 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
 }
 
 /**
- * 清空购物车
+ * 清空购物车中选中的商品
  * @param   int     $type   类型：默认普通商品
  */
-function clear_cart($type = CART_GENERAL_GOODS)
+function clear_cart($type = CART_GENERAL_GOODS,$is_checked)
 {
     $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' AND rec_type = '$type'";
+    
+    if(isset($is_checked)){
+    	$sql = $sql." AND is_checked = '$is_checked'";
+    }
+    
     $GLOBALS['db']->query($sql);
 }
 
@@ -1834,11 +1839,15 @@ function check_consignee_info($consignee, $flow_type)
     if (exist_real_goods(0, $flow_type))
     {
         /* 如果存在实体商品 */
-        $res = !empty($consignee['consignee']) &&
+        /* $res = !empty($consignee['consignee']) &&
             !empty($consignee['country']) &&
             !empty($consignee['email']) &&
-            !empty($consignee['tel']);
-
+            !empty($consignee['tel']); */
+		
+    	$res = !empty($consignee['consignee']) &&
+            (!empty($consignee['mobile']) ||
+            !empty($consignee['tel']));
+    	
         if ($res)
         {
             if (empty($consignee['province']))

@@ -1954,7 +1954,7 @@ elseif ($_REQUEST['step'] == 'done')
             " SELECT '$new_order_id', goods_id, goods_name, goods_sn, product_id, goods_number, market_price, ".
                 "goods_price, goods_attr, is_real, extension_code, parent_id, is_gift, goods_attr_id".
             " FROM " .$ecs->table('cart') .
-            " WHERE session_id = '".SESS_ID."' AND rec_type = '$flow_type'";
+            " WHERE session_id = '".SESS_ID."' AND rec_type = '$flow_type' AND is_checked=1";
     $db->query($sql);
     /* 修改拍卖活动状态 */
     if ($order['extension_code']=='auction')

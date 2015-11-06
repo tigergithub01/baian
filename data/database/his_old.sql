@@ -35,3 +35,9 @@ CREATE TABLE `ecs_goods_attr_sku_detail` (
 
 alter table ecs_users add last_sign_time int(10) COMMENT '最后一次签到时间';
 
+alter table ecs_goods add pinyin VARCHAR(60) COMMENT '商品拼音码' ; 
+
+alter table ecs_users add is_validated_phone tinyint(3) COMMENT '手机号码是否已经验证?1:是;0:否';
+
+alter table ecs_cart add is_checked tinyint(3) COMMENT '是否选中?1:是;0:否';
+

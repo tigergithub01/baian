@@ -39,9 +39,6 @@ http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb
 
 用户注册:
 
-
-
-
 2015/10/05 20:39:30 [error] 10538#0: 
 *1920834 upstream prematurely closed connection while reading response header from upstream, 
 client: 58.250.180.213, 
@@ -61,8 +58,6 @@ localhost:8086/goods-2078.html
 
 http://www.123121.com/goods-1299.html
 缺货登记
-
-
 
 www_68ecshop_com
 
@@ -95,11 +90,16 @@ http://www.php.net/
 http://localhost:8086/baadmin/user_msg.php?act=phpinfo
 /* 管理员登录后可在任何页面使用 act=phpinfo 显示 phpinfo() 信息 */
 
-订单信息中添加订单备注
+订单信息中添加订单备注 ->ok
 限时抢购价没有体现
 积分商城中商品展示时积分体现
 我的收藏的加入购物车要改为ajax形式
-添加到购物车时，如果有重复的商品应该增加数量，而不是添加重复商品。
+添加到购物车时，如果有重复的商品应该增加数量，而不是添加重复商品。 ->ok，数量没有叠加，现解决方案为如果商品已经存在，则不处理。
+
+http://localhost:8088/admin/goods.php?act=product_list&goods_id=32
+
+
+
 
 
 

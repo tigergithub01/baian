@@ -1,0 +1,135 @@
+<!-- $Id: goods_list.htm 16529 2009-08-12 05:38:57Z wangleisvn $ -->
+
+{if $full_page}
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+{insert_scripts files="validator.js"}
+<!-- 添加货品 -->
+<div class="list-div" style="margin-bottom: 5px; margin-top: 10px;" id="listDiv">
+
+{/if}
+
+<form  enctype="multipart/form-data" method="post" action="goods.php" name="addForm" id="addForm" >
+ <!-- 商品相册 -->
+        <table width="90%" id="gallery-table"  align="center">
+          <!-- 图片列表 -->
+          <tr>
+		      <th colspan="20" scope="col">货号：{$product.product_sn}</th>
+		    </tr>
+          <tr>
+            <td>
+              {foreach from=$img_list item=img key=i}
+              <div id="gallery_{$img.img_id}" style="float:left; text-align:center; border: 1px solid #DADADA; margin: 4px; padding:2px;">
+                <a href="javascript:;" onclick="if (confirm('{$lang.drop_img_confirm}')) dropImg('{$img.img_id}')">[-]</a><br />
+                <a href="goods.php?act=show_image&img_url={$img.img_url}" target="_blank">
+                <img src="../{if $img.thumb_url}{$img.thumb_url}{else}{$img.img_url}{/if}" {if $thumb_width neq 0}width="{$thumb_width}"{/if} {if $thumb_height neq 0}height="{$thumb_height}"{/if} border="0" />
+                </a><br />
+                <input type="text" value="{$img.img_desc|escape}" size="15" name="old_img_desc[{$img.img_id}]" />
+              </div>
+              {/foreach}
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+          <!--  -->
+		
+		  <!--批量上传相册_start By www.68ecshop.com-->
+		 <!--  <tr><td><input type="button" onclick="location.href='swfupload.php?goods_id={$goods.goods_id}' " value="批量上传商品相册" ></td></tr>
+		  <tr><td>&nbsp;</td></tr> -->
+		  <!--批量上传相册_end By www.68ecshop.com-->
+
+          <tr>
+            <td>
+              <a href="javascript:;" onclick="addImg(this)">[+]</a>
+              {$lang.img_desc} <input type="text" name="img_desc[]" size="20" />
+              {$lang.img_url} <input type="file" name="img_url[]" />
+              <input type="text" size="40" value="{$lang.img_file}" style="color:#aaa;" onfocus="if (this.value == '{$lang.img_file}'){this.value='http://';this.style.color='#000';}" name="img_file[]"/>
+            </td>
+          </tr>
+        </table>
+        
+        <div class="button-div">
+          <input type="hidden" name="product_id" value="{$product.product_id}" />
+          <input type="submit" value="{$lang.button_submit}" class="button" />
+          <input type="reset" value="{$lang.button_reset}" class="button" />
+        </div>
+        <input type="hidden" name="act" value="product_gallery_update" />
+</form>
+
+{if $full_page}
+
+</div>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+
+$(function(){
+	$(".store_sel").change(function(){
+		var store_id = $(this).val();
+		var product_id = $(this).attr("product_id");
+		$.ajax({     
+    	    url:'goods.php?act=edit_store_id',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'store_id':store_id,'product_id':product_id},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    		    if(data.error==0){
+    		    	
+    		    }else{
+    		    	alert(data.message);
+    		    }
+    	    }  
+    	}); 
+		
+	});
+});
+
+
+/**
+ * 新增一个图片
+ */
+function addImg(obj)
+{
+    var src  = obj.parentNode.parentNode;
+    var idx  = rowindex(src);
+    var tbl  = document.getElementById('gallery-table');
+    var row  = tbl.insertRow(idx + 1);
+    var cell = row.insertCell(-1);
+    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(addImg)(.*)(\[)(\+)/i, "$1removeImg$3$4-");
+}
+
+/**
+ * 删除图片上传
+ */
+function removeImg(obj)
+{
+    var row = rowindex(obj.parentNode.parentNode);
+    var tbl = document.getElementById('gallery-table');
+
+    tbl.deleteRow(row);
+}
+
+/**
+ * 删除图片
+ */
+function dropImg(imgId)
+{
+  Ajax.call('goods.php?is_ajax=1&act=drop_product_image', "img_id="+imgId, dropImgResponse, "GET", "JSON");
+}
+
+function dropImgResponse(result)
+{
+    if (result.error == 0)
+    {
+        document.getElementById('gallery_' + result.content).style.display = 'none';
+    }
+}
+
+</script>
+{include file="pagefooter.htm"}
+
+{/if}

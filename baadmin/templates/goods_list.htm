@@ -60,9 +60,9 @@
       <a href="javascript:;" onclick="listTable.remove({$goods.goods_id}, '{$lang.trash_goods_confirm}')" title="{$lang.trash}"><img src="images/icon_trash.gif" width="16" height="16" border="0" /></a>
       <a href="comment_collect.php?act=comment&goods_id={$goods.goods_id}" ><img src="images/comment_icon.png"  border="0"/></a>
 	{* 代码修改_start  By www.ecshop120.com 多城市多仓库 *}
-     <a href="goods.php?act=product_storeroom&goods_id={$goods.goods_id}" title="{$lang.item_list}"><img src="images/icon_docs.gif" width="16" height="16" border="0" /></a>
+     <!-- <a href="goods.php?act=product_storeroom&goods_id={$goods.goods_id}" title="{$lang.item_list}"><img src="images/icon_docs.gif" width="16" height="16" border="0" /></a> -->
 	 {* 代码修改_end  By www.ecshop120.com *}
-     <!--  {if $specifications[$goods.goods_type] neq ''}<a href="goods.php?act=product_list&goods_id={$goods.goods_id}" title="{$lang.item_list}"><img src="images/icon_docs.gif" width="16" height="16" border="0" /></a>{else}<img src="images/empty.gif" width="16" height="16" border="0" />{/if}  -->
+      {if $specifications[$goods.goods_type] neq ''}<a href="goods.php?act=product_list&goods_id={$goods.goods_id}" title="{$lang.item_list}"><img src="images/icon_docs.gif" width="16" height="16" border="0" /></a>{else}<img src="images/empty.gif" width="16" height="16" border="0" />{/if} 
       {if $add_handler}
         |
         {foreach from=$add_handler item=handler}

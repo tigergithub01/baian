@@ -166,9 +166,9 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
         $GLOBALS['smarty']->caching = $need_cache;
         $GLOBALS['smarty']->force_compile = $need_compile;
 		$GLOBALS['smarty']->assign('article_goods_faq',get_article_info(136)); 
-//echo "<pre>";var_dump(get_article_info(136)); echo"</pre>";
-$this->assign('hot_1',get_hot_cat_goods('promote',12)); //1：对应分类ID ;20：显示数量
-$this->assign('tomorrow',date("Y/m/d",time()+24*3600));
+		//echo "<pre>";var_dump(get_article_info(136)); echo"</pre>";
+		$this->assign('hot_1',get_hot_cat_goods('promote',12)); //1：对应分类ID ;20：显示数量
+		$this->assign('tomorrow',date("Y/m/d",time()+24*3600));
  
 		/* 同类品牌*/
 		 /* $cat_brands = get_cat_brands($this->_var['goods']['cat_id']);
@@ -243,7 +243,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		}
 		/* 代码添加 end  by pgge */
 		$smarty->assign('article',get_article(136));          //获取文章的内容页面
-$smarty->assign('article1',get_article(135));         //获取文章的内容页面
+		$smarty->assign('article1',get_article(135));         //获取文章的内容页面
 		
         if ($goods['brand_id'] > 0)
         {
@@ -254,7 +254,7 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
         $linked_goods = get_linked_goods($goods_id);
 
         $goods['goods_style_name'] = add_style($goods['goods_name'], $goods['goods_name_style']);
-/*  代码  添加 start  by pgge */
+	/*  代码  添加 start  by pgge */
     if($goods['qr_link']){
 		$goods['desc_qr_code'] = $goods ['qr_link'];
 		}else{
@@ -285,7 +285,7 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
 	   $goods['wxbuy_img_qrcode'] = $wxbuy_filename;
 	   
 		
-/*  代码  添加 end  by pgge *
+		/*  代码  添加 end  by pgge *
         /* 购买该商品可以得到多少钱的红包 */
         if ($goods['bonus_type_id'] > 0)
         {
@@ -379,9 +379,11 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
         $img_desc_str = implode(',',$img_desc_arr);
         $smarty->assign('img_desc_str', $img_desc_str);
 		
+        
+        
 		
 		/* 代码增加_start  By www.ecshop120.com  多城市多仓库*/
-		$sql_qq2211707 = "select * from ". $ecs->table("region") ." where region_type =1 ";
+		/* $sql_qq2211707 = "select * from ". $ecs->table("region") ." where region_type =1 ";
 		$res_qq2211707= $db->query($sql_qq2211707);
 		$regions_wwwecshop120com =array();
 		while($row_qq2211707 = $db->fetchRow($res_qq2211707))
@@ -407,19 +409,18 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
 				}
 			}
 			$array_wwwECSHOP120com[$row_wwwECSHOP120com['store_name']] =  $province_array ;
-		}
+		} */
 
 		//echo '<pre>';
 		//print_r($array_wwwECSHOP120com);
 		//echo '</pre>';
-		$smarty->assign('province_list', $array_wwwECSHOP120com);
-		/* 代码增加_end  By www.ecshop120.com */        
-        
-		//yyy添加start
-			$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$goods_id' and status=1");
+//         $smarty->assign('province_list', $array_wwwECSHOP120com);
+		/* 代码增加_end  By www.ecshop120.com */      
+
+		//评论数添加start
+		$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$goods_id' and status=1");
         $smarty->assign('review_count',       $count); 
-		
-			//yyy添加end
+		//评论数添加end
 
         //获取tag
         $tag_array = get_tags($goods_id);
@@ -428,7 +429,8 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
         //获取关联礼包
         $package_goods_list = get_package_goods_list($goods['goods_id']);
         $smarty->assign('package_goods_list',$package_goods_list);    // 获取关联礼包
-//组合套餐名
+        
+		//组合套餐名
 		$taocan = array('一', '二', '三','四','五','六','七','八','九','十');
 		$smarty->assign('taocan',$taocan);
 
@@ -436,7 +438,9 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
 		include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
 		$smarty->assign('lang',  $_LANG);
 		$smarty->assign('country_list',       get_regions());
-		$smarty->assign('shop_province_list', get_regions(1, $_CFG['shop_country']));
+		$smarty->assign('province_list', get_regions(1, $_CFG['shop_country']));
+		
+		
 		/* 代码增加_end By www.ecshop120.com */
         assign_dynamic('goods');
         $volume_price_list = get_volume_price_list($goods['goods_id'], '1');
@@ -455,6 +459,8 @@ $smarty->assign('article1',get_article(135));         //获取文章的内容页
     $may_like_goods = com_sale_get_may_like_goods();
     $smarty->assign('may_like_goods',$may_like_goods);
 }
+
+
 
 /* 记录浏览历史 */
 if (!empty($_COOKIE['ECS']['history']))

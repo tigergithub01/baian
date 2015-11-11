@@ -70,12 +70,26 @@
                 {/foreach}
               </select>
             {elseif $var.code eq "shop_city"}
-              <select name="value[{$var.id}]" id="selCities">
+              <select name="value[{$var.id}]" id="selCities" onchange="region.changed(this, 3, 'selDistricts')">
                 <option value=''>{$lang.select_please}</option>
                 {foreach from=$cities item=region}
                   <option value="{$region.region_id}" {if $region.region_id eq $cfg.shop_city}selected{/if}>{$region.region_name}</option>
                 {/foreach}
               </select>
+            {elseif $var.code eq "shop_district"}
+              <select name="value[{$var.id}]" id="selDistricts" onchange="region.changed(this, 4, 'selTowns')">
+                <option value=''>{$lang.select_please}</option>
+                {foreach from=$districts item=region}
+                  <option value="{$region.region_id}" {if $region.region_id eq $cfg.shop_district}selected{/if}>{$region.region_name}</option>
+                {/foreach}
+              </select>
+            {elseif $var.code eq "shop_town"}
+              <select name="value[{$var.id}]" id="selTowns">
+                <option value=''>{$lang.select_please}</option>
+                {foreach from=$towns item=region}
+                  <option value="{$region.region_id}" {if $region.region_id eq $cfg.shop_town}selected{/if}>{$region.region_name}</option>
+                {/foreach}
+              </select>    
             {elseif $var.code eq "lang"}
                   <select name="value[{$var.id}]">
                   {html_options values=$lang_list output=$lang_list selected=$var.value}

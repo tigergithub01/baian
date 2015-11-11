@@ -132,26 +132,33 @@
 								<!--store-selector start-->
 								<div class="" id="store-selector">
 									<div class="text">
-										<div title="广东深圳市南山区">广东深圳市南山区</div>
+										<input type="hidden" id="addr_province" name="addr_province" value="{$addr_province}"/>
+										<input type="hidden" id="addr_city" name="addr_city" value="{$addr_city}"/>
+										<input type="hidden" id="addr_district" name="addr_district" value="{$addr_district}"/>
+										<input type="hidden" id="addr_town" name="addr_town" value="{$addr_town}"/>
+										<div id="address_name" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}{$addr_town_name}">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}&nbsp;{$addr_town_name}</div>
 										<b></b>
 									</div>
 									<div class="content">
 										<div data-widget="tabs" class="m JD-stock" id="JD-stock">
 											<div class="mt">
 												<ul class="tab">
-													<li data-index="0" data-widget="tab-item" class="curr"><a
-														href="javascript:void(0)" class="hover"><em>广东</em><i></i></a></li>
-													<li class="" data-index="1" data-widget="tab-item"
-														style=""><a title="深圳市" href="javascript:void(0)" class=""><em>深圳市</em><i></i></a></li>
-													<li class="" data-index="2" data-widget="tab-item"
-														style="display: list-item;"><a title="南山区"
-														href="javascript:void(0)" class=""><em>南山区</em><i></i></a></li>
-													<li data-index="3" data-widget="tab-item"
-														style="display: none;"><a href="javascript:void(0)" class=""><em>请选择</em><i></i></a></li>
+													<li data-index="0" data-widget="tab-item" class="">
+															<a title="{$addr_province_name}" href="javascript:void(0)"><em>{$addr_province_name}</em><i></i></a>
+													</li>
+													<li class="" data-index="1" data-widget="tab-item" style="">
+														<a title="{$addr_city_name}" href="javascript:void(0)" class=""><em>{$addr_city_name}</em><i></i></a>
+													</li>
+													<li class="" data-index="2" data-widget="tab-item" style="display: list-item;">
+														<a title="{$addr_district_name}" href="javascript:void(0)" class=""><em>{$addr_district_name}</em><i></i></a>
+													</li>
+													<li data-index="3" data-widget="tab-item" style="" class="curr">
+														<a title="{$addr_town_name}" href="javascript:void(0)" class="hover"><em>{$addr_town_name}</em><i></i></a>
+													</li>
 												</ul>
 												<div class="stock-line"></div>
 											</div>
-											<div style="display: block;" class="mc" data-area="0"
+											<div style="display: none;" class="mc" data-area="0"
 												data-widget="tab-content" id="stock_province_item">
 												<ul class="area-list">
 													<!-- {foreach from=$province_list item=item} -->
@@ -164,46 +171,28 @@
 											<div style="display: none;" class="mc" data-area="1"
 												data-widget="tab-content" id="stock_city_item">
 												<ul class="area-list">
-													<li><a href="javascript:void(0)" data-value="1601">广州市</a></li>
-													<li><a href="javascript:void(0)" data-value="1607">深圳市</a></li>
-													<li><a href="javascript:void(0)" data-value="1609">珠海市</a></li>
-													<li><a href="javascript:void(0)" data-value="1611">汕头市</a></li>
-													<li><a href="javascript:void(0)" data-value="1617">韶关市</a></li>
-													<li><a href="javascript:void(0)" data-value="1627">河源市</a></li>
-													<li><a href="javascript:void(0)" data-value="1634">梅州市</a></li>
-													<li><a href="javascript:void(0)" data-value="1709">揭阳市</a></li>
-													<li><a href="javascript:void(0)" data-value="1643">惠州市</a></li>
-													<li><a href="javascript:void(0)" data-value="1650">汕尾市</a></li>
-													<li><a href="javascript:void(0)" data-value="1655">东莞市</a></li>
-													<li><a href="javascript:void(0)" data-value="1657">中山市</a></li>
-													<li><a href="javascript:void(0)" data-value="1659">江门市</a></li>
-													<li><a href="javascript:void(0)" data-value="1666">佛山市</a></li>
-													<li><a href="javascript:void(0)" data-value="1672">阳江市</a></li>
-													<li><a href="javascript:void(0)" data-value="1677">湛江市</a></li>
-													<li><a href="javascript:void(0)" data-value="1684">茂名市</a></li>
-													<li><a href="javascript:void(0)" data-value="1690">肇庆市</a></li>
-													<li><a href="javascript:void(0)" data-value="1698">云浮市</a></li>
-													<li><a href="javascript:void(0)" data-value="1704">清远市</a></li>
-													<li><a href="javascript:void(0)" data-value="1705">潮州市</a></li>
+													<!-- {foreach from=$city_list item=item} -->
+													<li><a href="javascript:void(0)" data-value="{$item.region_id}" onclick="change_city('{$item.region_id}','{$item.region_name}')">{$item.region_name}</a></li>
+													<!-- {/foreach} -->
 												</ul>
 											</div>
 											<div style="display: none;" class="mc" data-area="2"
 												data-widget="tab-content" id="stock_area_item">
 												<ul class="area-list">
-													<li><a href="javascript:void(0)" data-value="3638">罗湖区</a></li>
-													<li><a href="javascript:void(0)" data-value="3639">福田区</a></li>
-													<li><a href="javascript:void(0)" data-value="3155">南山区</a></li>
-													<li><a href="javascript:void(0)" data-value="4773">宝安区</a></li>
-													<li><a href="javascript:void(0)" data-value="6675">光明新区</a></li>
-													<li><a href="javascript:void(0)" data-value="40152">龙岗区</a></li>
-													<li><a href="javascript:void(0)" data-value="6736">坪山新区</a></li>
-													<li><a href="javascript:void(0)" data-value="47387">盐田区</a></li>
-													<li><a href="javascript:void(0)" data-value="47388">龙华新区</a></li>
-													<li><a href="javascript:void(0)" data-value="6737">大鹏新区</a></li>
+													<!-- {foreach from=$district_list item=item} -->
+													<li><a href="javascript:void(0)" data-value="{$item.region_id}" onclick="change_district('{$item.region_id}','{$item.region_name}')">{$item.region_name}</a></li>
+													<!-- {/foreach} -->
 												</ul>
 											</div>
-											<div style="display: none;" class="mc" data-area="3"
-												data-widget="tab-content" id="stock_town_item"></div>
+											<div style="display: block;" class="mc" data-area="3"
+												data-widget="tab-content" id="stock_town_item">
+												<ul class="area-list">
+													<!-- {foreach from=$town_list item=item} -->
+													<li><a href="javascript:void(0)" data-value="{$item.region_id}" onclick="change_town('{$item.region_id}','{$item.region_name}')">{$item.region_name}</a></li>
+													<!-- {/foreach} -->
+												</ul>
+											</div>
+												
 										</div>
 										<span class="clr"></span>
 									</div>
@@ -591,6 +580,11 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		});
 		
 		$("li[data-widget='tab-item']").click(function(){
+			var data_index = $(this).attr('data-index');
+			//console.debug($(this).find("a[title='请选择']"));
+			if(($(this).find("a[title='请选择']")).length>0){
+				return false;
+			}
 			show_hide_tab_item(data_index);
 		});
 		
@@ -632,18 +626,19 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		$("#stock_area_item ul").empty();
 		$("#stock_town_item ul").empty();
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='0']").attr('title',region_name);		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='0'] a").attr('title',region_name);		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='0'] em").text(region_name);
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='1']").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title','请选择');		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='1'] em").text('请选择');
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='2']").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title','请选择');		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text('请选择');
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='3']").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title','请选择');		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
 		
+		$('#addr_province').val(region_id);
 		//刷新城市列表
 		changeRegion(1,region_id);
 	}
@@ -653,15 +648,16 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		$("#stock_area_item ul").empty();
 		$("#stock_town_item ul").empty();
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='1']").attr('title',region_name);		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title',region_name);		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='1'] em").text(region_name);
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='2']").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title','请选择');		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text('请选择');
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='3']").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title','请选择');		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
 		
+		$('#addr_city').val(region_id);
 		//刷新区域列表
 		changeRegion(2,region_id);
 	}
@@ -670,12 +666,33 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 	function change_district(region_id,region_name){
 		$("#stock_town_item ul").empty();
 		
-		$("#store-selector").find("[data-widget='tab-item'][data-index='2']").attr('title',region_name);		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title',region_name);		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text(region_name);
 		
-		//设置选中值
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title','请选择');		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
+		
+		$('#addr_district').val(region_id);
+		//刷新城镇、街道列表
+		changeRegion(3,region_id);
+	}
+	
+	function change_town(region_id,region_name){
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title',region_name);		
+		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text(region_name);
 		
 		
+		$('#addr_town').val(region_id);
+		//设置选择的地址
+		var addr_province_name= $("#store-selector").find("[data-widget='tab-item'][data-index='0'] a").attr('title');
+		var addr_city_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title');
+		var addr_district_name= $("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title');
+		var addr_town_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title');
+		
+		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name+"&nbsp;"+addr_town_name;
+		$("#address_name").html(address_name).attr('title',address_name);
+		
+		$("#store-selector").removeClass('hover');
 	}
 	
 	
@@ -693,6 +710,8 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 	
 	/***获取下级区域**/
 	function changeRegion(type,parent){
+		show_hide_tab_item(type);
+		$("#store-selector").find("[data-widget='tab-content'][data-area='"+type+"'] ul").append("<span>数据加载中，请稍候...</span>");
 		$.ajax({     
     	    url:'region.php',     
     	    type:'post',  
@@ -703,7 +722,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
     	    	alert('更新出错！');
     	    },     
     	    success:function(data){ 
-    		    console.debug(data);
+    		    //console.debug(data);
     		    if(data.regions!=null){
     		    	/*
     		    	$("#store-selector").find("[data-widget='tab-content']").hide();			
@@ -714,8 +733,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
     				$("#store-selector").find("[data-widget='tab-item'][data-index='"+type+"']").addClass("curr");
     				$("#store-selector").find("[data-widget='tab-item'][data-index='"+type+"'] a").addClass("hover");
     				*/
-    				
-    				show_hide_tab_item(type);
+    				$("#store-selector").find("[data-widget='tab-content'][data-area='"+type+"'] ul").empty();
     				
     		    	$.each(data.regions,function(i,v){
             			if(type==1){

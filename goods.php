@@ -435,10 +435,54 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$smarty->assign('taocan',$taocan);
 
 		/* 代码增加_start By www.ecshop120.com */
+		
+		
+		
+		//获取coockie中保存的地址信息
+		$addr_country = "";
+		$addr_province = "";
+		$addr_city = "";
+		$addr_district = "";
+		$addr_town = "";
+		
+		if(!empty($_COOKIE['ECS']['selected_region'])){
+			$addrs= explode($_COOKIE['ECS']['selected_region'],",");
+			$addr_country  = $addrs[0];
+			$addr_province = $addrs[1];
+			$addr_city = $addrs[2];
+			$addr_district = $addrs[3];
+			$addr_town = $addrs[4];
+		}else{
+			//获取网店默认地址,并设置到cookie中
+			$addr_country = $_CFG['shop_country'];
+			$addr_province = $_CFG['shop_province'];
+			$addr_city = $_CFG['shop_city'];
+			$addr_district = $_CFG['shop_district'];
+			$addr_town = $_CFG['shop_town'];
+		}		
+		
+		/*省市区街道显示值 start*/
+		$addr_province_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_province' limit 1");
+		$smarty->assign('addr_province_name', $addr_province_name);
+		
+		$addr_city_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_city' limit 1");
+		$smarty->assign('addr_city_name', $addr_city_name);
+		
+		$addr_district_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_district' limit 1");
+		$smarty->assign('addr_district_name', $addr_district_name);
+		
+		$addr_town_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_town' limit 1");
+		$smarty->assign('addr_town_name', $addr_town_name);
+		/*省市区街道显示值 end*/
+		
 		include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
 		$smarty->assign('lang',  $_LANG);
 		$smarty->assign('country_list',       get_regions());
-		$smarty->assign('province_list', get_regions(1, $_CFG['shop_country']));
+		$smarty->assign('province_list', get_regions(1, $addr_country));
+		$smarty->assign('city_list', get_regions(2, $addr_province));
+		$smarty->assign('district_list', get_regions(3, $addr_city));
+		$smarty->assign('town_list', get_regions(4, $addr_district));
+		
 		
 		
 		/* 代码增加_end By www.ecshop120.com */

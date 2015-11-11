@@ -616,6 +616,14 @@ function get_goods_info($goods_id)
         /* 修正商品图片 */
         $row['goods_img']   = get_image_path($goods_id, $row['goods_img']);
         $row['goods_thumb'] = get_image_path($goods_id, $row['goods_thumb'], true);
+        
+        /*商品抢购倒计时*/
+        $time = gmtime();
+        if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date']){
+        	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
+        }else{
+        	$row['gmt_end_time'] = null;
+        }
 
         return $row;
     }

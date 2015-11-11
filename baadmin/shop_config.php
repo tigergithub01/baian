@@ -76,6 +76,14 @@ if ($_REQUEST['act'] == 'list_edit')
         {
             $smarty->assign('cities', get_regions(2, $_CFG['shop_province']));
         }
+        //added by tiger.guo 20151111
+        if ($_CFG['shop_city']){
+        	$smarty->assign('districts', get_regions(3, $_CFG['shop_city']));
+        }
+        
+        if ($_CFG['shop_district']){
+        	$smarty->assign('towns', get_regions(4, $_CFG['shop_district']));
+        }
     }
     $smarty->assign('cfg', $_CFG);
 

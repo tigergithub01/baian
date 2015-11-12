@@ -98,24 +98,36 @@
 	                		<dd><em class="jia2">{$goods.market_price}</em></dd>
 	                	</dl>
 	                	
-                        <!--可用红包 add by wanggz-->
-       					{if $goods.bonus}
-         				<dl>
+	                	
+	                	<!-- {if ($goods.bonus_money gt 0 || $goods.give_integral gt 0 || $goods.buy_number_activity gt 0)} -->
+	                	<dl>
 	                		<dt>促　销：</dt>
 	                		<dd class="cuxiao">
-						          <p><i>送红包</i>{$goods.bonus}</p> 
-						          {/if}
-						          {if $goods.bonus_type_name}
-						         <p><i>可用指定红包</i>{$goods.bonus_type_name}<font color="red" size="3">{$goods.bonus_type_money}</font></p> 
-						          {/if}
-						           <!-- {if $goods.integral}  -->
-						         <p><i>可用指定红包</i> {$goods.integral}分（抵货款{$goods.total}元） </p>
-						          <!-- {/if} -->
-						           <!-- {if $promotion_buyaole} -->
-						        
-						          <!-- {/if} -->
+	                			<!-- {if ($goods.bonus_money gt 0)} -->
+	                			<p><i>送红包</i> {$goods.bonus_money_formatted}</p> 
+	                			<!-- {/if} -->
+	                			
+	                			<!-- {if ($goods.give_integral gt 0)} -->
+	                			<p><i>送积分</i> {$goods.give_integral}积分<!-- {if ($goods.give_integral_amt gt 0)} -->（立减{$goods.give_integral_amt}元）<!-- {/if} --></p>
+	                			<!-- {/if} -->
+	                			
+	                			<!-- {if ($goods.buy_number_activity gt 0)} -->
+	                			<p>
+	                			<span class="l" style="float: inherit;"><i>商品促销</i> 买{$goods.buy_number_activity}送{$goods.give_number_activity}</span> 
+	                			</p>
+	                			<!-- 列出可赠送的原品或赠品 -->
+	                			<!-- 
+	                			<a title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉" href=""><img src="images/sp6.jpg"></a>
+	                			<a title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉" href=""><img src="images/sp6.jpg"></a>
+	                			<a title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉" href=""><img src="images/sp6.jpg"></a>
+	                			  -->
+	                			<!-- {/if} -->  
+	                			
 	                		</dd>
 	                	</dl>
+	                	<!-- {/if} -->
+	                		
+                        
 	                	
 	                	<dl>
 	                		<dt>评　价：</dt>
@@ -137,6 +149,7 @@
 								<!--store-selector start-->
 								<div class="" id="store-selector">
 									<div class="text">
+										<input type="hidden" id="addr_country" name="addr_country" value="{$addr_country}"/>
 										<input type="hidden" id="addr_province" name="addr_province" value="{$addr_province}"/>
 										<input type="hidden" id="addr_city" name="addr_city" value="{$addr_city}"/>
 										<input type="hidden" id="addr_district" name="addr_district" value="{$addr_district}"/>
@@ -498,16 +511,16 @@
 							<div class="img-wp">
 								<div class="ad">
 									  <!--{foreach from=$xqtop name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->
+										<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+									 <!--{/foreach}-->
 								</div>
 								
-        {$goods.goods_desc} 
+        							{$goods.goods_desc} 
 
 								<div class="ad">
 									  <!--{foreach from=$xqdibu name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->
+										<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+									  <!--{/foreach}-->
 								</div>
 							</div>
 						</div>
@@ -580,7 +593,10 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 
  <script type="text/javascript">
  	 
- 	 var remain_seconds =  {$remain_seconds|default:0};
+ 	 var timestamp = Date.parse(new Date())/1000;
+ 	 var promote_end_date =Math.round(new Date("{$goods.gmt_end_time}")/1000);
+ 	 var remain_seconds =  promote_end_date - timestamp;
+ 	
  	 //将时间减去1秒，计算天、时、分、秒 
  	 function SetRemainTime() { 
 	 	  if (remain_seconds > 0) { 
@@ -726,6 +742,10 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		$("#address_name").html(address_name).attr('title',address_name);
 		
 		$("#store-selector").removeClass('hover');
+		
+		//TODO:更新相关逻辑
+		select_address();
+		
 	}
 	
 	
@@ -739,6 +759,29 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		$("#store-selector").find("[data-widget='tab-item'] a").removeClass("hover");    				
 		$("#store-selector").find("[data-widget='tab-item'][data-index='"+data_index+"']").addClass("curr");
 		$("#store-selector").find("[data-widget='tab-item'][data-index='"+data_index+"'] a").addClass("hover");
+	}
+	
+	/*选择地址**/
+	function select_address(){
+		$.ajax({     
+    	    url:'goods.php?act=select_address',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{
+    	    	"address[0]":$("#addr_country").val(),
+    	    	"address[1]":$("#addr_province").val(),
+    	    	"address[2]":$("#addr_city").val(),
+    	    	"address[3]":$("#addr_district").val(),
+    	    	"address[4]":$("#addr_town").val()
+    	    },     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    	    	
+    	    }  
+    	});	
 	}
 	
 	/***获取下级区域**/

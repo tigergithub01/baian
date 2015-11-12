@@ -666,7 +666,18 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
             sys_msg($image->error_msg(), 1, array(), false);
         }
         $goods_img      = $original_img;   // 商品图片
-
+        
+        //复制一份原始图片 added by tiger.guo 20151112 for $goods_img 生成不成功问题 start
+        $img        = $original_img;   // 相册图片
+        $pos        = strpos(basename($img), '.');
+        $goods_img    = dirname($img) . '/' . $image->random_filename() . substr(basename($img), $pos);
+        if (!copy('../' . $original_img, '../' . $goods_img))
+        {
+        	sys_msg('fail to copy file: ' . realpath('../' . $img), 1, array(), false);
+        }
+        //复制一份原始图片 added by tiger.guo 20151112 for $goods_img 生成不成功问题 end
+        
+       
         /* 复制一份相册图片 */
         /* 添加判断是否自动生成相册图片 */
         if ($_CFG['auto_generate_gallery'])
@@ -2491,7 +2502,7 @@ elseif ($_REQUEST['act'] == 'edit_store_id')
 	if ($result)
 	{
 		clear_cache_files();
-		make_json_result($product_price);
+		make_json_result("修改成功");
 	}
 }
 

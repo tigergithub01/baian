@@ -607,11 +607,19 @@ function get_goods_info($goods_id)
         /* 是否显示商品库存数量 */
         $row['goods_number']  = ($GLOBALS['_CFG']['use_storage'] == 1) ? $row['goods_number'] : '';
 
+        /**TODO:购买该商品最多可以使用的积分金额，此处逻辑存在问题**/
         /* 修正积分：转换为可使用多少积分（原来是可以使用多少钱的积分） */
         $row['integral']      = $GLOBALS['_CFG']['integral_scale'] ? round($row['integral'] * 100 / $GLOBALS['_CFG']['integral_scale']) : 0;
+        
+        /*购买该商品时赠送消费积分数,-1表示按商品价格赠送*/
+        $row['give_integral'] = ($row['give_integral']==-1)?round($row['shop_price']):$row['give_integral'];
+        
+        /*赠送的积分折算成的购买金额， [积分换算比例，每100积分可抵多少元现金]*/
+        $row['give_integral_amt'] = round($row['give_integral'] * $GLOBALS['_CFG']['integral_scale']  / 100);
+        
 
-        /* 修正优惠券 */
-        $row['bonus_money']   = ($row['bonus_money'] == 0) ? 0 : price_format($row['bonus_money'], false);
+        /* 赠送红包金额 */
+        $row['bonus_money_formatted']   = ($row['bonus_money'] == 0) ? 0 : price_format($row['bonus_money'], false);
 
         /* 修正商品图片 */
         $row['goods_img']   = get_image_path($goods_id, $row['goods_img']);
@@ -624,6 +632,8 @@ function get_goods_info($goods_id)
         }else{
         	$row['gmt_end_time'] = null;
         }
+        
+        
 
         return $row;
     }

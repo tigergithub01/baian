@@ -22,7 +22,7 @@ function SelectZone()
    */
   this.loadOptions = function(act, filters)
   {
-    Ajax.call(this.filename+"&act=" + act, filters, this.loadOptionsResponse, "GET", "JSON");
+    Ajax.call(this.filename+"&act=" + act, 'JSON=' + $.toJSON(filters), this.loadOptionsResponse, "GET", "JSON");
   }
 
   /**
@@ -140,8 +140,9 @@ function SelectZone()
       {
         args[args.length] = arguments[i];
       }
-
-      Ajax.call(this.filename + "&act="+act+"&add_ids=" +selOpt.toJSONString(), args, this.addRemoveItemResponse, "GET", "JSON");
+alert('1');
+//      Ajax.call(this.filename + "&act="+act+"&add_ids=" +selOpt.toJSONString(), args, this.addRemoveItemResponse, "GET", "JSON");
+      Ajax.call(this.filename + "&act="+act+"&add_ids=" +$.toJSON(selOpt), args, this.addRemoveItemResponse, "GET", "JSON");
     }
   }
 
@@ -176,7 +177,9 @@ function SelectZone()
         args[args.length] = arguments[i];
       }
 
-      Ajax.call(this.filename + "&act="+act+"&drop_ids=" + arr.toJSONString(), args, this.addRemoveItemResponse, 'GET', 'JSON');
+      alert('2');
+//      Ajax.call(this.filename + "&act="+act+"&drop_ids=" + arr.toJSONString(), args, this.addRemoveItemResponse, 'GET', 'JSON');
+      Ajax.call(this.filename + "&act="+act+"&drop_ids=" + $.toJSON(arr), args, this.addRemoveItemResponse, 'GET', 'JSON');
     }
   }
 

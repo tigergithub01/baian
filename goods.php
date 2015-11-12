@@ -107,6 +107,16 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'check_storeroom')
 }
 /* 代码增加_end   By www.ecshop120.com */
 
+if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_address')
+{
+	$address = $_POST['address'];
+	setcookie('ECS[selected_address]', implode(',', $address), gmtime() + 3600 * 24 * 30);
+	clear_cache_files();
+	lib_main_make_json_result('设置地址成功',$address);
+	
+}
+/* 代码增加_end   By www.ecshop120.com */
+
 /*------------------------------------------------------ */
 //-- 商品购买记录ajax处理
 /*------------------------------------------------------ */
@@ -190,7 +200,6 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
-
 $cache_id = $goods_id . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
 $cache_id = sprintf('%X', crc32($cache_id));
 if (!$smarty->is_cached('goods.dwt', $cache_id))
@@ -205,7 +214,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
     $smarty->assign('promotion_info', get_promotion_info());
 
     /* 获得商品的信息 */
-    $goods = get_goods_info($goods_id);
+    $goods = get_goods_info($goods_id);    
+    
 
     if ($goods === false)
     {
@@ -287,7 +297,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		
 		/*  代码  添加 end  by pgge *
         /* 购买该商品可以得到多少钱的红包 */
-        if ($goods['bonus_type_id'] > 0)
+        /* if ($goods['bonus_type_id'] > 0)
         {
             $time = gmtime();
             $sql = "SELECT type_money FROM " . $ecs->table('bonus_type') .
@@ -300,11 +310,11 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
             {
                 $goods['bonus_money'] = price_format($goods['bonus_money']);
             }
-        }
+        } */
 
         $smarty->assign('goods',              $goods);
         $smarty->assign('goods_id',           $goods['goods_id']);
-        $smarty->assign('promote_end_time',   $goods['gmt_end_time']);
+        $smarty->assign('promote_end_time',   $goods['promote_end_time']);
         $smarty->assign('categories',         get_categories_tree($goods['cat_id']));  // 分类树
 
         /* meta */
@@ -435,8 +445,9 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$smarty->assign('taocan',$taocan);
 
 		/* 代码增加_start By www.ecshop120.com */
-		
-		
+		include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
+		$smarty->assign('lang',  $_LANG);
+		/* 代码增加_end By www.ecshop120.com */
 		
 		//获取coockie中保存的地址信息
 		$addr_country = "";
@@ -445,8 +456,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$addr_district = "";
 		$addr_town = "";
 		
-		if(!empty($_COOKIE['ECS']['selected_region'])){
-			$addrs= explode($_COOKIE['ECS']['selected_region'],",");
+		if(!empty($_COOKIE['ECS']['selected_address'])){
+			$addrs= explode(",",$_COOKIE['ECS']['selected_address']);
 			$addr_country  = $addrs[0];
 			$addr_province = $addrs[1];
 			$addr_city = $addrs[2];
@@ -459,33 +470,35 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 			$addr_city = $_CFG['shop_city'];
 			$addr_district = $_CFG['shop_district'];
 			$addr_town = $_CFG['shop_town'];
-		}		
+		}
 		
-		/*省市区街道显示值 start*/
+		/*国家省市区街道显示值 start*/
+		$smarty->assign('addr_country', $addr_country);
+		
 		$addr_province_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_province' limit 1");
 		$smarty->assign('addr_province_name', $addr_province_name);
+		$smarty->assign('addr_province', $addr_province);
 		
 		$addr_city_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_city' limit 1");
 		$smarty->assign('addr_city_name', $addr_city_name);
+		$smarty->assign('addr_city', $addr_city);
 		
 		$addr_district_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_district' limit 1");
 		$smarty->assign('addr_district_name', $addr_district_name);
+		$smarty->assign('addr_district', $addr_district);
 		
 		$addr_town_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_town' limit 1");
 		$smarty->assign('addr_town_name', $addr_town_name);
+		$smarty->assign('addr_town', $addr_town);
 		/*省市区街道显示值 end*/
 		
-		include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
-		$smarty->assign('lang',  $_LANG);
+		
 		$smarty->assign('country_list',       get_regions());
 		$smarty->assign('province_list', get_regions(1, $addr_country));
 		$smarty->assign('city_list', get_regions(2, $addr_province));
 		$smarty->assign('district_list', get_regions(3, $addr_city));
 		$smarty->assign('town_list', get_regions(4, $addr_district));
 		
-		
-		
-		/* 代码增加_end By www.ecshop120.com */
         assign_dynamic('goods');
         $volume_price_list = get_volume_price_list($goods['goods_id'], '1');
         $smarty->assign('volume_price_list',$volume_price_list);    // 商品优惠价格区间
@@ -528,10 +541,20 @@ else
 
 
 
+
+
 /* 更新点击次数 */
 $db->query('UPDATE ' . $ecs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");
 
 $smarty->assign('now_time',  gmtime());           // 当前系统时间
+
+//促销剩余时间,TODO:应该有bug,不能输出剩余秒数，因为有缓存，应该输出$goods['promote_end_date']
+/* $remain_seconds = 0;
+if(($goods['is_promote'] ==1) && $goods['gmt_end_time']){
+	$remain_seconds = $goods['promote_end_date']  - gmtime();
+	
+}
+$smarty->assign('remain_seconds',  $remain_seconds); //剩余秒数 */
 
 
 //底部导航 2015-10-04 added by tiger.guo

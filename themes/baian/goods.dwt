@@ -87,7 +87,7 @@
 				                </b>　
 							    <!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
 							    <div id="promote_time" style="display:inline;">
-					         	　	抢购倒计时：<span class="time">0 天 0 时 0分 0秒</span>
+					         	　	抢购倒计时：<span class="time"></span>
 					         	</div>
 					         	<!--{/if}-->
 	            			</dd>
@@ -292,7 +292,7 @@
                 	
                 	
                 	<div class="row2">
-                		<!-- {if $value.attr} -->//有图片
+                		<!-- {if $value.attr} //有图片 -->
                         <dl>
                 			<dt>颜　色：</dt>
                 			<dd>

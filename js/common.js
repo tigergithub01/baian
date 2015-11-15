@@ -3,7 +3,7 @@
 /* *
  * 添加商品到购物车 
  */
-function addToCart(goodsId, parentId) 
+function addToCart(goodsId, parentId,product_id) 
 {
   var goods        = new Object();
   var spec_arr     = new Array();
@@ -29,8 +29,12 @@ function addToCart(goodsId, parentId)
   goods.spec     = spec_arr;
   goods.goods_id = goodsId;
   goods.number   = number;
-  goods.parent   = (typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
-  Ajax.call('flow.php?step=add_to_cart', 'goods=' + $.toJSON(goods), addToCartResponse, 'POST', 'JSON');
+  goods.parent   = (parentId==null || typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
+  
+  if(product_id!=null && product_id!=''){
+	  goods.product_id = product_id;
+  }
+  Ajax.call('flow.php?step=add_to_cart', 'goods=' + obj2str(goods), addToCartResponse, 'POST', 'JSON');
 }
 
 
@@ -76,7 +80,8 @@ function addToCartResponse(result)
     // 没选规格，弹出属性选择框
     else if (result.error == 6)
     {
-      openSpeDiv(result.message, result.goods_id, result.parent);
+      //openSpeDiv(result.message, result.goods_id, result.parent);
+      alert(result.message);
     }
     else
     {
@@ -85,6 +90,7 @@ function addToCartResponse(result)
   }
   else
   {
+	  
     var cartInfo = document.getElementById('ECS_CARTINFO');
     var cart_url = 'flow.php?step=cart';
     if (cartInfo)
@@ -114,6 +120,8 @@ function addToCartResponse(result)
           break;
       }
     }
+    
+    
   }
 }
 

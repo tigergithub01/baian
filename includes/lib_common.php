@@ -1496,6 +1496,7 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
                   'auid'  => 0,
                   'sort'  => '',
                   'order' => '',
+    			  'pid'   => 0,	
                 );
 
     extract(array_merge($args, $params));
@@ -1585,7 +1586,12 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
             }
             else
             {
-                $uri = $rewrite ? 'goods-' . $gid : 'goods.php?id=' . $gid;
+            	if(empty($pid)){
+            		$uri = $rewrite ? 'goods-' . $gid : 'goods.php?id=' . $gid;
+            	}else{
+            		$uri = $rewrite ? 'goods-' . $gid.'-p'.$pid : 'goods.php?id=' . $gid.'&amp;product_id=' . $pid;
+            	}
+               
             }
 
             break;
@@ -2258,15 +2264,16 @@ function get_volume_price_list($goods_id, $price_type = '1')
 
 /**
  * 取得商品最终使用价格
+ * //TODO:此方法需要优化
  *
  * @param   string  $goods_id      商品编号
  * @param   string  $goods_num     购买数量
  * @param   boolean $is_spec_price 是否加入规格价格
  * @param   mix     $spec          规格ID的数组或者逗号分隔的字符串
- *
+ * 
  * @return  商品最终购买价格
  */
-function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $spec = array())
+function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $spec = array(),$product_id=null)
 {
     $final_price   = '0'; //商品最终购买价格
     $volume_price  = '0'; //商品优惠价格
@@ -2296,6 +2303,19 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
                    "ON mp.goods_id = g.goods_id AND mp.user_rank = '" . $_SESSION['user_rank']. "' ".
            " WHERE g.goods_id = '" . $goods_id . "'" .
            " AND g.is_delete = 0";
+    
+    /*获取产品信息，如果选择了具体的产品，则根据产品价格来计算会员价*/
+    if($product_id){
+    	$sql = "SELECT g.promote_price, g.promote_start_date, g.promote_end_date, ".
+    			"IFNULL(mp.user_price, p.product_price * '" . $_SESSION['discount'] . "') AS shop_price ".
+    			" FROM " .$GLOBALS['ecs']->table('goods'). " AS g ".
+    			" LEFT JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON (g.goods_id = p.goods_id) ".
+    			" LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
+    			"ON mp.goods_id = g.goods_id AND mp.user_rank = '" . $_SESSION['user_rank']. "' ".
+    			" WHERE p.product_id = '" . $product_id . "'" .
+    			" AND g.is_delete = 0";
+    }
+    
     $goods = $GLOBALS['db']->getRow($sql);
 
     /* 计算商品的促销价格 */
@@ -2309,7 +2329,7 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
     }
 
     //取得商品会员价格列表
-    $user_price    = $goods['shop_price'];
+    $user_price    = $goods['shop_price'];  
 
     //比较商品的促销价格，会员价格，优惠价格
     if (empty($volume_price) && empty($promote_price))
@@ -2797,4 +2817,50 @@ function get_attachment_by_id( $id )
     }
     return implode('/', $path);
 }
+
+/**
+ * 根据地址匹配仓库,从最小地址城镇开始匹配，依次为城镇->地区->城市->省份->国家
+ * @param unknown $address
+ */
+function get_storeroom($address){
+	$country  = $address[0];
+	$province = $address[1];
+	$city = $address[2];
+	$district = $address[3];
+	$town = $address[4];
+	
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('goods_storeroom') . " ORDER BY sort_order ASC";
+	$rows = $GLOBALS['db']->getAll($sql);
+	if(rows){
+		foreach ($rows as $goods_storeroom) {
+			$store_province = $goods_storeroom['store_province'];
+			if($store_province){
+				$regions = explode(",", $store_province);
+				if($town && in_array($town, $regions)){
+					return $goods_storeroom;
+				}
+				
+				if($district && in_array($district, $regions)){
+					return $goods_storeroom;
+				}
+				
+				if($city && in_array($city, $regions)){
+					return $goods_storeroom;
+				}
+				
+				if($province && in_array($province, $regions)){
+					return $goods_storeroom;
+				}
+				
+				if($country && in_array($country, $regions)){
+					return $goods_storeroom;
+				}
+				
+			}
+			
+		}
+	}
+	return null;
+}
+
 ?>

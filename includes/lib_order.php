@@ -1095,9 +1095,11 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
  * @param   integer $num        商品数量
  * @param   array   $spec       规格值对应的id数组
  * @param   integer $parent     基本件
+ * @param   integer $product_id     产品编号
+ * @param   array   $regions     选择的配送区域（注意，在商品列表中直接添加到购物车时，无法检查配送区域）
  * @return  boolean
  */
-function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
+function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_id = null, $address=null)
 {
     $GLOBALS['err']->clean();
     $_parent_id = $parent;
@@ -1121,7 +1123,14 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
 
         return false;
     }
-
+    
+	/**获取产品信息****/
+    $product = null;
+    if($product_id){
+    	$product = get_product($product_id);
+    }
+    
+    /***TODO:百安母婴中没有配件单独销售的情况，此情况可以忽略 start***/
     /* 如果是作为配件添加到购物车的，需要先检查购物车里面是否已经有基本件 */
     if ($parent > 0)
     {
@@ -1138,7 +1147,8 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
             return false;
         }
     }
-
+    /***TODO:百安母婴中没有配件单独销售的情况，此情况可以忽略 start***/
+    
     /* 是否正在销售 */
     if ($goods['is_on_sale'] == 0)
     {
@@ -1155,6 +1165,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
         return false;
     }
 
+    /***TODO:百安母婴中不从页面中直接传入规格，此情况可以忽略 start***/
     /* 如果商品有规格则取规格商品信息 配件除外 */
     $sql = "SELECT * FROM " .$GLOBALS['ecs']->table('products'). " WHERE goods_id = '$goods_id' LIMIT 0, 1";
     $prod = $GLOBALS['db']->getRow($sql);
@@ -1167,6 +1178,8 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
     {
         $product_info = array('product_number' => '', 'product_id' => 0);
     }
+    /***TODO:百安母婴中不从页面中直接传入规格，此情况可以忽略 end***/
+    
 
     /* 检查：库存 */
     if ($GLOBALS['_CFG']['use_storage'] == 1)
@@ -1178,6 +1191,20 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
 
             return false;
         }
+        
+        
+        //检查产品的库存
+    	if ($num > $product['product_number']){
+        	$GLOBALS['err']->add(sprintf($GLOBALS['_LANG']['shortage'], $goods['product_number']), ERR_OUT_OF_STOCK);
+        	return false;
+        }
+        
+        //TODO:如果传入了配送地址，根据配送地址匹配、仓库检查库存情况
+        if($address && $product){
+        	
+        }
+        
+        
 
         //商品存在规格 是货品 检查该货品库存
         if (is_spec($spec) && !empty($prod))
@@ -1197,7 +1224,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
 
     /* 计算商品的促销价格 */
     $spec_price             = spec_price($spec);
-    $goods_price            = get_final_price($goods_id, $num, true, $spec);
+    $goods_price            = get_final_price($goods_id, $num, true, $spec,$product_id);
     $goods['market_price'] += $spec_price;
     $goods_attr             = get_goods_attr_info($spec);
     $goods_attr_id          = join(',', $spec);
@@ -1208,7 +1235,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
         'session_id'    => SESS_ID,
         'goods_id'      => $goods_id,
         'goods_sn'      => addslashes($goods['goods_sn']),
-        'product_id'    => $product_info['product_id'],
+        'product_id'    => $product_id,
         'goods_name'    => addslashes($goods['goods_name']),
         'market_price'  => $goods['market_price'],
         'goods_attr'    => addslashes($goods_attr),
@@ -1221,6 +1248,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
     	'is_checked'	=> 1	
     );
 
+    /**本项目单独购买配件的情况暂不处理 start****/
     /* 如果该配件在添加为基本件的配件时，所设置的“配件价格”比原价低，即此配件在价格上提供了优惠， */
     /* 则按照该配件的优惠价格卖，但是每一个基本件只能购买一个优惠价格的“该配件”，多买的“该配件”不享 */
     /* 受此优惠 */
@@ -1305,6 +1333,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
         /* 改变数量 */
         $num -= $parent['goods_number'];
     }
+    /**本项目单独购买配件的情况暂不处理 end****/
 
     /* 如果数量不为0，作为基本件插入 */
     if ($num > 0)
@@ -1315,29 +1344,46 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
                 " AND parent_id = 0 AND goods_attr = '" .get_goods_attr_info($spec). "' " .
                 " AND extension_code <> 'package_buy' " .
                 " AND rec_type = 'CART_GENERAL_GOODS'";
+        if($product_id){
+        	$sql = $sql ." AND product_id = '$product_id' ";
+        }
 
         $row = $GLOBALS['db']->getRow($sql);
 
         if($row) //如果购物车已经有此物品，则更新
         {
             $num += $row['goods_number'];
-            if(is_spec($spec) && !empty($prod) )
+            
+            //库存确定
+            if($product){
+            	$goods_storage=$product['product_number'];
+            }else{
+            	$goods_storage=$goods['goods_number'];
+            }
+            
+            /* if(is_spec($spec) && !empty($prod) )
             {
-             $goods_storage=$product_info['product_number'];
+             	$goods_storage=$product_info['product_number'];
             }
             else
             {
                 $goods_storage=$goods['goods_number'];
-            }
+            } */
+            
+            
             if ($GLOBALS['_CFG']['use_storage'] == 0 || $num <= $goods_storage)
             {
-                $goods_price = get_final_price($goods_id, $num, true, $spec);
+                $goods_price = get_final_price($goods_id, $num, true, $spec,$product_id);
                 $sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET goods_number = '$num'" .
                        " , goods_price = '$goods_price'".
                        " WHERE session_id = '" .SESS_ID. "' AND goods_id = '$goods_id' ".
                        " AND parent_id = 0 AND goods_attr = '" .get_goods_attr_info($spec). "' " .
                        " AND extension_code <> 'package_buy' " .
                        "AND rec_type = 'CART_GENERAL_GOODS'";
+                if($product_id){
+                	$sql = $sql ." AND product_id = '$product_id' ";
+                }
+                
                 $GLOBALS['db']->query($sql);
             }
             else
@@ -1349,7 +1395,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0)
         }
         else //购物车没有此物品，则插入
         {
-            $goods_price = get_final_price($goods_id, $num, true, $spec);
+            $goods_price = get_final_price($goods_id, $num, true, $spec,$product_id);
             $parent['goods_price']  = max($goods_price, 0);
             $parent['goods_number'] = $num;
             $parent['parent_id']    = 0;

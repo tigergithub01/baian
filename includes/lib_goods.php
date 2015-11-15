@@ -555,6 +555,8 @@ function get_goods_info($goods_id)
         /* 获得商品的销售价格 */
         $row['market_price']        = price_format($row['market_price']);
         $row['shop_price_formated'] = price_format($row['shop_price']);
+        
+        
 
         /* 修正促销价格 */
         if ($row['promote_price'] > 0)
@@ -779,6 +781,26 @@ function get_goods_gallery($goods_id)
         $row[$key]['thumb_url'] = get_image_path($goods_id, $gallery_img['thumb_url'], true, 'gallery');
     }
     return $row;
+}
+
+/**
+ * 获取指定产品的相册
+ * @param unknown $product_id
+ * @return Ambigous <string, mixed, string>
+ */
+function get_product_gallery($product_id)
+{
+	$sql = 'SELECT img_id, img_url, thumb_url, img_desc' .
+			' FROM ' . $GLOBALS['ecs']->table('products_gallery') .
+			" WHERE product_id = '$product_id' LIMIT " . $GLOBALS['_CFG']['goods_gallery_number'];
+	$row = $GLOBALS['db']->getAll($sql);
+	/* 格式化相册图片路径 */
+	foreach($row as $key => $gallery_img)
+	{
+		$row[$key]['img_url'] = get_image_path($goods_id, $gallery_img['img_url'], false, 'gallery');
+		$row[$key]['thumb_url'] = get_image_path($goods_id, $gallery_img['thumb_url'], true, 'gallery');
+	}
+	return $row;
 }
 
 /**
@@ -2106,6 +2128,119 @@ function com_sale_goods_get_related_cats_by_cat_id($cat_id){
 }
 
 
+/**
+ * 获得商品已添加的规格列表
+ *
+ * @access      public
+ * @params      integer         $goods_id
+ * @return      array
+ */
+function get_products_specifications_list($goods_id)
+{
+	if (empty($goods_id))
+	{
+		return array();  //$goods_id不能为空
+	}
+
+	$sql = "SELECT DISTINCT g.goods_attr_id, g.attr_value, g.attr_id, a.attr_name
+            FROM " . $GLOBALS['ecs']->table('goods_attr') . " AS g
+                INNER JOIN " . $GLOBALS['ecs']->table('attribute') . " AS a ON a.attr_id = g.attr_id
+                INNER JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON p.goods_id = g.goods_id
+                INNER JOIN " . $GLOBALS['ecs']->table('products_attr') . " AS pattr ON p.product_id = pattr.product_id
+                WHERE pattr.goods_attr_id = g.goods_attr_id AND p.goods_id = '$goods_id'
+                AND a.attr_type = 1
+                ORDER BY g.attr_id ASC";
+	$results = $GLOBALS['db']->getAll($sql);
+
+	return $results;
+}
+
+/**
+ * 获取商品对应的产品列表
+ * @param unknown $goods_id
+ * @return unknown
+ */
+function get_products_list($goods_id)
+{
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE goods_id = '$goods_id' ORDER BY seq_index ASC";
+	$rows = $GLOBALS['db']->getAll($sql);
+	return $rows;
+}
+
+
+/**
+ * 获取商品默认的产品（主要用来处理商品没有选择产品的情况）
+ * @param unknown $goods_id
+ * @return unknown
+ */
+function get_default_product($goods_id)
+{
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE goods_id = '$goods_id' ORDER BY seq_index ASC LIMIT 1";
+	$rows = $GLOBALS['db']->getRow($sql);
+	return $rows;
+}
+
+
+
+/**
+ * 获取产品对应的属性列表
+ * @param unknown $product_id
+ * @return unknown
+ */
+function get_products_attr_list($product_id)
+{
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products_attr') . " WHERE product_id = '$product_id'";
+	$rows = $GLOBALS['db']->getAll($sql);
+	return $rows;
+}
+
+
+/**
+ * 获取产品信息
+ * @param unknown $product_id
+ * @return unknown
+ */
+function get_product($product_id,$goods_id=null)
+{
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE product_id = '$product_id'";
+	if($goods_id){
+		$sql = $sql." AND goods_id='$goods_id'";
+	}
+	
+	$row = $GLOBALS['db']->getRow($sql);
+	return $row;
+}
+
+
+/**
+ * 获取商品的库存情况
+ * @param unknown $goods_id
+ * @param unknown $product_id
+ * @param unknown $address
+ */
+function get_goods_store($goods_id,$product_id,$address){
+	$sql = "SELECT IFNULL(goods_number,0) AS goods_number FROM " . $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$goods_id' LIMIT 1";
+	$goods_number = $GLOBALS['db']->getOne($sql);
+	
+	if($product_id){
+		$sql = "SELECT IFNULL(product_number,0) AS product_number FROM " . $GLOBALS['ecs']->table('products') . " WHERE product_id = '$product_id' LIMIT 1";
+		$goods_number = $GLOBALS['db']->getOne($sql);
+		
+		if($address){
+			$storeroom = get_storeroom($address);
+			if($storeroom){//store_id
+				$sql = "SELECT IFNULL(ps.product_number,0) AS product_number FROM " . $GLOBALS['ecs']->table('products') . " AS p
+				INNER JOIN ". $GLOBALS['ecs']->table('products_store') . " AS ps ON (p.product_id = ps.product_id) 
+				WHERE p.product_id = '$product_id' AND ps.store_id = '".$storeroom['store_id']."' LIMIT 1";
+				$goods_number = $GLOBALS['db']->getOne($sql);
+			}
+		}
+	}
+	
+	//TODO:应该扣减掉当前session中加入购物车的数量	
+	
+	return isset($goods_number)?intval($goods_number):0;
+}
 
 
 ?>

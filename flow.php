@@ -125,7 +125,7 @@ if ($_REQUEST['step'] == 'add_to_cart')
     /*检查产品是否应该有规格，如果有规格，则将默认的产品加入购物车；如果加入购物车的时候，传入了产品编号，则将对应的产品加入购物车**/
     $product = null;
     if(isset($goods->product_id)){
-    	$product  = get_product($goods['product_id']);
+    	$product  = get_product($goods->product_id);
     	if(empty($product)){
     		$result['error']   = ERR_NEED_SELECT_ATTR;
     		$result['goods_id'] = $goods->goods_id;

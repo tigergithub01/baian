@@ -31,8 +31,9 @@ http://www.123121.com/article_cat-3.html
 http://localhost:8086/flow.php?step=cart
 
 商品详情页：
-http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371&extension_code=
+http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371
 http://localhost:8086/goods-2371.html
+http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
 
 http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/goods_img/32_G_1431744389845.jpg
 http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb_img/32_thumb_G_1431744389139.jpg
@@ -98,11 +99,40 @@ http://localhost:8086/baadmin/user_msg.php?act=phpinfo
 
 http://localhost:8088/admin/goods.php?act=product_list&goods_id=32
 
+1\选择属性的时候，需改改变商品图片、改变商品价格，显示有货\缺货情况
+2\加入购物车，缺货的时候，需要给出缺货提示。
+3\加入购物车时，有属性的商品，必选选择一个对应的属性。
+4\商品有属性选择时,将产品加入购物车，而不是商品。
+5\商品显示的链接需要进行改进，链接中应该包含产品信息。
+6\商品加入购物车，如果没有选择规格，则加默认的产品信息加入购物车中。
+7\产品库存分仓库管理，优化后台产品编辑。
 
 
 
+<!--{foreach from=$attr.attr_values item=attr_value}-->
+<li class="selected" style="width: auto;min-width: 70px;">
+	<b></b>
+	<a title="800ml袋装柔顺剂" href="javascript:void(0)" style="vertical-align: middle;">
+		<!-- <img alt="" src="images/sp6.jpg" style="display: block;float: left;"> -->
+		<i style="float: left;width: auto;background-color: white;color: black;font-size: 12px;font-style: normal;">{$attr_value}</i>
+	</a>
+</li>
+<!-- {/foreach} -->
 
+超值礼包购买：
+goods.dwt,package.dwt
+<a href="javascript:addPackageToCart({$package_goods.act_id})" style="background:transparent"><img src="images/bnt_buy_1.gif" alt="{$lang.add_to_cart}" /></a>
 
+配件购买：
+flow.dwt:
+<a href="javascript:fittings_to_flow({$fittings.goods_id},{$fittings.parent_id})"><img src="images/bnt_buy.gif" alt="{$lang.collect_to_flow}" /></a>
+
+商品购买：goods.dwt
+<a href="javascript:addToCart({$goods.goods_id})"><img src="images/bnt_cat.gif" /></a>
+
+购物车中ecs_cart.parent_id>0的情况：
+1、作为礼品赠送
+2、作为配件购买
 
 
 

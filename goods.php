@@ -30,9 +30,11 @@ $smarty->assign('affiliate', $affiliate);
 /*------------------------------------------------------ */
 
 $goods_id = isset($_REQUEST['id'])  ? intval($_REQUEST['id']) : 0;
+$product_id = isset($_REQUEST['product_id'])  ? intval($_REQUEST['product_id']) : null;
 
 /*------------------------------------------------------ */
 //-- 改变属性、数量时重新计算商品价格
+//
 /*------------------------------------------------------ */
 
 if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'price')
@@ -105,17 +107,67 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'check_storeroom')
 	$res['store_province_id'] = $province_id_wwwECSHOP120com;
     die($json->encode($res));
 }
-/* 代码增加_end   By www.ecshop120.com */
-
+/**选择配送地址，并保存在cookie中****/
 if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_address')
 {
 	$address = $_POST['address'];
+	$goods_id = $_REQUEST['goods_id'];
+	$product_id = isset($_REQUEST['product_id'])  ? intval($_REQUEST['product_id']) : null;
 	setcookie('ECS[selected_address]', implode(',', $address), gmtime() + 3600 * 24 * 30);
+	
+	//根据收货地址确认
+	$goods_number = get_goods_store($goods_id, $product_id, $address);
 	clear_cache_files();
-	lib_main_make_json_result('设置地址成功',$address);
+	lib_main_make_json_result('设置地址成功',['goods_number'=>$goods_number]);
+}
+
+/**选择属性，切换产品信息****/
+if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_attribute')
+{
+	$selected_attributes = $_POST['selected_attributes'];
+	$attrs = explode("|", $selected_attributes);
+	$goods_id = isset($_POST['goods_id'])?$_POST['goods_id']:null;
+	if(!isset($goods_id)){
+		lib_main_make_json_error("商品信息不存在!");
+		exit;
+	}
+	
+// 	$condition = "";
+// 	foreach ($attrs as $value) {
+// 		$condition = $condition ."";
+// 	}
+	$product_list = get_products_list($goods_id);
+	$selected_product=null;
+	foreach ($product_list as $product) {
+		$sql = "SELECT goods_attr_id FROM " . $GLOBALS['ecs']->table('products_attr') . " WHERE product_id = '".$product['product_id']."'";
+		$product_attr_list = $GLOBALS['db']->getCol($sql);
+		$flag = true;
+		foreach ($product_attr_list as $goods_attr_id) {
+			if(!in_array($goods_attr_id, $attrs)){
+				$flag = false;
+				break;
+			}
+		}
+		
+		//成功匹配到对应的产品
+		if($flag){
+			$selected_product =$product;
+			break;
+		}
+		
+	}
+	
+	if($selected_product){
+		$product_id = $selected_product['product_id'];
+		$goods_url = build_uri('goods', array('gid' => $selected_product['goods_id'],'pid'=>$product_id), $row['goods_name']);
+		lib_main_make_json_result('根据属性查找产品成功',['goods_url'=>$goods_url,'product_id'=>$product_id]);
+		exit();
+	}else{
+		lib_main_make_json_error('根据属性查找产品失败');
+		exit();
+	}
 	
 }
-/* 代码增加_end   By www.ecshop120.com */
 
 /*------------------------------------------------------ */
 //-- 商品购买记录ajax处理
@@ -196,10 +248,14 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
     die($json->encode($res));
 }
 
-
+clear_cache_files();
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
+/* if($product_id){
+	$product = get_product($product_id);
+	$goods_id = isset($product)?$product['goods_id']:0;
+} */
 $cache_id = $goods_id . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
 $cache_id = sprintf('%X', crc32($cache_id));
 if (!$smarty->is_cached('goods.dwt', $cache_id))
@@ -226,6 +282,61 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 	
     else
     {
+    	//$properties = get_goods_properties($goods_id);  // 获得商品的规格和属性
+    	/*属性选择start*/    	
+    	/* 获取商品规格列表 */
+    	$product = null;
+    	if($product_id){
+    		//根据参数获取产品信息
+    		$product = get_product($product_id,$goods_id);
+    		//根据产品编号没有查找到产品
+    		if(!isset($product)){
+    			//商品下午没有对应的产品编号，将产品编号设置为空，避免在地址栏随意写入产品编号的情况。
+    			$product_id = null;
+    		}
+    	}else{
+    		//获取默认的产品，根据ecs_products.seq_index来进行排序，序号最小的为默认产品
+    		$product_list = get_products_list($goods_id);
+    			
+    		if(!empty($product_list)){
+    			$product = $product_list[0];
+    			$product_id = $product['product_id'];
+    		}
+    	}
+    	
+    	$product_attr_list = null;
+    	if(isset($product)){
+    		$sql = "SELECT goods_attr_id FROM " . $GLOBALS['ecs']->table('products_attr') . " WHERE product_id = '".$product['product_id']."'";
+    		$product_attr_list = $GLOBALS['db']->getCol($sql);
+    	}
+    	
+    	$attributes = get_products_specifications_list($goods_id);
+    	foreach ($attributes as $attribute_value)
+    	{
+    		$is_checked = (isset($product_attr_list) && in_array($attribute_value['goods_attr_id'], $product_attr_list))?1:0;
+    		$arr = ['goods_attr_id'=>$attribute_value['goods_attr_id'],'attr_value'=>$attribute_value['attr_value'],'is_checked'=>$is_checked];
+    		$specifications[$attribute_value['attr_id']]['attr_values'][] = $arr;
+    		 
+    		// 	    	$arr['goods_attr_id']=$attribute_value['goods_attr_id'];
+    		// 	    	$arr['attr_value']=$attribute_value['attr_value'];
+    		// 	    	$specifications[$attribute_value['attr_id']]['attr_values'] = $arr;
+    		// 	    	$specifications[$attribute_value['attr_id']]['attr_values'] = ['goods_attr_id'=>$attribute_value['goods_attr_id'],'attr_value'=>$attribute_value['attr_value']];
+    		$specifications[$attribute_value['attr_id']]['attr_id'] = $attribute_value['attr_id'];
+    		$specifications[$attribute_value['attr_id']]['attr_name'] = $attribute_value['attr_name'];
+    	}
+    		
+    	$smarty->assign('specifications',       $specifications);
+    	/*属性选择end*/
+    	
+    	
+    	/*重新定义商品价格 start***/
+    	$goods['shop_price'] = get_final_price($goods_id,'1',false,array(),$product_id);
+    	$goods['shop_price_formated'] = price_format($goods['shop_price']);
+    	
+    	
+    	/*重新定义商品价格 end***/
+		
+		
 		/* 代码添加 start  by pgge */
 	    $sql="select * from ". $GLOBALS['ecs']->table('content_key') ;
 		$res_k=$GLOBALS['db']->query($sql);
@@ -295,7 +406,6 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 	   $goods['wxbuy_img_qrcode'] = $wxbuy_filename;
 	   
 		
-		/*  代码  添加 end  by pgge *
         /* 购买该商品可以得到多少钱的红包 */
         /* if ($goods['bonus_type_id'] > 0)
         {
@@ -316,6 +426,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
         $smarty->assign('goods_id',           $goods['goods_id']);
         $smarty->assign('promote_end_time',   $goods['promote_end_time']);
         $smarty->assign('categories',         get_categories_tree($goods['cat_id']));  // 分类树
+        $smarty->assign('product',              $product);
+        $smarty->assign('product_id',           $product_id);
 
         /* meta */
         $smarty->assign('keywords',           htmlspecialchars($goods['keywords']));
@@ -366,22 +478,33 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		
 		$smarty->assign('related_brands_by_cat_id',       com_sale_goods_get_related_brands_by_cat_id($goods['cat_id'])); //相关品牌;
 		
+		//获取商品相册，
+		$pictures = null;
+		if(!empty($product_id)){
+			//产品相册如果没有上传，直接读取商品相册
+			$pictures = get_product_gallery($product_id);
+			if(empty($pictures)){
+				$pictures = get_goods_gallery($goods_id);
+			}
+		}else{
+			$pictures = get_goods_gallery($goods_id);
+		}
+		
+		
         $smarty->assign('specification',       $properties['spe']);                              // 商品规格
         $smarty->assign('attribute_linked',    get_same_attribute_goods($properties));           // 相同属性的关联商品
         $smarty->assign('related_goods',       $linked_goods);                                   // 关联商品
         $smarty->assign('goods_article_list',  get_linked_articles($goods_id));                  // 关联文章
         $smarty->assign('fittings',            get_goods_fittings(array($goods_id)));                   // 配件
         $smarty->assign('rank_prices',         get_user_rank_prices($goods_id, $shop_price));    // 会员等级价格
-        $smarty->assign('pictures',            get_goods_gallery($goods_id));                    // 商品相册
+        $smarty->assign('pictures',            $pictures);                    // 商品相册
         $smarty->assign('bought_goods',        get_also_bought($goods_id));                      // 购买了该商品的用户还购买了哪些商品
         $smarty->assign('goods_rank',          get_goods_rank($goods_id));                       // 商品的销售排名
 		$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品
 		$smarty->assign("xqtop",getads(184,1));
 		$smarty->assign("xqdibu",getads(185,1));
 		$smarty->assign("xqzc",getads(186,1));
-		 
-		  
-		$pictures = get_goods_gallery($goods_id);
+		
         $img_desc_arr = array();
         foreach($pictures as $key=>$val){
         	$img_desc_arr[] = $val['img_desc'];
@@ -490,8 +613,6 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$addr_town_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_town' limit 1");
 		$smarty->assign('addr_town_name', $addr_town_name);
 		$smarty->assign('addr_town', $addr_town);
-		/*省市区街道显示值 end*/
-		
 		
 		$smarty->assign('country_list',       get_regions());
 		$smarty->assign('province_list', get_regions(1, $addr_country));
@@ -499,6 +620,17 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$smarty->assign('district_list', get_regions(3, $addr_city));
 		$smarty->assign('town_list', get_regions(4, $addr_district));
 		
+		/*省市区街道显示值 end*/
+		
+		/*TODO:显示库存情况 start***/
+		$goods_number = get_goods_store($goods_id, $product_id, [$addr_country,$addr_province,$addr_city,$addr_district,$addr_town]);
+		$smarty->assign("goods_number",$goods_number);
+		/*TODO:显示库存情况 end***/
+		
+		
+		
+		
+				
         assign_dynamic('goods');
         $volume_price_list = get_volume_price_list($goods['goods_id'], '1');
         $smarty->assign('volume_price_list',$volume_price_list);    // 商品优惠价格区间

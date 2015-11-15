@@ -20,12 +20,12 @@
                 $('#mycarousel li img').removeClass("cur_on");
                 JQ_img.addClass("cur_on");
             })
-            };
+            }; 
 
-            $('.ul-sel li').click(function(){
+            /*$('.ul-sel li').click(function(){
                $(this).siblings('li').removeClass('on');
                $(this).addClass('on');
-            });
+            });*/
 
             jQuery(".zuBox").slide({mainCell:".bd",trigger:"click"});
             jQuery(".phBox").slide({mainCell:".bd",trigger:"click"});

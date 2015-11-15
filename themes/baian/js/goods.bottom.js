@@ -1,5 +1,5 @@
 onload = function(){
-  changePrice();
+//  changePrice();
   fixpng();
   
   //alert('here!');

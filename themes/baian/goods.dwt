@@ -127,14 +127,10 @@
 	                	</dl>
 	                	<!-- {/if} -->
 	                		
-                        
-	                	
 	                	<dl>
 	                		<dt>评　价：</dt>
 	                		<dd><img src="images/stars{$goods.comment_rank}.gif" alt="comment rank {$goods.comment_rank}" />&nbsp;(已有{$review_count}人评论)</dd>
 	                	</dl>
-     
-     					
      					
      					
      					<!-- 配送至start  -->
@@ -220,7 +216,6 @@
 								<!--store-selector end-->
 								
 								
-								
 								<div id="store-prompt">
 									<strong id="province"></strong><input type="hidden" id="store_province_id" value=""/>
 									<div id="jyxl" style="display:inline; margin-top:-6px;">
@@ -233,8 +228,8 @@
 								
 					
 						<!--代码增加_end By www.ecshop120.com-->
-					
-							<a target="_blank" href="article-174.html">免运费说明</a>
+							<div style="float: left;"><strong id="goods_number_status" style="font-size: 14px;"><!-- {if ($goods_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></strong></div>
+							<div style="float: left;margin-left: 5px;"><a target="_blank" href="article-174.html">免运费说明</a></div>
 							</div>
 							<span class="clr"></span>
 						  </li>	  	
@@ -243,59 +238,8 @@
 								
 									{insert_scripts files='region.js,shopping_flow.js'}
 						 	
-		  
-		  
-						  <!-- 属性选择start -->
-						  <ul id="choose" style="display: none;">
-					          <!-- {* 开始循环所有可选属性 *} -->
-					          <!-- {foreach from=$specification item=spec key=spec_key} -->
-					          <li  id="choose-version">
-					            <div class="dt">{$spec.name}：</div>
-					            <div class="dd catt">
-					              <!-- {* 判断属性是复选还是单选 *} -->
-					              <!-- {if $spec.attr_type eq 1} -->
-					              <!-- {if $cfg.goodsattr_style eq 1} -->
-					
-								  {* 代码增加_start     By  www.68ecshop.com *}
-					                        <div class="catt">			
-								<!-- {foreach from=$spec.values item=value key=key} -->
-								<a {if $key eq 0}class="cattsel"{/if} onClick="changeAtt(this,{$goods.goods_id})" href="javascript:;" name="{$value.id}" title="[{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}]">{if $spec.name eq '颜色'}<img src="../data/color/{$attr_url}/0-0-{$value.id}.jpg" width=50 height=50 title="{$value.label}" />{else}{$value.label}{/if}<input style="display:none" id="spec_value_{$value.id}" type="radio" name="spec_{$spec_key}" value="{$value.id}" {if $key eq 0}checked{/if} /></a>
-								<!-- {/foreach} -->			
-								</div>
-					                        <input type="hidden" name="spec_list" value="{$key}" />
-								{* 代码增加_end     By  www.68ecshop.com *}
-					
-					              <!-- {else} -->
-					              <select name="spec_{$spec_key}">
-					                <!-- {foreach from=$spec.values item=value key=key} -->
-					                <option label="{$value.label}" value="{$value.id}">{$value.label} {if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if}{if $value.price neq 0}{$value.format_price}{/if}</option>
-					                <!-- {/foreach} -->
-					              </select>
-					              <input type="hidden" name="spec_list" value="{$key}" />
-					              <!-- {/if} -->
-					              <!-- {else} -->
-					              <!-- {foreach from=$spec.values item=value key=key} -->
-					              <label for="spec_value_{$value.id}">
-					                <input type="checkbox" name="spec_{$spec_key}" value="{$value.id}" id="spec_value_{$value.id}" onClick="changePrice()" />
-					                {$value.label} [{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}] </label>
-					              <br />
-					              <!-- {/foreach} -->
-					              <input type="hidden" name="spec_list" value="{$key}" />
-					              <!-- {/if} -->
-					            </div>
-					          </li>
-					          <!-- {/foreach} -->
-					          <!-- {* 结束循环可选属性 *} -->
-					       
-					          <div style="display:none"> <div class="dt">{$lang.amount}：</div>
-					          <div class="dd">
-					          <font id="ECS_GOODS_AMOUNT" style="font-size:16px; font-weight:bold; color:#C00;"></font></div></div>
-					   
-					        
-					        </ul>
-					        <!-- 属性选择end-->
-					         
-				        
+		  				
+		  				
 				    	 </dd>
 				     </dl>
         
@@ -303,20 +247,67 @@
                     <div style="clear:both"></div>
                 	</div>
                 	
+                	<!-- <div clstag="shangpin|keycount|product|choose"
+								class="clearfix p-choose-wrap" id="choose">
+								<div class="li choose-color-shouji p-choose" id="choose-color">
+									<div class="dt">选择颜色：</div>
+									<div class="dd">
+										<div class="item  selected">
+											<b></b><a title="1500ml瓶装洗涤剂" href="#none"><img width="25"
+												height="25" alt="1500ml瓶装洗涤剂"
+												src="//img10.360buyimg.com/n9/jfs/t1825/13/1925305061/80380/b16f859e/5618d2b5N3b3e4175.jpg"
+												data-img="1"><i>1500ml瓶装洗涤剂</i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div clstag="shangpin|keycount|product|choose"
+								class="clearfix p-choose-wrap" id="choose">
+								<div class="li choose-color-shouji p-choose" id="choose-color">
+									<div class="dt">选择颜色：</div>
+									<div class="dd">
+										<div class="item  selected">
+											<b></b><a title="1500ml瓶装洗涤剂" href="#none"><img width="25"
+												height="25" alt="1500ml瓶装洗涤剂"
+												src="//img10.360buyimg.com/n9/jfs/t1825/13/1925305061/80380/b16f859e/5618d2b5N3b3e4175.jpg"
+												data-img="1"><i>1500ml瓶装洗涤剂</i></a>
+										</div>
+									</div>
+								</div>
+							</div> -->
+							
+                	<div class="row2">   
+                		<!--{foreach from=$specifications item=attr key=key}-->
+                		<dl>
+                			<dt id="{$attr.attr_id}">{$attr.attr_name}：</dt>
+                			<dd>
+                				<ul class="ul-sel ul-sel2">
+                					<!--{foreach from=$attr.attr_values item=goods_attr key=val_key}-->
+                					
+                							<!-- {if ($goods_attr.is_checked eq 1)} -->
+                								<li class="on" goods_attr_id="{$goods_attr.goods_attr_id}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
+                							<!-- {else} -->
+                								<li class="" goods_attr_id="{$goods_attr.goods_attr_id}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
+                							<!-- {/if} -->
+                					<!-- {/foreach} --> 
+                				</ul>
+                				
+	                			<ul class="ul-sel ul-sel2">
+                					
+                					
+                				</ul>
+							</dd>
+                		</dl>
+                		
+                		
+                		<div style="clear:both"></div>
+                		
+                		<div class="h20"></div>
+                		<!--{/foreach}-->
+                	</div>
                 	
                 	<div class="row2">
-                		<!-- {if $value.attr} //有图片 -->
-                        <dl>
-                			<dt>颜　色：</dt>
-                			<dd>
-                				<ul class="ul-sel ul-sel1">
-                					<li><a href="{$value.attr}" style="display:block;" class="lia" name="spec_li" title="{$value.label}"><img src="{$value.attr}" alt="{$value.label}"/></a></li>
-                				</ul>
-                			</dd>
-                		</dl>
-                       
-                      <!-- {else} -->
-                      <!-- {/if} -->
                       
                     
 	                    <!-- 数量start -->  	
@@ -325,14 +316,9 @@
 	                			<dt>数　量：</dt>
 	                			<dd>
 	                            <script type="text/javascript" src="/themes/baian/js/goods.cut_add.js"></script>
-				                <span class="jian"><a class="btn-reduce" href="javascript:;" onclick="goods_cut();changePrice();">-</a> </span><input name="number" type="text" class="inp"  id="number" value="1" onblur="changePrice();"/><span class="jia"><a class="btn-add" href="javascript:;" onclick="goods_add();changePrice();">+</a></span>
-				                
-				                {if $goods.buy_number_activity}
-								<span style="font-weight:bold;float:right;position:absolute;top: -4px;left: 111px;width:300px;color:red;font-size: 18px;">买{$goods.buy_number_activity}送1</span>
-								{/if}
-								{* 代码增加_start     By  www.68ecshop.com *}
-								<font style="color:#CCCCCC; display:none">（<font style="color:#CCCCCC;" id="shows_number">{$goods.goods_number} {$goods.measure_unit}</font>）</font>
-								{* 代码增加_end     By  www.68ecshop.com *}
+				                <span class="jian"><a class="btn-reduce" href="javascript:;" onclick="goods_cut();">-</a> </span>
+				                <input name="number" type="text" class="inp"  id="number" value="1" onblur=""/>
+				                <span class="jia"><a class="btn-add" href="javascript:;" onclick="goods_add();">+</a></span>
 	                			</dd>
 	                		</dl>
 	                		<span class="ma">
@@ -344,8 +330,9 @@
 	                	
 	            		<div class="h30"></div>
 	            		<div class="btn">
-							<a class="btn1"  id="flowChart" href='javascript:addToCart({$goods.goods_id})'>立即购买</a>            			
-							<a class="btn2"  id="flowChart" href='javascript:addToCart({$goods.goods_id})'>加入购物车</a>            			
+	            			
+							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="addToCart({$goods.goods_id},null,'{$product_id}')">立即购买</a>            			
+							<a class="btn2"  id="flowChart" href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')">加入购物车</a>            			
 	            		</div>
                 	</div>
                 
@@ -665,7 +652,52 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		});
 		
 		
-		
+		//商品属性选择
+		$('.ul-sel li').click(function(){
+			//如果已经选中，则返回
+			if($(this).hasClass('on')){
+				return false;
+			}
+			
+			//选中，取消选中
+            $(this).siblings('li').removeClass('on');
+            $(this).addClass('on');
+            
+            //查找所有选中的商品属性值
+            var selected_attributes = "";
+            var $selected_lis = $('.ul-sel li.on');
+            //var arr=new Array()
+            $.each($selected_lis,function(index,v){
+            	//console.debug(v);
+            	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
+            	//arr.push($(v).attr("goods_attr_id"));
+            	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
+            });
+            //console.debug(selected_attributes);
+            //更换属性选择
+            $.ajax({     
+        	    url:'goods.php?act=select_attribute',     
+        	    type:'post',  
+        	    dataType:'json', 
+        	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        	    	console.debug(data);
+        	    	if(data.status==1){
+        	    		var goods_url = data.content.goods_url;
+        	    		window.location.href = goods_url;
+        	    	}
+        	    	
+        	    }  
+        	});
+            
+            
+            
+            
+         });
 		
 	});
 	
@@ -772,14 +804,26 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
     	    	"address[1]":$("#addr_province").val(),
     	    	"address[2]":$("#addr_city").val(),
     	    	"address[3]":$("#addr_district").val(),
-    	    	"address[4]":$("#addr_town").val()
+    	    	"address[4]":$("#addr_town").val(),
+    	    	"goods_id"  :'{$goods.goods_id}',
+    	    	"product_id":'{$product_id}',
     	    },     
     	    async :true, 
     	    error:function(){ 
     	    	alert('更新出错！');
     	    },     
     	    success:function(data){ 
-    	    	
+    	    	if(data.status==1){
+    	    		if(data.content){
+    	    			var goods_number = data.content.goods_number;
+    	    			if(goods_number>0){
+    	    				$("#goods_number_status").text("有货");
+    	    			}else{
+    	    				$("#goods_number_status").text("无货");
+    	    			}
+    	    			
+    	    		}
+    	    	}
     	    }  
     	});	
 	}

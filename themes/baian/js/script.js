@@ -416,7 +416,7 @@ function flowdiv(domid){
 /* *
  * 添加商品到购物车
  */
-function addToCart(goodsId, parentId)
+/*function addToCart(goodsId, parentId)
 {
   var goods        = new Object();
   var spec_arr     = new Array();
@@ -441,7 +441,7 @@ function addToCart(goodsId, parentId)
   goods.parent   = (typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
 
   Ajax.call('flow.php?step=add_to_cart', 'goods=' + obj2str(goods), addToCartResponse, 'POST', 'JSON');
-}
+}*/
 /* *
  * 添加礼包到购物车
  */

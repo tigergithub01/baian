@@ -27,7 +27,6 @@
       <!-- end for specifications -->
       <td class="label_2">{$lang.goods_sn}</td>
       <td class="label_2">价格</td>
-      <td class="label_2">仓库</td>
       <td class="label_2">{$lang.goods_number}</td>
       <td class="label_2">&nbsp;</td>
     </tr>
@@ -39,21 +38,14 @@
       {/foreach}
       <td class="td_1"><span onclick="listTable.edit(this, 'edit_product_sn', {$product.product_id})">{$product.product_sn|default:$lang.n_a}</span></td>
       <td class="td_1"><span onclick="listTable.edit(this, 'edit_product_price', {$product.product_id})">{$product.product_price}</span></td>
-      <td class="td_1">
-      <select class="store_sel" product_id="{$product.product_id}">
-      	<option value="">{$lang.select_please}</option>
-        {foreach from=$storerooms item=value key=store_key}
-        <!-- {if $store_key eq $product.store_id} -->
-        <option value="{$store_key}" selected="selected">{$value}</option>
-        <!-- {else} -->
-        <option value="{$store_key}">{$value}</option>
-        <!-- {/if} -->
-        {/foreach}
-       </select>
-      </td>
       <td class="td_1"><span onclick="listTable.edit(this, 'edit_product_number', {$product.product_id})">{$product.product_number}</span></td>
-      <td><input type="button" class="button" value=" - " onclick="listTable.remove({$product.product_id}, '{$lang.trash_product_confirm}', 'product_remove')"/>
-      <input type="button" class="button" value="货品相册" onclick="window.location.href='goods.php?act=product_gallery_list&product_id={$product.product_id}'"/></td>
+      <td>
+      <!-- <input type="button" class="button" value=" - " onclick="listTable.remove({$product.product_id}, '{$lang.trash_product_confirm}', 'product_remove')"/> -->
+      <input type="button" class="button" value=" - " onclick="return product_remove('{$product.product_id}','{$goods_id}')"/>
+      <input type="button" class="button" value="货品相册" onclick="window.location.href='goods.php?act=product_gallery_list&product_id={$product.product_id}'"/>
+      <input type="button" class="button" value="货品库存" onclick="window.location.href='goods.php?act=product_store&product_id={$product.product_id}'"/>
+      </td>
+      
     </tr>
     {/foreach}
 
@@ -73,13 +65,6 @@
 
       <td class="label_2"><input type="text" name="product_sn[]" value="" size="20"/></td>
       <td class="label_2"><input type="text" name="product_price[]" value="" size="20"/></td>
-      <td class="label_2">
-      <select name="store_id[]">
-        <option value="" selected>{$lang.select_please}</option>
-        {foreach from=$storerooms item=value key=store_key}
-        <option value="{$store_key}">{$value}</option>
-        {/foreach}
-       </select>
       <td class="label_2"><input type="text" name="product_number[]" value="{$product_number}" size="10"/></td>
       <td><input type="button" class="button" value=" + " onclick="javascript:add_attr_product();"/></td>
     </tr>
@@ -142,6 +127,30 @@ $(function(){
 	});
 });
 
+
+function product_remove(product_id,goods_id){
+	if(!confirm('是否删除?')){
+		return false;
+	}
+	$.ajax({     
+	    url:'goods.php?act=product_remove',     
+	    type:'post',  
+	    dataType:'json', 
+	    data:{'id':product_id},     
+	    async :true, 
+	    error:function(){ 
+	    	alert('更新出错！');
+	    },     
+	    success:function(data){ 
+	    	console.debug(data);
+		    if(data.error==0){
+		    	window.location.href="goods.php?act=product_list&goods_id="+goods_id;
+		    }else{
+		    	alert(data.message);
+		    }
+	    }  
+	}); 
+}
 
 /**
  * 追加货品添加表格

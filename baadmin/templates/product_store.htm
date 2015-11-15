@@ -1,0 +1,96 @@
+<!-- $Id: goods_list.htm 16529 2009-08-12 05:38:57Z wangleisvn $ -->
+
+{if $full_page}
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+{insert_scripts files="validator.js"}
+<!-- 添加货品 -->
+<div class="list-div" style="margin-bottom: 5px; margin-top: 10px;" id="listDiv">
+
+{/if}
+
+<form  enctype="multipart/form-data" method="post" action="goods.php" name="addForm" id="addForm" >
+ <!-- 商品相册 -->
+        <table width="90%" id="gallery-table"  align="center">
+          <!-- 图片列表 -->
+          <tr>
+		      <th colspan="20" scope="col">货号：{$product.product_sn}</th>
+		    </tr>
+          <tr>
+            <td>
+            	<table>
+            		<thead>
+            			<tr>
+		            		<th>仓库</th>
+		            		<th>库存</th>
+            			</tr>
+            		</thead>
+            		<tbody>
+            			 {foreach from=$products_store_list item=item key=i}
+            			<tr>
+            				<td>{$item.store_name}</td>
+            				<td>
+            				<input type="hidden" value="{$item.store_id}" name="goods_storerooms[{$item.store_id}]"	/>
+            				<input type="hidden" value="{$item.product_store_id}" name="product_store_ids[{$item.store_id}]"	/>
+            				<input type="text" value="{$item.product_number}" name="product_numbers[{$item.store_id}]"	/>
+            				</td>
+            			</tr>
+            			{/foreach}
+            		</tbody>
+            	</table>
+             
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+		
+
+        </table>
+        
+        <div class="button-div">
+          <input type="hidden" name="product_id" value="{$product.product_id}" />
+          <input type="submit" value="{$lang.button_submit}" class="button" />
+          <input type="reset" value="{$lang.button_reset}" class="button" />
+        </div>
+        <input type="hidden" name="act" value="product_store_update" />
+</form>
+
+{if $full_page}
+
+</div>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+
+$(function(){
+	$(".store_sel").change(function(){
+		var store_id = $(this).val();
+		var product_id = $(this).attr("product_id");
+		$.ajax({     
+    	    url:'goods.php?act=edit_store_id',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'store_id':store_id,'product_id':product_id},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    		    if(data.error==0){
+    		    	
+    		    }else{
+    		    	alert(data.message);
+    		    }
+    	    }  
+    	}); 
+		
+	});
+});
+
+
+
+
+</script>
+{include file="pagefooter.htm"}
+
+{/if}

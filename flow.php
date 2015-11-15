@@ -60,7 +60,9 @@ if ($_REQUEST['step'] == 'add_to_cart')
     {
         if (!is_numeric($_REQUEST['goods_id']) || intval($_REQUEST['goods_id']) <= 0)
         {
-            ecs_header("Location:./\n");
+//             ecs_header("Location:./\n");
+			lib_main_make_json_error("商品编号为空");
+			exit;
         }
         $goods_id = intval($_REQUEST['goods_id']);
         exit;
@@ -77,8 +79,9 @@ if ($_REQUEST['step'] == 'add_to_cart')
 
     $goods = $json->decode($_POST['goods']);
 
-    /* 检查：如果商品有规格，而post的数据没有规格，把商品的规格属性通过JSON传到前台 */
-    if (empty($goods->spec) AND empty($goods->quick))
+    /**TODO:百安母婴的商品属性功能已经经过优化，代码不起作用，注释掉 start **/
+    /* 检查：如果商品有规格，而post的数据没有规格，把商品的规格属性通过JSON传到前台, */
+    /* if (empty($goods->spec) AND empty($goods->quick))
     {
         $sql = "SELECT a.attr_id, a.attr_name, a.attr_type, ".
             "g.goods_attr_id, g.attr_value, g.attr_price " .
@@ -116,8 +119,26 @@ if ($_REQUEST['step'] == 'add_to_cart')
 
             die($json->encode($result));
         }
+    } */
+    /**TODO:百安母婴的商品属性功能已经经过优化，代码不起作用，注释掉  end**/
+    
+    /*检查产品是否应该有规格，如果有规格，则将默认的产品加入购物车；如果加入购物车的时候，传入了产品编号，则将对应的产品加入购物车**/
+    $product = null;
+    if(isset($goods->product_id)){
+    	$product  = get_product($goods['product_id']);
+    	if(empty($product)){
+    		$result['error']   = ERR_NEED_SELECT_ATTR;
+    		$result['goods_id'] = $goods->goods_id;
+    		$result['parent'] = $goods->parent;
+    		$result['message'] = "您选择的规格已经不存在，请刷新页面重试！";
+    		die($json->encode($result));
+    	}
+    }else{
+    	$product = get_default_product($goods->goods_id);
     }
-
+    $product_id = isset($product)?$product['product_id']:null;
+    
+    /**立即购买的方案待优化，通过post的数据的方式提交数据，不能清空购物车，然后放入购物车中进行提交****/
     /* 更新：如果是一步购物，先清空购物车 */
     if ($_CFG['one_step_buy'] == '1')
     {
@@ -134,7 +155,7 @@ if ($_REQUEST['step'] == 'add_to_cart')
     else
     {
         // 更新：添加到购物车
-        if (addto_cart($goods->goods_id, $goods->number, $goods->spec, $goods->parent))
+        if (addto_cart($goods->goods_id, $goods->number, $goods->spec, $goods->parent,$product_id))
         {
             if ($_CFG['cart_confirm'] > 2)
             {

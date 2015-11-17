@@ -16,6 +16,7 @@
 	.s-photo-viewer img{display: block;border: 1px solid #ddd;}
 	.ul-ping li .con .img img{cursor: pointer;}
 	.ul-ping li .con .img img.ok{border: 1px solid #f08300;margin-bottom: 20px;}
+	.img-wp br{display: none;}
 	</style>
  
 {insert_scripts files='common.js,transport1.js'}
@@ -496,6 +497,7 @@
 								<span>商品毛重：{$goods.goods_weight}</span>
 							</div>
 							<div class="img-wp">
+								
 								<div class="ad">
 									  <!--{foreach from=$xqtop name=ban item=banner}-->
 										<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>

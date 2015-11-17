@@ -154,7 +154,7 @@
              		<a class="tit" href="{$goods.goods_url}" target="_blank" >{$goods.goods_name}</a>
               </td>
               <td >{$goods.goods_price} </td>
-              <td>{$goods.is_youhuo_wwwECSHOP120com}</td>
+              <td><!-- {if ($goods.goods_stock_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></td>
               <td >
                 <!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
 				<span class="jian" onclick="goods_cut('{$goods.rec_id}');">-</span>

@@ -31,9 +31,21 @@ function addToCart(goodsId, parentId,product_id)
   goods.number   = number;
   goods.parent   = (parentId==null || typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
   
+  if($("#addr_country")!=null && $("#addr_province")!=null){
+	  //在商品详情页面选择仓库的情况
+	  var address = new Array();
+	  address.push($("#addr_country").val());
+	  address.push($("#addr_province").val());
+	  address.push($("#addr_city").val());
+	  address.push($("#addr_district").val());
+	  address.push($("#addr_town").val());
+	  goods.address=address;
+  }
+  
   if(product_id!=null && product_id!=''){
 	  goods.product_id = product_id;
   }
+  //console.debug(goods);
   Ajax.call('flow.php?step=add_to_cart', 'goods=' + obj2str(goods), addToCartResponse, 'POST', 'JSON');
 }
 

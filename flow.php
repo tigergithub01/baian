@@ -154,8 +154,11 @@ if ($_REQUEST['step'] == 'add_to_cart')
     /* 更新：购物车 */
     else
     {
+        //获取地址信息,商品详情页面选择地址后，用来判断是否缺货
+    	$address = isset($goods->address)?$goods->address:null;
+    	
         // 更新：添加到购物车
-        if (addto_cart($goods->goods_id, $goods->number, $goods->spec, $goods->parent,$product_id))
+        if (addto_cart($goods->goods_id, $goods->number, $goods->spec, $goods->parent,$product_id,$address))
         {
             if ($_CFG['cart_confirm'] > 2)
             {
@@ -553,6 +556,8 @@ elseif ($_REQUEST['step'] == 'checkout')
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
 	$region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $cart_goods = cart_goods($flow_type,$region,1); // 取得商品列表，计算合计
+    
+    
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/ 
 	/* 代码增加start  By  www.ecshop120.com */
 	$sql_qq2211707="select store_id  from ". $ecs->table('goods_storeroom') ." where store_province like '%,". $consignee['province'] .",%' ";
@@ -1615,7 +1620,7 @@ elseif ($_REQUEST['step'] == 'done')
     $consignee = get_address($address_id);
     $_SESSION['flow_consignee'] = stripslashes_deep($consignee); */
     
-    
+    $consignee = get_consignee($_SESSION['user_id']);
     
     
 
@@ -1641,7 +1646,10 @@ elseif ($_REQUEST['step'] == 'done')
         {
             $_cart_goods_stock[$value['rec_id']] = $value['goods_number'];
         }
-        flow_cart_stock($_cart_goods_stock);
+        
+        //获取地址信息：
+        $address = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
+        flow_cart_stock($_cart_goods_stock,$address);
         unset($cart_goods_stock, $_cart_goods_stock);
     }
 
@@ -1657,7 +1665,7 @@ elseif ($_REQUEST['step'] == 'done')
         exit;
     }
 
-    $consignee = get_consignee($_SESSION['user_id']);
+    /* $consignee = get_consignee($_SESSION['user_id']); */
 
  //    /* 检查收货人信息是否完整 */
   //   if (!check_consignee_info($consignee, $flow_type))
@@ -2535,7 +2543,7 @@ function flow_available_points()
 {
     $sql = "SELECT SUM(g.integral * c.goods_number) ".
             "FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " . $GLOBALS['ecs']->table('goods') . " AS g " .
-            "WHERE c.session_id = '" . SESS_ID . "' AND c.goods_id = g.goods_id AND c.is_gift = 0 AND g.integral > 0 " .
+            "WHERE c.session_id = '" . SESS_ID . "' AND c.goods_id = g.goods_id AND c.is_gift = 0 AND g.integral > 0 and c.is_checked = 1 " .
             "AND c.rec_type = '" . CART_GENERAL_GOODS . "'";
 
     $val = intval($GLOBALS['db']->getOne($sql));
@@ -2718,13 +2726,27 @@ function flow_update_cart_goods($rec_id,$goods_number)
 				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
 						$row['goods_number'], $row['goods_number'])];
 			}
+			
 			/* 是货品 */
 			$goods['product_id'] = trim($goods['product_id']);
 			if (!empty($goods['product_id']))
 			{
+				/* 查询规格名称 start */
+				$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$goods['product_id']."'";
+				$attr_list = $GLOBALS['db']->getAll($sql);
+				foreach ($attr_list AS $attr)
+				{
+					$row['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+				}
+				/* 查询规格名称 end */
+				
 				$sql = "SELECT product_number FROM " .$GLOBALS['ecs']->table('products'). " WHERE goods_id = '" . $goods['goods_id'] . "' AND product_id = '" . $goods['product_id'] . "'";
 
 				$product_number = $GLOBALS['db']->getOne($sql);
+								
 				if ($product_number < $val)
 				{
 					return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
@@ -2786,7 +2808,7 @@ function flow_update_cart_goods($rec_id,$goods_number)
 			else
 			{
 				$attr_id    = empty($goods['goods_attr_id']) ? array() : explode(',', $goods['goods_attr_id']);
-				$goods_price = get_final_price($goods['goods_id'], $val, true, $attr_id);
+				$goods_price = get_final_price($goods['goods_id'], $val, true, $attr_id,$goods['product_id']);
 
 				//更新购物车中的商品数量
 				$sql = "UPDATE " .$GLOBALS['ecs']->table('cart').
@@ -2816,13 +2838,14 @@ function flow_update_cart_goods($rec_id,$goods_number)
 
 /**
  * 检查订单中商品库存
+ * //TODO:检查订单中商品库存的时候，应该加入配送区域判断
  *
  * @access  public
  * @param   array   $arr
  *
  * @return  void
  */
-function flow_cart_stock($arr)
+function flow_cart_stock($arr, $address=null)
 {
     foreach ($arr AS $key => $val)
     {
@@ -2864,6 +2887,16 @@ function flow_cart_stock($arr)
                     $row['goods_number'], $row['goods_number']));
                     exit;
                 }
+            }
+            
+            //TODO:根据配送地址匹配、仓库检查库存情况
+            if($address && !empty($row['product_id'])){
+            	$store_number = get_goods_store($row['goods_id'], $row['product_id'], $address);
+            	if ($store_number < $val ){
+            		show_message(sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
+                    $row['goods_number'], $row['goods_number']));
+                    exit;
+            	}
             }
         }
         elseif (intval($GLOBALS['_CFG']['use_storage']) > 0 && $goods['extension_code'] == 'package_buy')

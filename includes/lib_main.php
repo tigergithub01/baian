@@ -1570,7 +1570,7 @@ function recalculate_price()
 {
     /* 取得有可能改变价格的商品：除配件和赠品之外的商品 */
     $sql = 'SELECT c.rec_id, c.goods_id, c.goods_attr_id, g.promote_price, g.promote_start_date, c.goods_number,'.
-                "g.promote_end_date, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS member_price ".
+                "g.promote_end_date, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS member_price,c.product_id ".
             'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
             'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
             "LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
@@ -1585,7 +1585,7 @@ function recalculate_price()
         $attr_id    = empty($row['goods_attr_id']) ? array() : explode(',', $row['goods_attr_id']);
 
 
-        $goods_price = get_final_price($row['goods_id'], $row['goods_number'], true, $attr_id);
+        $goods_price = get_final_price($row['goods_id'], $row['goods_number'], true, $attr_id,$row['product_id']);
 
 
         $goods_sql = "UPDATE " .$GLOBALS['ecs']->table('cart'). " SET goods_price = '$goods_price' ".

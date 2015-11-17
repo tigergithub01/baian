@@ -469,7 +469,7 @@ function order_goods($order_id)
     $sql = "SELECT og.rec_id, og.goods_id, og.goods_name, og.goods_sn, og.market_price, og.goods_number, " .
             "og.goods_price, og.goods_attr, og.is_real, og.parent_id, og.is_gift, " .
             "og.goods_price * og.goods_number AS subtotal, og.extension_code, " .
-            "g.goods_thumb , g.goods_img " .
+            "g.goods_thumb , g.goods_img, og.product_id " .
             "FROM " . $GLOBALS['ecs']->table('order_goods') . ' AS og ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             "ON og.goods_id = g.goods_id " .
@@ -488,6 +488,21 @@ function order_goods($order_id)
         $row['goods_img']        = get_image_path($row['goods_id'], $row['goods_img']);
         $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
 //         $goods_list[$row['rec_id']] = $row;
+		
+        /*根据产品编号查询规格*/
+        if ($row['product_id'] && intval($row['product_id'])>0 )
+        {
+        	$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$row['product_id']."'";
+        	$attr_list = $GLOBALS['db']->getAll($sql);
+        	foreach ($attr_list AS $attr)
+        	{
+        		$row['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+        	}
+        }
+        
         $goods_list[] = $row;
     }
 // 	var_dump($goods_list);
@@ -1128,6 +1143,10 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_i
     $product = null;
     if($product_id){
     	$product = get_product($product_id);
+    	if(!$product){
+    		//查找不到对应的产品
+    		$product_id = null;
+    	}
     }
     
     /***TODO:百安母婴中没有配件单独销售的情况，此情况可以忽略 start***/
@@ -1194,17 +1213,19 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_i
         
         
         //检查产品的库存
-    	if ($num > $product['product_number']){
+    	if ($product && ($num > $product['product_number'])){
         	$GLOBALS['err']->add(sprintf($GLOBALS['_LANG']['shortage'], $goods['product_number']), ERR_OUT_OF_STOCK);
         	return false;
         }
         
         //TODO:如果传入了配送地址，根据配送地址匹配、仓库检查库存情况
         if($address && $product){
-        	
+        	$store_number = get_goods_store($goods_id, $product['product_id'], $address);
+        	if ($num > $store_number){
+        		$GLOBALS['err']->add(sprintf($GLOBALS['_LANG']['shortage'], $store_number), ERR_OUT_OF_STOCK);
+        		return false;
+        	}
         }
-        
-        
 
         //商品存在规格 是货品 检查该货品库存
         if (is_spec($spec) && !empty($prod))
@@ -1725,7 +1746,7 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0)
  * @access  public
  * @return  array
  */
-function get_cart_goods()
+function get_cart_goods($is_checked)
 {
     /* 初始化 */
     $goods_list = array();
@@ -1739,10 +1760,17 @@ function get_cart_goods()
 
     /* 循环、统计 */
     //如果用户已经登录，则根据用户编号获取购物车的内容；如果用户没有登录，则根据session_id获取用户编号
-    $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
+    /* $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
     		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
     		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
-    		" ORDER BY pid, parent_id";
+    		" ORDER BY pid, parent_id"; */
+    $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
+    		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
+    		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'";    
+    if(isset($is_checked)){
+    	$sql = $sql." AND is_checked = '$is_checked'";
+    }    
+    $sql = $sql . " ORDER BY pid, parent_id";
     
     $res = $GLOBALS['db']->query($sql);
 
@@ -1786,6 +1814,21 @@ function get_cart_goods()
                 $row['goods_name'] .= ' [' . $attr . '] ';
             }
         }
+        
+        /*根据产品编号查询规格*/
+        if ($row['product_id'] && intval($row['product_id'])>0 )
+        {
+        	$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$row['product_id']."'";
+        	$attr_list = $GLOBALS['db']->getAll($sql);
+        	foreach ($attr_list AS $attr)
+        	{
+        		$row['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+        	}
+        }        
+        
         /* 增加是否在购物车里显示商品图 */
         if (($GLOBALS['_CFG']['show_goods_in_cart'] == "2" || $GLOBALS['_CFG']['show_goods_in_cart'] == "3") && $row['extension_code'] != 'package_buy')
         {
@@ -1798,7 +1841,10 @@ function get_cart_goods()
         }
         
         /**商品链接**/
-        $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id'],'pid'=>$row['product_id']), $row['goods_name']);
+        
+        /*是否有货*/
+        $row['goods_stock_number'] = get_goods_store($row['goods_id'], $row['product_id']);
         
         $goods_list[] = $row;
     }

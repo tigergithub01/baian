@@ -2218,7 +2218,7 @@ function get_product($product_id,$goods_id=null)
  * @param unknown $product_id
  * @param unknown $address
  */
-function get_goods_store($goods_id,$product_id,$address){
+function get_goods_store($goods_id,$product_id,$address=null){
 	$sql = "SELECT IFNULL(goods_number,0) AS goods_number FROM " . $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$goods_id' LIMIT 1";
 	$goods_number = $GLOBALS['db']->getOne($sql);
 	

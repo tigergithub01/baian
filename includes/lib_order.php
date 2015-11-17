@@ -486,7 +486,7 @@ function order_goods($order_id)
         
         $row['goods_thumb']      = get_image_path($row['goods_id'], $row['goods_thumb'], true);
         $row['goods_img']        = get_image_path($row['goods_id'], $row['goods_img']);
-        $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id'],'pid'=>$row['product_id']), $row['goods_name']);
 //         $goods_list[$row['rec_id']] = $row;
 		
         /*根据产品编号查询规格*/
@@ -900,7 +900,7 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
 {
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
     $sql = "SELECT rec_id, user_id, goods_id, goods_name, goods_sn, goods_number, " .
-            "market_price, goods_price, goods_attr_id, goods_attr, is_real, extension_code, parent_id, is_gift, is_shipping, " .
+            "market_price, goods_price, goods_attr_id, goods_attr, is_real, extension_code, parent_id, is_gift, is_shipping, product_id, " .
             "goods_price * goods_number AS subtotal " .
             "FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' " .
@@ -923,8 +923,21 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
         $arr[$key]['goods_thumb'] = get_image_path($arr[$key]['goods_id'], $goods_thumb, true);
         
         /**商品链接**/
-        $arr[$key]['goods_url'] = build_uri('goods', array('gid'=>$arr[$key]['goods_id']), $arr[$key]['goods_name']);
+        $arr[$key]['goods_url'] = build_uri('goods', array('gid'=>$arr[$key]['goods_id'],'pid'=>$arr[$key]['product_id']), $arr[$key]['goods_name']);
         
+        /*根据产品编号查询规格*/
+        if ($arr[$key]['product_id'] && intval($arr[$key]['product_id'])>0 )
+        {
+        	$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$arr[$key]['product_id']."'";
+        	$attr_list = $GLOBALS['db']->getAll($sql);
+        	foreach ($attr_list AS $attr)
+        	{
+        		$arr[$key]['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+        	}
+        }
         
 		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
 		if($value['is_shipping']==1)

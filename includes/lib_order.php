@@ -2412,13 +2412,12 @@ function &get_shipping_object($shipping_id)
  */
 function change_order_goods_storage($order_id, $is_dec = true, $storage = 0)
 {
+	//TODO：根据配送地址匹配仓库
+	$sql_address = "select country,province,city,district from ".$GLOBALS['ecs']->table('order_info')." where order_id='$order_id' limit 1";
+	$shipping_address = $GLOBALS['db'] ->getRow($sql_address);
+	$storeroom = get_storeroom(array($shipping_address['country'],$shipping_address['province'],$shipping_address['city'],$shipping_address['district']));
+	$store_id = isset($storeroom)?$storeroom['store_id']:null;
 	
-   /* 代码增加_start  By  www.ecshop120.com */
-   $sql_www_ecshop120_com = "select province from ".$GLOBALS['ecs']->table('order_info')." where order_id='$order_id' ";
-   $province_qq2211707 = $GLOBALS['db'] ->getOne($sql_www_ecshop120_com);
-   $sql_qq2211707 = "select store_id from ".$GLOBALS['ecs']->table('goods_storeroom')." where  instr(store_province, '#".$province_qq2211707."#') limit 1";
-   $store_id_qq2211707 = $GLOBALS['db'] ->getOne($sql_qq2211707);   
-   /* 代码增加_end  By  www.ecshop120.com  */
     /* 查询订单商品信息 */
     switch ($storage)
     {
@@ -2432,6 +2431,8 @@ function change_order_goods_storage($order_id, $is_dec = true, $storage = 0)
                     " WHERE order_id = '$order_id' AND is_real = 1 GROUP BY goods_id, product_id";
         break;
     }
+    
+    
 
     $res = $GLOBALS['db']->query($sql);
     while ($row = $GLOBALS['db']->fetchRow($res))
@@ -2440,17 +2441,11 @@ function change_order_goods_storage($order_id, $is_dec = true, $storage = 0)
         {
             if ($is_dec)
             {
-                change_goods_storage($row['goods_id'], $row['product_id'], - $row['num']);
-				/* 代码增加_start  By  www.ecshop120.com */
-				change_goods_storage_kufang($row['goods_id'], $row['product_id'], - $row['num'], $store_id_qq2211707);
-				/* 代码增加_end  By  www.ecshop120.com */
+                change_goods_storage($row['goods_id'], $row['product_id'], - $row['num'],$store_id);
             }
             else
             {
-                change_goods_storage($row['goods_id'], $row['product_id'], $row['num']);
-				/* 代码增加_start  By  www.ecshop120.com */
-				change_goods_storage_kufang($row['goods_id'], $row['product_id'], $row['num'], $store_id_qq2211707);
-				/* 代码增加_end  By  www.ecshop120.com */
+                change_goods_storage($row['goods_id'], $row['product_id'], $row['num'],$store_id);
             }
             $GLOBALS['db']->query($sql);
         }
@@ -2470,17 +2465,11 @@ function change_order_goods_storage($order_id, $is_dec = true, $storage = 0)
 
                 if ($is_dec)
                 {
-                    change_goods_storage($row_goods['goods_id'], $row['product_id'], - ($row['num'] * $row_goods['goods_number']));
-					/* 代码增加_start  By  www.ecshop120.com */
-					change_goods_storage_kufang($row_goods['goods_id'], $row['product_id'], - ($row['num'] * $row_goods['goods_number']), $store_id_qq2211707);
-					/* 代码增加_end  By  www.ecshop120.com */
+                    change_goods_storage($row_goods['goods_id'], $row['product_id'], - ($row['num'] * $row_goods['goods_number']),$store_id);
                 }
                 elseif ($is_goods['is_real'])
                 {
-                    change_goods_storage($row_goods['goods_id'], $row['product_id'], ($row['num'] * $row_goods['goods_number']));
-					/* 代码增加_start  By  www.ecshop120.com */
-					change_goods_storage_kufang($row_goods['goods_id'], $row['product_id'], ($row['num'] * $row_goods['goods_number']), $store_id_qq2211707);
-					/* 代码增加_end  By  www.ecshop120.com */
+                    change_goods_storage($row_goods['goods_id'], $row['product_id'], ($row['num'] * $row_goods['goods_number']),$store_id);
                 }
             }
         }
@@ -2531,10 +2520,11 @@ function change_goods_storage_kufang($good_id, $product_id, $number = 0, $store_
  * @param   int    $good_id         商品ID
  * @param   int    $product_id      货品ID
  * @param   int    $number          增减数量，默认0；
+ * @param   int    $store_id        仓库编号，默认为null
  *
  * @return  bool               true，成功；false，失败；
  */
-function change_goods_storage($good_id, $product_id, $number = 0)
+function change_goods_storage($good_id, $product_id, $number = 0,$store_id = null)
 {
     if ($number == 0)
     {
@@ -2547,6 +2537,17 @@ function change_goods_storage($good_id, $product_id, $number = 0)
     }
 
     $number = ($number > 0) ? '+ ' . $number : $number;
+    
+    //TODO:根据配送区域，匹配货品，扣减对应的库存
+    $products_store_query = true;
+    if($store_id && !empty($product_id)){
+    	 $sql = "UPDATE " . $GLOBALS['ecs']->table('products_store') ."
+                SET product_number = product_number $number
+                WHERE store_id = '$store_id'
+                AND product_id = '$product_id'
+                LIMIT 1";
+        $products_store_query = $GLOBALS['db']->query($sql);
+    }
 
     /* 处理货品库存 */
     $products_query = true;
@@ -2566,8 +2567,8 @@ function change_goods_storage($good_id, $product_id, $number = 0)
             WHERE goods_id = '$good_id'
             LIMIT 1";
     $query = $GLOBALS['db']->query($sql);
-
-    if ($query && $products_query)
+    
+    if ($query && $products_query && $products_store_query)
     {
         return true;
     }

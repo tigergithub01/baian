@@ -248,7 +248,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
     die($json->encode($res));
 }
 
-clear_cache_files();
+// clear_cache_files();
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
@@ -256,7 +256,7 @@ clear_cache_files();
 	$product = get_product($product_id);
 	$goods_id = isset($product)?$product['goods_id']:0;
 } */
-$cache_id = $goods_id . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
+$cache_id = $goods_id. (isset($product_id)?$product_id:0) . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
 $cache_id = sprintf('%X', crc32($cache_id));
 if (!$smarty->is_cached('goods.dwt', $cache_id))
 {
@@ -483,6 +483,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		if(!empty($product_id)){
 			//产品相册如果没有上传，直接读取商品相册
 			$pictures = get_product_gallery($product_id);
+// 			var_dump($pictures);
 			if(empty($pictures)){
 				$pictures = get_goods_gallery($goods_id);
 			}
@@ -500,7 +501,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
         $smarty->assign('pictures',            $pictures);                    // 商品相册
         $smarty->assign('bought_goods',        get_also_bought($goods_id));                      // 购买了该商品的用户还购买了哪些商品
         $smarty->assign('goods_rank',          get_goods_rank($goods_id));                       // 商品的销售排名
-		$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品
+		$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
 		$smarty->assign("xqtop",getads(184,1));
 		$smarty->assign("xqdibu",getads(185,1));
 		$smarty->assign("xqzc",getads(186,1));

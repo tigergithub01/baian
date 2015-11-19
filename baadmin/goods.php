@@ -2749,6 +2749,7 @@ elseif ($_REQUEST['act'] == 'product_gallery_update')
 	/*返回link*/
 	$url='goods.php?act=product_gallery_list&product_id=' . $product_id;
 	$link[] = array('href' => 'goods.php?act=product_list&goods_id=' . $product['goods_id'], 'text' => $_LANG['item_list']);
+	$link[] = array('href' => 'goods.php?act=product_gallery_list&product_id=' . $product_id, 'text' => "货品相册");
 
 	/* 清空缓存 */
 	clear_cache_files();
@@ -2764,9 +2765,9 @@ elseif ($_REQUEST['act'] == 'product_gallery_update')
 	}
 	
 	/* 返回 */
-	ecs_header("Location: $url\n");
-	exit;
-//     sys_msg($_LANG['no_operation'], 0, $link,false);
+// 	ecs_header("Location: $url\n");
+// 	exit;
+    sys_msg("货品相册保存成功！", 2, $link,true);
 }
 
 /*------------------------------------------------------ */
@@ -2881,14 +2882,15 @@ elseif ($_REQUEST['act'] == 'product_store_update')
 	/*返回link*/
 	$url='goods.php?act=product_store&product_id=' . $product_id;
 	$link[] = array('href' => 'goods.php?act=product_list&goods_id=' . $product['goods_id'], 'text' => $_LANG['item_list']);
+	$link[] = array('href' => 'goods.php?act=product_store&product_id=' . $product_id, 'text' => "货品库存");
 
 	/* 清空缓存 */
 	clear_cache_files();
 
 	/* 返回 */
-	ecs_header("Location: $url\n");
-	exit;
-	//     sys_msg($_LANG['no_operation'], 0, $link,false);
+// 	ecs_header("Location: $url\n");
+// 	exit;
+	sys_msg("货品库存保存成功！", 2, $link,true);
 }
 
 

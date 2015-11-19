@@ -211,8 +211,9 @@ $children));
 	$smarty->assign("f5tong",getads(171,1));
 	$smarty->assign("f6tong",getads(172,1));
 	$smarty->assign("f7tong",getads(173,1));
-	$smarty->assign("dibu",getads(183,1));
-    $smarty->assign('brand_list',      get_brands());
+	$smarty->assign("dibu",getads(183,1));//首页底部广告图
+    
+	$smarty->assign('brand_list',      get_brands());
     $smarty->assign('promotion_info',  get_promotion_info()); // 增加一个动态显示所有促销信息的标签栏
 
     $smarty->assign('invoice_list',    index_get_invoice_query());  // 发货查询

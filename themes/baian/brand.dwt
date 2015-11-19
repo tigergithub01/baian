@@ -181,79 +181,14 @@
                         <div class="h15"></div>
                     </div>
                 </div>
-                <div class="h"></div>
-                <div class="i-rush r">
-                    <div class="sec-tit">
-                        <a href="" class="r">更多抢购&gt;</a>
-                        <h3 class="stt1">每天限时抢购<span class="datetime">01 : 32 : 24</span></h3>
-                    </div>
-                    <div class="sec-con">
-                        <div id="rushScroll" class="rushScroll">
-                            <a class="prev"></a>
-                            <a class="next"></a>
-                            <div class="bd">
-                                <ul class="img-ul">
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg"/></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="" title="产品名字">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="pic"><a href="" title="产品名字"><img src="images/p2.jpg" /></a></div>
-                                        <div class="title">
-                                            <h3><a href="">艾诗浪漫花香沐浴沐浴露东方大</a></h3>
-                                            <div class="price"><span>抢购价<b>¥1990.00</b></span><s>¥2000.00</s></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
+                <!-- {if $promotion_goods|@count neq 0} 限时抢购 start -->
+				<div class="h"></div>
+				<div class="i-rush r">
+				<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
+				</div>
+				<!-- {/if} 限时抢购 end -->
+				
             </div>
                 
 </div>

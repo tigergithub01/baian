@@ -373,7 +373,8 @@ if (!$smarty->is_cached('category.dwt', $cache_id))
     }
 
     $smarty->assign('best_goods',      get_category_recommend_goods('best', $children, $brand, $price_min, $price_max, $ext));
-    $smarty->assign('promotion_goods', get_category_recommend_goods('promote', $children, $brand, $price_min, $price_max, $ext));
+    /* $smarty->assign('promotion_goods', get_category_recommend_goods('promote', $children, $brand, $price_min, $price_max, $ext)); */
+    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
     $smarty->assign('hot_goods',       get_category_recommend_goods('hot', $children, $brand, $price_min, $price_max, $ext));
 
     $count = get_cagtegory_goods_count($children, $brand, $price_min, $price_max, $ext);

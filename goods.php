@@ -486,6 +486,16 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 // 			var_dump($pictures);
 			if(empty($pictures)){
 				$pictures = get_goods_gallery($goods_id);
+			}else{
+				/**因为产品相册暂时没有上传主图的入口，现在将商品的主图附加在最后，临时解决方案**/
+				$sql = "SELECT goods_thumb, goods_img FROM " .$GLOBALS['ecs']->table('goods'). "AS g
+				INNER JOIN ". $GLOBALS['ecs']->table('products').  " AS p
+							ON (g.goods_id = p.goods_id) AND p.product_id = '$product_id' LIMIT 1";
+				$imgs = $GLOBALS['db']->getRow($sql);
+				
+				$arr = ['img_url'=>get_image_path($product_id, $imgs['goods_img'], false, 'goods'),
+						'thumb_url'=>get_image_path($product_id, $imgs['goods_thumb'], true, 'goods')];
+				$pictures[]=$arr;
 			}
 		}else{
 			$pictures = get_goods_gallery($goods_id);

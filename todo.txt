@@ -40,6 +40,13 @@ http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb
 
 用户注册:
 
+购物车：
+http://localhost:8086/flow.php
+
+
+phpInfo:
+http://www.123121.com/baadmin/goods.php?act=phpinfo
+
 2015/10/05 20:39:30 [error] 10538#0: 
 *1920834 upstream prematurely closed connection while reading response header from upstream, 
 client: 58.250.180.213, 
@@ -134,6 +141,24 @@ flow.dwt:
 1、作为礼品赠送
 2、作为配件购买
 
+http://www.123121.com/goods-22004.html
+
+1\商品有多属性时，加入购物车缺货判断优化 ->ok
+2\用户登录时，重新计算购物车中商品的价格  ->ok
+3\多属性商品加入购物车时，显示所选择的商品对应的属性  ->ok
+4\从购物车中查看商品时，直接跳转到对应属性的商品。  ->ok
+5\购物车中改变商品数量时，商品价格根据商品对应属性进行修改。  ->ok
+6\提交订单的时候，选择属性后，库存检查  ->ok
+7\我的订单中订单明细显示属性  ->ok
+8\订单明细页面中显示属性  ->ok
+9\如果下单时扣减库存，则根据属性扣减库存->处理中
+
+
+
+http://www.123121.com/goods.php?id=22007
+http://www.123121.com/goods.php?id=22009
+
+系统中保存的时间戳都为格林威治时间。
 
 
 

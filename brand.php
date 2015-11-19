@@ -117,7 +117,8 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     }
 
     $smarty->assign('best_goods',      brand_recommend_goods('best', $brand_id, $cate));
-    $smarty->assign('promotion_goods', brand_recommend_goods('promote', $brand_id, $cate));
+//     $smarty->assign('promotion_goods', brand_recommend_goods('promote', $brand_id, $cate));
+    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
     $smarty->assign('brand',           $brand_info);
     $smarty->assign('promotion_info', get_promotion_info());
 

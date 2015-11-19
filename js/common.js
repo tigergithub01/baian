@@ -31,7 +31,7 @@ function addToCart(goodsId, parentId,product_id)
   goods.number   = number;
   goods.parent   = (parentId==null || typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
   
-  if($("#addr_country")!=null && $("#addr_province")!=null){
+  if($("#addr_country")!=null && $("#addr_country").length>0 && $("#addr_province")!=null && $("#addr_province").length>0){
 	  //在商品详情页面选择仓库的情况
 	  var address = new Array();
 	  address.push($("#addr_country").val());

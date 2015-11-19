@@ -800,17 +800,6 @@ function get_product_gallery($product_id)
 		$rows[$key]['img_url'] = get_image_path($product_id, $gallery_img['img_url'], false, 'gallery');
 		$rows[$key]['thumb_url'] = get_image_path($product_id, $gallery_img['thumb_url'], true, 'gallery');
 	}
-	
-	/**因为产品相册暂时没有上传主图的入口，现在将商品的主图附加在最后，临时解决方案**/
-	$sql = "SELECT goods_thumb, goods_img FROM " .$GLOBALS['ecs']->table('goods'). "AS g 
-			INNER JOIN ". $GLOBALS['ecs']->table('products').  " AS p 
-			ON (g.goods_id = p.goods_id) AND p.product_id = '$product_id' LIMIT 1";
-	$imgs = $GLOBALS['db']->getRow($sql);
-	
-	$arr = ['img_url'=>get_image_path($product_id, $imgs['goods_img'], false, 'goods'),
-			'thumb_url'=>get_image_path($product_id, $imgs['goods_thumb'], true, 'goods')];
-	$rows[$key+1]=$arr;
-	
 	return $rows;
 }
 

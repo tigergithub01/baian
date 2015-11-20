@@ -376,7 +376,8 @@ function get_promote_goods($cats = '')
     $order_type = $GLOBALS['_CFG']['recommend_order'];
 
     /* 取得促销lbi的数量限制 */
-    $num = get_library_number("recommend_promotion");
+//     $num = get_library_number("recommend_promotion");
+	$num = 20;
     $sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.shop_price AS org_price, g.promote_price, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, ".
                 "promote_start_date, promote_end_date, g.goods_brief, g.goods_thumb, goods_img, b.brand_name, " .
@@ -790,7 +791,7 @@ function get_goods_gallery($goods_id)
  */
 function get_product_gallery($product_id)
 {
-	$sql = 'SELECT img_id, img_url, thumb_url, img_desc' .
+	$sql = 'SELECT img_id, img_url, thumb_url,img_original, img_desc' .
 			' FROM ' . $GLOBALS['ecs']->table('products_gallery') .
 			" WHERE product_id = '$product_id' LIMIT " . $GLOBALS['_CFG']['goods_gallery_number'];
 	$rows = $GLOBALS['db']->getAll($sql);
@@ -799,6 +800,7 @@ function get_product_gallery($product_id)
 	{
 		$rows[$key]['img_url'] = get_image_path($product_id, $gallery_img['img_url'], false, 'gallery');
 		$rows[$key]['thumb_url'] = get_image_path($product_id, $gallery_img['thumb_url'], true, 'gallery');
+		$rows[$key]['original_img'] = get_image_path($product_id, $gallery_img['img_original'], true, 'gallery');
 	}
 	return $rows;
 }

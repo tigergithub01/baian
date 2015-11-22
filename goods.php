@@ -664,7 +664,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
      $may_like_goods[$key]['shop_price_formated'] = '￥'.number_format(floatval($val['shop_price']),2);
      $may_like_goods[$key]['market_price_formated'] = '￥'.number_format(floatval($val['market_price']),2);
      } */
-    $may_like_goods = com_sale_get_may_like_goods();
+    $may_like_goods = com_sale_get_may_like_goods($goods_id, null, null);
     $smarty->assign('may_like_goods',$may_like_goods);
 }
 

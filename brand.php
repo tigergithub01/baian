@@ -37,6 +37,7 @@ if (!empty($_REQUEST['brand']))
 }
 if (empty($brand_id))
 {
+// 	clear_cache_files();
     /* 缓存编号 */
     $cache_id = sprintf('%X', crc32($_CFG['lang']));
     if (!$smarty->is_cached('brand_list.dwt', $cache_id))
@@ -45,12 +46,12 @@ if (empty($brand_id))
         $position = assign_ur_here('', $_LANG['all_brand']);
         $smarty->assign('page_title',      $position['title']);    // 页面标题
         $smarty->assign('ur_here',         $position['ur_here']);  // 当前位置
-
-        $smarty->assign('categories',      get_categories_tree()); // 分类树
+	
+        //获取顶级分类-包含分类下的所有品牌雷彪
+        $categories = get_children_cat_brand_list();
+        
+        $smarty->assign('categories',      $categories); 
         $smarty->assign('helps',           get_shop_help());       // 网店帮助
-        $smarty->assign('top_goods',       get_top10());           // 销售排行
-
-        $smarty->assign('brand_list', get_brands());
     }
     $smarty->display('brand_list.dwt', $cache_id);
     exit();

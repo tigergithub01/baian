@@ -139,6 +139,11 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
 
     assign_pager('brand',              $cate, $count, $size, $sort, $order, $page, '', $brand_id, 0, 0, $display); // 分页
     assign_dynamic('brand'); // 动态内容
+    
+    //猜你喜欢，看了又看
+    $may_like_goods = com_sale_get_may_like_goods(null, null, $brand_id);
+    $smarty->assign('may_like_goods',$may_like_goods);
+    
 }
 
 $smarty->display('brand.dwt', $cache_id);

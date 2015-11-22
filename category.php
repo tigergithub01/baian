@@ -41,7 +41,7 @@ else
     /* ecs_header("Location: ./\n");
 
     exit; */
-    clear_cache_files();
+//     clear_cache_files();
     /* 缓存编号 */
     $cache_id = sprintf('%X', crc32($_CFG['lang']));
     if (!$smarty->is_cached('brand_list.dwt', $cache_id))

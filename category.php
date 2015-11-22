@@ -38,9 +38,28 @@ elseif (isset($_REQUEST['category']))
 else
 {
     /* 如果分类ID为0，则返回首页 */
-    ecs_header("Location: ./\n");
+    /* ecs_header("Location: ./\n");
 
-    exit;
+    exit; */
+    clear_cache_files();
+    /* 缓存编号 */
+    $cache_id = sprintf('%X', crc32($_CFG['lang']));
+    if (!$smarty->is_cached('brand_list.dwt', $cache_id))
+    {
+    	assign_template();
+    	$position = assign_ur_here('', '全部商品分类');
+    	$smarty->assign('page_title',      $position['title']);    // 页面标题
+    	$smarty->assign('ur_here',         $position['ur_here']);  // 当前位置
+    
+    	//获取顶级分类-包含分类下的所有品牌雷彪
+    	$categories = get_categories_tree();
+    
+    	$smarty->assign('categories',      $categories);
+    	$smarty->assign('helps',           get_shop_help());       // 网店帮助
+    }
+    $smarty->display('category_list.dwt', $cache_id);
+    exit();
+    
 }
 
 

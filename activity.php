@@ -130,6 +130,12 @@ while ($row = $db->fetchRow($res))
     $list[] = $row;
 }
 
+//猜你喜欢，看了又看
+$may_like_goods = com_sale_get_may_like_goods(null, null, null);
+$smarty->assign('may_like_goods',$may_like_goods);
+
+$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
+
 //print_r($list);
 $smarty->assign('list',             $list);
 

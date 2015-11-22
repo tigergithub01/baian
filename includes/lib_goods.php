@@ -2198,10 +2198,36 @@ function get_price_grade($cat_id){
 	}
 }	
 
-function com_sale_get_may_like_goods()
+/**
+ * 根据商品编号获取分类编号
+ * @param unknown $goods_id
+ */
+function get_cat_id($goods_id){
+	$sql = 'SELECT cat_id FROM ' .$GLOBALS['ecs']->table('goods')." WHERE goods_id = '$goods_id'";
+	return $GLOBALS['db']->getOne($sql);
+}
+
+
+function com_sale_get_may_like_goods($goods_id,$cat_id,$brand_id,$article_id=null)
 {
 	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
 			"g.is_delete = 0 ";
+	
+	if($goods_id){
+		$cat_id = get_cat_id($goods_id);
+		$children = get_children($cat_id);
+		$where = $where . " AND ($children) ";
+	}
+	
+	if($cat_id){
+		$children = get_children($cat_id);
+		$where = $where . " AND ($children) ";
+	}
+	
+	if($brand_id){
+		$where = $where . " AND (g.brand_id = '$brand_id') ";
+	}
+	
 	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
 			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
 			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .

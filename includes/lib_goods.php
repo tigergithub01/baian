@@ -30,6 +30,62 @@ function goods_sort($goods_a, $goods_b)
 
 }
 
+
+/**
+ * 获取直接分类
+ * @param number $cat_id
+ * @return Ambigous <multitype:, void>
+ */
+function get_direct_children_category($cat_id = 0){
+	$sql = 'SELECT cat_id,cat_name ,parent_id,is_show ' .
+			'FROM ' . $GLOBALS['ecs']->table('category') .
+			"WHERE parent_id = '$cat_id' AND is_show = 1 ORDER BY sort_order ASC, cat_id ASC";
+	
+	$res = $GLOBALS['db']->getAll($sql);
+	$cat_arr = array();
+	foreach ($res AS $row)
+	{
+		$cat_arr[$row['cat_id']]['cat_id']   = $row['cat_id'];
+		$cat_arr[$row['cat_id']]['cat_name'] = $row['cat_name'];
+		$cat_arr[$row['cat_id']]['url']  = build_uri('category', array('cid' => $row['cat_id']), $row['cat_name']);
+	}
+	return $cat_arr;
+}
+
+/**
+ * 获取某分类下的所有品牌
+ * @param unknown $cat_id
+ * @return unknown
+ */
+function get_cat_brand_list($cat_id){
+	$children = get_children($cat_id);
+	$sql = "SELECT distinct b.brand_id, b.brand_name, b.brand_logo, b.brand_desc  ".
+			"FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+			$GLOBALS['ecs']->table('goods') . " AS g LEFT JOIN ". $GLOBALS['ecs']->table('goods_cat') . " AS gc ON g.goods_id = gc.goods_id " .
+			"WHERE g.brand_id = b.brand_id AND ($children OR " . 'gc.cat_id ' . db_create_in(array_unique(array_merge(array($cat_id), array_keys(cat_list($cat_id, 0, false))))) . ") AND b.is_show = 1 " .
+			"AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+			"ORDER BY b.sort_order, b.brand_id ASC";
+	
+	$brands = $GLOBALS['db']->getAll($sql);
+	foreach ($brands as $key => $row) {
+		$brands[$key]['url'] = build_uri('brand', ['bid'=>$row['brand_id']]);
+	}
+	return $brands;
+}
+
+/**
+ * 获取直接分类-包含分类下的所有品牌雷彪
+ * @param unknown $cat_id
+ */
+function get_children_cat_brand_list($cat_id){
+	$cat_list = get_direct_children_category($cat_id);
+	foreach ($cat_list as $key => $cat) {
+		$sub_cat_id = $cat['cat_id'];
+		$cat_list[$key]['brands'] = get_cat_brand_list($sub_cat_id);
+	}
+	return $cat_list;
+}
+
 /**
  * 获得指定分类同级的所有分类以及该分类下的子分类
  *

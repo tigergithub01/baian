@@ -1994,7 +1994,7 @@
 
 
 	<div class="h20"></div>
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
 <script language="javascript"> 
 <!--
 /*屏蔽所有的js错误*/
@@ -2011,7 +2011,8 @@ window.onerror = killerrors;
 
 
 <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script>
-
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 <script type="text/javascript">
 var process_request = "{$lang.process_request}";

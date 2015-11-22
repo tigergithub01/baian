@@ -55,7 +55,7 @@ function clock(key)
 		 	   var minite = Math.floor((goods_remain_seconds[key] / 60) % 60);      //计算分 
 		 	   var hour = Math.floor((goods_remain_seconds[key] / 3600) % 24);      //计算小时 
 		 	   var day = Math.floor((goods_remain_seconds[key] / 3600) / 24);        //计算天 
-	 	 
+	 	 console.debug($("#leftTime"+key));
 	 	   		$("#leftTime"+key).html(hour + ":" + minite + ":" + second ); 
 	 	  } else {
 	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
@@ -69,7 +69,7 @@ function clock(key)
 <!--{foreach from=$promotion_goods key=key item=goods name=name}-->
 <!--{if $smarty.foreach.name.first}-->
 <div class="sec-tit">
-						<a href="" class="r">更多抢购&gt;</a>
+						<a href="promote.html" class="r">更多抢购&gt;</a>
 						<h3 class="stt1">限时抢购<span class="datetime"><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
 					</div>	
 <script>

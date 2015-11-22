@@ -1804,6 +1804,25 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
             }
 
             break;
+        case 'promote':
+    		if ($rewrite)
+                {
+                    $uri = 'promote';
+                    if (!empty($page))
+                    {
+                        $uri .= '-' . $page;
+                    }
+                }
+                else
+                {
+                    $uri = 'promote';
+                    if (!empty($page))
+                    {
+                        $uri .= '&amp;page=' . $page;
+                    }
+                }
+            
+            	break;
         default:
             return false;
             break;

@@ -372,11 +372,10 @@ function get_recommend_goods($type = '', $cats = '')
  */
 function get_promote_goods($cats = '')
 {
-    $time = gmtime();
+    /* $time = gmtime();
     $order_type = $GLOBALS['_CFG']['recommend_order'];
 
-    /* 取得促销lbi的数量限制 */
-//     $num = get_library_number("recommend_promotion");
+//     $num = get_library_number("recommend_promotion"); //取得促销lbi的数量限制
 	$num = 20;
     $sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.shop_price AS org_price, g.promote_price, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, ".
@@ -427,9 +426,97 @@ function get_promote_goods($cats = '')
        $goods[$idx]['gmt_end_time'] = 0;
      
       }
-    }
+    } */
 
+	$goods = get_promote_goods_list($cats);
     return $goods;
+}
+
+
+
+/**
+ * 限时抢购列表 
+ * @param string $cats
+ * @param number $page
+ * @param number $size
+ * @return Ambigous <multitype:, number, void>
+ */
+function get_promote_goods_list($cats = '',$page = 1, $size = 20)
+{
+	$time = gmtime();
+	$order_type = $GLOBALS['_CFG']['recommend_order'];
+	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.shop_price AS org_price, g.promote_price, ' .
+			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, ".
+			"promote_start_date, promote_end_date, g.goods_brief, g.goods_thumb, goods_img, b.brand_name, " .
+			"g.is_best, g.is_new, g.is_hot, g.is_promote, RAND() AS rnd " .
+			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('brand') . ' AS b ON b.brand_id = g.brand_id ' .
+			"LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
+			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' ".
+			'WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ' .
+			" AND g.is_promote = 1 AND promote_start_date <= '$time' AND promote_end_date >= '$time' ";
+	$sql .= $order_type == 0 ? ' ORDER BY g.sort_order, g.last_update DESC' : ' ORDER BY rnd';
+	$res = $GLOBALS['db']->selectLimit($sql, $size, ($page-1) * $size);
+	$goods = array();
+	while ($row = $GLOBALS['db']->fetchRow($res)){
+		$idx = $row['goods_id'];
+		if ($row['promote_price'] > 0)
+		{
+			$promote_price = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date']);
+			$goods[$idx]['promote_price'] = $promote_price > 0 ? price_format($promote_price) : '';
+		}
+		else
+		{
+			$goods[$idx]['promote_price'] = '';
+		}
+		
+		$goods[$idx]['id']           = $row['goods_id'];
+		$goods[$idx]['name']         = $row['goods_name'];
+		$goods[$idx]['brief']        = $row['goods_brief'];
+		$goods[$idx]['brand_name']   = $row['brand_name'];
+		$goods[$idx]['goods_style_name']   = add_style($row['goods_name'],$row['goods_name_style']);
+		$goods[$idx]['short_name']   = $GLOBALS['_CFG']['goods_name_length'] > 0 ? sub_str($row['goods_name'], $GLOBALS['_CFG']['goods_name_length']) : $row['goods_name'];
+		$goods[$idx]['short_style_name']   = add_style($goods[$idx]['short_name'],$row['goods_name_style']);
+		$goods[$idx]['market_price'] = price_format($row['market_price']);
+		$goods[$idx]['shop_price']   = price_format($row['shop_price']);
+		$goods[$idx]['thumb']        = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+		$goods[$idx]['goods_img']    = get_image_path($row['goods_id'], $row['goods_img']);
+		$goods[$idx]['url']          = build_uri('goods', array('gid' => $row['goods_id']), $row['goods_name']);
+		$time = gmtime();
+		if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date'])
+		{
+			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
+		}
+		else
+		{
+			$goods[$idx]['gmt_end_time'] = 0;
+		
+		}
+	}
+	return $goods;
+}
+
+
+
+/**
+ * 限时抢购列表 - 记录条数
+ * @param string $cats
+ * @return unknown
+ */
+function get_promote_goods_list_count($cats = '')
+{
+	$time = gmtime();
+	$order_type = $GLOBALS['_CFG']['recommend_order'];
+	$sql = "SELECT COUNT(1) " .
+			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('brand') . ' AS b ON b.brand_id = g.brand_id ' .
+			"LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
+			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' ".
+			'WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ' .
+			" AND g.is_promote = 1 AND promote_start_date <= '$time' AND promote_end_date >= '$time' ";
+	$sql .= $order_type == 0 ? ' ORDER BY g.sort_order, g.last_update DESC' : ' ORDER BY rnd';
+	$count = $GLOBALS['db']->getOne($sql);
+	return $count;
 }
 
 /**

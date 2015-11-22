@@ -274,7 +274,16 @@ function assign_ur_here($cat = 0, $str = '')
                 $ur_here   .= ' <code>&gt;</code> <a href="exchange.php">' .
                                 $GLOBALS['_LANG']['exchange'] . '</a>';
             }
+            /* 限时抢购 */
+            elseif ('promote' == $filename)
+            {
+            	$page_title = "限时抢购" . '_' . $page_title;
+            	$args       = array('wsid' => '0');
+            	$ur_here   .= ' <code>&gt;</code> <a href="'.build_uri('promote').'">' .
+            			"限时抢购" . '</a>';
+            }
             /* 其他的在这里补充 */
+            
         }
     }
 
@@ -545,6 +554,9 @@ function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1
             break;
         case 'exchange':
             $uri_args = array('cid' => $cat, 'integral_min'=>$price_min, 'integral_max'=>$price_max, 'sort' => $sort, 'order' => $order, 'display' => $display_type);
+            break;
+       case 'promote': //限时抢购
+            $uri_args = array('sort' => $sort, 'order' => $order);
             break;
     }
     /* 分页样式 */

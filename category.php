@@ -44,7 +44,7 @@ else
 //     clear_cache_files();
     /* 缓存编号 */
     $cache_id = sprintf('%X', crc32($_CFG['lang']));
-    if (!$smarty->is_cached('brand_list.dwt', $cache_id))
+    if (!$smarty->is_cached('category_list.dwt', $cache_id))
     {
     	assign_template();
     	$position = assign_ur_here('', '全部商品分类');

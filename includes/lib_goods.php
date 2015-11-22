@@ -485,7 +485,9 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20)
 		$time = gmtime();
 		if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date'])
 		{
-			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
+// 			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
+// 			$goods['gmt_end_time']  = local_date('M d, Y 0:0:0',$row['promote_end_date']);
+			$goods[$idx]['gmt_end_time'] = local_date('M d, Y 0:0:0',$row['promote_end_date']);
 		}
 		else
 		{
@@ -718,7 +720,8 @@ function get_goods_info($goods_id)
         /*商品抢购倒计时*/
         $time = gmtime();
         if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date']){
-        	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
+//         	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
+        	$row['gmt_end_time']  = local_date('M d, Y 0:0:0',$row['promote_end_date']);
         }else{
         	$row['gmt_end_time'] = null;
         }

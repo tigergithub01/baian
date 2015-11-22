@@ -418,7 +418,7 @@ if (!$smarty->is_cached('category.dwt', $cache_id))
     assign_dynamic('category'); // 动态内容
     
     //猜你喜欢 &　看了又看
-    $may_like_goods = com_sale_get_may_like_goods();
+    $may_like_goods = com_sale_get_may_like_goods(null, $cat_id, null);
     $smarty->assign('may_like_goods',$may_like_goods);
 }
 

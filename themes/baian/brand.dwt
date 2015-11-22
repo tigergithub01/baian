@@ -22,36 +22,10 @@
                  <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
                 <div class="h"></div>
 
-                <div class="sbox">
-                    <h3 class="st1">看了还看</h3>
-                    <ul class="s-img-list">
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                    </ul>
-                </div>
+                 <!-- 看了还看 start -->
+     			<div class="h"></div>
+             	<!-- #BeginLibraryItem "/library/look_other_goods.lbi" --><!-- #EndLibraryItem -->   
+      			<!-- 看了还看 end -->
                 <div class="h"></div>
 
                 <div class="sadBox">
@@ -103,84 +77,9 @@
                 
                
                 <div class="h20"></div>
-                <div id="huanBox">
-                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
-                    <div class="bor-box bd">
-                        <ul class="ul-pic1 ul-pic1-b">
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                        </ul>
-                        <div class="h15"></div>
-                    </div>
-                </div>
+                <!-- 猜你喜欢 start -->
+				<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
+				 <!-- 猜你喜欢 end -->
                 
                 <!-- {if $promotion_goods|@count neq 0} 限时抢购 start -->
 				<div class="h"></div>

@@ -16,6 +16,7 @@ RewriteRule ^category-([0-9]+)-b([0-9]+)-([0-9]+)-(.+)-([a-zA-Z]+)(.*)\.html$ ca
 RewriteRule ^category-([0-9]+)-b([0-9]+)-([0-9]+)(.*)\.html$ category\.php\?id=$1&brand=$2&page=$3 [QSA,L]
 RewriteRule ^category-([0-9]+)-b([0-9]+)(.*)\.html$ category\.php\?id=$1&brand=$2 [QSA,L]
 RewriteRule ^category-([0-9]+)(.*)\.html$ category\.php\?id=$1 [QSA,L]
+RewriteRule ^category\.html$ category\.php [L]
 RewriteRule ^goods-([0-9]+)-p([0-9]+)(.*)\.html$  goods\.php\?id=$1&product_id=$2 [QSA,L]
 RewriteRule ^goods-([0-9]+)(.*)\.html$ goods\.php\?id=$1 [QSA,L]
 RewriteRule ^article_cat-([0-9]+)-([0-9]+)-(.+)-([a-zA-Z]+)(.*)\.html$ article_cat\.php\?id=$1&page=$2&sort=$3&order=$4 [QSA,L]

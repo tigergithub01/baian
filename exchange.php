@@ -122,6 +122,13 @@ if ($_REQUEST['act'] == 'list')
 
 
         assign_pager('exchange',            $cat_id, $count, $size, $sort, $order, $page, '', '', $integral_min, $integral_max, $display); // 分页
+        
+        //猜你喜欢，看了又看
+        $may_like_goods = com_sale_get_may_like_goods(null, null, null);
+        $smarty->assign('may_like_goods',$may_like_goods);
+        
+        $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
+        
         assign_dynamic('exchange_list'); // 动态内容
     }
 

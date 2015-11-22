@@ -118,6 +118,11 @@ if (!$smarty->is_cached('article.dwt', $cache_id))
         $smarty->assign('prev_article', $prev_article);
     }
 
+    
+    //猜你喜欢，看了又看
+    $may_like_goods = com_sale_get_may_like_goods(null, null, null);
+    $smarty->assign('may_like_goods',$may_like_goods);
+    
     assign_dynamic('article');
 }
 if(isset($article) && $article['cat_id'] > 2)

@@ -18,13 +18,13 @@
     <div id="bd">
         <div class="wp">
             <ul class="s-tab-tit1">
-                <li><a href="">全部商品分类</a></li>
-                <li class="on"><a href="">全部品牌</a></li>
+                <li><a href="category.html">全部商品分类</a></li>
+                <li class="on"><a href="brand.html">全部品牌</a></li>
             </ul>
   <ul class="s-guide-nav">
   <!--{foreach from=$categories item=cat name=categories}-->
 	  <!-- {if $smarty.foreach.categories.iteration < 12} -->
-     <li id="goods{$smarty.foreach.categories.iteration}" ><a href="#flow">{$cat.name|escape:html}</a></li>
+     <li id="goods{$smarty.foreach.categories.iteration}" ><a href="#flow{$smarty.foreach.categories.iteration}">{$cat.cat_name|escape:html}</a></li>
 	  <!-- {/if} -->	
 	  <!--{/foreach}-->	 
       
@@ -33,12 +33,12 @@
 	  <!--{foreach from=$categories item=cat name=categories}-->
 	  <!-- {if $smarty.foreach.categories.iteration < 12} -->
       <div class="brandslist tabcon" id="con_goods_{$smarty.foreach.categories.iteration}">
-	  <!-- {if $get_cat_brands} -->
-       <h3 class="s-flow-tit" id="flow"><em>1F</em>{$brand_data.brand_name}</h3>
+	  <!-- {if $cat.brands} -->
+       <h3 class="s-flow-tit" id="flow{$smarty.foreach.categories.iteration}"><em>{$smarty.foreach.categories.iteration}F</em>{$cat.cat_name|escape:html}</h3>
       <div class="s-flow-con">
 		<ul class="s-brand-list">
-		<!--{foreach from=$get_cat_brands item=brand_cat name=get_cat_brands}-->
-          <li><a href="brand.php?id={$brand_cat.id}"><img alt="{$brand_cat.name}" src="data/brandlogo/{$brand_cat.logo}"/><h3>{$brand_cat.name}</h3></a>
+		<!--{foreach from=$cat.brands item=brand_cat name=get_cat_brands}-->
+          <li><a target="_blank" href="{$brand_cat.url}"><img alt="{$brand_cat.brand_name}" src="data/brandlogo/{$brand_cat.brand_logo}"/><h3>{$brand_cat.brand_name}</h3></a>
           </li>
          <!--{/foreach}--> 
         </ul>
@@ -56,6 +56,7 @@
     </div>
     <div class="h30"></div> 
      
+  </div>
   
 
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->

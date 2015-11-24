@@ -311,60 +311,63 @@ $smarty->assign('flash_count',count(get_flash_xml()));
     //猜你喜欢    
     $may_like_goods = com_sale_get_may_like_goods();
     $smarty->assign('may_like_goods',$may_like_goods);
-}
-$sql = 'SELECT g.goods_id, g.goods_name, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
-                "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
-                'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ,g.original_img ' .
-            'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
-            'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
-                "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-            "WHERE $where $ext ORDER BY $sort $order";
+    
+    $sql = 'SELECT g.goods_id, g.goods_name, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
+    		"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
+    		'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ,g.original_img ' .
+    		'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
+    		'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
+    		"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
+    		"WHERE $where $ext ORDER BY $sort $order";
     
     $sql = 'select goods_id, goods_name, shop_price, market_price, wxbuy_cut, goods_thumb from '.$GLOBALS['ecs']->table('goods').
-    		' where wxbuy_cut>0 order by goods_id desc limit 3';
+    ' where wxbuy_cut>0 order by goods_id desc limit 3';
     
     $wxbuy_three_goods = $db->getAll($sql);
-//    echo "<pre>";
-//    var_dump($wxbuy_three_goods);die();
-
-		include "phpqrcode/qrlib.php";
-		
-		foreach($wxbuy_three_goods as $key=>$goods){
-			$data = 'http://'.$_SERVER['HTTP_HOST'].'/weixin_add_to_cart.php?goods_id='.$goods['goods_id'];
-			$errorCorrectionLevel = 'L';
-			$matrixPointSize = 4;
-			$path = "qrcode/";
-			if(!file_exists($path)){
-				mkdir($path);
-			}
-			$filename = $path.$errorCorrectionLevel.'-'.$matrixPointSize.'-'.md5('wxbuy'.$goods['goods_id']).'.png';
-			if(!file_exists($filename) || 1){
-				QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 3);
-			}
-			$wxbuy_three_goods[$key]['index_wxbuy_qrcode'] = $filename;
-			$wxbuy_three_goods[$key]['url'] = build_uri('goods', array('gid'=>$goods['goods_id']));
-			$wxbuy_three_goods[$key]['wx_price'] = number_format(floatval($goods['shop_price'])-floatval($goods['wxbuy_cut']),2);
-		}
-		$smarty->assign('wxbuy_three_goods',$wxbuy_three_goods);
-//		echo "<pre>";
-//		var_dump($wxbuy_three_goods);die();
-
-
-$latest_blog_rows = unserialize(file_get_contents('http://127.0.0.1/muying/latest_blogs.php'));
-$latest_blogs = array();
-foreach($latest_blog_rows as $row)
-{
-    $row['log_PostTime'] = date('m-d', $row['log_PostTime']);
-    $latest_blogs[] = $row;
+    //    echo "<pre>";
+    //    var_dump($wxbuy_three_goods);die();
+    
+    include "phpqrcode/qrlib.php";
+    
+    foreach($wxbuy_three_goods as $key=>$goods){
+    	$data = 'http://'.$_SERVER['HTTP_HOST'].'/weixin_add_to_cart.php?goods_id='.$goods['goods_id'];
+    	$errorCorrectionLevel = 'L';
+    	$matrixPointSize = 4;
+    	$path = "qrcode/";
+    	if(!file_exists($path)){
+    		mkdir($path);
+    	}
+    	$filename = $path.$errorCorrectionLevel.'-'.$matrixPointSize.'-'.md5('wxbuy'.$goods['goods_id']).'.png';
+    	if(!file_exists($filename) || 1){
+    		QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 3);
+    	}
+    	$wxbuy_three_goods[$key]['index_wxbuy_qrcode'] = $filename;
+    	$wxbuy_three_goods[$key]['url'] = build_uri('goods', array('gid'=>$goods['goods_id']));
+    	$wxbuy_three_goods[$key]['wx_price'] = number_format(floatval($goods['shop_price'])-floatval($goods['wxbuy_cut']),2);
+    }
+    $smarty->assign('wxbuy_three_goods',$wxbuy_three_goods);
+    //		echo "<pre>";
+    //		var_dump($wxbuy_three_goods);die();
+    
+    
+    $latest_blog_rows = unserialize(file_get_contents('http://127.0.0.1/muying/latest_blogs.php'));
+    $latest_blogs = array();
+    foreach($latest_blog_rows as $row)
+    {
+    	$row['log_PostTime'] = date('m-d', $row['log_PostTime']);
+    	$latest_blogs[] = $row;
+    }
+    
+    $smarty->assign('latest_blogs',$latest_blogs);
+    
+    //底部导航 2015-10-03
+    include_once ('includes/extend/cls_article.php');
+    $cls_article = new cls_article();
+    $nav_bottom_article = $cls_article->get_article(154);
+    $smarty->assign('nav_bottom',$nav_bottom_article);
+    
 }
 
-$smarty->assign('latest_blogs',$latest_blogs);
-
-//底部导航 2015-10-03
-include_once ('includes/extend/cls_article.php');
-$cls_article = new cls_article();
-$nav_bottom_article = $cls_article->get_article(154);
-$smarty->assign('nav_bottom',$nav_bottom_article);
 
 
 

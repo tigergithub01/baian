@@ -63,25 +63,20 @@
                     </div>
                 </div>
                 <div class="h20"></div>
-                <div id="huanBox">
-                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
-                    <div class="bor-box bd">
-                        <ul class="ul-pic1 ul-pic1-b">
-                            <li>
-                                <a href="" title="产品名字">
-                                    <img src="images/p2.jpg" alt="">
-                                </a>
-                                <p><a href="" title="产品名字">雅培金装喜康力幼儿配方奶粉3段900g雅装...</a></p>
-                                <p><b>￥1000.00</b></p>
-                            </li>
-                            
-                            
-                        </ul>
-                        <div class="h15"></div>
-                    </div>
-                </div>
+                <!-- 猜你喜欢 start -->
+				<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
+				 <!-- 猜你喜欢 end -->
             </div>
+            
+            <!-- 关键词语标签 start -->
+            <div class="h30"></div>
+			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
+            <!-- 关键词语标签 end -->
+            
         </div>
+        
+        	
+            
     </div>
     
     

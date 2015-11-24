@@ -206,10 +206,21 @@
 				</div>
 				<!-- {/if} 限时抢购 end -->
 				
+				
             </div>
+            
+            <!-- 关键词语标签 start -->
+            <div class="h30"></div>
+			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
+            <!-- 关键词语标签 end -->
+            
         </div>
+        
     </div>
+    
     <div class="h30"></div>
+    
+    
 
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>

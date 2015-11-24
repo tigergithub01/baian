@@ -125,6 +125,16 @@ if (!$smarty->is_cached('article_cat.dwt', $cache_id))
     /* 分页 */
     assign_pager('article_cat', $cat_id, $count, $size, '', '', $page, $goon_keywords);
     assign_dynamic('article_cat');
+    
+    //猜你喜欢，看了又看
+    $may_like_goods = com_sale_get_may_like_goods(null, null, null);
+    $smarty->assign('may_like_goods',$may_like_goods);
+    
+    //底部导航,关键词语标签 2015-10-04 added by tiger.guo
+    include_once ('includes/extend/cls_article.php');
+    $cls_article = new cls_article();
+    $nav_bottom_article = $cls_article->get_article(153);
+    $smarty->assign('nav_bottom',$nav_bottom_article);
 }
 
 $smarty->assign('feed_url',         ($_CFG['rewrite'] == 1) ? "feed-typearticle_cat" . $cat_id . ".xml" : 'feed.php?type=article_cat' . $cat_id); // RSS URL

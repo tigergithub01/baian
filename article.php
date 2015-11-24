@@ -123,6 +123,12 @@ if (!$smarty->is_cached('article.dwt', $cache_id))
     $may_like_goods = com_sale_get_may_like_goods(null, null, null);
     $smarty->assign('may_like_goods',$may_like_goods);
     
+    //底部导航,关键词语标签 2015-10-04 added by tiger.guo
+    include_once ('includes/extend/cls_article.php');
+    $cls_article = new cls_article();
+    $nav_bottom_article = $cls_article->get_article(160);
+    $smarty->assign('nav_bottom',$nav_bottom_article);
+    
     assign_dynamic('article');
 }
 if(isset($article) && $article['cat_id'] > 2)

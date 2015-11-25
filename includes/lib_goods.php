@@ -86,6 +86,23 @@ function get_children_cat_brand_list($cat_id){
 	return $cat_list;
 }
 
+
+/**
+ * 获得指定分类同级的所有分类以及该分类下的子分类 - 同时获取相关品牌信息
+ * @param number $cat_id
+ * @return multitype:
+ */
+function get_categories_tree_with_brand($cat_id = 0)
+{
+	$categories_tree = get_categories_tree($cat_id);
+	foreach ($categories_tree as $key => $cat) {
+		$sub_cat_id = $cat['cat_id'];
+		$categories_tree[$key]['brands'] = get_cat_brand_list($sub_cat_id);
+	}
+	return $categories_tree;
+}
+
+
 /**
  * 获得指定分类同级的所有分类以及该分类下的子分类
  *
@@ -2295,7 +2312,7 @@ function com_sale_goods_get_related_cats_by_cat_id($cat_id){
 
 	foreach ($brands AS $key => $val)
 	{
-		$brands[$key]['url'] = build_uri($app, array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
+		$brands[$key]['url'] = build_uri('category', array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
 		$brands[$key]['brand_name'] = $val['brand_name'];
 	}
 	return $brands;

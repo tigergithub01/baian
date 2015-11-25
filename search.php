@@ -526,6 +526,13 @@ else
     $smarty->assign('helps',       get_shop_help());      // 网店帮助
     $smarty->assign('top_goods',  get_top10());           // 销售排行
     $smarty->assign('promotion_info', get_promotion_info());
+    
+    
+    //猜你喜欢 &　看了又看
+    $may_like_goods = com_sale_get_may_like_goods(null, $cat_id, null);
+    $smarty->assign('may_like_goods',$may_like_goods);
+    
+   $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
 
     $smarty->display('search.dwt');
 }

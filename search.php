@@ -172,30 +172,44 @@ else
     if (!empty($_REQUEST['keywords']))
     {
         $arr = array();
-        if (stristr($_REQUEST['keywords'], ' AND ') !== false)
+        /* if (stristr($_REQUEST['keywords'], ' AND ') !== false)
         {
-            /* 检查关键字中是否有AND，如果存在就是并 */
+            // 检查关键字中是否有AND，如果存在就是并 
             $arr        = explode('AND', $_REQUEST['keywords']);
             $operator   = " AND ";
         }
         elseif (stristr($_REQUEST['keywords'], ' OR ') !== false)
         {
-            /* 检查关键字中是否有OR，如果存在就是或 */
+           // 检查关键字中是否有OR，如果存在就是或
             $arr        = explode('OR', $_REQUEST['keywords']);
             $operator   = " OR ";
         }
         elseif (stristr($_REQUEST['keywords'], ' + ') !== false)
         {
-            /* 检查关键字中是否有加号，如果存在就是或 */
+            //检查关键字中是否有加号，如果存在就是或
             $arr        = explode('+', $_REQUEST['keywords']);
             $operator   = " OR ";
         }
         else
         {
-            /* 检查关键字中是否有空格，如果存在就是并 */
+            //检查关键字中是否有空格，如果存在就是并
             $arr        = explode(' ', $_REQUEST['keywords']);
             $operator   = " AND ";
+        } */
+        
+        //TODO：进行中文分词处理
+        $keyword = $_REQUEST ['keywords'];
+        $keyword = str_replace ( ' ', '', $keyword );
+        $arr = array ();
+        $operator   = " AND ";
+        // 先简单分解为单个文字,以后可以改为分词工具scws:eg,https://github.com/hightman/scws
+        for($i = 0; $i < mb_strlen ( $keyword ); $i ++) {
+        	$chr = mb_substr ( $keyword, $i, 1, 'utf-8' );
+        	if (! empty ( $chr )) {
+        		$arr [] = $chr;
+        	}
         }
+        
 
         $keywords = 'AND (';
         $goods_ids = array();
@@ -216,9 +230,10 @@ else
                 $goods_ids[] = $row['goods_id'];
             }
 
-            $db->autoReplace($ecs->table('keywords'), array('date' => local_date('Y-m-d'),
-                'searchengine' => 'ecshop', 'keyword' => addslashes(str_replace('%', '', $val)), 'count' => 1), array('count' => 1));
+            
         }
+        $db->autoReplace($ecs->table('keywords'), array('date' => local_date('Y-m-d'),
+        		'searchengine' => 'ecshop', 'keyword' => addslashes(str_replace('%', '', $keyword)), 'count' => 1), array('count' => 1));
         $keywords .= ')';
 
         $goods_ids = array_unique($goods_ids);

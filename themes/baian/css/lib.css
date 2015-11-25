@@ -122,7 +122,7 @@ img{
 .menu-ul .v1 span{display: block;}
 
 .menu-ul .subBox{position: absolute;left: 209px;top: 0;width: 680px;background: #fff;display: none;
-	border: 1px solid #f00;border-top: 0; padding: 10px;height: 378px;overflow: hidden;}
+	border: 1px solid #f00;border-top: 0; padding: 10px;min-height: 378px;overflow: hidden;}
 .menu-ul .subBox .close-btn{display: block;position: absolute;right: 10px;top: 10px;
 	width: 20px;height: 20px;background: url(../images/i-close.png) no-repeat center center;}
 .menu-ul .subBox .left-col{width: 475px;float: left;}

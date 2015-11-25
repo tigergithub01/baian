@@ -22,123 +22,107 @@
                                <!--{/foreach}-->
                                <!--推荐图片--start-->
 							 
-                    
-                 {if $smarty.foreach.cat0.index == 0}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_11 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_12 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                 {if $smarty.foreach.cat0.index == 1}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_21 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_22 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
-                    
-                      {if $smarty.foreach.cat0.index == 2}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_31 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_32 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
-                      {if $smarty.foreach.cat0.index == 3}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_41 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_42 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
-                      {if $smarty.foreach.cat0.index == 4}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_51 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_52 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
-                      {if $smarty.foreach.cat0.index == 5}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_61 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_62 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
-                    
-                      {if $smarty.foreach.cat0.index == 6}
-                 	<ol class="ad-ol">
-                    	{foreach from=$index_goods_71 item=ad}
-	                   <li>
-	                    {$ad.content}
-	                   </li>
-	                    {/foreach}
-	                    {foreach from=$index_goods_72 item=ad}
-	                 <li>
-	                    {$ad.content}
-	                 </li>
-	                    {/foreach}
-                  	</ol>
-                    {/if}
-                    
+                                
+				               <!--{if $smarty.foreach.cat0.index == 0} 导航菜单孕妈专区-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(189,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+				                 <!--{if $smarty.foreach.cat0.index == 1} 导航菜单宝宝食品-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(190,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+				                <!--{if $smarty.foreach.cat0.index == 2} 导航菜单宝宝用品-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(191,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+				                <!--{if $smarty.foreach.cat0.index == 3} 导航菜单婴童服饰-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(192,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+				                <!--{if $smarty.foreach.cat0.index == 4} 导航菜单童车童床-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(193,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+				                <!--{if $smarty.foreach.cat0.index == 5} 导航菜单图书玩具-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(194,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
+                    			<!--{if $smarty.foreach.cat0.index == 6} 导航菜单家居百货-->
+				                 	<ol class="ad-ol">
+				                    	{foreach from=getads(195,2) item=ad}
+					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    {/foreach}
+				                  	</ol>
+				                <!--{/if}-->
                                 
 							</div>
 							<div class="right-col">
 								<dl class="promote-dl">
-									<dt>推荐品牌</dt>
+									<dt><a href="brand.html" class="r" target="_blank">更多&gt;</a>推荐品牌</dt>
 									<dd>
 										<ol class="promote-ol">
+										<!--{if $smarty.foreach.cat0.index == 0}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(332),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 1}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(333),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 2}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(334),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 3}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(335),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 4}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(336),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 5}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(337),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
+										
+										<!--{if $smarty.foreach.cat0.index == 6}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(339),0,28) item=brand name=brand}-->
+											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
+											<!-- {/foreach} -->
+										<!--{/if}-->
 										
 											 
-                        	<li></li>
+                        	
                        				</ol>
 									</dd>
 								</dl>

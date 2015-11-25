@@ -138,7 +138,7 @@ img{
 .sub-dl dd a{display: inline-block;line-height: 1;padding: 0 5px;border-left: 1px solid #ccc;}
 
 .ad-ol{overflow: hidden;margin-top: 20px;}
-.ad-ol li{float: left;width: 225px;margin-left: 10px;}
+.ad-ol li{float: left;width: 200px;margin-left: 10px;}
 .ad-ol li img{display: block;width: 100%;}
 .ad-ol a:hover img{opacity: .8;
 	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity= 80)';

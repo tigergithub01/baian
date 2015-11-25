@@ -80,16 +80,7 @@
 	  <!--{/if}-->
 	 
    
-      <!--{foreach from=$filter_attr_list item=filter_attr}-->
-      <dl  >
-        <dt>{$filter_attr.filter_attr_name|escape:html} ：</dt>
-        <dd>
-		<!--{foreach from=$filter_attr.attr_list item=attr}-->
-          <div><a href='{$attr.url}' <!-- {if $attr.selected} -->class="curr"<!-- {/if} -->>{$attr.attr_value}</a></div>
-        <!--{/foreach}-->
-        </dd>
-      </dl>
-	  <!--{/foreach}-->
+      
                               
                             </tr>
                             <tr>
@@ -117,13 +108,19 @@
                                
                                         
                             </tr>
+                            
+                            
+	  
+	  						<!--{foreach from=$filter_attr_list item=filter_attr}-->
                             <tr>
-                                <th>段位：</th>
+                                <th>{$filter_attr.filter_attr_name|escape:html}：</th>
                                 <td>
                                     <form action="">
                                         <a href="javascript:void(0);" class="btn-multiple r">多选</a>
                                         <div class="more-multi-cont">
-                                            <a href="">1段</a>
+                                            <!--{foreach from=$filter_attr.attr_list item=attr}-->
+									          <a href='{$attr.url}' <!-- {if $attr.selected} -->class="curr"<!-- {/if} -->>{$attr.attr_value}</a>
+									        <!--{/foreach}-->
                                            
                                             <div class="btnbox">
                                                 <input type="submit" value="确定">
@@ -133,54 +130,7 @@
                                     </form>
                                 </td>
                             </tr>
-                            <tr>
-                                <form action="">
-                                    <th>奶粉产地：</th>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
-                                        <div class="more-multi-cont">
-                                            <a href="">国产</a>
-                                          
-                                            <div class="btnbox">
-                                                <input type="submit" value="确定">
-                                                <input type="button" value="取消">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form action="">
-                                    <th>包装：</th>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
-                                        <div class="more-multi-cont">
-                                            <a href="">罐装</a>
-                                           
-                                            <div class="btnbox">
-                                                <input type="submit" value="确定">
-                                                <input type="button" value="取消">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </form>
-                            </tr>
-                            <tr>
-                                <form action="">
-                                    <th>规格：</th>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
-                                        <div class="more-multi-cont">
-                                            <a href="">0-499g</a>
-                                           
-                                            <div class="btnbox">
-                                                <input type="submit" value="确定">
-                                                <input type="button" value="取消">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </form>
-                            </tr>
+                            <!--{/foreach}-->
                         </table>
                     </div>
                     
@@ -223,5 +173,45 @@
     
 
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+
+<script>
+    jQuery(document).ready(function($) {
+        $('.filterCondition .btn-more').click(function(){
+            $(this).toggleClass('ok');
+            if( $(this).hasClass('ok') ){
+                $(this).text('收起');
+                $(this).parents('td').find('.more-multi-cont').addClass('ok');
+            }else{
+                $(this).text('更多');
+                $(this).parents('td').find('.more-multi-cont').removeClass('ok');
+            };
+            
+        });
+
+        $('.filterCondition .btn-multiple').click(function(){
+            $(this).toggleClass('ok');
+            var _para = $(this).parents('td').find('.more-multi-cont');
+            var _area = $(this).parents('td').find('.more-multi-cont a');
+            var _inp = $(this).parents('td').find('.more-multi-cont :checkbox');
+            if( $(this).hasClass('ok') ){
+                _para.addClass('ok').find('.btnbox').show();
+                _area.each(function(i){
+                    $(this).prepend('<input type="checkbox" id="inp'+i+'">');
+                    $(this).wrapInner('<label for="inp'+i+'"></label>');
+                });
+            }else{
+                _para.removeClass('ok').find('.btnbox').hide();
+                _inp.each(function(){
+                    $(this).unwrap();
+                    $(this).remove();
+                });
+            }
+        });
+
+
+    });
+    </script>
+    
 </body>
 </html>

@@ -753,11 +753,51 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 	color: white;
 }
 
-
-
-
-
 /***会员中心style end**/
+
+
+.crumbs-nav-item{
+		margin-left: 5px;
+	}
+	
+.selector-set {
+    font-size: 0;
+}
+.selector-set .ss-item {
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+    margin: 0 5px 5px 0;
+    padding: 0 26px 0 4px;
+    position: relative;
+    vertical-align: top;
+}
+.selector-set .ss-item b {
+    font-weight: 400;
+}
+.selector-set .ss-item em {
+    color: #e4393c;
+}
+.selector-set .ss-item i {
+    background: rgba(0, 0, 0, 0) url(../images/search.ele.png) no-repeat scroll 7px -140px;
+    display: block;
+    height: 22px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 25px;
+}
+.selector-set .ss-item:hover {
+    border-color: #e4393c;
+    text-decoration: none;
+}
+.selector-set .ss-item:hover i {
+    background-color: #e4393c;
+    background-position: 7px -158px;
+}
 
 
 

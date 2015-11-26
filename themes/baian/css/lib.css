@@ -140,7 +140,7 @@ img{
 .ad-ol{overflow: hidden;margin-top: 20px;}
 .ad-ol li{float: left;width: 200px;}
 .ad-ol li.left{float: left;width: 200px;margin-left: 30px;}
-.ad-ol li.right{float: right;width: 200px;margin-right: 30px;}
+.ad-ol li.right{float: right;width: 200px;margin-right: 25px;}
 .ad-ol li img{display: block;width: 100%;}
 .ad-ol a:hover img{opacity: .8;
 	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity= 80)';

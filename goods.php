@@ -1210,7 +1210,7 @@ function category_related_random_goods($category_id)
             'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
                 "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-            "WHERE $where ORDER BY rand() limit 12";
+            "WHERE $where ORDER BY rand() limit 6";
     $res = $GLOBALS['db']->query($sql);
     $arr = array();//www.zuimoban.com
     while ($row = $GLOBALS['db']->fetchRow($res))
@@ -1248,7 +1248,7 @@ function brand_related_random_goods($brand_id)
 			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
 			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
 			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-			"WHERE $where ORDER BY rand() limit 12";
+			"WHERE $where ORDER BY rand() limit 6";
 	$res = $GLOBALS['db']->query($sql);
 	$arr = array();//www.zuimoban.com
 	while ($row = $GLOBALS['db']->fetchRow($res))
@@ -1286,7 +1286,7 @@ function price_grade_related_random_goods($category_id,$min_price,$max_price)
 			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
 			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
 			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-			"WHERE $where ORDER BY rand() limit 12";
+			"WHERE $where ORDER BY rand() limit 6";
 	$res = $GLOBALS['db']->query($sql);
 	$arr = array();//www.zuimoban.com
 	while ($row = $GLOBALS['db']->fetchRow($res))

@@ -25,50 +25,78 @@
                                 
 				               <!--{if $smarty.foreach.cat0.index == 0} 导航菜单孕妈专区-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(189,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(189,2) item=ad name=ad_name}
+				                    	<!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
 				                 <!--{if $smarty.foreach.cat0.index == 1} 导航菜单宝宝食品-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(190,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(190,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
 				                <!--{if $smarty.foreach.cat0.index == 2} 导航菜单宝宝用品-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(191,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(191,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
 				                <!--{if $smarty.foreach.cat0.index == 3} 导航菜单婴童服饰-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(192,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(192,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
 				                <!--{if $smarty.foreach.cat0.index == 4} 导航菜单童车童床-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(193,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(193,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
 				                <!--{if $smarty.foreach.cat0.index == 5} 导航菜单图书玩具-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(194,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(194,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->
                     			<!--{if $smarty.foreach.cat0.index == 6} 导航菜单家居百货-->
 				                 	<ol class="ad-ol">
-				                    	{foreach from=getads(195,2) item=ad}
-					                    <li><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+				                    	{foreach from=getads(195,2) item=ad name=ad_name}
+					                    <!--{if ($smarty.foreach.ad_name.index) % 2 == 0}-->
+					                    <li class="left"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{else}-->
+					                     <li class="right"><a href="{$ad.ad_link}"><img alt="" src="{$ad.ad_code}"></a></li>
+					                    <!--{/if}-->
 					                    {/foreach}
 				                  	</ol>
 				                <!--{/if}-->

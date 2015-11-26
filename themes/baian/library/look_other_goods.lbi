@@ -1,18 +1,20 @@
 <div class="sbox">
                     <h3 class="st1">看了还看</h3>
-                    <ul class="ul-pic6">
-                        <!--{foreach from=$may_like_goods item=item_goods}-->   
-				          <li ><a href='{$item_goods.url}'><img src="{$item_goods.goods_thumb}" width="50" height="50"/></a>
-				          <div class="txt">
-				         <p><a href='{$item_goods.url}' title='{$item_goods.short_name}'>{$item_goods.short_name}</a></p>
-				         <p><b class="red f14">
-				            <!-- {if $item_goods.promote_price neq 0} -->
-				           {$item_goods.formated_promote_price}
-				            <!-- {else}-->
-				          {$item_goods.shop_price}
-				            <!--{/if}-->
-				           </b></p></div>
-				          </li>
-				          <!--{/foreach}-->
+                    <ul class="s-img-list">
+                    	<!--{foreach from=$may_like_goods item=item_goods}-->   
+                        <li>
+                            <div class="pic"><a title="{$item_goods.short_name}" href="{$item_goods.url}">
+                            	<img alt="" src="{$item_goods.goods_thumb}"></a>
+                            </div>
+                            <h3><a title="{$item_goods.short_name}" href="{$item_goods.url}">{$item_goods.short_name}</a></h3>
+                            <div class="price">
+	                            <!-- {if $item_goods.promote_price neq 0} -->
+					           {$item_goods.formated_promote_price}
+					            <!-- {else}-->
+					          {$item_goods.shop_price}
+					            <!--{/if}-->
+				            </div>
+                        </li>
+                        <!--{/foreach}-->
                     </ul>
                 </div>

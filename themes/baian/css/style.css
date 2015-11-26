@@ -568,7 +568,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-img-list{padding: 0 10px;}
 .s-img-list li{border-bottom: 1px solid #ddd;padding: 5px 0;}
 .s-img-list li:last-child{border-bottom: 0;}
-.s-img-list .pic{height: 120px;}
+.s-img-list .pic{height: 170px;}
 .s-img-list .pic img{display: block;width: 100%;height: 100%;}
 .s-img-list a:hover img{opacity: .8;
 	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity= 80)';

@@ -1529,18 +1529,22 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
                     if (isset($filter_attr))
                     {
                         $uri .= '-attr' . $filter_attr;
-                    }
-                    if (!empty($page))
-                    {
-                        $uri .= '-' . $page;
-                    }
+                    }                   
                     if (!empty($sort))
                     {
-                        $uri .= '-' . $sort;
+                        $uri .= '-s' . $sort;
                     }
                     if (!empty($order))
                     {
-                        $uri .= '-' . $order;
+                        $uri .= '-o' . $order;
+                    }
+                    if (!empty($filter_ext))
+                    {
+                    	$uri .= '-ext'.$filter_ext;
+                    }
+                    if (!empty($page))
+                    {
+                    	$uri .= '-p' . $page;
                     }
                 }
                 else
@@ -1574,6 +1578,10 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
                     if (!empty($order))
                     {
                         $uri .= '&amp;order=' . $order;
+                    }
+                	if (!empty($filter_ext))
+                    {
+                    	$uri .= '&amp;filter_ext=' . $filter_ext;
                     }
                 }
             }

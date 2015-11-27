@@ -509,7 +509,7 @@ function get_shop_help()
  * @return  void
  */
 function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1,
-                        $keywords = '', $brand = 0, $price_min = 0, $price_max = 0, $display_type = 'list', $filter_attr='', $url_format='', $sch_array='')
+                        $keywords = '', $brand = 0, $price_min = 0, $price_max = 0, $display_type = 'list', $filter_attr='', $url_format='', $sch_array='',$filter_ext='')
 {
     $sch = array('keywords'  => $keywords,
                  'sort'      => $sort,
@@ -519,7 +519,8 @@ function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1
                  'price_min' => $price_min,
                  'price_max' => $price_max,
                  'filter_attr'=>$filter_attr,
-                 'display'   => $display_type
+                 'display'    => $display_type,
+	    		 'filter_ext'	  =>$filter_ext
         );
 
     $page = intval($page);
@@ -537,11 +538,11 @@ function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1
     $pager['record_count'] = $record_count;
     $pager['page_count']   = $page_count;
     $pager['display']      = $display_type;
-
+    
     switch ($app)
     {
         case 'category':
-            $uri_args = array('cid' => $cat, 'bid' => $brand, 'price_min'=>$price_min, 'price_max'=>$price_max, 'filter_attr'=>$filter_attr, 'sort' => $sort, 'order' => $order, 'display' => $display_type);
+            $uri_args = array('cid' => $cat, 'bid' => $brand, 'price_min'=>$price_min, 'price_max'=>$price_max, 'filter_attr'=>$filter_attr, 'sort' => $sort, 'order' => $order, 'display' => $display_type,'filter_ext'=>$filter_ext);
             break;
         case 'article_cat':
             $uri_args = array('acid' => $cat, 'sort' => $sort, 'order' => $order);

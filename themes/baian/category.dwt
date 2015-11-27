@@ -86,7 +86,7 @@
                                         <a href="javascript:void(0);" class="btn-more r">更多</a>
                                         <div class="more-multi-cont">
                                            <!--{foreach from=$brands item=brand}-->
-								            <a href='{$brand.url}' <!-- {if $brand.selected} -->class="curr"<!-- {/if} -->>{$brand.brand_name}</a>
+								            <a value="{$brand.brand_id}" url='{$brand.url}' href='{$brand.url}' <!-- {if $brand.selected} -->class="curr"<!-- {/if} -->>{$brand.brand_name}</a>
 								          <!--{/foreach}-->           
                                             <div class="btnbox">
                                                 <input type="button" class="submit" value="确定" onclick="muti_sel('brand')">

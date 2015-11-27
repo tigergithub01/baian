@@ -1,22 +1,50 @@
                 <div class="h"></div>
                 <div class="filterBox">
-<form method="GET" class="sort" name="listform">
-                    <a class="fSort fSort-cur" href="">默认</a>
+<!-- <form method="GET" class="sort" name="listform"> -->
+                    <a class="fSort <!-- {if $pager.sort eq 'goods_id'} -->fSort-cur<!-- {/if} -->" href="{$default_sort_url}">默认</a>
                     <a class="fSort" href="">销量</a>
-                    <a  class="fSort" href="{$script_name}.php?category={$category}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=<!-- {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} -->DESC<!-- {else} -->ASC<!-- {/if} -->#goods_list">价格</a>
-                    <label for=""><input type="checkbox">促销产品</label>
-                    <label for=""><input type="checkbox">可用积分</label>
-                    <label for=""><input type="checkbox">可用红包</label>
-                    <input type="hidden" name="category" value="{$category}" />
-  <input type="hidden" name="display" value="{$pager.display}" id="display" />
-  <input type="hidden" name="brand" value="{$brand_id}" />
-  <input type="hidden" name="price_min" value="{$price_min}" />
-  <input type="hidden" name="price_max" value="{$price_max}" />
-  <input type="hidden" name="filter_attr" value="{$filter_attr}" />
-  <input type="hidden" name="page" value="{$pager.page}" />
-  <input type="hidden" name="sort" value="{$pager.sort}" />
-  <input type="hidden" name="order" value="{$pager.order}" />
-  </form>
+                    <a  class="fSort <!-- {if $pager.sort eq 'shop_price'} -->fSort-cur<!-- {/if} -->" href="{$price_sort_url}">价格</a>
+                    <label for="">
+	                    <a href="{$promote_url}">
+		                    <!-- {if $promote_flag eq 1} -->
+		                    <input type="checkbox" checked="checked">
+		                    <!-- {else} -->
+		                    <input type="checkbox">
+		                    <!-- {/if} -->
+		                   	 促销产品
+	                    </a>
+                    </label>
+                    <label for="">
+	                    <a href="{$integral_url}">
+		                    <!-- {if $integral_flag eq 1} -->
+		                    <input type="checkbox" checked="checked">
+		                    <!-- {else} -->
+		                    <input type="checkbox">
+		                    <!-- {/if} -->
+		                  	  可用积分
+	                    </a>	
+                    </label>
+                    <label for="">
+                    	<a href="{$bonus_url}">
+		                    <!-- {if $bonus_flag eq 1} -->
+		                    <input type="checkbox" checked="checked">
+		                    <!-- {else} -->
+		                    <input type="checkbox">
+		                    <!-- {/if} -->
+		                   	 可用红包
+	                    </a>
+	                 </label>
+                    <input type="hidden" id="category" name="category" value="{$category}" />
+  <input type="hidden"  name="display" value="{$pager.display}" id="display" />
+  <input type="hidden" id="brand" name="brand" value="{$selected_brand}" />
+  <input type="hidden" id="price_min" name="price_min" value="{$price_min}" />
+  <input type="hidden" id="price_max" name="price_max" value="{$price_max}" />
+  <input type="hidden" id="filter_attr" name="filter_attr" value="{$filter_attr}" />
+  <input type="hidden" id="page" name="page" value="{$pager.page}" />
+  <input type="hidden" id="sort" name="sort" value="{$pager.sort}" />
+  <input type="hidden" id="order" name="order" value="{$pager.order}" />
+  <input type="hidden" id="filter_ext" name="filter_ext" value="{$filter_ext}" />
+  <!-- </form> -->
                     <span class="page-state r">
                         <span class="page-now"><em class="orange">1</em>/50</span>
                         <a href="" class="prev">&lt;</a>

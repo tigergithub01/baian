@@ -18,7 +18,9 @@
 <script type="text/javascript" src="themes/baian/js/scrollpic.js"></script>
 
 <script type="text/javascript" src="/themes/baian/js/goods.init.js"></script>
-
+	<style>
+	
+	</style>
     </head>
 <body>
 
@@ -59,23 +61,39 @@
     
     <div class="filter_con">
                         <table>
+                        	<tr>
+                                <th>已选条件:</th>
+                                <td>
+                                    <form action="">
+										<div class="crumbs-nav-item">
+											<div class="selector-set">
+												<!--{foreach from=$selected_filter_arr item=item}-->
+												<a data-id="100001"
+													href="{$item.url}"
+													title="{$item.name} " class="ss-item"><em>{$item.name}</em><i></i></a>
+												<!--{/foreach}-->         	
+											</div>
+										</div>
+									</form>
+                                </td>
+                            </tr>	
                             <tr>
                                <!--{if $brands.1}-->
          <th>品牌：</th>
            <td>
-                                    <form action="">
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
+                                    <div  class="brand">
+                                        <a href="javascript:void(0);" class="btn-multiple r" id="multi_btn_brand">多选</a>
                                         <a href="javascript:void(0);" class="btn-more r">更多</a>
                                         <div class="more-multi-cont">
                                            <!--{foreach from=$brands item=brand}-->
-            <a href='{$brand.url}' <!-- {if $brand.selected} -->class="curr"<!-- {/if} -->>{$brand.brand_name}</a>
-          <!--{/foreach}-->           
+								            <a href='{$brand.url}' <!-- {if $brand.selected} -->class="curr"<!-- {/if} -->>{$brand.brand_name}</a>
+								          <!--{/foreach}-->           
                                             <div class="btnbox">
-                                                <input type="submit" value="确定">
-                                                <input type="button" value="取消">
+                                                <input type="button" class="submit" value="确定" onclick="muti_sel('brand')">
+                                                <input type="button" value="取消" onclick="$('#multi_btn_brand').click();">
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </td>
 	  <!--{/if}-->
 	 
@@ -87,18 +105,18 @@
                              <!--{if $price_grade.1}-->
      <th>价格：</th>
       <td>
-                                    <form action="">
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
+                                    <div class="price_grade">
+                                        <!-- <a href="javascript:void(0);" class="btn-multiple r">多选</a> -->
                                         <div class="more-multi-cont">
 		<!--{foreach from=$price_grade item=grade}-->
           <a href='{$grade.url}' <!-- {if $grade.selected} -->class="curr"<!-- {/if} -->>{$grade.price_range}</a>
         <!--{/foreach}-->
         <div class="btnbox">
-                                                <input type="submit" value="确定">
+                                                <input type="button" class="submit" value="确定">
                                                 <input type="button" value="取消">
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </td>
 	  <!--{/if}-->
 
@@ -111,25 +129,27 @@
                             
                             
 	  
-	  						<!--{foreach from=$filter_attr_list item=filter_attr}-->
+	  						<!--{foreach from=$filter_attr_list item=filter_attr name=filter_attr}-->
+	  						<!-- {if $filter_attr|@count neq 0 } -->
                             <tr>
                                 <th>{$filter_attr.filter_attr_name|escape:html}：</th>
                                 <td>
-                                    <form action="">
-                                        <a href="javascript:void(0);" class="btn-multiple r">多选</a>
+                                    <div class="attr_{$smarty.foreach.filter_attr.index}">
+                                        <a href="javascript:void(0);" class="btn-multiple r" id="multi_btn_attr_{$smarty.foreach.filter_attr.index}">多选</a>
                                         <div class="more-multi-cont">
                                             <!--{foreach from=$filter_attr.attr_list item=attr}-->
-									          <a href='{$attr.url}' <!-- {if $attr.selected} -->class="curr"<!-- {/if} -->>{$attr.attr_value}</a>
+									          <a value="{$attr.goods_attr_id}" url='{$attr.url}' href='{$attr.url}' <!-- {if $attr.selected} -->class="curr"<!-- {/if} -->>{$attr.attr_value}</a>
 									        <!--{/foreach}-->
                                            
                                             <div class="btnbox">
-                                                <input type="submit" value="确定">
-                                                <input type="button" value="取消">
+                                                <input type="button" class="submit" value="确定" onclick="muti_sel('attr',{$smarty.foreach.filter_attr.index})">
+                                                <input type="button" value="取消" onclick="$('#multi_btn_attr_{$smarty.foreach.filter_attr.index}').click();">
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </td>
                             </tr>
+                            <!-- {/if} -->
                             <!--{/foreach}-->
                         </table>
                     </div>
@@ -197,8 +217,13 @@
             if( $(this).hasClass('ok') ){
                 _para.addClass('ok').find('.btnbox').show();
                 _area.each(function(i){
-                    $(this).prepend('<input type="checkbox" id="inp'+i+'">');
+                	// $(this).prepend('<input type="checkbox" id="inp'+i+'">');
+                    $(this).prepend('<input type="checkbox" id="inp'+i+'" value="'+$(this).attr('value')+'">');
                     $(this).wrapInner('<label for="inp'+i+'"></label>');
+                    $(this).prop('href','javascript:void(0)');
+                    if($(this).text()=='全部'){
+                    	$(this).hide();
+                    }
                 });
             }else{
                 _para.removeClass('ok').find('.btnbox').hide();
@@ -206,11 +231,106 @@
                     $(this).unwrap();
                     $(this).remove();
                 });
+                _area.each(function(i){
+                	 $(this).prop('href',$(this).attr('url'));
+                	 $(this).show();
+                });
             }
         });
 
 
     });
+    
+    
+    function muti_sel(type,attr_index){
+    	var category = $("#category").val();
+    	var brand = $("#brand").val();
+    	var price_min = $("#price_min").val();
+    	var price_max = $("#price_max").val();
+    	var filter_attr = $("#filter_attr").val();
+    	var sort = $("#sort").val();
+    	var order = $("#order").val();
+    	var filter_ext = $("#filter_ext").val();
+    	
+    	if(type=='brand'){
+    		brand="";
+    		var $checkedlist = $(".brand input[type='checkbox']:checked");
+    		if($checkedlist.length==0){
+    			return;
+    		}
+    		$checkedlist.each(function(index,v){
+    			brand += $(this).val();
+    			if(index<($checkedlist.length-1)){
+    				brand += ",";
+    			}	
+	        });
+    	}else if(type=='price_grade'){
+    		
+    	}else if(type=='attr'){
+    		checked_attr="";
+    		var $checkedlist = $(".attr_"+attr_index+" input[type='checkbox']:checked");
+    		if($checkedlist.length==0){
+    			return;
+    		}
+    		$checkedlist.each(function(index,v){
+    			checked_attr += $(this).val();
+    			if(index<($checkedlist.length-1)){
+    				checked_attr += ",";
+    			}	
+	        });
+    		
+    		//先根据长度格式化为0.0.0.0格式
+    		var filter_attr_count = {$filter_attr_count};
+    		var filter_attr = '{$filter_attr}';
+    		if(filter_attr=='0' && filter_attr_count > 0){
+    			filter_attr = "";
+    			for(var i=0;i<filter_attr_count;i++){
+        			filter_attr +=('0');
+        			if(i<(filter_attr_count-1)){
+        				filter_attr += ".";
+        			}
+        		}
+    		}
+    		
+    		
+    		//再重新赋值
+    		var filter_attr_array = filter_attr.split('.');
+    		filter_attr="";
+    		for(var i=0;i<filter_attr_array.length;i++){
+    			if(attr_index==i){
+    				filter_attr +=(checked_attr);
+    			}else{
+    				filter_attr +=(filter_attr_array[i]);
+    			}
+    			if(i<(filter_attr_count-1)){
+    				filter_attr += ".";
+    			}
+    		}
+    		console.debug(filter_attr);
+    	}
+    	
+    	$.ajax({     
+    	    url:'category.php',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'is_ajax':'1','id':category,'brand':brand,'price_min':price_min,'price_max':price_max,
+    	    	'filter_attr':filter_attr,'sort':sort,'order':order,'filter_ext':filter_ext},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    		    if(data.status==1){
+    		    	var build_uri = data.content;
+    		    	window.location.href = build_uri;
+    		    }else{
+    		    	
+    		    }
+    	    }  
+    	}); 
+    	
+    	
+    }
     </script>
     
 </body>

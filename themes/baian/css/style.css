@@ -695,6 +695,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .more-multi-cont .btnbox input{display: inline-block;height: 25px;border-radius: 3px;margin: 0 5px;
 	padding: 0 10px;outline: 0;cursor: pointer;background: none;border: 1px solid #ddd;}
 .more-multi-cont .btnbox input[type='submit']{background: #f94700;color: #fff;border-color: #f94700;}
+.more-multi-cont .btnbox .submit{background: #f94700;color: #fff;border-color: #f94700;}
 
 .btn-more{display: inline-block;border: 1px solid #ddd;padding: 0 20px 0 5px;
 	background: url(../images/a1.png) no-repeat right center;}

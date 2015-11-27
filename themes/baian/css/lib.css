@@ -107,7 +107,7 @@ img{
 #nv{height: 36px;background: #f08300;position: relative;z-index: 9;}
 
 /*侧导航*/
-#side-menu{width: 210px;position: relative;}
+#side-menu{width: 210px;position: relative;z-index:1000 }
 .menu-btn{text-align: center;font-size: 16px;line-height: 36px;color: #fff;font-weight: 600;background: url(../images/snv.png) no-repeat 20px center;background-color: #ea5504;}
 .menu-ul{position: absolute;width: 100%;left: 0;top: 36px;}
 .menu-ul li{background: url(../images/bg-ic1.png);}

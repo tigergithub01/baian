@@ -47,7 +47,7 @@ if (empty($brand_id))
         $smarty->assign('page_title',      $position['title']);    // 页面标题
         $smarty->assign('ur_here',         $position['ur_here']);  // 当前位置
 	
-        //获取顶级分类-包含分类下的所有品牌雷彪
+        //获取顶级分类-包含分类下的所有品牌
         $categories = get_children_cat_brand_list();
         
         $smarty->assign('categories',      $categories); 

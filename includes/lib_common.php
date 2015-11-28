@@ -1629,6 +1629,10 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
                     {
                         $uri .= '-' . $order;
                     }
+                    if (!empty($filter_ext))
+                    {
+                    	$uri .= '-ext'.$filter_ext;
+                    }
                 }
                 else
                 {
@@ -1648,6 +1652,10 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
                     if (!empty($order))
                     {
                         $uri .= '&amp;order=' . $order;
+                    }
+                    if (!empty($filter_ext))
+                    {
+                    	$uri .= '&amp;filter_ext=' . $filter_ext;
                     }
                 }
             }

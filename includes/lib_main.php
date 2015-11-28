@@ -548,7 +548,7 @@ function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1
             $uri_args = array('acid' => $cat, 'sort' => $sort, 'order' => $order);
             break;
         case 'brand':
-            $uri_args = array('cid' => $cat, 'bid' => $brand, 'sort' => $sort, 'order' => $order, 'display' => $display_type);
+            $uri_args = array('cid' => $cat, 'bid' => $brand, 'sort' => $sort, 'order' => $order, 'display' => $display_type,'filter_ext'=>$filter_ext);
             break;
         case 'search':
             $uri_args = array('cid' => $cat, 'bid' => $brand, 'sort' => $sort, 'order' => $order);

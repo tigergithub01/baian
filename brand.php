@@ -62,6 +62,17 @@ $page = !empty($_REQUEST['page'])  && intval($_REQUEST['page'])  > 0 ? intval($_
 $size = !empty($_CFG['page_size']) && intval($_CFG['page_size']) > 0 ? intval($_CFG['page_size']) : 10;
 $cate = !empty($_REQUEST['cat'])   && intval($_REQUEST['cat'])   > 0 ? intval($_REQUEST['cat'])   : 0;
 
+/* 促销产品，可用积分，可用红包 ,参数值1.1.1用点号分隔*/
+$filter_ext_str = isset($_REQUEST['filter_ext']) ? htmlspecialchars(trim($_REQUEST['filter_ext'])) : '0';
+$filter_ext_str = trim(urldecode($filter_ext_str));
+$filter_ext_str = preg_match('/^((([0-9]+[,]?)+)[.]?)+$/',$filter_ext_str) ? $filter_ext_str : '';
+
+$filter_ext = empty($filter_ext_str) ? '' : explode('.', $filter_ext_str);
+$promote = (!empty($filter_ext) && count($filter_ext)>=1)?intval($filter_ext[0]):0;
+$integral = (!empty($filter_ext) && count($filter_ext)>=2)?intval($filter_ext[1]):0;
+$bonus = (!empty($filter_ext) && count($filter_ext)>=3)?intval($filter_ext[2]):0;
+$filter_ext_str= implode(".",array($promote,$integral,$bonus));
+
 /* 排序、显示方式以及类型 */
 $default_display_type = $_CFG['show_order_type'] == '0' ? 'list' : ($_CFG['show_order_type'] == '1' ? 'grid' : 'text');
 $default_sort_order_method = $_CFG['sort_order_method'] == '0' ? 'DESC' : 'ASC';
@@ -76,13 +87,13 @@ setcookie('ECS[display]', $display, gmtime() + 86400 * 7);
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
-
 /* 页面的缓存ID */
-$cache_id = sprintf('%X', crc32($brand_id . '-' . $display . '-' . $sort . '-' . $order . '-' . $page . '-' . $size . '-' . $_SESSION['user_rank'] . '-' . $_CFG['lang'] . '-' . $cate));
+$cache_id = sprintf('%X', crc32($brand_id . '-' . $display . '-' . $sort . '-' . $order . '-' . $page . '-' . $size . '-' . $_SESSION['user_rank'] . '-' . $_CFG['lang'] . '-' . $cate . '-'.$filter_ext_str));
 
 if (!$smarty->is_cached('brand.dwt', $cache_id))
 {
-    $brand_info = get_brand_info($brand_id);
+    
+	$brand_info = get_brand_info($brand_id);
 
     if (empty($brand_info))
     {
@@ -108,6 +119,69 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     $smarty->assign('show_marketprice', $_CFG['show_marketprice']);
     $smarty->assign('brand_cat_list', brand_related_cat($brand_id)); // 相关分类
     $smarty->assign('feed_url',       ($_CFG['rewrite'] == 1) ? "feed-b$brand_id.xml" : 'feed.php?brand=' . $brand_id);
+    
+    
+    //促销产品,可用积分，可用红包，排序url
+    $promote_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'sort' => $sort,
+    		'order' => $order,
+    		'filter_ext' => implode ( ".", array (
+    				$promote == 1 ? 0 : 1,
+    				$integral,
+    				$bonus
+    		) )
+    ), $brand_info['brand_name'] );
+    
+    $integral_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'sort' => $sort,
+    		'order' => $order,
+    		'filter_ext' => implode ( ".", array (
+    				$promote,
+    				$integral == 1 ? 0 : 1,
+    				$bonus
+    		) )
+    ), $brand_info['brand_name'] );
+    
+    $bonus_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'sort' => $sort,
+    		'order' => $order,
+    		'filter_ext' => implode ( ".", array (
+    				$promote,
+    				$integral,
+    				$bonus == 1 ? 0 : 1
+    		) )
+    ), $brand_info['brand_name'] );
+    
+    
+    $price_sort_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'sort' => 'shop_price',
+    		'order' => ($order=='ASC'?"DESC":"ASC"),
+    		'filter_ext' => $filter_ext_str
+    ), $brand_info['brand_name'] );
+    
+    $default_sort_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'filter_ext' => $filter_ext_str
+    ), $brand_info['brand_name'] );
+    
+    
+    $smarty->assign('promote_flag',    $promote);
+    $smarty->assign('integral_flag',    $integral);
+    $smarty->assign('bonus_flag',    $bonus);
+    $smarty->assign('promote_url',    $promote_url);
+    $smarty->assign('integral_url',    $integral_url);
+    $smarty->assign('bonus_url',    $bonus_url);
+    $smarty->assign('price_sort_url',    $price_sort_url);
+    $smarty->assign('default_sort_url',    $default_sort_url);
 
     /* 调查 */
     $vote = get_vote();
@@ -123,9 +197,9 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     $smarty->assign('brand',           $brand_info);
     $smarty->assign('promotion_info', get_promotion_info());
 
-    $count = goods_count_by_brand($brand_id, $cate);
+    $count = goods_count_by_brand($brand_id, $cate,$promote,$integral,$bonus);
 
-    $goodslist = brand_get_goods($brand_id, $cate, $size, $page, $sort, $order);
+    $goodslist = brand_get_goods($brand_id, $cate, $size, $page, $sort, $order,$promote,$integral,$bonus);
 
     if($display == 'grid')
     {
@@ -137,7 +211,7 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     $smarty->assign('goods_list',      $goodslist);
     $smarty->assign('script_name', 'brand');
 
-    assign_pager('brand',              $cate, $count, $size, $sort, $order, $page, '', $brand_id, 0, 0, $display); // 分页
+    assign_pager('brand',              $cate, $count, $size, $sort, $order, $page, '', $brand_id, 0, 0, $display, '','','',$filter_ext_str); // 分页
     assign_dynamic('brand'); // 动态内容
     
     //猜你喜欢，看了又看
@@ -267,15 +341,31 @@ function brand_recommend_goods($type, $brand, $cat = 0)
  * @param   integer     $cate
  * @return  integer
  */
-function goods_count_by_brand($brand_id, $cate = 0)
+function goods_count_by_brand($brand_id, $cate = 0,$promote,$integral,$bonus)
 {
-    $sql = 'SELECT COUNT(*) FROM ' .$GLOBALS['ecs']->table('goods'). ' AS g '.
-            "WHERE brand_id = '$brand_id' AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0";
+	$where=" brand_id = '$brand_id' AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ";
+	
+	if ($cate > 0)
+	{
+		$where .= " AND " . get_children($cate);
+	}
+	
+	if($promote==1){
+		$where .= " AND (g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime().') ';
+	}
+	
+	if($integral==1){
+		$where .= " AND g.integral > 0 ";
+	}
+	
+	if($bonus==1){
+		$where .= " AND g.bonus > 0 ";
+	}
+	
+	$sql = 'SELECT COUNT(*) FROM ' .$GLOBALS['ecs']->table('goods'). ' AS g '.
+            "WHERE $where";
 
-    if ($cate > 0)
-    {
-        $sql .= " AND " . get_children($cate);
-    }
+    
 
     return $GLOBALS['db']->getOne($sql);
 }
@@ -287,9 +377,21 @@ function goods_count_by_brand($brand_id, $cate = 0)
  * @param   integer  $brand_id
  * @return  array
  */
-function brand_get_goods($brand_id, $cate, $size, $page, $sort, $order)
+function brand_get_goods($brand_id, $cate, $size, $page, $sort, $order,$promote,$integral,$bonus)
 {
-    $cate_where = ($cate > 0) ? 'AND ' . get_children($cate) : '';
+    $where = ($cate > 0) ? 'AND ' . get_children($cate) : '';
+    
+    if($promote==1){
+    	$where .= " AND (g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime().') ';
+    }
+    
+    if($integral==1){
+    	$where .= " AND g.integral > 0 ";
+    }
+    
+    if($bonus==1){
+    	$where .= " AND g.bonus > 0 ";
+    }
 
     /* 获得商品列表 */
     $sql = 'SELECT g.goods_id, g.goods_name, g.market_price, g.shop_price AS org_price, ' .
@@ -298,7 +400,7 @@ function brand_get_goods($brand_id, $cate, $size, $page, $sort, $order)
             'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
                 "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-            "WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 AND g.brand_id = '$brand_id' $cate_where".
+            "WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 AND g.brand_id = '$brand_id' $where ".
             "ORDER BY $sort $order";
 
     $res = $GLOBALS['db']->selectLimit($sql, $size, ($page - 1) * $size);

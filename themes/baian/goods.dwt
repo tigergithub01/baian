@@ -369,8 +369,8 @@
 					<h3 class="st1">相关分类</h3>
 					<ul class="ul-txt2-p">
               
-						 <!--{foreach from=$child_cat item=cat name=child_cat}-->
-          <li><a href="{$cat.url}" title="{$cat.name|escape:html}">{$cat.name|escape:html}</a></li>
+						 <!--{foreach from=$sibling_categories item=cat name=child_cat}-->
+          <li><a href="{$cat.url}" title="{$cat.cat_name|escape:html}">{$cat.cat_name|escape:html}</a></li>
           <!--{/foreach}-->
 					</ul>
 				</div>

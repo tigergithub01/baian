@@ -87,7 +87,7 @@
 						              <!--{/if}-->
 				                </b>　
 							    <!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
-							    <div id="promote_time" style="display:inline;">
+							    <div id="promote_time" style="/* display:inline; */display: none;">
 					         	　	抢购倒计时：<span class="time"></span>
 					         	</div>
 					         	<!--{/if}-->
@@ -610,6 +610,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		
 		//显示抢购倒计时显示
 		<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
+		$("#promote_time").css('display','inline');
 		interValObj = window.setInterval(setRemainTime, 1000); //间隔函数，1秒执行 
 		<!--{/if} 促销-->
 		

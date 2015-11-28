@@ -496,8 +496,9 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
         $properties = get_goods_properties($goods_id);  // 获得商品的规格和属性
 
         $smarty->assign('properties',          $properties['pro']);                              // 商品属性
-		$smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //同分类
+		$smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //同类别商品
 		$smarty->assign('brand_related_random_goods',       brand_related_random_goods($goods['brand_id'])); //同品牌
+		$smarty->assign('sibling_categories',       get_sibling_category($goods['cat_id'])); //相关分类
 		
 		//所属价格区间，同价位
 		$price_gradex = get_price_grade_by_price($goods['cat_id'], $goods['shop_price']);

@@ -30,6 +30,16 @@ function goods_sort($goods_a, $goods_b)
 
 }
 
+/**
+ * 根据商品分类获取同级分类列表
+ * @param number $goods_id
+ */
+function get_sibling_category($cat_id = 0){
+	$sql = "SELECT parent_id FROM ". $GLOBALS['ecs']->table('category'). " WHERE cat_id = '$cat_id'";;
+	$parent_id = $GLOBALS['db']->getOne($sql);
+	return get_direct_children_category($parent_id);
+}
+
 
 /**
  * 获取直接分类
@@ -51,6 +61,9 @@ function get_direct_children_category($cat_id = 0){
 	}
 	return $cat_arr;
 }
+
+
+
 
 /**
  * 获取某分类下的所有品牌

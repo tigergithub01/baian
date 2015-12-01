@@ -248,7 +248,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
     die($json->encode($res));
 }
 
-// clear_cache_files();
+clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
@@ -256,7 +256,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
 	$product = get_product($product_id);
 	$goods_id = isset($product)?$product['goods_id']:0;
 } */
-$cache_id = $goods_id. (isset($product_id)?$product_id:0) . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
+$cache_id = $goods_id.'-'. (isset($product_id)?$product_id:0) . '-' . $_SESSION['user_rank'].'-'.$_CFG['lang'];
 $cache_id = sprintf('%X', crc32($cache_id));
 if (!$smarty->is_cached('goods.dwt', $cache_id))
 {
@@ -425,29 +425,42 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 	   //获取商品相册，
 	   $pictures = null;
 	   if(!empty($product_id)){
-	   	//产品相册如果没有上传，直接读取商品相册
-	   	$pictures = get_product_gallery($product_id);
-	   	// 			var_dump($pictures);
-	   	if(empty($pictures)){
-	   		$pictures = get_goods_gallery($goods_id);
-	   	}else{
-	   		/**因为产品相册暂时没有上传主图的入口，现在将商品的主图附加在最后，临时解决方案**/
-	   		/* $sql = "SELECT goods_thumb, goods_img FROM " .$GLOBALS['ecs']->table('goods'). "AS g
-	   		 INNER JOIN ". $GLOBALS['ecs']->table('products').  " AS p
-	   		 ON (g.goods_id = p.goods_id) AND p.product_id = '$product_id' LIMIT 1";
-	   		 $imgs = $GLOBALS['db']->getRow($sql);
-	   
-	   		 $arr = ['img_url'=>get_image_path($product_id, $imgs['goods_img'], false, 'goods'),
-	   		 'thumb_url'=>get_image_path($product_id, $imgs['goods_thumb'], true, 'goods')];
-	   		 $pictures[]=$arr; */
-	   
-	   		//产品没有勾选主图时，默认用第一张图作为产品的主图
-	   		$picture = $pictures[0];
-	   		$goods['original_img'] = $picture['original_img'];
-	   		$goods['goods_img'] = $picture['img_url'];
-	   	}
+		   	//产品相册如果没有上传，直接读取商品相册
+		   	$pictures = get_product_gallery($product_id);
+		   	// 			var_dump($pictures);
+		   	if(empty($pictures)){
+		   		$pictures = get_goods_gallery($goods_id);
+		   	}else{
+		   		/**因为产品相册暂时没有上传主图的入口，现在将商品的主图附加在最后，临时解决方案**/
+		   		/* $sql = "SELECT goods_thumb, goods_img FROM " .$GLOBALS['ecs']->table('goods'). "AS g
+		   		 INNER JOIN ". $GLOBALS['ecs']->table('products').  " AS p
+		   		 ON (g.goods_id = p.goods_id) AND p.product_id = '$product_id' LIMIT 1";
+		   		 $imgs = $GLOBALS['db']->getRow($sql);
+		   
+		   		 $arr = ['img_url'=>get_image_path($product_id, $imgs['goods_img'], false, 'goods'),
+		   		 'thumb_url'=>get_image_path($product_id, $imgs['goods_thumb'], true, 'goods')];
+		   		 $pictures[]=$arr; */
+		   
+		   		//产品没有勾选主图时，默认用第一张图作为产品的主图
+		   		$picture = $pictures[0];
+		   		$goods['original_img'] = $picture['original_img'];
+		   		$goods['goods_img'] = $picture['img_url'];
+		   	}
 	   }else{
-	   	$pictures = get_goods_gallery($goods_id);
+	   		$pictures = get_goods_gallery($goods_id);
+	   }
+	   
+	   //修正产品的促销结束时间
+	   if(isset($product)){
+	   	   $goods['is_promote'] = $product['is_promote'];
+	   	   $goods['promote_start_date'] = $product['promote_start_date'];
+	   	   $goods['promote_end_date'] = $product['promote_end_date'];
+		   if (gmtime() >= $goods['promote_start_date'] && gmtime() <= $goods['promote_end_date']){
+		   	//         	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
+		   		$goods['gmt_end_time']  = local_date('M d, Y 0:0:0',$goods['promote_end_date']);
+		   }else{
+		   		$goods['gmt_end_time'] = null;
+		   }
 	   }
 	   
 
@@ -647,6 +660,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$smarty->assign("goods_number",$goods_number);
 		/*TODO:显示库存情况 end***/
 		
+		/**显示产品的促销信息**/
 		
 		
 		

@@ -72,7 +72,7 @@
           <tr>
             <td class="label">仓库库存</td>
             <td>
-              <table width="100%" id="tbody_product_store" align="center">
+              <table width="100%" id="tbody_goods_store" align="center">
                 {foreach from=$products_store_list item=products_store name=products_store}
                 <tr>
                   <td>
@@ -93,7 +93,6 @@
                 </tr>
                 {/foreach}
               </table>
-              <span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="volumePrice">{$lang.notice_volume_price}</span>
             </td>
           </tr>
           <!--仓库库存 end -->

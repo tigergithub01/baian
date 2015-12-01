@@ -299,6 +299,34 @@
             <td><input type="text" name="goods_number" value="{$goods.goods_number}" size="20" /><br />
             <span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticeStorage">{$lang.notice_storage}</span></td>
           </tr>
+          <!--仓库库存 start-->
+          <tr>
+            <td class="label">仓库库存</td>
+            <td>
+              <table width="100%" id="tbody_goods_store" align="center">
+                {foreach from=$goods_store_list item=goods_store name=goods_store}
+                <tr>
+                  <td>
+                     {if $smarty.foreach.goods_store.iteration eq 1}
+                       <a href="javascript:;" onclick="add_goods_store(this)">[+]</a>
+                     {else}
+                       <a href="javascript:;" onclick="remove_goods_store(this)">[-]</a>
+                     {/if}
+                     	仓库 
+                     	<select name="goods_storerooms[]">
+				       	 	<option value="">{$lang.select_please}</option>
+					        {foreach from=$storerooms item=storeroom key=s_key}
+					        <option {if ($s_key eq $goods_store.store_id)} selected="selected" {/if} value="{$s_key}">{$storeroom}</option>
+					        {/foreach}
+				        </select>
+                     	库存 <input type="text" name="goods_numbers[]" size="8" value="{$goods_store.goods_number}"/>
+                  </td>
+                </tr>
+                {/foreach}
+              </table>
+            </td>
+          </tr>
+          <!--仓库库存 end -->
           <tr>
             <td class="label">{$lang.lab_warn_number}</td>
             <td><input type="text" name="warn_number" value="{$goods.warn_number}" size="20" /></td>
@@ -1427,5 +1455,45 @@
     }
   }
   {/literal}
+  
+  /**
+   * 新增一仓库库存
+   */
+  function add_goods_store(obj)
+  {
+    var src      = obj.parentNode.parentNode;
+    var tbl      = document.getElementById('tbody_goods_store');
+
+    /*
+    var validator  = new Validator('theForm');
+    checkVolumeData("0",validator);
+    if (!validator.passed())
+    {
+      return false;
+    }
+    */
+
+    var row  = tbl.insertRow(tbl.rows.length);
+    var cell = row.insertCell(-1);
+    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_goods_store)(.*)(\[)(\+)/i, "$1remove_goods_store$3$4-");
+
+    var goods_storerooms_list = document.getElementsByName("goods_storerooms[]");
+    var goods_number_list  = document.getElementsByName("goods_numbers[]");
+
+    goods_storerooms_list[goods_storerooms_list.length-1].value = "";
+    goods_number_list[goods_number_list.length-1].value   = 0;
+  }
+
+  /**
+   * 删除仓库库存
+   */
+  function remove_goods_store(obj)
+  {
+    var row = rowindex(obj.parentNode.parentNode);
+    var tbl = document.getElementById('tbody_goods_store');
+
+    tbl.deleteRow(row);
+  }
+	  
 </script>
 {include file="pagefooter.htm"}

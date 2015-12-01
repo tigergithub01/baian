@@ -378,6 +378,8 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             {
                 $db->autoExecute($ecs->table('goods_attr'), addslashes_deep($row), 'INSERT');
             }
+            
+            
         }
 
         // 扩展分类
@@ -422,6 +424,16 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             }
         }
     }
+    
+    //多仓库库存
+    $sql = "SELECT goods_store_id, goods_id, store_id, goods_number FROM " . $ecs->table('goods_store') . " WHERE goods_id = '".$_REQUEST[goods_id]."'";
+    $goods_store_list = $db->getAll($sql);
+    if(empty($goods_store_list)){
+    	$goods_store_list = array('0'=>array('store_id'=>0,'goods_number'=>0)); //为空时插入一条初始记录
+    }
+    
+    /*仓库列表***/
+    $storerooms =  get_goods_storeroom_list();
 
     /* 拆分商品名称样式 */
     $goods_name_style = explode('+', empty($goods['goods_name_style']) ? '+' : $goods['goods_name_style']);
@@ -473,6 +485,9 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
 	 /*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/
 	$smarty->assign('countries',        get_regions());
     $smarty->assign('default_country',  $_CFG['shop_country']);
+    $smarty->assign('goods_store_list', $goods_store_list);
+    $smarty->assign('storerooms', $storerooms);
+    
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/
 	
     /* 显示商品信息页面 */
@@ -1200,6 +1215,44 @@ else
         $db->query("UPDATE " . $ecs->table('goods_gallery') . " SET img_original='' WHERE `goods_id`='{$goods_id}'");
         @unlink('../' . $original_img);
         @unlink('../' . $img);
+    }
+    
+    /*修改多仓库库存*/
+    $goods_storerooms = isset($_POST['goods_storerooms'])?$_POST['goods_storerooms']:null;
+    $goods_numbers = isset($_POST['goods_numbers'])?$_POST['goods_numbers']:null;
+    
+    $sql = "DELETE FROM ". $GLOBALS['ecs']->table('goods_store') ." WHERE goods_id = '".$goods_id."'";
+    $GLOBALS['db']->query($sql);
+    
+    if($goods_storerooms){
+    	//产品汇总库存
+    	$goods_total_number = 0;
+    
+    	foreach ($goods_storerooms as $key => $value) {
+    		$store_id = $goods_storerooms[$key];
+    		if(empty($store_id)){
+    			continue;
+    		}
+    		$goods_number = isset($goods_numbers[$key])?$goods_numbers[$key]:0;
+    			
+    		if (!is_numeric($goods_number)){
+    			$goods_number = 0;
+//     			sys_msg($_LANG['sys']['wrong'] . '多仓库库存为非整数', 1, array(), true);
+    		}
+    			
+    		$goods_total_number += intval($goods_number);
+    			
+    		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('goods_store') . " (goods_id, store_id, goods_number) " .
+    				"VALUES ('$goods_id', '$store_id', '$goods_number')";
+    		$db->query($sql);
+    	}
+    
+    	//更新产品库存
+	    if (update_goods($goods_id, 'goods_number', $goods_total_number))
+	    {
+	    	//记录日志
+	    	admin_log($goods_id, 'update', 'goods');
+	    }
     }
 
     /* 记录上一次选择的分类和品牌 */

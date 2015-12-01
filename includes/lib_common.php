@@ -2341,7 +2341,7 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
     
     /*获取产品信息，如果选择了具体的产品，则根据产品价格来计算会员价*/
     if($product_id){
-    	$sql = "SELECT g.promote_price, g.promote_start_date, g.promote_end_date, ".
+    	$sql = "SELECT p.promote_price, p.promote_start_date, p.promote_end_date, ".
     			"IFNULL(mp.user_price, p.product_price * '" . $_SESSION['discount'] . "') AS shop_price ".
     			" FROM " .$GLOBALS['ecs']->table('goods'). " AS g ".
     			" LEFT JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON (g.goods_id = p.goods_id) ".

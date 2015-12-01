@@ -2368,6 +2368,8 @@ function get_products_list($goods_id)
 {
 	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE goods_id = '$goods_id' ORDER BY is_default DESC";
 	$rows = $GLOBALS['db']->getAll($sql);
+	
+	
 	return $rows;
 }
 
@@ -2426,19 +2428,39 @@ function get_goods_store($goods_id,$product_id,$address=null){
 	$sql = "SELECT IFNULL(goods_number,0) AS goods_number FROM " . $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$goods_id' LIMIT 1";
 	$goods_number = $GLOBALS['db']->getOne($sql);
 	
+	
 	if($product_id){
 		$sql = "SELECT IFNULL(product_number,0) AS product_number FROM " . $GLOBALS['ecs']->table('products') . " WHERE product_id = '$product_id' LIMIT 1";
 		$goods_number = $GLOBALS['db']->getOne($sql);
 		
 		if($address){
-			$storeroom = get_storeroom($address);
-			if($storeroom){//store_id
-				$sql = "SELECT IFNULL(ps.product_number,0) AS product_number FROM " . $GLOBALS['ecs']->table('products') . " AS p
-				INNER JOIN ". $GLOBALS['ecs']->table('products_store') . " AS ps ON (p.product_id = ps.product_id) 
-				WHERE p.product_id = '$product_id' AND ps.store_id = '".$storeroom['store_id']."' LIMIT 1";
-				$goods_number = $GLOBALS['db']->getOne($sql);
+			$count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM ".$GLOBALS['ecs']->table('products_store'). " WHERE product_id = '$product_id'");
+			if($count>0){
+				$storeroom = get_storeroom($address);
+				if($storeroom){//store_id
+					$sql = "SELECT IFNULL(ps.product_number,0) AS product_number FROM " . $GLOBALS['ecs']->table('products') . " AS p
+				INNER JOIN ". $GLOBALS['ecs']->table('products_store') . " AS ps ON (p.product_id = ps.product_id)
+								WHERE p.product_id = '$product_id' AND ps.store_id = '".$storeroom['store_id']."' LIMIT 1";
+					$goods_number = $GLOBALS['db']->getOne($sql);
+				}else{
+					$goods_number = 0;
+				}
 			}
 		}
+	}else{
+		if($address){
+			$count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM ".$GLOBALS['ecs']->table('goods_store'). " WHERE goods_id = '$goods_id'");
+			if($count>0){
+				$storeroom = get_storeroom($address);
+				if($storeroom){//store_id
+					$sql = "SELECT IFNULL(gs.goods_number,0) AS goods_number FROM " . $GLOBALS['ecs']->table('goods_store') . " AS gs
+					WHERE gs.goods_id = '$goods_id' AND gs.store_id = '".$storeroom['store_id']."' LIMIT 1";
+					$goods_number = $GLOBALS['db']->getOne($sql);
+				}else{
+					$goods_number = 0;
+				}
+			}
+		}		
 	}
 	
 	//TODO:应该扣减掉当前session中加入购物车的数量	

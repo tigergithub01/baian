@@ -2366,7 +2366,7 @@ function get_products_specifications_list($goods_id)
  */
 function get_products_list($goods_id)
 {
-	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE goods_id = '$goods_id' ORDER BY seq_index ASC";
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('products') . " WHERE goods_id = '$goods_id' ORDER BY is_default DESC";
 	$rows = $GLOBALS['db']->getAll($sql);
 	return $rows;
 }

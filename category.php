@@ -639,8 +639,11 @@ function category_get_goods($children, $brand, $min, $max, $ext, $size, $page, $
         $where .= " AND g.shop_price <= $max ";
     }
     
-    if($promote==1){
+    /* if($promote==1){
     	$where .= " AND g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime();
+    } */
+    if($promote==1){
+    	$where .= " AND (g.buy_number_activity > 0 and g.give_number_activity >0) ";
     }
     
     if($integral==1){
@@ -754,8 +757,11 @@ function get_cagtegory_goods_count($children, $brand = 0, $min = 0, $max = 0, $e
         $where .= " AND g.shop_price <= $max ";
     }
     
-    if($promote==1){
+    /* if($promote==1){
     	$where .= " AND g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime();
+    } */
+    if($promote==1){
+    	$where .= " AND (g.buy_number_activity > 0 and g.give_number_activity >0) ";
     }
     
     if($integral==1){

@@ -17,6 +17,13 @@ http://www.123121.com
 http://www.123121.com/category-344-b0.html
 http://www.123121.com/category-333-b0-min0-max0-attr0-3-goods_id-DESC.html
 http://localhost:8086/category-344-b0.html
+http://localhost:8086/category-340-b0.html
+http://localhost:8086/category-340-b0-min0-max0-attr462,479.0.0.0.html
+http://localhost:8086/category-340-b43,74-min0-max0-attr479.0.0.0.html
+http://localhost:8086/category-340-b43,74-min0-max0-attr0.0.0.0.html
+http://localhost:8086/category-340-b0-min0-max0-attr0.0.0.0.html
+http://localhost:8086/category-340-b0-min0-max0-attr0.0.0.0-sgoods_id-oDESC-promote0-integral1-bonus0.html
+http://localhost:8086/category.php?id=340&brand=43&price_min=0&price_max=0&filter_attr=0.0.0.0&sort=0&order=0&filter_ext=1.1.1
 
 品牌页
 http://www.123121.com/brand-43-c0.html
@@ -34,6 +41,10 @@ http://localhost:8086/flow.php?step=cart
 http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371
 http://localhost:8086/goods-2371.html
 http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
+
+产品编辑：
+http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=15
+
 
 http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/goods_img/32_G_1431744389845.jpg
 http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb_img/32_thumb_G_1431744389139.jpg
@@ -168,6 +179,35 @@ http://www.123121.com/goods.php?id=22009
 3\限时抢购倒计时，时间显示不正确问题。
 4\全部品牌页面
 5\全部分类页面
+
+
+1\类别页,品牌页、文章分类、文章详情页增加关键词语标签 ->ok
+2\商品搜索 ->ok
+3\导航菜单推荐品牌，广告图 ->ok
+4\搜索页面猜你喜欢,限时抢购 ->ok
+
+
+中文分词：
+https://github.com/hightman/scws
+
+广告图两边分别是30个像素   广告图之间是25个像素->ok
+导航菜单闪问题->0k
+正则表达式，已逗号分隔的数字：([0-9]+[,]?)+
+正则表达式在线测试：http://tool.oschina.net/regex
+正则文档：http://baike.baidu.com/link?url=BnOu6AW-8vQYlS4ZLQujuPyLTGqfb9wB4Q_UoDo17DNknJsbWkIZrS7X9VOTWGQJzH0uLDg0Izf-tzgZj_Z16a
+
+1\品牌页促销产品、可用积分、可用红包，价格排序功能。
+2\商品详情-相关分类
+
+1\促销产品根据买几送几进行排序。
+2\后台-商品管理-红包购买金额能正常保存。
+3\商品详情页去掉“立减XX”显示。
+4\优化货品列表页面
+5\增加货品编辑页面
+6\多属性商品，商品详情页默认显示默认的货品。
+7\无属性商品多仓库库存。
+
+
 
 
 

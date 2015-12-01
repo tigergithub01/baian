@@ -80,11 +80,7 @@
 	                		<dt>百安价：</dt>
 	                		<dd>
 	                			<b class="jia1">
-			                		  <!--{if $goods.is_promote and $goods.gmt_end_time } 促销-->
-						              {$goods.promote_price}
-						              <!--{else}-->
-						              {$goods.shop_price_formated}
-						              <!--{/if}-->
+			                		  {$goods.shop_price_formated}
 				                </b>　
 							    <!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
 							    <div id="promote_time" style="/* display:inline; */display: none;">

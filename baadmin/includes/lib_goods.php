@@ -1236,7 +1236,8 @@ function product_list($goods_id, $conditions = '')
         $sql = "SELECT COUNT(*) FROM " .$GLOBALS['ecs']->table('products'). " AS p WHERE goods_id = $goods_id $where";
         $filter['record_count'] = $GLOBALS['db']->getOne($sql);
 
-        $sql = "SELECT product_id, goods_id, goods_attr, product_sn, product_number,product_price 
+        $sql = "SELECT product_id, goods_id, goods_attr, product_sn, product_number,product_price,seq_index,
+        		is_promote,promote_start_date,promote_end_date,promote_price,is_default  
                 FROM " . $GLOBALS['ecs']->table('products') . " AS g
                 WHERE goods_id = $goods_id $where
                 ORDER BY $filter[sort_by] $filter[sort_order]";

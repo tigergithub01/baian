@@ -291,11 +291,11 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
     		$product = get_product($product_id,$goods_id);
     		//根据产品编号没有查找到产品
     		if(!isset($product)){
-    			//商品下午没有对应的产品编号，将产品编号设置为空，避免在地址栏随意写入产品编号的情况。
+    			//商品下没有对应的产品编号，将产品编号设置为空，避免在地址栏随意写入产品编号的情况。
     			$product_id = null;
     		}
     	}else{
-    		//获取默认的产品，根据ecs_products.seq_index来进行排序，序号最小的为默认产品
+    		//获取默认的产品，根据ecs_products.is_default来进行排序，序号最小的为默认产品
     		$product_list = get_products_list($goods_id);
     			
     		if(!empty($product_list)){

@@ -350,8 +350,11 @@ function goods_count_by_brand($brand_id, $cate = 0,$promote,$integral,$bonus)
 		$where .= " AND " . get_children($cate);
 	}
 	
-	if($promote==1){
+	/* if($promote==1){
 		$where .= " AND (g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime().') ';
+	} */
+	if($promote==1){
+		$where .= " AND (g.buy_number_activity > 0 and g.give_number_activity >0) ";
 	}
 	
 	if($integral==1){
@@ -381,8 +384,11 @@ function brand_get_goods($brand_id, $cate, $size, $page, $sort, $order,$promote,
 {
     $where = ($cate > 0) ? 'AND ' . get_children($cate) : '';
     
-    if($promote==1){
+    /* if($promote==1){
     	$where .= " AND (g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime().') ';
+    } */
+    if($promote==1){
+    	$where .= " AND (g.buy_number_activity > 0 and g.give_number_activity >0) ";
     }
     
     if($integral==1){

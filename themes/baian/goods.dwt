@@ -109,7 +109,7 @@
 	                			<!-- {/if} -->
 	                			
 	                			<!-- {if ($goods.give_integral gt 0)} -->
-	                			<p><i>送积分</i> {$goods.give_integral}积分<!-- {if ($goods.give_integral_amt gt 0)} --><!-- （立减{$goods.give_integral_amt}元） --><!-- {/if} --></p>
+	                			<p><i>送积分</i> {$goods.give_integral}积分
 	                			<!-- {/if} -->
 	                			
 	                			<!-- {if ($goods.buy_number_activity gt 0)} -->

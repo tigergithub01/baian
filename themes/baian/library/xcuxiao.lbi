@@ -1,5 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- {if $promotion_goods} -->
+<script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
 <script >
 /* var Tday = new Array();
 var daysms = 24 * 60 * 60 * 1000
@@ -77,12 +78,14 @@ function clock(key)
 window.setInterval(function()     
 {clock({$key});}, 1000); */
 
-
-goods_gmt_end_time[{$key}] = Math.round((new Date("{$goods.gmt_end_time}"))/1000);
-goods_remain_seconds[{$key}] =  goods_gmt_end_time[{$key}] - Date.parse(new Date())/1000;
-goods_interValObj[{$key}] = window.setInterval(function(){
-		goods_setRemainTime({$key});
-	}, 1000);
+$(function(){
+	goods_gmt_end_time[{$key}] = Math.round((new Date("{$goods.gmt_end_time}"))/1000);
+	goods_remain_seconds[{$key}] =  goods_gmt_end_time[{$key}] - Date.parse(new Date())/1000;
+	goods_interValObj[{$key}] = window.setInterval(function(){
+			goods_setRemainTime({$key});
+		}, 1000);
+});
+	
 
 </script>
 

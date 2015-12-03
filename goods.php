@@ -248,7 +248,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
     die($json->encode($res));
 }
 
-clear_cache_files('goods');
+// clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */

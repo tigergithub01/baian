@@ -348,9 +348,33 @@
 				</div>				
 				<div class="bd">
 					<!-- 优惠套装 -->
+					<!--{foreach from=$package_goods_list item=pg name=pg}-->
 					<ul class="ul-pic4">
 						
+						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
+						<li>
+							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}"><img alt="" src="{$p_goods.goods_thumb}"></a>
+							<p><a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}">{$p_goods.goods_name}</a></p>
+							<!-- <p><input type="checkbox"><b class="f14 red">￥1000.00</b></p> -->
+						</li>
+						
+						<!--{if not ($smarty.foreach.p_goods.last)}-->
+						<li class="jia"></li>
+						<!-- {/if} -->
+						
+						<!--{/foreach}-->
+						
+						<li class="deng"></li>
+						<li class="all">
+							<div class="h5"></div>
+							<p>套装价：{$pg.package_price}<b class="red f14"></b></p>
+							<p>原&#12288;价：<b class="yj f14">{$pg.subtotal}</b></p>
+							<p>立即省：<b class="f14">{$pg.saving}</b></p>
+							<div class="h"></div>
+							<p><a href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">立即购买</a></p>
+						</li>
 					</ul>
+					<!--{/foreach}-->
 
 					<!-- 推荐组合 -->
 					<ul class="ul-pic4 ul-pic5">

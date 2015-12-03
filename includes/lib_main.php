@@ -1713,7 +1713,14 @@ function assign_template($ctype = '', $catlist = array())
         $searchkeywords = array();
     }
     $smarty->assign('searchkeywords', $searchkeywords);
+    
+    //获取购物车中的商品数量
+    $sql = "SELECT IFNULL(SUM(goods_number),0) as goods_number  FROM " .$GLOBALS['ecs']->table('cart'). " WHERE session_id = '" . SESS_ID . "'";
+	$cart_goods_number = $GLOBALS['db']->getOne($sql);
+	$smarty->assign('cart_goods_number', $cart_goods_number);
 }
+
+
 
 /**
  * 将一个本地时间戳转成GMT时间戳

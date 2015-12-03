@@ -2351,6 +2351,7 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
     			" AND g.is_delete = 0";
     }
     
+    //TODO:取价逻辑待优化    
     $goods = $GLOBALS['db']->getRow($sql);
 
     /* 计算商品的促销价格 */

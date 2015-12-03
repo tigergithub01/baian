@@ -38,7 +38,6 @@
 </head>
 <body>
 <script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-2011.js"></script>
-<script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-v1.jss" ></script>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
  <div id="bd">
@@ -84,7 +83,7 @@
 				                </b>　
 							    <!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
 							    <div id="promote_time" style="/* display:inline; */display: none;">
-					         	　	抢购倒计时：<span class="time"></span>
+					         	　	抢购倒计时：<span class="time">{$lang.please_waiting}</span>
 					         	</div>
 					         	<!--{/if}-->
 	            			</dd>

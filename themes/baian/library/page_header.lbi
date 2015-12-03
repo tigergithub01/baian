@@ -3,6 +3,7 @@ var process_request = "{$lang.process_request}";
 </script>
 <link href="/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/themes/baian/js/suggest.js"></script>
+<script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
 <div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div><script language="javascript">window.onerror = function(){return true;}; var process_request = "正在处理您的请求...";</script>
   {insert_scripts files='common.js,transport1.js,utils.js'}
 <div id="top">
@@ -41,10 +42,17 @@ var process_request = "{$lang.process_request}";
 					<div class="pop-btn"><a href="javascript:void(0);" class="i-user" id="user-btn">我的百安</a></div>
 				</div>
 				<div class="cartBox l">
-					<div class="pop-btn"><a href="flow.php" class="i-cart">去购物车结算<b>0{$goods_number}</b></a></div>
+					<div class="pop-btn"><a href="flow.php" class="i-cart">去购物车结算<b id="cart_goods_number">{$cart_goods_number}</b></a></div>
 				</div>
 			</div>
 		</div>
 	</div>
   <div class="c"></div>
+ 
+<script type="text/javascript">
+$(function(){
+	cart_goods_number();
+});
+ 
+</script> 
  

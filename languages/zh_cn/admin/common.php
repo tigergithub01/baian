@@ -195,8 +195,8 @@ $_LANG['10_auction'] = '拍卖活动';
 $_LANG['12_favourable'] = '优惠活动';
 $_LANG['13_wholesale'] = '批发管理';
 $_LANG['ebao_commend'] = '易宝推荐';
-$_LANG['14_package_list'] = '超值礼包';
-$_LANG['package_add'] = '添加超值礼包';
+$_LANG['14_package_list'] = '组合套装';
+$_LANG['package_add'] = '添加组合套装';
 
 /* 订单管理 */
 $_LANG['02_order_list'] = '订单列表';

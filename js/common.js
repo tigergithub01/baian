@@ -1204,3 +1204,27 @@ function momsuitToCartResponse(result) {
         opencartDiv(result.Suit_price, result.Suit_Name, result.Suit_img, '', result.Suit_ID, result.goods_price, result.goods_number);
     }
 }
+
+/*
+ * 获取购物车中的商品总数
+ */
+function cart_goods_number(){
+	$.ajax({     
+	    url:'goods.php?act=cart_goods_number',     
+	    type:'post',  
+	    dataType:'json', 
+	    data:{},     
+	    async :true, 
+	    error:function(){ 
+	    	alert('更新出错！');
+	    },     
+	    success:function(data){ 
+	    	if(data.status==1){
+	    		var cart_goods_number = data.content.cart_goods_number;
+	    		if($("#cart_goods_number")){
+	    			$("#cart_goods_number").text(cart_goods_number);
+	    		}
+	    	}
+	    }  
+	});
+}

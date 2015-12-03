@@ -2591,7 +2591,7 @@ function get_package_info($id)
  */
 function get_package_goods($package_id)
 {
-    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id
+    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id, pg.goods_price 
             FROM " . $GLOBALS['ecs']->table('package_goods') . " AS pg
                 LEFT JOIN " .$GLOBALS['ecs']->table('goods') . " AS g ON pg.goods_id = g.goods_id
                 LEFT JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON pg.product_id = p.product_id
@@ -2625,7 +2625,7 @@ function get_package_goods($package_id)
             /* 组合商品id与货品id */
             $_row['g_p'] = $_row['goods_id'];
         }
-
+		
         //生成结果数组
         $row[] = $_row;
     }
@@ -2662,11 +2662,11 @@ function get_package_goods($package_id)
                 $goods_attr[] = $_goods_attr[$_attr];
             }
 
-            $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], implode('，', $goods_attr), $value['goods_number']);
+            $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], implode('，', $goods_attr), $value['goods_number'], $value['goods_price']);
         }
         else
         {
-            $row[$key]['goods_name'] = sprintf($format[1], $value['goods_name'], $value['goods_number']);
+            $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], $value['goods_number'], $value['goods_price']);
         }
     }
 

@@ -248,6 +248,14 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'gotopage')
     die($json->encode($res));
 }
 
+/*获取购物车中商品的数量*/
+if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'cart_goods_number')
+{
+	$sql = "SELECT IFNULL(SUM(goods_number),0) as goods_number  FROM " .$GLOBALS['ecs']->table('cart'). " WHERE session_id = '" . SESS_ID . "'";
+	$cart_goods_number = $GLOBALS['db']->getOne($sql);
+	lib_main_make_json_result('',['cart_goods_number'=>$cart_goods_number]);
+}
+
 // clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR

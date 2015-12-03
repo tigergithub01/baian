@@ -353,8 +353,8 @@
 						
 						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
 						<li>
-							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}"><img alt="" src="{$p_goods.goods_thumb}"></a>
-							<p><a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}">{$p_goods.goods_name}</a></p>
+							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}" target="_blank"><img alt="" src="{$p_goods.goods_thumb}"></a>
+							<p><a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}" target="_blank">{$p_goods.goods_name}</a></p>
 							<!-- <p><input type="checkbox"><b class="f14 red">￥1000.00</b></p> -->
 						</li>
 						

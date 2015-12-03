@@ -309,6 +309,7 @@ elseif ($_REQUEST['act'] == 'add_package_goods')
     $arguments  = $json->decode($_GET['JSON']);
     $package_id = $arguments[0];
     $number     = $arguments[1];
+    $goods_price = $arguments[2];
 
     foreach ($fittings AS $val)
     {
@@ -318,8 +319,8 @@ elseif ($_REQUEST['act'] == 'add_package_goods')
             $val_array[1] = 0;
         }
 
-        $sql = "INSERT INTO " . $ecs->table('package_goods') . " (package_id, goods_id, product_id, goods_number, admin_id) " .
-                "VALUES ('$package_id', '" . $val_array[0] . "', '" . $val_array[1] . "', '$number', '$_SESSION[admin_id]')";
+        $sql = "INSERT INTO " . $ecs->table('package_goods') . " (package_id, goods_id, product_id, goods_number, admin_id, goods_price) " .
+                "VALUES ('$package_id', '" . $val_array[0] . "', '" . $val_array[1] . "', '$number', '$_SESSION[admin_id]', '$goods_price')";
         $db->query($sql, 'SILENT');
     }
 
@@ -328,9 +329,9 @@ elseif ($_REQUEST['act'] == 'add_package_goods')
 
     foreach ($arr AS $val)
     {
-        $opt[] = array('value'      => $val['g_p'],
+        $opt[] = array( 'value'      => $val['g_p'],
                         'text'      => $val['goods_name'],
-                        'data'      => '');
+                        'data'      => $val['goods_price']);
     }
 
     clear_cache_files();
@@ -397,7 +398,7 @@ elseif ($_REQUEST['act'] == 'drop_package_goods')
     {
         $opt[] = array('value'      => $val['goods_id'],
                         'text'      => $val['goods_name'],
-                        'data'      => '');
+                        'data'      => $val['goods_price']);
     }
 
     clear_cache_files();

@@ -140,7 +140,7 @@ function SelectZone()
       {
         args[args.length] = arguments[i];
       }
-alert('1');
+      //alert('1');
 //      Ajax.call(this.filename + "&act="+act+"&add_ids=" +selOpt.toJSONString(), args, this.addRemoveItemResponse, "GET", "JSON");
       Ajax.call(this.filename + "&act="+act+"&add_ids=" +$.toJSON(selOpt), args, this.addRemoveItemResponse, "GET", "JSON");
     }
@@ -177,7 +177,7 @@ alert('1');
         args[args.length] = arguments[i];
       }
 
-      alert('2');
+      //alert('2');
 //      Ajax.call(this.filename + "&act="+act+"&drop_ids=" + arr.toJSONString(), args, this.addRemoveItemResponse, 'GET', 'JSON');
       Ajax.call(this.filename + "&act="+act+"&drop_ids=" + $.toJSON(arr), args, this.addRemoveItemResponse, 'GET', 'JSON');
     }

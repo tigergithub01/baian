@@ -56,13 +56,16 @@
         </tr>
         <tr>
           <td width="42%">
-            <select name="source_select" size="15" style="width:100%" onchange="this.form.elements['number'].value = 1" ondblclick="sz.addItem(false, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value)">
+            <select name="source_select" size="15" style="width:100%" onchange="console.debug(this.form.elements['id'].value);this.form.elements['number'].value = 1;$('#goods_price').val(this.options[this.selectedIndex].id);" 
+            ondblclick="sz.addItem(false, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value,$('#goods_price').val())"
+            >
             </select>
           </td>
           <td align="center">
             <p>{$lang.goods_number}<br /><input name="number" type="text" size="6" value="1" /></p>
-            <p><input type="button" value=">>" onclick="sz.addItem(true, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value)" class="button" /></p>
-            <p><input type="button" value=">" onclick="sz.addItem(false, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value)" class="button" /></p>
+            <p>价格<br /><input id="goods_price" name="goods_price" type="text" size="6" value="" /></p>
+            <p><input type="button" value=">>" onclick="sz.addItem(true, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value,$('#goods_price').val())" class="button" /></p>
+            <p><input type="button" value=">" onclick="sz.addItem(false, 'add_package_goods', this.form.elements['id'].value, this.form.elements['number'].value,$('#goods_price').val())" class="button" /></p>
             <p><input type="button" value="<" onclick="sz.dropItem(false, 'drop_package_goods', this.form.elements['id'].value)" class="button" /></p>
             <p><input type="button" value="<<" onclick="sz.dropItem(true, 'drop_package_goods', this.form.elements['id'].value)" class="button" /></p>
           </td>
@@ -129,7 +132,7 @@ function searchGoods()
     filter.cat_id     = document.forms['theForm'].elements['cat_id'].value;
     filter.brand_id   = document.forms['theForm'].elements['brand_id'].value;
 
-    Ajax.call('package.php?is_ajax=1&act=search_goods', filter, searchGoodsResponse, 'GET', 'JSON')
+    Ajax.call('package.php?is_ajax=1&act=search_goods', 'JSON=' + $.toJSON(filter), searchGoodsResponse, 'GET', 'JSON')
 }
 
 function searchGoodsResponse(result)
@@ -155,6 +158,7 @@ function searchGoodsResponse(result)
               {
                 var opt = document.createElement("OPTION");
                 opt.value = goods[i].value + '_' + goods[i].products[j].product_id;
+                opt.id = goods[i].products[j].product_price;
                 opt.text  = goods[i].text + '[' + goods[i].products[j].goods_attr_str + ']';
                 sel.options.add(opt);
               }
@@ -164,6 +168,7 @@ function searchGoodsResponse(result)
               var opt = document.createElement("OPTION");
               opt.value = goods[i].value;
               opt.text  = goods[i].text;
+              opt.id = goods[i].data;
               sel.options.add(opt);
             }
         }

@@ -1038,6 +1038,7 @@ function get_package_goods_list($goods_id)
         {
             $goods_id_array[] = $val['goods_id'];
             $goods_res[$key]['goods_thumb']  = get_image_path($val['goods_id'], $val['goods_thumb'], true);
+            $goods_res[$key]['goods_url'] = build_uri('goods', array('gid' => $val['goods_id']), $val['goods_name']);
             $goods_res[$key]['market_price'] = price_format($val['market_price']);
             $goods_res[$key]['rank_price']   = price_format($val['rank_price']);
             $subtotal += $val['rank_price'] * $val['goods_number'];

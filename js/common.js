@@ -1216,7 +1216,7 @@ function cart_goods_number(){
 	    data:{},     
 	    async :true, 
 	    error:function(){ 
-	    	alert('更新出错！');
+//	    	alert('更新出错！');
 	    },     
 	    success:function(data){ 
 	    	if(data.status==1){

@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* CSS Document */
+
+.jkxy_bh{width:800px; height:24px; line-height:24px; margin:auto; text-align:right; display:block; color:#000;}
+.jyxy_f_we{ font-weight:bold; padding-top:10px; font-size:14px;}
+.jyxy_f_we02{font-weight:bold;  padding-top:10px;}
+.jkxy_biaog{width:800px; margin:10px auto;}
+.jkxy_biaog table{width:100%; border:1px solid #000; }
+.jkxy_biaog td{ text-align:left; padding:2px 8px 2px 8px; height:32px; border-right:1px solid #000; border-bottom:1px solid #000; line-height:32px; color:#000;}
+
+.jkxy_lsbjl{ padding-top:50px; display:block;}
+.jkxy_lrn{ height:auto; padding-top:10px;}
+.jkxy_fwxy_bd02{width:940px; float:left; background:#FFF;}
+.jkxy_fwxy_bd02 p{width:800px; margin:12px auto 0; text-align:left; line-height:26px; color:#000;}
+.jkxy_lleft_jl{ padding-left:30px;}
+
+.jkxy_jsbt{width:800px; height:70px; line-height:65px; margin:auto; font-size:24px; text-align:center; display:block;  font-weight:bold; color:#000;}

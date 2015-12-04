@@ -1,0 +1,23 @@
+html, body{ height: 100%}
+/* 排版样式 */
+body, form, h1, h2, h3, h4, h5, h6, p, ul, ol, dl, li, dt, dd, blockquote{ margin: 0; padding: 0}
+
+li{ list-style-type: none}
+img{ border: none}
+body, tr, button, select, textarea{ font-size: 12px}
+
+a{ text-decoration: none}
+
+/* 文本溢出 */
+.ellipsis{ text-overflow: ellipsis; -o-text-overflow: ellipsis; overflow: hidden; white-space: nowrap}
+
+/* 清除浮动
+.clearfix:after {content: “.”; display: block; height: 0; clear: both; visibility: hidden}
+.clearfix { zoom:1; display: inline-block; _height:1px; _overflow:hidden;} */
+/* Hides from IE-mac 
+* html .clearfix { height: 1%}
+*+html .clearfix { height: 1%}\*/
+
+.floatL{ display:inline; float:left;}
+.floatR{ display:inline; float:right;}
+.clearfix { clear:both; height:0px; font-size:0px; _overflow:hidden;}

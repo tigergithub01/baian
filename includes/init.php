@@ -272,6 +272,7 @@ if (!defined('INIT_NO_USERS'))
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['user_name'] = $row['user_name'];
             update_user_info();
+            recalculate_price();
         }
     }
 

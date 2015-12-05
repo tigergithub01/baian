@@ -352,7 +352,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-login-tab .on{font-weight: bold;color: #f08300;border-top: 2px solid #f08300;line-height: 32px;}
 .s-login-tab .on a{color: #f08300;}
 
-.loginBox2{border: 1px solid #dcdcdc;background: #fff;padding: 45px 40px 0 98px;height: 445px;}
+.loginBox2{border: 1px solid #dcdcdc;background: #fff;padding: 45px 40px 0 98px;height: 545px;}
 .loginBox2 table{width: 318px;}
 .loginBox2 table p{line-height: 2.5;}
 .loginBox2 table th,.loginBox2 table td{padding: 12px 0;}
@@ -799,6 +799,22 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
     background-color: #e4393c;
     background-position: 7px -158px;
 }
+
+/**validator***/
+
+label.error{
+	color: red;
+    font-style: italic;
+    display: inline;
+}
+
+.loginBox2 table input.error[type="text"], .loginBox2 table input.error[type="password"]{
+	border:1px dotted red;
+}
+input.error{
+	border:1px dotted red;
+}
+
 
 
 

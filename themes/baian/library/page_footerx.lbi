@@ -140,7 +140,7 @@
 			按下键盘上的 <b>D</b> 即可快速打开/关闭会员菜单
 		</div>
 	</div>
-    <script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
+    <!-- <script type="text/javascript" src="/themes/baian/js/jquery.js"></script> -->
 	<script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
 	<script type="text/javascript" src="/themes/baian/js/lib.js"></script>
     <script type="text/javascript" src="/themes/baian/js/jquery.jqzoom1.0.2.js"></script>

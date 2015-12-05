@@ -3,7 +3,9 @@ var process_request = "{$lang.process_request}";
 </script>
 <link href="/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/themes/baian/js/suggest.js"></script>
-<script type="text/javascript" src="/themes/baian/js/jquery.js"></script>
+<!-- <link href="/themes/baian/js/jquery-validation-1.14.0/demo/css/screen.css" rel="stylesheet" type="text/css" /> -->
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.js"></script>
+
 <div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div><script language="javascript">window.onerror = function(){return true;}; var process_request = "正在处理您的请求...";</script>
   {insert_scripts files='common.js,transport1.js,utils.js'}
 <div id="top">

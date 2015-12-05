@@ -9,7 +9,7 @@ function register_by_email() {
 		alert('邮箱验证码不能为空');
 		return false;
 	}
-	return register();
+	return true;
 }
 
 function validateEmailCode() {

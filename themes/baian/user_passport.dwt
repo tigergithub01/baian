@@ -375,7 +375,7 @@
                				 <div style="float: right;vertical-align: middle;">
                					 <span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
 							</div>
-                            <input type="text" id="captcha" style="width: 90px;" name="captcha" class="text "  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+                            <input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
 							</td>
                         </tr>
                       <tr>

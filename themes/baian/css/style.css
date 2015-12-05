@@ -352,7 +352,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-login-tab .on{font-weight: bold;color: #f08300;border-top: 2px solid #f08300;line-height: 32px;}
 .s-login-tab .on a{color: #f08300;}
 
-.loginBox2{border: 1px solid #dcdcdc;background: #fff;padding: 45px 40px 0 98px;height: 545px;}
+.loginBox2{border: 1px solid #dcdcdc;background: #fff;padding: 45px 40px 0 98px;height: auto;}
 .loginBox2 table{width: 318px;}
 .loginBox2 table p{line-height: 2.5;}
 .loginBox2 table th,.loginBox2 table td{padding: 12px 0;}

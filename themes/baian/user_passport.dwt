@@ -398,6 +398,7 @@
                     </table>
                    </form>
                    
+                   <!-- 邮箱注册 -->
                    <form action="user.php" method="post" name="formUser_email" id="formUser_email" style="display: none;" onsubmit="">
                     <table>
                     	<tr style='display:none'><td><input type='hidden' value='1' name='reg_type' id='reg_type'/></td></tr>
@@ -530,6 +531,113 @@
 			var img = document.getElementById('yzm_img');
 			img.src = "captcha.php?" + Math.random();
 		}
+		
+		//手机号码与邮箱找回密码切花
+		function changeRegisterType(type){
+			if(type=='email'){
+				$("#formUser").hide();
+				$("#formUser_email").show();
+			}else if(type=='mobile'){
+				$("#formUser").show();
+				$("#formUser_email").hide();
+			}
+		}
+		
+		
+		$(function(){
+			
+			//手机号码找回密码验证
+			$("#formUser").validate({
+        		rules: {
+    				confirm_password: {
+    					//required: true,
+    					//minlength:6, 
+    					equalTo: "#password"
+    				},
+    			},
+    			messages: {
+    				username: {
+    					required: "请输入用户名",
+    				},
+    				mobile_phone: {
+    					required: "请输入手机号",
+    				},
+    				password: {
+    					required: "请输入密码",
+    					minlength:"登录密码不能少于6个字符"
+    				},
+    				confirm_password: {
+    					required: "请确认密码",
+    					minlength:"登录密码不能少于6个字符",
+    					equalTo:"两次密码输入不相符"
+    				},
+    				mobile_code: {
+    					required: "请输入短信验证码",
+    				},
+    				captcha: {
+    					required: "请输入验证码",
+    				},
+    				agreement: {
+    					required: "请接受用户协议",
+    				},
+    			},
+    			submitHandler:function(form){
+    				var mobile = document.getElementById('mobile_phone').value;
+    				 if (mobile != '') {
+    					var mobile_code = document.getElementById("mobile_code").value;
+    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
+    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
+    					if (result.code == 2) {
+    						return true;
+    					} else {
+    						alert(result.msg);
+    						return false;
+    					}
+    				} 
+    				return true;
+    	            
+    	        }   
+        	});	   
+			
+			
+			//邮箱找回密码
+			 $("#formUser_email").validate({
+        		rules: {
+    				confirm_password: {
+    					equalTo: "#formUser_email #password"
+    				},
+    			},
+    			messages: {
+    				username: {
+    					required: "请输入用户名",
+    				},
+    				password: {
+    					required: "请输入密码",
+    					minlength:"登录密码不能少于6个字符"
+    				},
+    				confirm_password: {
+    					required: "请确认密码",
+    					minlength:"登录密码不能少于6个字符",
+    					equalTo:"两次密码输入不相符"
+    				},
+    				email_code: {
+    					required: "请输入邮箱验证码",
+    				},
+    				captcha: {
+    					required: "请输入验证码",
+    				},
+    				email: {
+    					required: "请输入邮箱地址",
+    				},
+    				agreement: {
+    					required: "请接受用户协议",
+    				},
+    			},
+    			submitHandler:function(form){
+    				return register_by_email();
+    	        }   
+        	});
+        });
 	</script> 
 	
      <div id="bd">
@@ -537,68 +645,51 @@
             <ul class="s-login-tab" id="regist">
                 <li class="on"><a href="">找回密码</a></li>
             </ul>
-            <div class="loginBox2" style="height: 500px;">
-                <form action="user.php" method="post" name="formUser" onsubmit="return register_user();">
+            <div class="loginBox2">
+                <form action="user.php" method="post" id="formUser" name="formUser" onsubmit="">
                     <table>
                     	<tr>
                             <th>用户名：</th>                               
                             <td> 
-					          <input name="username" id="username" type="text" size="25" class="text" placeholder="用户名/邮箱/手机" onblur="" /> 
+					          <input name="username" id="username" type="text" size="25" class="text required" placeholder="邮箱/手机" onblur="" /> 
  						</td>
                     	<tr style='display:none'><td><input type='hidden' value='0' name='reg_type' id='reg_type'/></td></tr>
                         <tr id='row_mobile_phone'>
                             <th>手机号：</th>                               
                             <td> 
                               <div style="">	 
-					          <input style="float:left; " name="mobile_phone" id="mobile_phone" type="text" size="25" class="text" placeholder="请输入您注册或绑定手机号码" onblur="" /> 
-					          <a href='javascript:void(0)' style="color: #08c;float: left;" onclick="$('#row_mobile_phone').hide();$('#row_email').show();$('#row_verify_phone').hide();$('#row_verify_email').show();$('#reg_type').val('1');">或通过邮箱找回</a>
+					          <input style="float:left; " name="mobile_phone" id="mobile_phone" type="text" size="25" class="text required isMobile" placeholder="请输入您注册或绑定手机号码" onblur="" /> 
+					          <a href='javascript:void(0)' style="color: #08c;float: right;" onclick="changeRegisterType('email')">或通过邮箱找回</a>
 					          </div>
 					          <!-- <label id="username_notice" style="color:#900;"></label> -->
  						</td>
                         <!--class="text"-->   
                         </tr>
-                        <tr id='row_email' style='display:none'>
-                        	<th>
-                        		邮箱地址:
-                        	</th>
-                        	<td>
-                        	<input name="email" type="text" id="email" placeholder="请输入您注册或绑定的邮箱" onblur="" class="text" /> 
-                        	
-                        	<span>
-                        	<a href='javascript:void(0)' style="color: #08c;float: left;" onclick="$('#row_mobile_phone').show();$('#row_email').hide();$('#row_verify_phone').show();$('#row_verify_email').hide();$('#reg_type').val('0');">或通过手机找回</a>
-                        	</span>
-                        	</td>
-                        </tr>	
                         <tr>
                             <th>设置密码：</th>
                             <td>
-                            <input name="password" type="password" placeholder="请输入密码" id="password" onblur="check_password(this.value);" onKeyUp="javascript:AuthPasswd(this.value);" class="text" /><span class="clr"></span>
+                            <input name="password" type="password" placeholder="请输入密码" id="password" onblur="check_password(this.value);" onKeyUp="javascript:AuthPasswd(this.value);" class="text required " minlength="6" /><span class="clr"></span>
     						</td>
                         </tr>
                         <tr>
                             <th>确认密码：</th>
-                            <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text"  onblur="check_conform_password(this.value);" autocomplete="off"/>   <span class="clr"></span>
+                            <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required"  onblur="check_conform_password(this.value);" autocomplete="off" minlength="6"/>   <span class="clr"></span>
                     		<label id="conform_password_notice" style="color:#900;"></label></td>
                         </tr>
 				       	<tr id='row_verify_phone'> 
 				         <th>短信验证码：</th>
 				          <td colspan="2">				        
-				          	<input name="mobile_code" id="mobile_code" type="text" style="width:80px;"class="inputBg"/>
-				          	<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();"/>
+				          	<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;float: right;"class="inputBg" onclick="sendSms();"/>
+				          	<input name="mobile_code" id="mobile_code" type="text" style="width:110px;"class="inputBg required"/>
 				          </td>
 				        </tr>
-                        <tr id='row_verify_email' style='display:none'>
-                     	<th>邮箱验证码：</th>
-                        <td colspan="2">
-                        		<input name="email_code" id="email_code" type="text" style="width:80px;"class="inputBg"/>
-                        		<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();"/>
-                        </td>	
-                        	
-                         </tr>
                  		<tr>
                             <th>验证码：</th>
-                            <td><input type="text" id="captcha" style="width: 80px;" name="captcha" class="text"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-               				 <span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
+                            <td>
+               				 	<div style="float: right;">
+               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
+               				 	</div>
+                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
 							</td>
                         </tr>
                       <tr>
@@ -613,7 +704,71 @@
                             </td>
                         </tr>
                     </table>
-                   </form>
+               </form>
+               
+               <!-- 通过邮箱找回 -->
+                <form action="user.php" method="post" id="formUser_email" name="formUser_email" onsubmit="" style="display: none;">
+                    <table>
+                    	<tr>
+                            <th>用户名：</th>                               
+                            <td> 
+					          <input name="username" id="username" type="text" size="25" class="text required" placeholder="邮箱/手机" onblur="" /> 
+ 						</td>
+                    	<tr style='display:none'><td><input type='hidden' value='1' name='reg_type' id='reg_type'/></td></tr>
+                        <tr id='row_email' style=''>
+                        	<th>
+                        		邮箱地址:
+                        	</th>
+                        	<td>
+                        	<input name="email" type="text" id="email" placeholder="请输入您注册或绑定的邮箱" onblur="" class="text required email" /> 
+                        	
+                        	<span>
+                        	<a href='javascript:void(0)' style="color: #08c;float: right;" onclick="changeRegisterType('mobile')">或通过手机找回</a>
+                        	</span>
+                        	</td>
+                        </tr>	
+                        <tr>
+                            <th>设置密码：</th>
+                            <td>
+                            <input name="password" type="password" placeholder="请输入密码" id="password" onblur="check_password(this.value);" onKeyUp="javascript:AuthPasswd(this.value);" class="text required " minlength="6" /><span class="clr"></span>
+    						</td>
+                        </tr>
+                        <tr>
+                            <th>确认密码：</th>
+                            <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required"  onblur="check_conform_password(this.value);" autocomplete="off" minlength="6"/>   <span class="clr"></span>
+                    		<label id="conform_password_notice" style="color:#900;"></label></td>
+                        </tr>
+                        <tr id='row_verify_email' style=''>
+                     	<th>邮箱验证码：</th>
+                        <td colspan="2">
+                        		<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;float: right;"class="inputBg" onclick="sendEmail();"/>
+                        		<input name="email_code" id="email_code" type="text" style="width:110px;"class="inputBg required"/>
+                        </td>	
+                        	
+                         </tr>
+                 		<tr>
+                            <th>验证码：</th>
+                            <td>
+               				 	<div style="float: right;">
+               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
+               				 	</div>
+                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+							</td>
+                        </tr>
+                      <tr>
+                            <td colspan="2">  
+						        
+						        <div class="item">
+						            <span class="label">&nbsp;</span>
+						             <input name="act" type="hidden" value="act_get_password" />
+						             <input type="hidden" name="back_act" value="{$back_act}" />
+						            <input name="Submit" type="submit" class="btn-img btn-regist" id="registsubmit" value="确认修改"/>
+						        </div>
+                            </td>
+                        </tr>
+                    </table>
+               </form>
+               
 			 <div class="h50"></div>
             </div>
         </div>

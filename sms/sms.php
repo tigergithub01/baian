@@ -84,12 +84,12 @@ function read_file($file_name) {
 
 
 
-$mobile = @$_POST['mobile'];
-$mobile_code = @$_POST['mobile_code'];
+$mobile = $_POST['mobile'];
+$mobile_code = $_POST['mobile_code'];
 
 if($_GET['act']=='check'){
-	if($mobile!=$_SESSION['mobile'] or $mobile_code!=$_SESSION['mobile_code']){
-		exit(json_encode(array('msg'=>'手机验证码输入错误。')));	
+	if(!isset($_SESSION['mobile']) || !isset($_SESSION['mobile_code']) ||  $mobile!=$_SESSION['mobile'] or $mobile_code!=$_SESSION['mobile_code']){
+		exit(json_encode(array('code'=>'-1','msg'=>'手机验证码输入错误。')));	
 	}else{
 		exit(json_encode(array('code'=>'2')));	
 	}

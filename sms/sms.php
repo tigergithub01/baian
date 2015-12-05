@@ -84,8 +84,8 @@ function read_file($file_name) {
 
 
 
-$mobile = $_POST['mobile'];
-$mobile_code = $_POST['mobile_code'];
+$mobile = isset($_POST['mobile'])?$_POST['mobile']:null;;
+$mobile_code = isset($_POST['mobile_code'])?$_POST['mobile_code']:null;
 
 if($_GET['act']=='check'){
 	if(!isset($_SESSION['mobile']) || !isset($_SESSION['mobile_code']) ||  $mobile!=$_SESSION['mobile'] or $mobile_code!=$_SESSION['mobile_code']){
@@ -110,11 +110,13 @@ if($_GET['act']=='send'){
 	//替换成自己的测试账号,参数顺序和wenservice对应
 
 	//exit(json_encode(array('msg'=>strtotime( read_file($mobile))."\r\n".(time()-60) )));
-	if($_SESSION['mobile']){
+	if(isset($_SESSION['mobile'])){
 		//exit(json_encode(array('msg'=> read_file($mobile) )));
 		if(strtotime(read_file($mobile))>(time()-60)){
 			exit(json_encode(array('msg'=>'获取验证码太过频繁，一分钟之内只能获取一次。')));	
 		}
+	}else{
+		exit(json_encode(array('msg'=>'手机验证码发送失败。')));
 	}
 	
 	$post_data = "account=cf_baia&password=baia123&mobile=".$mobile."&content=".rawurlencode("您的验证码是：".$mobile_code."。如非本人操作，请勿理会！");

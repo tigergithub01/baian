@@ -217,7 +217,7 @@ elseif ($action == 'act_register')
         }
 
         /* 验证码检查 */
-        if ((intval($_CFG['captcha']) & CAPTCHA_REGISTER) && gd_version() > 0)
+        if ((/* intval($_CFG['captcha']) &  */CAPTCHA_REGISTER) && gd_version() > 0)
         {
             if (empty($_POST['captcha']))
             {
@@ -498,17 +498,21 @@ elseif ($action == 'validate_email')
 elseif ($action == 'is_registered')
 {
     include_once(ROOT_PATH . 'includes/lib_passport.php');
+    include_once('includes/cls_json.php');
+    $json = new JSON;
 
-    $username = trim($_GET['username']);
-    $username = json_str_iconv($username);
+    $username = trim($_REQUEST['username']);
+    $username = json_str_iconv($username); 
 
     if ($user->check_user($username) || admin_registered($username))
     {
         echo 'false';
+        //die($json->encode(false));
     }
     else
     {
         echo 'true';
+        //die($json->encode(true));
     }
 }
 
@@ -984,11 +988,11 @@ elseif ($action == 'act_get_password')
 		}
 	
 		/* 验证码检查 */
-		if ((intval($_CFG['captcha']) & CAPTCHA_REGISTER) && gd_version() > 0)
+		if ((/* intval($_CFG['captcha']) &  */CAPTCHA_REGISTER) && gd_version() > 0)
 		{
 			if (empty($_POST['captcha']))
 			{
-				show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
 			}
 	
 			/* 检查验证码 */
@@ -997,7 +1001,7 @@ elseif ($action == 'act_get_password')
 			$validator = new captcha();
 			if (!$validator->check_word($_POST['captcha']))
 			{
-				show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
 			}
 		}
 	
@@ -1022,7 +1026,7 @@ elseif ($action == 'act_get_password')
 		}
 		else
 		{
-			$err->show("密码找回", 'user.php?act=get_password');
+			$err->show("找回密码", 'user.php?act=get_password');
 		}
 	}
 }

@@ -66,7 +66,7 @@ $_LANG['password_js']['show_div_text'] = '请点击更新购物车按钮';
 $_LANG['password_js']['show_div_exit'] = '关闭';
 $_LANG['goods_fittings'] = '商品相关配件';
 $_LANG['parent_name'] = '相关商品：';
-$_LANG['remark_package'] = '礼包';
+$_LANG['remark_package'] = '组合套装';
 
 /* 优惠活动 */
 $_LANG['favourable_name'] = '活动名称：';

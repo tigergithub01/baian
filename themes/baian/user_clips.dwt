@@ -74,7 +74,43 @@
 				               <tr>
 				                   <td>
 				                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
-				                       <div class="goods_title"><a href="{$goods.goods_url}">{$goods.goods_name}</a></div>
+				                       <div class="goods_title">
+								            <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+										     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+										      		<div id="suit_{$goods.goods_id}" style="display:none">
+											          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+												    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+										                        <a href="{$package_goods_list.goods_url}" target="_blank">
+										                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
+										                        </a>
+										                        
+										                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+									                        </div>
+									                        
+											          	<!-- {/foreach} -->
+										     		 </div>
+										      <!-- { else } -->
+										      		{if $goods.is_momsuit eq 1}
+										      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+										      		{elseif $goods.is_momsuit eq 0}
+										      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+										      		{/if}
+									                <!-- {if $goods.parent_id > 0} -->
+									                <span style="color:#FF0000">（{$lang.accessories}）</span>
+									               <!-- {elseif $goods.is_gift} -->
+									                <span style="color:#FF0000">（{$lang.largess}）</span>
+									                <!-- {/if} -->
+									          <!-- {/if} -->
+									          
+							        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
+							              	
+							              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
+							                <!-- {if $goods.gift_goods_number gt 0}  -->
+							                <br />
+							                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+							                <!-- {/if} -->
+							               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
+				                       </div>
 				                       <div class="unit_price">{$goods.goods_price}</div>
 				                       <div class="goods_num">{$goods.goods_number}</div>
 				                   </td>

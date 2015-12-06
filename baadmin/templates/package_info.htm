@@ -70,7 +70,7 @@
             <p><input type="button" value="<<" onclick="sz.dropItem(true, 'drop_package_goods', this.form.elements['id'].value)" class="button" /></p>
           </td>
           <td width="42%">
-            <select name="target_select" size="15" style="width:100%" multiple ondblclick="sz.dropItem(false, 'drop_package_goods', this.form.elements['id'].value)">
+            <select name="target_select" size="15" style="/* width:100% */" multiple ondblclick="sz.dropItem(false, 'drop_package_goods', this.form.elements['id'].value)">
               {foreach from=$package_goods_list item=package_goods}
               <option value="{$package_goods.g_p}">{$package_goods.goods_name}</option>
               {/foreach}

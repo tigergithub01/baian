@@ -2591,7 +2591,7 @@ function get_package_info($id)
  */
 function get_package_goods($package_id)
 {
-    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id, pg.goods_price 
+    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id, pg.goods_price, g.goods_thumb  
             FROM " . $GLOBALS['ecs']->table('package_goods') . " AS pg
                 LEFT JOIN " .$GLOBALS['ecs']->table('goods') . " AS g ON pg.goods_id = g.goods_id
                 LEFT JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON pg.product_id = p.product_id
@@ -2688,6 +2688,8 @@ function get_package_goods($package_id)
         }
         
         $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], $value['goods_number'], price_format($value['goods_price'], false));
+        
+        $row[$key]['goods_thumb'] = get_image_path($value['goods_id'], $value['goods_thumb'], true);
         
         /**商品链接**/
         $row[$key]['goods_url']            = build_uri('goods', array('gid'=>$value['goods_id'],'pid'=>$value['product_id']), $value['goods_name']);

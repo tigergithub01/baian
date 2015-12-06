@@ -3155,7 +3155,8 @@ function add_package_to_cart($package_id, $num = 1)
         'is_real'       => $package['is_real'],
         'extension_code'=> 'package_buy',
         'is_gift'       => 0,
-        'rec_type'      => CART_GENERAL_GOODS
+        'rec_type'      => CART_GENERAL_GOODS,
+    	'is_checked'    => 1	
     );
 
     /* 如果数量不为0，作为基本件插入 */

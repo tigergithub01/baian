@@ -2648,26 +2648,49 @@ function get_package_goods($package_id)
     }
 
     /* 过滤货品 */
-    $format[0] = '%s[%s]--[%d]';
+    /* $format[0] = '%s[%s]--[%d]';
     $format[1] = '%s--[%d]';
     foreach ($row as $key => $value)
     {
-        if ($value['goods_attr'] != '')
+    	if ($value['goods_attr'] != '')
+    	{
+    		$goods_attr_array = explode('|', $value['goods_attr']);
+    
+    		$goods_attr = array();
+    		foreach ($goods_attr_array as $_attr)
+    		{
+    			$goods_attr[] = $_goods_attr[$_attr];
+    		}
+    
+    		$row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], implode('，', $goods_attr), $value['goods_number']);
+    	}
+    	else
+    	{
+    		$row[$key]['goods_name'] = sprintf($format[1], $value['goods_name'], $value['goods_number']);
+    	}
+    } */
+    
+    $format[0] = '%s[数量:%s][单价:%s]';
+    $format[1] = '%s--[%d]';
+    foreach ($row as $key => $value)
+    {
+        if ($value['product_id'] && intval($value['product_id'])>0 )
         {
-            $goods_attr_array = explode('|', $value['goods_attr']);
-
-            $goods_attr = array();
-            foreach ($goods_attr_array as $_attr)
-            {
-                $goods_attr[] = $_goods_attr[$_attr];
-            }
-
-            $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], implode('，', $goods_attr), $value['goods_number'], $value['goods_price']);
+        	$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$value['product_id']."'";
+        	$attr_list = $GLOBALS['db']->getAll($sql);
+        	foreach ($attr_list AS $attr)
+        	{
+        		$value['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+        	}
         }
-        else
-        {
-            $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], $value['goods_number'], $value['goods_price']);
-        }
+        
+        $row[$key]['goods_name'] = sprintf($format[0], $value['goods_name'], $value['goods_number'], price_format($value['goods_price'], false));
+        
+        /**商品链接**/
+        $row[$key]['goods_url']            = build_uri('goods', array('gid'=>$value['goods_id'],'pid'=>$value['product_id']), $value['goods_name']);
     }
 
     return $row;

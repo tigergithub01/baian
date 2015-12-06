@@ -143,7 +143,14 @@
 	                  <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#DD0000;">（{$lang.remark_package}）</span></a>
 	                  <div id="suit_{$goods.goods_id}" style="display:none">
 	                      <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-	                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+	                        
+	                        <div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+		                        <a href="{$package_goods_list.goods_url}" target="_blank">
+		                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
+		                        </a>
+		                        
+		                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+	                        </div>	
 	                      <!-- {/foreach} -->
 	                  </div>
                 <!-- {else} 优惠活动 -->
@@ -943,7 +950,14 @@
 			     		 <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
 			      		<div id="suit_{$goods.goods_id}" style="display:none">
 				          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-					    		<a href="{$package_goods_list.goods_url}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+					    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+			                        <a href="{$package_goods_list.goods_url}" target="_blank">
+			                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
+			                        </a>
+			                        
+			                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+		                        </div>
+		                        
 				          	<!-- {/foreach} -->
 			     		 </div>
 			      <!-- { else } -->

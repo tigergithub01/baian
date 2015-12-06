@@ -158,9 +158,9 @@
 .c-table1 td{padding: 10px 0;text-align: center;}
 .c-table1 td .tl{text-align: left !important;}
 .c-table1 td .tr{text-align: right !important;}
-.c-table1 td img{width: 60px;height: 60px;border: 1px solid #dedfde;}
-.c-table1 td input[type=checkbox]{float: left;position: relative;top:25px;margin-right: 10px;margin-left: 10px;}
-.c-table1 td a.tit{display: inline-block;text-align: left !important;}
+.c-table1 td img{width: 60px;height: 60px;border: 1px solid #dedfde;margin-right: 3px;float: left;}
+.c-table1 td input[type=checkbox]{float: left;/* position: relative; */top:25px;margin-right: 10px;margin-left: 10px;}
+.c-table1 td a.tit{display: block;text-align: left !important;}
 .c-table1 td .inp{width: 40px;height: 22px;border: 1px solid #dcdddd;border-left: 0;border-right: 0;float: left;text-align: center;}
 .c-table1 td .jian,.c-table1 td .jia{display: inline-block;width: 23px;height: 24px;background-color: #dcdddd;float: left;text-align: center;line-height: 24px;font-size: 18px;font-weight: bold;cursor: pointer;}
 .c-table1 td .jian{margin-left: 50px;}

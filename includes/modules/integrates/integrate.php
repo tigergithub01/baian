@@ -146,13 +146,7 @@ class integrate
      */
     function login($username, $password, $remember = null)
     {
-    	$sql = "SELECT " . $this->field_id .
-    	" FROM " . $this->table($this->user_table).
-    	" WHERE (" . $this->field_name . "='" . $username . "' or " . $this->field_phone . "='" . $username . "' or " . $this->field_email . "='" . $username . "') AND " . $this->field_pass . " ='" . $this->compile_password(array('password'=>$password)) . "'";
-    	$id = $this->db->getOne($sql);
-    	
-//     	if ($this->check_user($username, $password) > 0)
-    	if ($id > 0)
+    	if ($this->check_user($username, $password) > 0)
         {
 			 $sql = "SELECT " . $this->field_name .
                " FROM " . $this->table($this->user_table).

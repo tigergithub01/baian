@@ -439,8 +439,9 @@ function update_user_password($username, $password, $email,$mobile_phone,$reg_ty
 	}
 	
 	//更新用户密码
+// 	$md5_password = md5(md5($password).'0');
 	$sql = "UPDATE ".$GLOBALS['ecs']->table('users'). "
-                    SET password = '" . md5($password) . "'
+                    SET password = '" . md5($password) . "',ec_salt='0' 
                     WHERE user_name = '" . $username . "'";
 	if (!$GLOBALS['db']->query($sql, 'SILENT'))
 	{

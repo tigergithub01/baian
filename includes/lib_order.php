@@ -1858,7 +1858,7 @@ function get_cart_goods($is_checked)
         
         /*是否有货*/
         if($row['extension_code'] == 'package_buy'){
-        	//TODO:需增加组合套装库存判断
+        	//TODO:需增加优惠套装库存判断
         	if(!judge_package_stock($row['goods_id'], $row['goods_number'])){
         		//TODO:如果有库存时，先暂时设置为1，用来在购物车中判断是否有货；如果需要的时候，可以取真实的库存
         		$row['goods_stock_number']=1;

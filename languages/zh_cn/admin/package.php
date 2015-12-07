@@ -29,6 +29,8 @@ $_LANG['all_goods'] = '可选商品';
 $_LANG['package_goods'] = '该礼包的商品';
 $_LANG['goods_number'] = '数量';
 $_LANG['saving'] = '立即节省';
+// $_LANG['package_recommand'] = '推荐组合';
+// $_LANG['package_info'] = '优惠套装';
 
 /* 提示信息 */
 $_LANG['no_goods'] = '你输入的商品不存在，请查证后再输入';

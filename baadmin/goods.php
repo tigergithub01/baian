@@ -1227,6 +1227,7 @@ else
     if($goods_storerooms){
     	//产品汇总库存
     	$goods_total_number = 0;
+    	$has_store = false;
     
     	foreach ($goods_storerooms as $key => $value) {
     		$store_id = $goods_storerooms[$key];
@@ -1245,14 +1246,18 @@ else
     		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('goods_store') . " (goods_id, store_id, goods_number) " .
     				"VALUES ('$goods_id', '$store_id', '$goods_number')";
     		$db->query($sql);
+    		
+    		$has_store = true;
     	}
     
     	//更新产品库存
-	    if (update_goods($goods_id, 'goods_number', $goods_total_number))
-	    {
-	    	//记录日志
-	    	admin_log($goods_id, 'update', 'goods');
-	    }
+    	if($has_store){
+    		if (update_goods($goods_id, 'goods_number', $goods_total_number))
+    		{
+    			//记录日志
+    			admin_log($goods_id, 'update', 'goods');
+    		}
+    	}
     }
 
     /* 记录上一次选择的分类和品牌 */
@@ -2643,7 +2648,8 @@ elseif ($_REQUEST['act'] == 'product_insert' || $_REQUEST['act'] == 'product_upd
 		if($goods_storerooms){
 			//产品汇总库存
 			$product_total_number = 0;
-		
+			$has_store = false;
+			
 			foreach ($goods_storerooms as $key => $value) {
 				$store_id = $goods_storerooms[$key];
 				if(empty($store_id)){
@@ -2660,12 +2666,16 @@ elseif ($_REQUEST['act'] == 'product_insert' || $_REQUEST['act'] == 'product_upd
 				$sql = "INSERT INTO " . $GLOBALS['ecs']->table('products_store') . " (product_id, store_id, product_number) " .
 							"VALUES ('$product_id', '$store_id', '$product_number')";
 				$db->query($sql);
+				
+				$has_store = true;
 			}
 		
 			//更新产品库存
-			$sql = "UPDATE " . $ecs->table('products') . "
-			SET product_number = '$product_total_number' WHERE product_id = '$product_id' LIMIT 1";
-			$db->query($sql);
+			if($has_store){
+				$sql = "UPDATE " . $ecs->table('products') . "
+				SET product_number = '$product_total_number' WHERE product_id = '$product_id' LIMIT 1";
+				$db->query($sql);
+			}
 		}
 
 		/* 修改商品表库存 */

@@ -25,6 +25,8 @@ if ($_REQUEST['act'] == 'add')
 {
     /* 权限判断 */
     admin_priv('package_manage');
+    
+    $act_type = isset($_REQUEST['act_type'])?$_REQUEST['act_type']:GAT_PACKAGE;
 
     /* 组合商品 */
     $group_goods_list = array();
@@ -36,11 +38,12 @@ if ($_REQUEST['act'] == 'add')
     /* 初始化信息 */
     $start_time = local_date('Y-m-d H:i');
     $end_time   = local_date('Y-m-d H:i', strtotime('+1 month'));
-    $package     = array('package_price'=>'', 'start_time' => $start_time, 'end_time' => $end_time);
+    $package     = array('package_price'=>'', 'start_time' => $start_time, 'end_time' => $end_time, 'act_type'=>$act_type);
 
     $smarty->assign('package',      $package);
     $smarty->assign('ur_here',      $_LANG['package_add']);
-    $smarty->assign('action_link',  array('text' => $_LANG['14_package_list'], 'href'=>'package.php?act=list'));
+    /* $smarty->assign('action_link',  array('text' => $_LANG['14_package_list'], 'href'=>'package.php?act=list')); */
+    $smarty->assign('action_link',  array('text' => '优惠套装与推荐组合列表', 'href'=>'package.php?act=list'));
     $smarty->assign('cat_list',     cat_list());
     $smarty->assign('brand_list',   get_brand_list());
     $smarty->assign('form_action',  'insert');
@@ -53,6 +56,11 @@ elseif ($_REQUEST['act'] =='insert')
 {
     /* 权限判断 */
     admin_priv('package_manage');
+    
+    $act_type = isset($_REQUEST['act_type'])?$_REQUEST['act_type']:null;
+    if(!isset($act_type)){
+    	sys_msg($_LANG['sys']['wrong'] . '优惠套餐与推荐组合类型不能为空', 1, array(), false);
+    }
 
     $sql = "SELECT COUNT(*) ".
            " FROM " . $ecs->table('goods_activity').
@@ -77,7 +85,7 @@ elseif ($_REQUEST['act'] =='insert')
 
     /* 插入数据 */
     $record = array('act_name'=>$_POST['package_name'], 'act_desc'=>$_POST['desc'],
-                    'act_type'=>GAT_PACKAGE, 'start_time'=>$_POST['start_time'],
+                    'act_type'=>$act_type, 'start_time'=>$_POST['start_time'],
                     'end_time'=>$_POST['end_time'], 'is_finished'=>0, 'ext_info'=>serialize($info));
 
     $db->AutoExecute($ecs->table('goods_activity'),$record,'INSERT');
@@ -106,7 +114,8 @@ elseif ($_REQUEST['act'] == 'edit')
 
     $smarty->assign('package',           $package);
     $smarty->assign('ur_here',           $_LANG['package_edit']);
-    $smarty->assign('action_link',       array('text' => $_LANG['14_package_list'], 'href'=>'package.php?act=list&' . list_link_postfix()));
+//     $smarty->assign('action_link',       array('text' => $_LANG['14_package_list'], 'href'=>'package.php?act=list&' . list_link_postfix()));
+    $smarty->assign('action_link',       array('text' => '优惠套装与推荐组合列表', 'href'=>'package.php?act=list&' . list_link_postfix()));
     $smarty->assign('cat_list',     cat_list());
     $smarty->assign('brand_list',   get_brand_list());
     $smarty->assign('form_action',       'update');
@@ -120,6 +129,11 @@ elseif ($_REQUEST['act'] =='update')
 {
     /* 权限判断 */
     admin_priv('package_manage');
+    
+    $act_type = isset($_REQUEST['act_type'])?$_REQUEST['act_type']:null;
+    if(!isset($act_type)){
+    	sys_msg($_LANG['sys']['wrong'] . '优惠套餐与推荐组合类型不能为空', 1, array(), false);
+    }
 
     /* 将时间转换成整数 */
     $_POST['start_time'] = local_strtotime($_POST['start_time']);
@@ -132,9 +146,12 @@ elseif ($_REQUEST['act'] =='update')
     }
 
     /* 检查活动重名 */
-    $sql = "SELECT COUNT(*) ".
+    /* $sql = "SELECT COUNT(*) ".
            " FROM " . $ecs->table('goods_activity').
-           " WHERE act_type='" . GAT_PACKAGE . "' AND act_name='" . $_POST['package_name'] . "' AND act_id <> '" .  $_POST['id'] . "'" ;
+           " WHERE act_type='" . GAT_PACKAGE . "' AND act_name='" . $_POST['package_name'] . "' AND act_id <> '" .  $_POST['id'] . "'" ; */
+    $sql = "SELECT COUNT(*) ".
+    		" FROM " . $ecs->table('goods_activity').
+    		" WHERE act_type='" . $act_type . "' AND act_name='" . $_POST['package_name'] . "' AND act_id <> '" .  $_POST['id'] . "'" ;
     if ($db->getOne($sql))
     {
         sys_msg(sprintf($_LANG['package_exist'],  $_POST['package_name']) , 1);
@@ -146,7 +163,8 @@ elseif ($_REQUEST['act'] =='update')
     /* 更新数据 */
     $record = array('act_name' => $_POST['package_name'], 'start_time' => $_POST['start_time'], 'end_time' => $_POST['end_time'],
                     'act_desc' => $_POST['desc'], 'ext_info'=>serialize($info));
-    $db->autoExecute($ecs->table('goods_activity'), $record, 'UPDATE', "act_id = '" . $_POST['id'] . "' AND act_type = " . GAT_PACKAGE );
+//     $db->autoExecute($ecs->table('goods_activity'), $record, 'UPDATE', "act_id = '" . $_POST['id'] . "' AND act_type = " . GAT_PACKAGE );
+    $db->autoExecute($ecs->table('goods_activity'), $record, 'UPDATE', "act_id = '" . $_POST['id'] . "' AND act_type = " . $act_type );
 
     admin_log($_POST['package_name'],'edit','package');
     $link[] = array('text' => $_LANG['back_list'], 'href'=>'package.php?act=list&' . list_link_postfix());
@@ -180,8 +198,9 @@ elseif ($_REQUEST['act'] == 'remove')
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'list')
 {
-    $smarty->assign('ur_here',      $_LANG['14_package_list']);
+    $smarty->assign('ur_here',      /* $_LANG['14_package_list'] */'优惠套装/推荐组合');
     $smarty->assign('action_link',  array('text' => $_LANG['package_add'], 'href'=>'package.php?act=add'));
+    $smarty->assign('action_link2',  array('text' => '添加推荐组合', 'href'=>'package.php?act=add&act_type='.GAT_RECOMMAND));
 
     $packages = get_packagelist();
 
@@ -429,17 +448,24 @@ function get_packagelist()
 
         $where = (!empty($filter['keywords'])) ? " AND act_name like '%". mysql_like_quote($filter['keywords']) ."%'" : '';
 
+        /* $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('goods_activity') .
+               " WHERE act_type =" . GAT_PACKAGE . $where; */
         $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('goods_activity') .
-               " WHERE act_type =" . GAT_PACKAGE . $where;
+        " WHERE act_type " . db_create_in(array(GAT_PACKAGE,GAT_RECOMMAND)) . $where;
         $filter['record_count'] = $GLOBALS['db']->getOne($sql);
 
-        $filter = page_and_size($filter);
+        $filter = page_and_size($filter);        
 
         /* 获活动数据 */
-        $sql = "SELECT act_id, act_name AS package_name, start_time, end_time, is_finished, ext_info ".
+        /* $sql = "SELECT act_id, act_name AS package_name, start_time, end_time, is_finished, ext_info ".
                " FROM " . $GLOBALS['ecs']->table('goods_activity') .
                " WHERE act_type = " . GAT_PACKAGE . $where .
-               " ORDER by $filter[sort_by] $filter[sort_order] LIMIT ". $filter['start'] .", " . $filter['page_size'];
+               " ORDER by $filter[sort_by] $filter[sort_order] LIMIT ". $filter['start'] .", " . $filter['page_size']; */
+        
+        $sql = "SELECT act_id, act_name AS package_name, start_time, end_time, is_finished, ext_info, act_type ".
+        		" FROM " . $GLOBALS['ecs']->table('goods_activity') .
+        		" WHERE act_type  " . db_create_in(array(GAT_PACKAGE,GAT_RECOMMAND)) . $where .
+        		" ORDER by $filter[sort_by] $filter[sort_order] LIMIT ". $filter['start'] .", " . $filter['page_size'];
 
         $filter['keywords'] = stripslashes($filter['keywords']);
         set_filter($filter, $sql);
@@ -454,8 +480,9 @@ function get_packagelist()
 
     foreach ($row AS $key => $val)
     {
-        $row[$key]['start_time'] = local_date($GLOBALS['_CFG']['time_format'], $val['start_time']);
+    	$row[$key]['start_time'] = local_date($GLOBALS['_CFG']['time_format'], $val['start_time']);
         $row[$key]['end_time']   = local_date($GLOBALS['_CFG']['time_format'], $val['end_time']);
+        $row[$key]['act_type_name']  = (($val['act_type']==GAT_PACKAGE)?'优惠套装':'推荐组合');
         $info = unserialize($row[$key]['ext_info']);
         unset($row[$key]['ext_info']);
         if ($info)
@@ -465,6 +492,7 @@ function get_packagelist()
                 $row[$key][$info_key] = $info_val;
             }
         }
+       
     }
 
     $arr = array('packages' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);

@@ -7,7 +7,7 @@
 <form method="post" action="package.php" name="theForm" onsubmit="return validate()">
 <table cellspacing="1" cellpadding="3" width="100%">
   <tr>
-    <td class="label">{$lang.package_name}</td>
+    <td class="label"><!-- {if $package.act_type eq 4} -->{$lang.package_name}<!-- {else} -->推荐组合名称<!-- {/if} --></td>
     <td><input type="text" name="package_name" maxlength="60" size="40" value="{$package.package_name}" />{$lang.require_field}</td>
   </tr>
   <tr>
@@ -30,7 +30,7 @@
     <td><input type="text" name="package_price" maxlength="60" size="20" value="{$package.package_price}" />{$lang.require_field}<br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticepackagePrice">{$lang.notice_package_price}</span></td>
   </tr>
   <tr>
-    <td class="label">{$lang.desc}</td>
+    <td class="label"><!-- {if $package.act_type eq 4} -->{$lang.desc}<!-- {else} -->推荐组合描述<!-- {/if} --></td>
     <td><textarea  name="desc" cols="60" rows="4">{$package.act_desc}</textarea></td>
   </tr>
   <!-- 商品搜索 -->
@@ -87,6 +87,7 @@
       <input type="reset" value="{$lang.button_reset}" class="button" />
       <input type="hidden" name="act" value="{$form_action}" />
       <input type="hidden" name="id" value="{$package.id}" />
+      <input type="hidden" name="act_type" value="{$package.act_type}" />
     </td>
   </tr>
 </table>

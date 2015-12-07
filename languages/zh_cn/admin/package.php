@@ -14,14 +14,14 @@
 */
 
 $_LANG['package_id'] = '编号';
-$_LANG['package_name'] = '组合套装名称';
+$_LANG['package_name'] = '优惠套装名称';
 $_LANG['goodsid'] = '活动关联商品';
 $_LANG['goods_name'] = '关联商品名称';
 $_LANG['start_time'] = '活动开始时间';
 $_LANG['end_time'] = '活动结束时间';
 $_LANG['package_price'] = '礼包价格';
 $_LANG['package_edit'] = '编辑超值礼包活动';
-$_LANG['desc'] = '组合套装活动描述';
+$_LANG['desc'] = '优惠套装活动描述';
 $_LANG['make_option'] = '请先搜索商品生成选项列表';
 $_LANG['keywords'] = '商品关键字';
 $_LANG['search_goods'] = '商品搜索';

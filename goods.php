@@ -600,9 +600,14 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
         $tag_array = get_tags($goods_id);
         $smarty->assign('tags',                $tag_array);                                       // 商品的标记
 
-        //获取关联礼包
+        //获取优惠套装
         $package_goods_list = get_package_goods_list($goods['goods_id']);
-        $smarty->assign('package_goods_list',$package_goods_list);    // 获取关联礼包
+        $smarty->assign('package_goods_list',$package_goods_list);    // 获取优惠套装
+        
+        //获取推荐组合
+        $recommand_goods_list = get_package_goods_list($goods['goods_id'],GAT_RECOMMAND);
+        $smarty->assign('recommand_goods_list',$recommand_goods_list);    // 获取推荐组合
+        
         
 		//组合套餐名
 		$taocan = array('一', '二', '三','四','五','六','七','八','九','十');
@@ -994,7 +999,7 @@ function get_attr_amount($goods_id, $attr)
  *
  * @return  礼包列表
  */
-function get_package_goods_list($goods_id)
+function get_package_goods_list($goods_id,$act_type=GAT_PACKAGE)
 {
     $now = gmtime();
     $sql = "SELECT pg.goods_id, ga.act_id, ga.act_name, ga.act_desc, ga.goods_name, ga.start_time,
@@ -1004,6 +1009,7 @@ function get_package_goods_list($goods_id)
             AND ga.start_time <= '" . $now . "'
             AND ga.end_time >= '" . $now . "'
             AND pg.goods_id = " . $goods_id . "
+            AND ga.act_type = '$act_type' 
             GROUP BY ga.act_id
             ORDER BY ga.act_id ";
     $res = $GLOBALS['db']->getAll($sql);
@@ -1021,7 +1027,7 @@ function get_package_goods_list($goods_id)
             }
         }
 
-        $sql = "SELECT pg.package_id, pg.goods_id, pg.goods_number, pg.admin_id, p.goods_attr, g.goods_sn, g.goods_name, g.market_price, g.goods_thumb, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS rank_price
+        $sql = "SELECT pg.package_id, pg.goods_id, pg.goods_number, pg.admin_id, p.goods_attr, g.goods_sn, g.goods_name, g.market_price, g.goods_thumb, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS rank_price, pg.product_id
                 FROM " . $GLOBALS['ecs']->table('package_goods') . " AS pg
                     LEFT JOIN ". $GLOBALS['ecs']->table('goods') . " AS g
                         ON g.goods_id = pg.goods_id
@@ -1041,6 +1047,11 @@ function get_package_goods_list($goods_id)
             $goods_res[$key]['goods_url'] = build_uri('goods', array('gid' => $val['goods_id']), $val['goods_name']);
             $goods_res[$key]['market_price'] = price_format($val['market_price']);
             $goods_res[$key]['rank_price']   = price_format($val['rank_price']);
+            
+            //重新定义产品价格
+            $goods_res[$key]['shop_price'] = get_final_price($val['goods_id'],'1',false,array(),$val['product_id']);
+            $goods_res[$key]['shop_price_formated'] = price_format($goods_res[$key]['shop_price']);
+            
             $subtotal += $val['rank_price'] * $val['goods_number'];
         }
 

@@ -337,7 +337,12 @@
 			
 			
 			
-			
+			<script type="text/javascript">
+				$(function(){
+					//jQuery(".yhtz").slide({mainCell:".bd ul",autoPlay:false,effect:"left",vis:1,scroll:1,autoPage:true,trigger:"click"});
+				});
+				
+			</script>
 			<div class="h"></div>
 			<div class="zuBox">
 				<div class="hd">
@@ -347,10 +352,10 @@
 					</ul>
 				</div>				
 				<div class="bd">
+					<div>
 					<!-- 优惠套装 -->
 					<!--{foreach from=$package_goods_list item=pg name=pg}-->
-					<ul class="ul-pic4">
-						
+					<ul class="ul-pic4" title="{$pg.act_name}" style="border: 1px solid #ddd;margin: 0 2px 2px 2px;">
 						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
 						<li>
 							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}" target="_blank"><img alt="" src="{$p_goods.goods_thumb}"></a>
@@ -375,7 +380,7 @@
 						</li>
 					</ul>
 					<!--{/foreach}-->
-
+					</div>
 					<!-- 推荐组合 -->
 					<ul class="ul-pic4 ul-pic5">
 						

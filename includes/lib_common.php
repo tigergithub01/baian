@@ -2504,9 +2504,13 @@ function get_package_info($id)
     $id = is_numeric($id)?intval($id):0;
     $now = gmtime();
 
-    $sql = "SELECT act_id AS id,  act_name AS package_name, goods_id , goods_name, start_time, end_time, act_desc, ext_info".
+    /* $sql = "SELECT act_id AS id,  act_name AS package_name, goods_id , goods_name, start_time, end_time, act_desc, ext_info".
            " FROM " . $GLOBALS['ecs']->table('goods_activity') .
-           " WHERE act_id='$id' AND act_type = " . GAT_PACKAGE;
+           " WHERE act_id='$id' AND act_type = " . GAT_PACKAGE; */
+    
+    $sql = "SELECT act_id AS id,  act_name AS package_name, goods_id , goods_name, start_time, end_time, act_desc, ext_info, act_type ".
+    		" FROM " . $GLOBALS['ecs']->table('goods_activity') .
+    		" WHERE act_id='$id'";
 
     $package = $db->GetRow($sql);
 

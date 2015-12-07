@@ -151,7 +151,8 @@ define('GAT_SNATCH',                0);
 define('GAT_GROUP_BUY',             1);
 define('GAT_AUCTION',               2);
 define('GAT_POINT_BUY',             3);
-define('GAT_PACKAGE',               4); // 超值礼包
+define('GAT_PACKAGE',               4); // 优惠套装
+define('GAT_RECOMMAND',               5); // 推荐组合
 
 /* 帐号变动类型 */
 define('ACT_SAVING',                0);     // 帐户冲值

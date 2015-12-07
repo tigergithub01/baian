@@ -352,10 +352,10 @@
 					</ul>
 				</div>				
 				<div class="bd">
+					<!-- 优惠套装 start-->
 					<div>
-					<!-- 优惠套装 -->
 					<!--{foreach from=$package_goods_list item=pg name=pg}-->
-					<ul class="ul-pic4" title="{$pg.act_name}" style="border: 1px solid #ddd;margin: 0 2px 2px 2px;">
+					<ul class="ul-pic4" title="{$pg.act_name}" style="">
 						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
 						<li>
 							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}" target="_blank"><img alt="" src="{$p_goods.goods_thumb}"></a>
@@ -381,10 +381,24 @@
 					</ul>
 					<!--{/foreach}-->
 					</div>
-					<!-- 推荐组合 -->
-					<ul class="ul-pic4 ul-pic5">
+					<!-- 优惠套装 end-->
+					
+					<!-- 推荐组合 start-->
+					<div>
+					<!--{foreach from=$recommand_goods_list item=pg name=pg}-->
+					<ul class="ul-pic4 ul-pic5" title="{$pg.act_name}" style="">
+						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
+						<li>
+							<a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}" target="_blank"><img alt="" src="{$p_goods.goods_thumb}"></a>
+							<p><a title="{$p_goods.goods_name}" href="{$p_goods.goods_url}">{$p_goods.goods_name}</a></p>
+							<p><b class="f14 red">{$p_goods.shop_price_formated}</b></p>
+						</li>
 						
+						<!--{/foreach}-->
 					</ul>
+					<!--{/foreach}-->
+					</div>
+					<!-- 推荐组合 end-->	
 				</div>
 			</div>
 			<div class="h"></div>

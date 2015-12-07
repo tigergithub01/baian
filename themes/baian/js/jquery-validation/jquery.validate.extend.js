@@ -9,7 +9,7 @@ $(function(){
     jQuery.validator.addMethod("isIntGtZero", function(value, element) { 
          value=parseInt(value);      
          return this.optional(element) || value>0;       
-    }, "整数必须大于0"); 
+    }, "请输入大于0的整数"); 
       
     // 判断整数value是否大于或等于0
     jQuery.validator.addMethod("isIntGteZero", function(value, element) { 

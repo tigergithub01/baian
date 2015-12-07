@@ -1778,27 +1778,34 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		    {foreach from=$lang.booking_js item=item key=key}
 		    var {$key} = "{$item}";
 		    {/foreach}
+		    
+		    	$(function(){
+					//表单验证
+					$("#formBooking").validate();
+		        });
+		    	
 		    </script>
-		    <h5><span>{$lang.add}{$lang.label_booking}</span></h5>
+		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now"><a href="/user.php?act=booking_list">缺货登记</a></li></div>
 		    <div class="blank"></div>
-		     <form action="user.php" method="post" name="formBooking" onsubmit="return addBooking();">
-		    <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+		    <div class="s-myorder">
+		     <form action="user.php" method="post" id="formBooking" name="formBooking" onsubmit="">
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist"  style="line-height:30px; font-size:14px;">
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.booking_goods_name}</td>
+		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">{$lang.booking_goods_name}</td>
 		        <td bgcolor="#ffffff">{$info.goods_name}</td>
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">{$lang.booking_amount}:</td>
-		        <td bgcolor="#ffffff"><input name="number" type="text" value="{$info.goods_number}" class="inputBg" /></td>
+		        <td bgcolor="#ffffff"><input name="number" type="text" value="{$info.goods_number}" class="inputBg required isIntGtZero" /></td>
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">{$lang.describe}:</td>
-		        <td bgcolor="#ffffff"><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue">{$info.goods_desc|escape}</textarea>
+		        <td bgcolor="#ffffff"><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue required">{$info.goods_desc|escape}</textarea>
 		        </td>
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">{$lang.contact_username}:</td>
-		        <td bgcolor="#ffffff"><input name="linkman" type="text" value="{$info.consignee|escape}" size="25"  class="inputBg"/>
+		        <td bgcolor="#ffffff"><input name="linkman" type="text" value="{$info.consignee|escape}" size="25"  class="inputBg required"/>
 		        </td>
 		      </tr>
 		      <tr>
@@ -1807,22 +1814,25 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">{$lang.contact_phone}:</td>
-		        <td bgcolor="#ffffff"><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg" /></td>
+		        <td bgcolor="#ffffff"><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg required isTel" /></td>
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
 		        <td bgcolor="#ffffff"><input name="act" type="hidden" value="act_add_booking" />
 		          <input name="id" type="hidden" value="{$info.id}" />
 		          <input name="rec_id" type="hidden" value="{$info.rec_id}" />
-		          <input type="submit" name="submit" class="submit" value="{$lang.submit_booking_goods}" />
-		          <input type="reset" name="reset" class="reset" value="{$lang.button_reset}" />
+		          <input type="submit" name="submit" class="btn_submit" value="{$lang.submit_booking_goods}" />
 		        </td>
 		      </tr>
 		    </table>
 		     </form>
+		    </div>
+		     </div>
 		    <!-- {/if} -->
     		<!--#缺货登记页面 end -->
-</div>
+    		
+    		
+			</div>
                  <!-- 猜你喜欢 start -->
 			     <div class="h"></div>
 			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   

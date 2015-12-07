@@ -1857,7 +1857,16 @@ function get_cart_goods($is_checked)
         $row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id'],'pid'=>$row['product_id']), $row['goods_name']);
         
         /*是否有货*/
-        $row['goods_stock_number'] = get_goods_store($row['goods_id'], $row['product_id']);
+        if($row['extension_code'] == 'package_buy'){
+        	//TODO:需增加组合套装库存判断
+        	if(!judge_package_stock($row['goods_id'], $row['goods_number'])){
+        		//TODO:如果有库存时，先暂时设置为1，用来在购物车中判断是否有货；如果需要的时候，可以取真实的库存
+        		$row['goods_stock_number']=1;
+        	}
+        }else{
+        	//货品
+        	$row['goods_stock_number'] = get_goods_store($row['goods_id'], $row['product_id']);
+        }
         
         $goods_list[] = $row;
     }

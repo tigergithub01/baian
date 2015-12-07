@@ -441,6 +441,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 .s-tit1 h3{font-size: 16px;}
 .s-myorder{border: 1px solid #e6e6e6;padding: 20px 40px;min-height: 280px;}
 .s-myorder p{line-height:280px;}
+.s-myorder span.required{color: #ff0000;padding: 1px;}
 
 /*******************************
 	-------[=用户中心-有订单欢迎页]-------

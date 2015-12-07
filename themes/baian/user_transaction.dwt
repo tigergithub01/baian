@@ -1795,11 +1795,11 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		        <td bgcolor="#ffffff">{$info.goods_name}</td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.booking_amount}:</td>
+		        <td align="right" bgcolor="#ffffff">{$lang.booking_amount}<span class="required">*</span>:</td>
 		        <td bgcolor="#ffffff"><input name="number" type="text" value="{$info.goods_number}" class="inputBg required isIntGtZero" /></td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.describe}:</td>
+		        <td align="right" bgcolor="#ffffff">{$lang.describe}<span class="required">*</span>:</td>
 		        <td bgcolor="#ffffff"><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue required">{$info.goods_desc|escape}</textarea>
 		        </td>
 		      </tr>
@@ -1809,11 +1809,11 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		        </td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.email_address}:</td>
+		        <td align="right" bgcolor="#ffffff">{$lang.email_address}<span class="required">*</span>:</td>
 		        <td bgcolor="#ffffff"><input name="email" type="text" value="{$info.email|escape}" size="25" class="inputBg" /></td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.contact_phone}:</td>
+		        <td align="right" bgcolor="#ffffff">{$lang.contact_phone}<span class="required">*</span>:</td>
 		        <td bgcolor="#ffffff"><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg required isTel" /></td>
 		      </tr>
 		      <tr>

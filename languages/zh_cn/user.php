@@ -287,6 +287,17 @@ $_LANG['pay_order_by_surplus'] = '追加使用余额支付订单：%s';
 $_LANG['return_surplus_on_cancel'] = '取消订单 %s，退回支付订单时使用的预付款';
 $_LANG['return_integral_on_cancel'] = '取消订单 %s，退回支付订单时使用的积分';
 
+/* 综合状态 */
+$_LANG['cs'][OS_UNCONFIRMED] = '待确认';
+$_LANG['cs'][CS_AWAIT_PAY] = '待付款';
+$_LANG['cs'][CS_AWAIT_SHIP] = '待发货';
+$_LANG['cs'][CS_FINISHED] = '已完成';
+$_LANG['cs'][PS_PAYING] = '付款中';
+$_LANG['cs'][OS_CANCELED] = '取消';
+$_LANG['cs'][OS_INVALID] = '无效';
+$_LANG['cs'][OS_RETURNED] = '退货';
+$_LANG['cs'][OS_SHIPPED_PART] = '部分发货';
+
 /* 订单状态 */
 $_LANG['os'][OS_UNCONFIRMED] = '未确认';
 $_LANG['os'][OS_CONFIRMED] = '已确认';
@@ -306,6 +317,8 @@ $_LANG['ss'][SS_SHIPPED_ING] = '配货中'; // 已分单
 $_LANG['ps'][PS_UNPAYED] = '未付款';
 $_LANG['ps'][PS_PAYING] = '付款中';
 $_LANG['ps'][PS_PAYED] = '已付款';
+
+
 
 $_LANG['shipping_not_need'] = '无需使用配送方式';
 $_LANG['current_os_not_unconfirmed'] = '当前订单状态不是“未确认”。';

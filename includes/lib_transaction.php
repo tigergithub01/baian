@@ -364,11 +364,20 @@ function get_user_orders($user_id, $num = 10, $start = 0)
         }
 
         $row['shipping_status'] = ($row['shipping_status'] == SS_SHIPPED_ING) ? SS_PREPARING : $row['shipping_status'];
+        
+        //综合状态
+        $row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status']);
+        $row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
+        
         $row['order_status'] = $GLOBALS['_LANG']['os'][$row['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$row['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$row['shipping_status']];
+        
+        
         $arr[] = array('order_id'       => $row['order_id'],
                        'order_sn'       => $row['order_sn'],
                        'order_time'     => local_date($GLOBALS['_CFG']['time_format'], $row['add_time']),
                        'order_status'   => $row['order_status'],
+        			   'composite_status'   => $row['composite_status'],
+        			   'composite_status_name'   => $row['composite_status_name'],
                        'total_fee'      => price_format($row['total_fee'], false),
         			   'shipping_fee'      => price_format($row['shipping_fee'], false),
                        'handler'        => $row['handler']);
@@ -912,7 +921,9 @@ function get_order_detail($order_id, $user_id = 0)
     
     $order['order_time'] =  local_date($GLOBALS['_CFG']['time_format'], $row['order_time']);
     $order['order_status_name'] = $GLOBALS['_LANG']['os'][$order['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$order['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$order['shipping_status']];
-	
+    $order['composite_status'] = get_order_cs_status($order['order_status'], $order['shipping_status'], $order['pay_status']);
+    $order['composite_status_name'] = $GLOBALS['_LANG']['cs'][$order['composite_status']];
+    
     /**配送地址,**/
     $sql = "SELECT rg_country.region_name AS country_name, ".
       			  "rg_province.region_name AS province_name, ".

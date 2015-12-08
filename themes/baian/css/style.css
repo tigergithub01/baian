@@ -547,7 +547,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 	width: 100%;border: 1px solid #c9caca;margin-bottom: 15px;
 }
 
-.addr_box .required{
+.addr_box span.required{
 	color: #ff0000;padding: 1px;
 }
 

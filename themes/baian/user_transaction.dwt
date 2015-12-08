@@ -1431,6 +1431,12 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                 }
               }
               {/literal}
+              
+            	$(function(){
+  					//表单验证
+  					//$("form[name='theForm']").validate();
+  		        });
+              
             </script>
             
             <div class="s-myorder" style="">
@@ -1483,13 +1489,13 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 				            <table>
 				                <tr>
 				                  <td><span class="required">*</span>收货人：</td>
-				                  <td><input name="consignee" type="text" class="inputBg" id="consignee_{$sn}" value="{$consignee.consignee|escape}" />
+				                  <td><input name="consignee" type="text" class="inputBg required" id="consignee_{$sn}" value="{$consignee.consignee|escape}" />
 				                  </td>
 				                </tr>
 				                <tr>
 				                   	  <td><span class="required">*</span>{$lang.backup_phone}：</td>
 					                  <td>
-					                  <input name="mobile" type="text" class="inputBg" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
+					                  <input name="mobile" type="text" class="inputBg required" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
 					                  {$lang.phone}：<input name="tel" type="text" class="inputBg" id="tel_{$sn}" value="{$consignee.tel|escape}" />
 					                  </td>
 				                </tr>

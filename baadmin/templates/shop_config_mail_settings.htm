@@ -68,11 +68,27 @@ function sendTestEmail()
       mail_service = eles['value[507]'][i].value;
     }
   }
+  
+  $.ajax({     
+	    url: 'shop_config.php?is_ajax=1&act=send_test_email',     
+	    type:'post',  
+	    dataType:'json', 
+	    data:{email:test_mail_address,mail_service:mail_service,smtp_host:smtp_host,
+	    	smtp_port:smtp_port,smtp_user:smtp_user,
+	    	smtp_pass:encodeURIComponent(smtp_pass),reply_email:reply_email,mail_charset:mail_charset},     
+	    async :true, 
+	    error:function(){ 
+	    	//alert('更新出错！');
+	    },     
+	    success:function(data){ 
+	    	alert(data.message);
+	    }  
+	}); 
 
-  Ajax.call('shop_config.php?is_ajax=1&act=send_test_email',
+  /* Ajax.call('shop_config.php?is_ajax=1&act=send_test_email',
     'email=' + test_mail_address + '&mail_service=' + mail_service + '&smtp_host=' + smtp_host + '&smtp_port=' + smtp_port +
     '&smtp_user=' + smtp_user + '&smtp_pass=' + encodeURIComponent(smtp_pass) + '&reply_email=' + reply_email + '&mail_charset=' + mail_charset,
-    emailResponse, 'POST', 'JSON');
+    emailResponse, 'POST', 'JSON'); */
 }
 
 /**

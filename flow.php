@@ -1702,7 +1702,8 @@ elseif ($_REQUEST['step'] == 'done')
         'need_insure'     => isset($_POST['need_insure']) ? intval($_POST['need_insure']) : 0,
         'user_id'         => $_SESSION['user_id'],
         'add_time'        => gmtime(),
-        'order_status'    => OS_UNCONFIRMED,
+//         'order_status'    => OS_UNCONFIRMED,
+    	'order_status'    => OS_CONFIRMED,
         'shipping_status' => SS_UNSHIPPED,
         'pay_status'      => PS_UNPAYED,
         'agency_id'       => get_agency_by_regions(array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']))

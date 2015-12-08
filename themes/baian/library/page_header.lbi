@@ -41,7 +41,7 @@ var process_request = "{$lang.process_request}";
 			</div>
 			<div class="hdr r">
 				<div class="loginBox l">
-					<div class="pop-btn"><a href="javascript:void(0);" class="i-user" id="user-btn">我的百安</a></div>
+					<div class="pop-btn"><a href="user.php" class="i-user" id="user-btn-1">我的百安</a></div>
 				</div>
 				<div class="cartBox l">
 					<div class="pop-btn"><a href="flow.php" class="i-cart">去购物车结算<b id="cart_goods_number">{$cart_goods_number}</b></a></div>

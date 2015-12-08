@@ -1103,7 +1103,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
 	                   </td>
 	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
-	                       <div class="order_state">{$order.order_status}</div>
+	                       <div class="order_state">{$order.composite_status_name}</div>
 	                       <a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
 	                   </td>
 	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
@@ -1174,7 +1174,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="shou-info">
 				<p class="info dn" style="display: block;padding: 15px 0 5px 50px;">订单编号：  {$order.order_sn}</p>
 				<p class="info dn" style="display: block;padding: 5px 0 5px 50px;">下单时间：  {$order.order_time}</p>
-				<p class="info dn" style="display: block;padding: 5px 0 15px 50px;">订单状态：  {$order.order_status_name}</p>
+				<p class="info dn" style="display: block;padding: 5px 0 15px 50px;">订单状态：  {$order.composite_status_name}</p>
 			</div>
 			<div class="h15"></div>
 			<h3 class="c-tit3">收货人信息</h3>												

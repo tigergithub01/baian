@@ -1190,6 +1190,14 @@
 		
 		/***选择收货人，收货地址***/
         function select_address(address_id){
+			//验证数据是否有效
+			//var $form = $("#address_form_"+address_id);
+			var form = document.getElementById("address_form_"+address_id);
+			if(!checkConsignee(form)){
+				return false;
+			}
+			
+			
         	$.ajax({     
         	    url:'flow.php?step=select_consignee',     
         	    type:'post',  

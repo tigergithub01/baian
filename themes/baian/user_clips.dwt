@@ -119,7 +119,7 @@
 				                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
 				                   </td>
 				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
-				                       <div class="order_state">{$order.order_status}</div>
+				                       <div class="order_state">{$order.composite_status_name}</div>
 				                       <a href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
 				                   </td>
 				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">

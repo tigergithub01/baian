@@ -73,9 +73,16 @@ Utils.isEmail = function( email )
 
 Utils.isTel = function ( tel )
 {
-  var reg = /^[\d|\-|\s|\_]+$/; //只允许使用数字-空格等
+  var reg = /^(\d{3,4}-?)?\d{7,9}$/g; 
 
   return reg.test( tel );
+}
+
+Utils.isMobile = function ( mobile )
+{
+  var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+
+  return (mobile.length == 11 && reg.test( mobile ));
 }
 
 Utils.fixEvent = function(e)

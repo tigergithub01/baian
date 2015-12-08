@@ -1987,6 +1987,94 @@ function checkConsignee(frm)
 
 
 
+  
+
+
+
+  if (Utils.isEmpty(frm.elements['consignee'].value))
+
+  {
+
+    err = true;
+
+    msg.push(consignee_not_null);
+
+  }
+
+
+
+  if ( frm.elements['email'] && !Utils.isEmpty(frm.elements['email'].value) && !Utils.isEmail(frm.elements['email'].value))
+
+  {
+
+    err = true;
+
+    msg.push(invalid_email);
+
+  }
+
+
+
+  
+
+
+
+  if (frm.elements['zipcode'] && frm.elements['zipcode'].value.length > 0 && (!Utils.isNumber(frm.elements['zipcode'].value)))
+
+  {
+
+    //err = true;
+
+    //msg.push(zip_not_num);
+
+  }
+
+
+
+  /*if (Utils.isEmpty(frm.elements['tel'].value))
+
+  {
+
+    err = true;
+
+    msg.push(tele_not_null);
+
+  }
+
+  else
+
+  {*/
+
+  if (!Utils.isEmpty(frm.elements['tel'].value) && !Utils.isTel(frm.elements['tel'].value))
+
+    {
+
+      err = true;
+
+      msg.push(tele_invaild);
+
+    }
+
+  /*}*/
+
+
+
+  if (frm.elements['mobile'] && frm.elements['mobile'].value.length > 0 && (!Utils.isMobile(frm.elements['mobile'].value)))
+
+  {
+
+    err = true;
+
+    msg.push(mobile_invaild);
+
+  }
+  
+  if (Utils.isEmpty(frm.elements['tel'].value) && Utils.isEmpty(frm.elements['mobile'].value)){
+	  err = true;
+
+	  msg.push("手机和电话必须填写一项！");
+  }
+  
   if (frm.elements['country'] && frm.elements['country'].value == 0)
 
   {
@@ -2038,33 +2126,7 @@ function checkConsignee(frm)
     }
 
   }
-
-
-
-  if (Utils.isEmpty(frm.elements['consignee'].value))
-
-  {
-
-    err = true;
-
-    msg.push(consignee_not_null);
-
-  }
-
-
-
-  if ( ! Utils.isEmail(frm.elements['email'].value) && 0)
-
-  {
-
-    err = true;
-
-    msg.push(invalid_email);
-
-  }
-
-
-
+  
   if (frm.elements['address'] && Utils.isEmpty(frm.elements['address'].value))
 
   {
@@ -2074,58 +2136,7 @@ function checkConsignee(frm)
     msg.push(address_not_null);
 
   }
-
-
-
-  if (frm.elements['zipcode'] && frm.elements['zipcode'].value.length > 0 && (!Utils.isNumber(frm.elements['zipcode'].value)))
-
-  {
-
-    //err = true;
-
-    //msg.push(zip_not_num);
-
-  }
-
-
-
-  if (Utils.isEmpty(frm.elements['tel'].value))
-
-  {
-
-    err = true;
-
-    msg.push(tele_not_null);
-
-  }
-
-  else
-
-  {
-
-    if (!Utils.isTel(frm.elements['tel'].value))
-
-    {
-
-      err = true;
-
-      msg.push(tele_invaild);
-
-    }
-
-  }
-
-
-
-  if (frm.elements['mobile'] && frm.elements['mobile'].value.length > 0 && (!Utils.isTel(frm.elements['mobile'].value)))
-
-  {
-
-    err = true;
-
-    msg.push(mobile_invaild);
-
-  }
+  
 
 
 

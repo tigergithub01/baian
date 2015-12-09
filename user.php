@@ -1220,14 +1220,25 @@ elseif ($action == 'order_list')
 {
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
     include_once(ROOT_PATH . 'includes/lib_order.php');
+    
+    //订单编号或名称
+    $keyword =  isset($_REQUEST['keyword']) ? trim($_REQUEST['keyword']) : '';
+    
+    //订单状态
+    $status =  isset($_REQUEST['status']) ? intval($_REQUEST['status']) : -1;
+    
+    //订单查询时间段
+    $order_period =  isset($_REQUEST['order_period']) ? intval($_REQUEST['order_period']) : 0;
 
     $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 
-    $record_count = $db->getOne("SELECT COUNT(*) FROM " .$ecs->table('order_info'). " WHERE user_id = '$user_id'");
+//     $record_count = $db->getOne("SELECT COUNT(*) FROM " .$ecs->table('order_info'). " WHERE user_id = '$user_id'");
+    $record_count = get_user_orders_count($user_id, $keyword,$status,$order_period);
 
-    $pager  = get_pager('user.php', array('act' => $action), $record_count, $page);
+    $pager  = get_pager('user.php', array('act' => $action,'keyword'=>$keyword,'status'=>$status,'order_period'=>$order_period), $record_count, $page);
 
-    $orders = get_user_orders($user_id, $pager['size'], $pager['start']);
+    $orders = get_user_orders($user_id, $pager['size'], $pager['start'], $keyword,$status,$order_period);
+    
     
     //获取订单明细信息 added by tiger.guo 20151023
     foreach ($orders as $index => $order) {
@@ -1242,9 +1253,14 @@ elseif ($action == 'order_list')
     	$orders[$index]['goods_list']=$goods_list;
     }
     $merge  = get_user_merge($user_id);
+    $smarty->assign('keyword',  $keyword);
+    $smarty->assign('status',  $status);
+    $smarty->assign('order_period',  $order_period);
     $smarty->assign('merge',  $merge);
     $smarty->assign('pager',  $pager);
     $smarty->assign('orders', $orders);
+    $smarty->assign('status_list', $_LANG['cs']);   // 订单状态
+    $smarty->assign('order_period_list', $_LANG['order_period']);   // 订单查询时间段
     $smarty->display('user_transaction.dwt');
 }
 
@@ -1541,8 +1557,14 @@ elseif ($action == 'delete_collection')
         $db->query('DELETE FROM ' .$ecs->table('collect_goods'). " WHERE rec_id='$collection_id' AND user_id ='$user_id'" );
     }
 
-    ecs_header("Location: user.php?act=collection_list\n");
-    exit;
+    $is_ajax = isset($_REQUEST['is_ajax']) ? intval($_REQUEST['is_ajax']) : 0;
+    if($is_ajax){
+    	lib_main_make_json_result("删除收藏成功!");
+    	exit;
+    }else{
+    	ecs_header("Location: user.php?act=collection_list\n");
+    	exit;
+    }    
 }
 
 /* 添加关注商品 */
@@ -1610,11 +1632,11 @@ elseif ($action == 'message_list')
 /* 显示评论列表 */
 elseif ($action == 'comment_list')
 {
-    include_once(ROOT_PATH . 'includes/lib_clips.php');
+    /* include_once(ROOT_PATH . 'includes/lib_clips.php');
 
     $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 
-    /* 获取用户留言的数量 */
+     // 获取用户留言的数量 
     $sql = "SELECT COUNT(*) FROM " .$ecs->table('comment').
            " WHERE parent_id = 0 AND user_id = '$user_id'";
     $record_count = $db->getOne($sql);
@@ -1622,7 +1644,29 @@ elseif ($action == 'comment_list')
 
     $smarty->assign('comment_list', get_comment_list($user_id, $pager['size'], $pager['start']));
     $smarty->assign('pager',        $pager);
-    $smarty->display('user_clips.dwt');
+    $smarty->display('user_clips.dwt'); */
+	
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'includes/lib_order.php');
+	
+	$commented = isset($_REQUEST['commented']) ? intval($_REQUEST['commented']) : 0;
+	
+	$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
+	
+	//     $record_count = $db->getOne("SELECT COUNT(*) FROM " .$ecs->table('order_info'). " WHERE user_id = '$user_id'");
+	$record_count = get_user_comment_goods_count($user_id,$commented);
+	
+	$pager  = get_pager('user.php', array('act' => $action,'commented'=>$commented), $record_count, $page);
+	
+	$goods_list = get_user_comment_goods($user_id, $pager['size'], $pager['start'],$commented);
+	
+	
+	$smarty->assign('pager',        $pager);
+	$smarty->assign('goods_list',   $goods_list);
+	$smarty->assign('commented',   $commented);
+	
+	$smarty->display('user_clips.dwt');
+	
 }
 
 /* 添加我的留言 */

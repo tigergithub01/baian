@@ -698,4 +698,9 @@ $_LANG['passwd_questions']['interest']        = '我最大的爱好？';
 $_LANG['passwd_questions']['favorite_novel']  = '我最喜欢的小说？';
 $_LANG['passwd_questions']['favorite_equipe'] = '我最喜欢的运动队？';
 
+/* 我的订单查询时间段 */
+$_LANG['order_period'][0] = '全部订单';
+$_LANG['order_period'][1] = '近三个月订单';
+$_LANG['order_period'][2] = '今年内订单';
+
 ?>

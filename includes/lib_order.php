@@ -2619,17 +2619,17 @@ function payment_id_list($is_cod)
 function get_order_cs_status($order_status,$shipping_status,$pay_status,$payment_is_cod=0){
 	if(in_array($order_status, array(OS_CONFIRMED, OS_SPLITED))
 			&& (in_array($shipping_status, array(SS_SHIPPED, SS_RECEIVED)) || !$payment_is_cod)
-			&& (pay_status == PS_UNPAYED)){
+			&& ($pay_status == PS_UNPAYED)){
 		return CS_AWAIT_PAY;
 	}else if(in_array($order_status, array(OS_CONFIRMED, OS_SPLITED, OS_SPLITING_PART))
 			&& in_array($shipping_status, array(SS_UNSHIPPED, SS_PREPARING, SS_SHIPPED_ING))
-			&& (in_array(pay_status, array(PS_PAYED, PS_PAYING))) || $payment_is_cod){
+			&& (in_array($pay_status, array(PS_PAYED, PS_PAYING))) || $payment_is_cod){
 		return CS_AWAIT_SHIP;
 	}else if(in_array($order_status, array(OS_CONFIRMED, OS_SPLITED)) 
 			&& in_array($shipping_status, array(SS_SHIPPED, SS_RECEIVED)) 
-			&& in_array(pay_status, array(PS_PAYED, PS_PAYING))){
+			&& in_array($pay_status, array(PS_PAYED, PS_PAYING))){
 		return CS_FINISHED;
-	}else if(pay_status==PS_PAYING){
+	}else if($pay_status==PS_PAYING){
 		return PS_PAYING;
 	}else if($shipping_status==OS_SHIPPED_PART){
 		return OS_SHIPPED_PART;

@@ -308,6 +308,57 @@ function add_bonus($user_id, $bouns_sn)
 
 }
 
+function get_user_orders_count($user_id, $keyword = '',$composite_status = -1,$order_period = 0){
+	$where = "user_id = '$user_id'";
+	if (!empty($keyword))
+	{
+		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+	}
+	
+	//综合状态
+	switch($composite_status)
+	{
+		case CS_AWAIT_PAY :
+			$where .= order_query_sql('await_pay');
+			break;
+	
+		case CS_AWAIT_SHIP :
+			$where .= order_query_sql('await_ship');
+			break;
+	
+		case CS_FINISHED :
+			$where .= order_query_sql('finished');
+			break;
+	
+		case PS_PAYING :
+			if ($composite_status != -1)
+			{
+				$where .= " AND o.pay_status = '$composite_status' ";
+			}
+			break;
+		case OS_SHIPPED_PART :
+			if ($composite_status != -1)
+			{
+				$where .= " AND o.shipping_status  = '$composite_status'-2 ";
+			}
+			break;
+		default:
+			if ($composite_status != -1)
+			{
+				$where .= " AND o.order_status = '$composite_status' ";
+			}
+	}
+	
+	
+	
+	$sql = "SELECT COUNT(1) ".
+			" FROM " .$GLOBALS['ecs']->table('order_info') ." AS o ".
+			" WHERE $where ORDER BY o.add_time DESC";
+	
+	
+	return $GLOBALS['db']->getOne($sql);
+}
+
 /**
  *  获取用户指定范围的订单列表
  *
@@ -315,17 +366,65 @@ function add_bonus($user_id, $bouns_sn)
  * @param   int         $user_id        用户ID号
  * @param   int         $num            列表最大数量
  * @param   int         $start          列表起始位置
+ * $keyword 关键字，订单编号
+ * $composite_status 综合状态
+ * $order_period 时间段
  * @return  array       $order_list     订单列表
+ * 
  */
-function get_user_orders($user_id, $num = 10, $start = 0)
+function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composite_status = -1,$order_period = 0)
 {
 	/* 取得订单列表 */
     $arr    = array();
 
-    $sql = "SELECT order_id, order_sn, order_status, shipping_status, pay_status, add_time,shipping_fee, " .
-           "(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee ".
-           " FROM " .$GLOBALS['ecs']->table('order_info') .
-           " WHERE user_id = '$user_id' ORDER BY add_time DESC";
+    $where = "user_id = '$user_id'";
+    if (!empty($keyword))
+    {
+    	$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+    }
+    
+    //综合状态
+    switch($composite_status)
+    {
+    	case CS_AWAIT_PAY :
+    		$where .= order_query_sql('await_pay');
+    		break;
+    
+    	case CS_AWAIT_SHIP :
+    		$where .= order_query_sql('await_ship');
+    		break;
+    
+    	case CS_FINISHED :
+    		$where .= order_query_sql('finished');
+    		break;
+    
+    	case PS_PAYING :
+    		if ($composite_status != -1)
+    		{
+    			$where .= " AND o.pay_status = '$composite_status' ";
+    		}
+    		break;
+    	case OS_SHIPPED_PART :
+    		if ($composite_status != -1)
+    		{
+    			$where .= " AND o.shipping_status  = '$composite_status'-2 ";
+    		}
+    		break;
+    	default:
+    		if ($composite_status != -1)
+    		{
+    			$where .= " AND o.order_status = '$composite_status' ";
+    		}
+    }
+    
+    
+    
+    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, " .
+           "(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
+           " FROM " .$GLOBALS['ecs']->table('order_info') ." AS o ".
+           " WHERE $where ORDER BY o.add_time DESC";
+    
+    
     $res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
 
     while ($row = $GLOBALS['db']->fetchRow($res))
@@ -387,6 +486,114 @@ function get_user_orders($user_id, $num = 10, $start = 0)
 }
 
 
+/**
+ * 用户评论商品列表
+ * @param unknown $user_id
+ * @param number $num
+ * @param number $start
+ * @param unknown $commented
+ * @return multitype:unknown
+ */
+function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
+{
+	$arr    = array();
+
+	$where = "user_id = '$user_id'";
+	
+	//待评价订单
+	$where .= order_query_sql('finished');
+	
+	if($commented==1){
+		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+	}elseif ($commented==0){
+		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+	}
+	
+	$sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, " .
+			" (o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee, ".
+			" og.rec_id, og.goods_id, og.goods_name, og.goods_sn, og.market_price, og.goods_number, " .
+			" og.goods_price, og.goods_attr, og.is_real, og.parent_id, og.is_gift, " .
+			" og.goods_price * og.goods_number AS subtotal, og.extension_code, " .
+			" g.goods_thumb , g.goods_img, og.product_id " .
+			"FROM " . $GLOBALS['ecs']->table('order_goods') . ' AS og ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON (og.goods_id = g.goods_id) ' .
+			"LEFT JOIN ".  $GLOBALS['ecs']->table('order_info') ." AS o ON (og.order_id=o.order_id) ".
+			"WHERE $where";
+	
+	$res = $GLOBALS['db']->query($sql);
+	$goods_list = array();
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+		if ($row['extension_code'] == 'package_buy')
+		{
+			$row['package_goods_list'] = get_package_goods($row['goods_id']);
+		}
+	
+		$row['goods_thumb']      = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+		$row['goods_img']        = get_image_path($row['goods_id'], $row['goods_img']);
+		$row['goods_url']              = build_uri('goods', array('gid'=>$row['goods_id'],'pid'=>$row['product_id']), $row['goods_name']);
+		//         $goods_list[$row['rec_id']] = $row;
+	
+		/*根据产品编号查询规格*/
+		if ($row['product_id'] && intval($row['product_id'])>0 )
+		{
+			$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$row['product_id']."'";
+			$attr_list = $GLOBALS['db']->getAll($sql);
+			foreach ($attr_list AS $attr)
+			{
+				$row['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+			}
+		}
+		
+		//综合状态
+		$row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status']);
+		$row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
+		
+		$row['subtotal']     = price_format($row['subtotal'], false);
+		
+		$row['order_time']    = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+	
+		$goods_list[] = $row;
+	}
+	
+	return $goods_list;
+}
+
+
+/**
+ * 用户评论商品列表函数
+ * @param unknown $user_id
+ * @param number $num
+ * @param number $start
+ * @param unknown $commented
+ * @return multitype:unknown
+ */
+function get_user_comment_goods_count($user_id, $commented=-1)
+{
+	$arr    = array();
+
+	$where = "user_id = '$user_id'";
+
+	//待评价订单
+	$where .= order_query_sql('finished');
+
+	if($commented==1){
+		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+	}elseif ($commented==0){
+		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+	}
+
+	$sql = "SELECT COUNT(1) " .
+			"FROM " . $GLOBALS['ecs']->table('order_goods') . ' AS og ' .
+			'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON (og.goods_id = g.goods_id) ' .
+			"LEFT JOIN ".  $GLOBALS['ecs']->table('order_info') ." AS o ON (og.order_id=o.order_id) ".
+			"WHERE $where";
+
+	return $GLOBALS['db']->getOne($sql);
+}
 
 /**
  *  获取用户指定范围的寄存列表

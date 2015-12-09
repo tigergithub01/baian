@@ -2156,7 +2156,7 @@ function lib_main_make_json_response($status=1, $message='', $content='',  $appe
  * @param
  * @return  void
  */
-function lib_main_make_json_result($message,$content, $append=array())
+function lib_main_make_json_result($message,$content='', $append=array())
 {
 	lib_main_make_json_response(1,$message,$content,$append);
 }

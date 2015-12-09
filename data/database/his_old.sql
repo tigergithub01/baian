@@ -41,3 +41,187 @@ alter table ecs_users add is_validated_phone tinyint(3) COMMENT '手机号码是
 
 alter table ecs_cart add is_checked tinyint(3) COMMENT '是否选中?1:是;0:否';
 
+INSERT INTO `ecs_shop_config`
+(
+`parent_id`,
+`code`,
+`type`,
+`store_range`,
+`store_dir`,
+`value`,
+`sort_order`)
+VALUES
+(
+1,
+'shop_district',
+'manual',
+'',
+'',
+'',
+1);
+
+INSERT INTO `ecs_shop_config`
+(
+`parent_id`,
+`code`,
+`type`,
+`store_range`,
+`store_dir`,
+`value`,
+`sort_order`)
+VALUES
+(
+1,
+'shop_town',
+'manual',
+'',
+'',
+'',
+1);
+
+
+alter table ecs_products add product_price decimal(10,2) COMMENT '货品价格';
+alter table ecs_products add store_id smallint(5)  COMMENT '仓库编号，关联表ecs_goods_storeroom.store_id';
+
+
+CREATE TABLE `ecs_products_gallery` (
+  `img_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `img_url` varchar(255) NOT NULL DEFAULT '',
+  `img_desc` varchar(255) NOT NULL DEFAULT '',
+  `thumb_url` varchar(255) NOT NULL DEFAULT '',
+  `img_original` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`img_id`),
+  CONSTRAINT `fk_product_gallery_ref_products` FOREIGN KEY (`product_id`) REFERENCES `ecs_products` (`product_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 comment '产品相册';
+
+
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单孕妈专区',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单宝宝食品',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单宝宝用品',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单婴童服饰',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单童车童床',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单图书玩具',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+
+INSERT INTO `ecs_ad_position`
+(`position_name`,`ad_width`,`ad_height`,`position_desc`,`position_style`)
+VALUES
+(
+'导航菜单家居百货',225,150,'',
+'<table cellpadding="0" cellspacing="0">
+ {foreach from=$ads item=ad}
+ <tr><td>{$ad}</td></tr>
+ {/foreach}
+ </table>');
+ 
+ 
+ /*alter table ecs_attribute add attr_img_url varchar(255) comment  '属性默认图片';*/
+alter table ecs_goods_attr add attr_img_url varchar(255) comment  '属性值对应图片';
+
+
+CREATE TABLE `ecs_products_attr` (
+  `product_attr_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `product_id` int(10) unsigned NOT NULL COMMENT '关联产品编号',
+  `goods_attr_id` int(10) unsigned NOT NULL COMMENT '商品属性编号',  
+  PRIMARY KEY (`product_attr_id`),
+ CONSTRAINT `fk_ecs_products_attr_ref_prod` FOREIGN KEY (`product_id`) REFERENCES `ecs_products` (`product_id`),
+ CONSTRAINT `fk_ecs_products_attr_ref_p_attr` FOREIGN KEY (`goods_attr_id`) REFERENCES `ecs_goods_attr` (`goods_attr_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=476 DEFAULT CHARSET=utf8 COMMENT='产品属性明细表';
+
+
+ALTER TABLE ecs_products ADD seq_index tinyint(3)  COMMENT '产品显示序号，用来设置默认显示产品' default 1;
+
+CREATE TABLE `ecs_products_store` (
+  `product_store_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `product_id` int(10) unsigned NOT NULL COMMENT '关联产品编号',
+  `store_id` int(10) unsigned NOT NULL COMMENT '关联仓库编号',  
+  `product_number` smallint(5) unsigned NOT NULL COMMENT '产品库存' default 0,  
+  PRIMARY KEY (`product_store_id`),
+ CONSTRAINT `fk_products_store_ref_prod` FOREIGN KEY (`product_id`) REFERENCES `ecs_products` (`product_id`),
+ CONSTRAINT `fk_products_store_ref_store` FOREIGN KEY (`store_id`) REFERENCES `ecs_goods_storeroom` (`store_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='产品库存表';
+
+alter table ecs_products drop column store_id;
+
+
+ALTER TABLE ecs_products ADD is_promote tinyint(1) default 0 comment '是否促销';
+ALTER TABLE ecs_products ADD promote_start_date  int(11) comment '促销开始日期';
+ALTER TABLE ecs_products ADD promote_end_date  int(11) comment '促销结束日期';
+ALTER TABLE ecs_products ADD promote_price  decimal(10,2) comment '促销价';
+ALTER TABLE ecs_products ADD is_default  tinyint(1) default 0 comment '是否默认规格产品';
+
+CREATE TABLE `ecs_goods_store` (
+  `goods_store_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '关联商品编号',
+  `store_id` int(10) unsigned NOT NULL COMMENT '关联仓库编号',  
+  `goods_number` smallint(5) unsigned NOT NULL COMMENT '商品库存' default 0,  
+  PRIMARY KEY (`goods_store_id`),
+ CONSTRAINT `fk_goods_store_ref_goods` FOREIGN KEY (`goods_id`) REFERENCES `ecs_goods` (`goods_id`),
+ CONSTRAINT `fk_goods_store_ref_store` FOREIGN KEY (`store_id`) REFERENCES `ecs_goods_storeroom` (`store_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='商品分仓库库存表';
+
+alter table ecs_package_goods add goods_price decimal(10,2) comment '组合套装单品价格';
+
+ 

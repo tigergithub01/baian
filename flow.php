@@ -189,6 +189,9 @@ if ($_REQUEST['step'] == 'add_to_cart')
     }
 
     $result['confirm_type'] = !empty($_CFG['cart_confirm']) ? $_CFG['cart_confirm'] : 2;
+    
+    $result['confirm_type'] = isset($goods->cart_confirm)?($goods->cart_confirm):$result['confirm_type'];
+    
     die($json->encode($result));
 }
 elseif ($_REQUEST['step'] == 'link_buy')

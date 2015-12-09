@@ -1049,9 +1049,10 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		      		<!-- {/foreach} -->
     			</select>
        		</div>
-       		<div style="float: right;">
+       		<div style="float: right;margin-right: 15px;">
        			<input type="hidden" name="act" value="order_list"/>
-       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号" style="margin-right: 10px;"/><input type="submit" class="btn_submit" value="查找" />
+       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号" style="margin-right: 10px;"/>
+       			<input type="submit" class="btn_submit" value="查找" />
        		</div>
        </div>
        

@@ -3,7 +3,7 @@
 /* *
  * 添加商品到购物车 
  */
-function addToCart(goodsId, parentId,product_id) 
+function addToCart(goodsId, parentId,product_id,cart_confirm) 
 {
   var goods        = new Object();
   var spec_arr     = new Array();
@@ -30,6 +30,9 @@ function addToCart(goodsId, parentId,product_id)
   goods.goods_id = goodsId;
   goods.number   = number;
   goods.parent   = (parentId==null || typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
+  if(cart_confirm!=null){
+	  goods.cart_confirm = cart_confirm;
+  }  
   
   if($("#addr_country")!=null && $("#addr_country").length>0 && $("#addr_province")!=null && $("#addr_province").length>0){
 	  //在商品详情页面选择仓库的情况
@@ -128,6 +131,9 @@ function addToCartResponse(result)
         case '3' :
           location.href = cart_url;
           break;
+        case '4' :
+            alert('加入购物成功!');
+            break;  
         default :
           break;
       }

@@ -1676,14 +1676,24 @@ elseif ($action == 'act_add_message')
 	
     $msg_content = isset($_POST['msg_content']) ? trim($_POST['msg_content']) : '';
     $msg_type = isset($_POST['msg_type']) ? intval($_POST['msg_type']): 0;
+    $order_id = empty($_POST['order_id']) ? 0 : intval($_POST['order_id']);
     
     /****投诉**/
     if($msg_type==1){
     	//TODO: 投诉（msg_type = 1）时根据订单号order_sn查询order_id，订单编号不存在的时候要提示
     	$order_sn = isset($_POST['order_sn']) ? trim($_POST['order_sn']) : '';
-    	if(!empty($order_sn)){
-    		$msg_content= $msg_content." 订单编号: $order_sn";
+    	if(empty($order_sn)){
+    		show_message("订单号不能为空！", $_LANG['back_page_up'], '', 'error');
     	}
+    	
+    	$sql = "SELECT order_id FROM " .$ecs->table('order_info').
+    	" WHERE order_sn = '$order_sn' AND user_id = $user_id ";
+    	$order_id = $GLOBALS['db']->getCol($sql);
+    	if(empty($order_id)){
+    		show_message("您输入的订单编号不存在！", $_LANG['back_page_up'], '', 'error');
+    	} 
+    	   	
+    	$msg_content= $msg_content." 订单编号: $order_sn";
     }
     
     /***建议有奖***/
@@ -1703,7 +1713,7 @@ elseif ($action == 'act_add_message')
         'msg_type'    => isset($_POST['msg_type']) ? intval($_POST['msg_type'])     : 0,
         'msg_title'   => isset($_POST['msg_title']) ? trim($_POST['msg_title'])     : '',
         'msg_content' => $msg_content,
-        'order_id'=>empty($_POST['order_id']) ? 0 : intval($_POST['order_id']),
+        'order_id'=> $order_id,
         'upload'      => (isset($_FILES['message_img']['error']) && $_FILES['message_img']['error'] == 0) || (!isset($_FILES['message_img']['error']) && isset($_FILES['message_img']['tmp_name']) && $_FILES['message_img']['tmp_name'] != 'none')
          ? $_FILES['message_img'] : array()
      );

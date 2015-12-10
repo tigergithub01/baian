@@ -42,16 +42,42 @@
           {foreach from=$lang.profile_js item=item key=key}
             var {$key} = "{$item}";
           {/foreach}
+          
+       	  $(function(){
+				//表单验证
+				$(".tab_link").click(function(){
+					$(this).addClass("selected");
+					$(".tab_link").not($(this)).removeClass("selected");
+					
+					var contentId = $(this).prop('id')+"_content";
+					$(".tab_content").hide();
+					$('#'+contentId).show();
+					
+					
+				});
+	        });
+       	  
+       	  
         </script>
         
 					 <div class="hyzx"><li>会员资料</li><li class="now"><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 
 					<div class="blank"></div>
+					
+			
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
      
-     <div class="s-myorder">
-       	 	 <div class="title">我的信息</div>
-	       	 <table class="s-order-table noborder datalist">
+     <div class="s-myorder s-userBox">
+     
+     		<div style="margin-bottom: 10px;">
+	          	<a href="javascript:void(0)" id="my_profile" class="tab_link selected">我的信息</a>
+	          	<span>|</span>
+	          	<a href="javascript:void(0)" id="baby_profile" class="tab_link">宝宝信息</a>
+          	</div>
+          	
+          	
+          	
+	       	 <table class="s-order-table noborder datalist tab_content"  id="my_profile_content">
 				<tbody>
 					<tr>
 						<td class="title">头像:</td>
@@ -62,7 +88,7 @@
 					<tr>
 						<td class="title">会员等级:</td>
 						<td>
-							<span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span><!-- <span class="vipBox"><b>v</b>1</span> -->
+							<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span> --><span class="vipBox"><b>v</b>1</span>
 						</td>
 					</tr>
 					<tr>
@@ -86,7 +112,7 @@
 							<!-- {if $profile.is_validated ==1} -->
 								已绑定
 							<!-- {else} -->	
-								<a href="javascript:void(0)" style="color: #f08300">立即绑定</a>
+								<a href="user.php?act=bind_mobile_email" style="color: #f08300">立即绑定</a>
 							<!-- {/if} -->
 							</span>
 						</td>
@@ -99,7 +125,7 @@
 							<!-- {if $profile.is_validated_phone ==1} -->
 								已绑定
 							<!-- {else} -->	
-								<a href="javascript:void(0)" style="color: #f08300">立即绑定</a>
+								<a href="user.php?act=bind_mobile_email" style="color: #f08300">立即绑定</a>
 							<!-- {/if} -->
 							</span>
 						</td>
@@ -126,16 +152,15 @@
 				</tbody>
 			</table>      
 		    
-		    <div class="title">宝宝信息</div>
-	       	 <table class="s-order-table noborder datalist">
+	       	 <table class="s-order-table noborder datalist tab_content" id="baby_profile_content" style="display: none;">
 				<tbody>
 					<tr>
 						<td class="title">宝宝头像:</td>
 						<td>
-							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+							<div class="avatar" style="margin-right: 10px;"><img src="images/sp2.jpg" alt=""></div>
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
-							<div class=""><input class="btn_submit" type="button" value="索要生日礼物"/> </div>
+							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +184,7 @@
 						<td class="title">生日:</td>
 						<td>
 							<input type="text" value="{$profile.baby_birthday}" size="12" id="baby_birthday" name="baby_birthday"/>
-							<input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+							<input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn2');" id="selbtn2" name="selbtn2">
 						</td>
 					</tr>
 					<!-- <tr>
@@ -204,12 +229,59 @@
      
       <!-- 手机邮箱绑定  start-->
        <!--{if $action eq 'bind_mobile_email'}-->
+        <script type="text/javascript" src="sms/sms.js"></script>    
+		<script type="text/javascript" src="sms/email.js"></script>  
+        <script type="text/javascript">
+       	  $(function(){
+				//表单验证
+				$(".tab_link").click(function(){
+					$(this).addClass("selected");
+					$(".tab_link").not($(this)).removeClass("selected");
+					
+					var contentId = $(this).prop('id')+"_content";
+					$(".tab_content").hide();
+					$('#'+contentId).show();
+				});
+				
+				$("#formMsg_bind_mobile").validate({
+	    			submitHandler:function(form){
+	    				var mobile = document.getElementById('mobile_phone').value;
+	    				 if (mobile != '') {
+	    					var mobile_code = document.getElementById("mobile_code").value;
+	    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
+	    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
+	    					if (result.code == 2) {
+	    						return true;
+	    					} else {
+	    						alert(result.msg);
+	    						return false;
+	    					}
+	    				}
+	    				return true;
+	    	        }   
+	        	});
+				
+				$("#formMsg_bind_email").validate({
+	    			submitHandler:function(form){
+	    				return register_by_email();
+	    	        }   
+	        	});
+	        });
+        </script>
         
 		<div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li  class="now"><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 		<div class="s-myorder">
 				
+				<div style="margin-bottom: 10px;">
+		          	<a href="javascript:void(0)" id="bind_mobile" class="tab_link selected">手机绑定</a>
+		          	<span>|</span>
+		          	<a href="javascript:void(0)" id="bind_email" class="tab_link">邮箱绑定</a>
+	          	</div>
+	          	
+				
 	       		<!-- 手机绑定start -->
-	       		<div class="title">手机绑定</div>
+	       		<div id="bind_mobile_content" class="tab_content">
+	       		<!-- <div class="title">手机绑定</div> -->
 	       		<!-- {if $profile.is_validated_phone==1} -->
 	       			<table class="s-order-table noborder datalist">
 						<tbody>
@@ -222,23 +294,23 @@
 					 </table>
 	       		<!-- {else} -->
 	       		
-	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_bind_mobile" id="formMsg_bind_mobile">
 				     
 			       	 <table class="s-order-table noborder datalist">
 						<tbody>
 							<tr>
 								<td class="title">请填写手机号码：</td>
 								<td>
-									<input name="mobile_phone" type="text" size="30"
-							class="inputBg" />
+									<input name="mobile_phone" id="mobile_phone" type="text" size="30"
+							class="inputBg required isMobile" />
 								</td>
 							</tr>
 							<tr>
 								<td class="title">短信验证码：</td>
 								<td>
-									<input name="mobile_code" type="text" size="30"
-							class="inputBg" />
-								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();">
+									<input name="mobile_code" id="mobile_code" type="text" size="30"
+							class="inputBg required" />
+								<input id="zphone" type="button" value="获取短信验证码 " style="height:30px;" class="inputBg" onclick="sendSms();" />
 								</td>
 							</tr>
 							<tr>
@@ -251,10 +323,12 @@
 					 </table>
 			  	</form>
 			  	<!-- {/if} -->
+			  	</div>
 			<!-- 手机绑定 end -->
 			
 			<!-- 邮箱绑定 start -->
-			<div class="title">邮箱绑定</div>
+			<div id="bind_email_content" class="tab_content" style="display: none;">
+			<!-- <div class="title">邮箱绑定</div> -->
 			<!-- {if $profile.is_validated==1} -->
 	       			
 	       			<table class="s-order-table noborder datalist">
@@ -267,28 +341,28 @@
 						</tbody>
 					 </table>
 	       	<!-- {else} -->
-         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_bind_email" id="formMsg_bind_email">
 		         
 		       	 <table class="s-order-table noborder datalist">
 					<tbody>
 						<tr>
 							<td class="title">您的邮件地址：</td>
 							<td>
-								<input name="email" type="text" size="30"
-						class="inputBg" />
+								<input name="email" id="email" type="text" size="30"
+						class="inputBg required email" />
 							</td>
 						</tr>
 						<tr>
 							<td class="title">邮箱验证码：</td>
 							<td>
-								<input name="email_code" type="text" size="30"
-						class="inputBg" />
+								<input name="email_code" id="email_code" type="text" size="30"
+						class="inputBg required" />
 							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();">
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
-								<input type="hidden" name="act" value="act_bind_mobile" /> 
+								<input type="hidden" name="act" value="act_bind_email" /> 
 								<input type="submit" value="{$lang.submit}" class="btn_submit" />
 							</td>
 						</tr>
@@ -296,6 +370,7 @@
 				 </table>
 		  </form>
 		  <!-- {/if} -->
+		  </div>
 		  <!-- 邮箱绑定 end -->
 			
 		 </div>
@@ -325,7 +400,7 @@
 							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
-							<div class=""><input class="btn_submit" type="button" value="索要生日礼物"/> </div>
+							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
 						</td>
 					</tr>
 					<tr>
@@ -373,12 +448,35 @@
      <!-- 修改密码  start-->
        <!--{if $action eq 'modify_pwd'}-->
         
+        <script type="text/javascript">
+       	  $(function(){
+				//表单验证
+				$(".tab_link").click(function(){
+					$(this).addClass("selected");
+					$(".tab_link").not($(this)).removeClass("selected");
+					
+					var contentId = $(this).prop('id')+"_content";
+					$(".tab_content").hide();
+					$('#'+contentId).show();
+					
+					
+				});
+	        });
+        </script>
+        
 		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 		
 		<div class="s-myorder">
 				
+				<div style="margin-bottom: 10px;">
+		          	<a href="javascript:void(0)" id="by_mobile" class="tab_link selected">通过手机号码修改密码</a>
+		          	<span>|</span>
+		          	<a href="javascript:void(0)" id="by_email" class="tab_link">通过邮箱修改密码</a>
+	          	</div>
+          	
 	       		<!-- 通过绑定手机号码修改start -->
-	       		<div class="title">通过绑定手机号码修改密码</div>
+	       		<div id="by_mobile_content" class="tab_content">
+	       		<!-- <div class="title">通过绑定手机号码修改密码</div> -->
 	       		<!-- {if $profile.is_validated_phone==0} -->
 	       			<table class="s-order-table noborder datalist">
 						<tbody>
@@ -393,7 +491,7 @@
 	       		
 	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
 				     
-			       	 <table class="s-order-table noborder datalist">
+			       	 <table class="s-order-table noborder datalist tab_content">
 						<tbody>
 							<tr>
 								<td class="title">手机号码：</td>
@@ -426,10 +524,12 @@
 					 </table>
 			  	</form>
 			  	<!-- {/if} -->
+			  	</div>
 			<!-- 通过绑定手机号码修改密码 end -->
 			
 			<!-- 通过绑定邮箱修改密码 start -->
-			<div class="title">通过绑定邮箱修改密码 </div>
+			<div id="by_email_content" class="tab_content" style="display: none;">
+			<!-- <div class="title">通过绑定邮箱修改密码 </div> -->
 			<!-- {if $profile.is_validated==0} -->
 	       			
 	       			<table class="s-order-table noborder datalist">
@@ -478,6 +578,7 @@
 		  </form>
 		  <!-- {/if} -->
 		  <!-- 通过绑定邮箱修改密码  end -->
+		  </div>
 			
 		 </div>			 
 		<!--{/if}-->			 

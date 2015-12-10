@@ -171,13 +171,12 @@
                
                 <!-- *咨询&投诉 start-->
          <!-- {if $action eq 'message_list'} -->
-         <script type="text/javascript">
+         	<script type="text/javascript">
             	$(function(){
   					//表单验证
   					$("form[name='formMsg']").validate();
   					$("form[name='formMsg_complaint']").validate();
   		        });
-              
             </script>
          <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li class="now"><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
@@ -259,10 +258,16 @@
          
          <!-- *建议有奖 start-->
          <!-- {if $action eq 'my_advice'} -->
+         <script type="text/javascript">
+            	$(function(){
+  					//表单验证
+  					$("form[name='formMsg_advice']").validate();
+  		        });
+            </script>
          <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li  class="now"><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
           <div class="s-myorder">
-         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_advice">
 		         <div class="title">建议有奖</div>
 		       	 <table class="s-order-table noborder datalist">
 					<tbody>
@@ -270,21 +275,21 @@
 							<td class="title">标题：</td>
 							<td>
 								<input name="msg_title" type="text" size="30"
-						class="inputBg" />
+						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
 							<td class="title">联系方式：</td>
 							<td>
 								<input name="contact_method" type="text" size="30"
-						class="inputBg" />
+						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
 							<td class="title">内容：</td>
 							<td>
 								<textarea name="msg_content" cols="50" rows="4"
-							wrap="virtual" class="B_blue"></textarea>
+							wrap="virtual" class="B_blue required"></textarea>
 							</td>
 						</tr>
 						<tr>

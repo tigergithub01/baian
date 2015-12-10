@@ -879,3 +879,27 @@ function register_user() {
 	}
 	return register();
 }
+
+/***
+ * 索要宝宝生日礼物
+ */
+function apply_baby_gift(){
+		$.ajax({     
+	    url:'user.php?act=baby_gift_giving',     
+	    type:'post',  
+	    dataType:'json', 
+	    data:{},     
+	    async :true, 
+	    error:function(){ 
+	    	//alert('更新出错！');
+	    },     
+	    success:function(data){ 
+	    	if(data.status==1){
+	    		alert(data.message)
+	    	}else{
+	    		alert(data.message)
+	    	}
+	    	
+	    }  
+	});
+}

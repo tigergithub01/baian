@@ -39,7 +39,8 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
-'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email','baby_info','modify_pwd');
+'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email',
+		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -841,13 +842,79 @@ elseif ($action == 'bind_mobile_email'){
 }
 /* 手机绑定 */
 elseif ($action == 'act_bind_mobile'){
-	//TODO:
-	show_message("手机号码绑定成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+	$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
+	if(empty($mobile_phone)){
+		show_message("手机号码不能为空！");
+	}
+	
+	$mobile_code    = isset($_POST['mobile_code']) ? trim($_POST['mobile_code']) : '';
+	if(empty($mobile_code)){
+		show_message("手机验证码不能为空！");
+	}
+	
+	//验证手机验证码
+	$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/sms/sms.php?act=check");
+// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
+	if(empty($check_result)){
+		show_message("手机验证码输入不正确！");
+	}
+	
+	$result = json_decode($check_result);
+	if(($result->code)!=2){
+		show_message($result->msg);
+	}	
+	
+	//判断手机号码是否已经被其它用户绑定
+	$sql = "SELECT COUNT(1) FROM ".$ecs->table('users')." WHERE user_id <> '$user_id' AND mobile_phone = '$mobile_phone' AND is_validated_phone = 1";
+	$count  = $db->getOne($sql);
+	if($count>0){
+		show_message("手机号码已经被其它用户绑定，请输入新的手机号码！");
+	}
+	
+	$sql = 'UPDATE '.$ecs->table('users'). "SET mobile_phone= '$mobile_phone',is_validated_phone = 1 WHERE user_id =  '$user_id'";
+	if($db->query($sql)){
+		show_message("手机号码绑定成功！", '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'info');
+	}else{
+		show_message("手机号码绑定失败！", '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'info');
+	}
 }
 /* 邮箱绑定 */
 elseif ($action == 'act_bind_email'){
-	//TODO:
-	show_message("邮箱绑定成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+	$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+	if(empty($email)){
+		show_message("邮箱不能为空！");
+	}
+	
+	$email_code    = isset($_POST['email_code']) ? trim($_POST['email_code']) : '';
+	if(empty($email_code)){
+		show_message("邮箱验证码不能为空！");
+	}
+	
+	//验证邮箱验证码
+	$check_result =cur_post("email_code=".$email_code, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
+	// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
+	if(empty($check_result)){
+		show_message("邮箱验证码输入不正确！");
+	}
+	
+	$result = json_decode($check_result);
+	if(($result->status)!=1){
+		show_message($result->message);
+	}
+	
+	//判断手机号码是否已经被其它用户绑定
+	$sql = "SELECT COUNT(1) FROM ".$ecs->table('users')." WHERE user_id <> '$user_id' AND email = '$email' AND is_validated = 1";
+	$count  = $db->getOne($sql);
+	if($count>0){
+		show_message("邮箱已经被其它用户绑定，请输入新的邮箱地址！");
+	}
+	
+	$sql = 'UPDATE '.$ecs->table('users'). "SET email= '$email',is_validated = 1 WHERE user_id =  '$user_id'";
+	if($db->query($sql)){
+		show_message("邮箱绑定成功！", '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'info');
+	}else{
+		show_message("邮箱绑定失败！", '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'info');
+	}
 }
 
 /* 宝宝生日登记 */
@@ -3427,7 +3494,33 @@ elseif ($action == 'user_level')
 	$smarty->assign('prompt',      get_user_prompt($user_id));
 	$smarty->display('user_transaction.dwt');
 }
-
+/*宝宝生日礼物索要*/
+elseif ($action == 'baby_gift_giving')
+{
+	//判断宝宝生日是否已经登记
+	$sql = "SELECT baby_birthday FROM ".$ecs->table('users')." WHERE user_id = '$user_id'";
+	$baby_birthday = $db->getCol($sql);
+	if(!isset($baby_birthday)){
+		lib_main_make_json_error('请先登记宝宝生日！');
+	}
+	
+	//判断是否已经索要了礼物
+	$sql = "SELECT COUNT(1) FROM ".$ecs->table('gift_giving')." WHERE user_id = '$user_id' 
+	 AND apply_time >= ".local_mktime(0,0,0,1,1,date('Y'))." AND apply_time <= ".local_mktime(23,59,59,12,31,date('Y'));
+	$count  = $db->getOne($sql);
+	if($count>0){
+		lib_main_make_json_error('您今年已经索要了生日礼物！');
+	}
+	
+	$sql = 'INSERT INTO '.$ecs->table('gift_giving').'(user_id , apply_time) VALUES '.
+			"('$user_id' , '".gmtime()."')" ;
+	if($db->query($sql)){
+		lib_main_make_json_result('索要生日礼物成功！');
+	}else{
+		lib_main_make_json_error('索要生日礼物失败！');
+	}
+	
+}
 
 function user_random_code($length = 6 , $numeric = 0) {
 	PHP_VERSION < '4.2.0' && mt_srand((double)microtime() * 1000000);

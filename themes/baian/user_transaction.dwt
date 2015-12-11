@@ -1167,7 +1167,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        		<div style="float: left;">
        			<select style="" name="order_period">
        				<!--{foreach from=$order_period_list item=item key=key}-->
-		      			<option  <!-- {if $item eq $status} -->selected="selected"<!--{/if}  --> value="{$key}">{$item}</option>
+		      			<option  <!-- {if $key eq $order_period} -->selected="selected"<!--{/if}  --> value="{$key}">{$item}</option>
 		      		<!-- {/foreach} -->
        			</select>
        		</div>

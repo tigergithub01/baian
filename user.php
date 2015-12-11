@@ -40,7 +40,7 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
 'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email',
-		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email');
+		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -973,10 +973,90 @@ elseif ($action == 'modify_pwd'){
 	$smarty->assign('profile', $user_info);
 	$smarty->display('user_transaction.dwt');
 }
-/* 改密码 */
+/* 会员登录后，通过绑定的手机或邮箱修改 */
 elseif ($action == 'act_modify_pwd'){
-	//TODO:
-	show_message("密码修改成功！", $_LANG['profile_lnk'], 'user.php?act=profile', 'info');
+		include_once(ROOT_PATH . 'includes/lib_passport.php');
+		
+		$username = $GLOBALS['db']->getOne("SELECT user_name FROM ".$GLOBALS['ecs']->table('users')." WHERE user_id = '$user_id' LIMIT 1");
+		$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+		$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+		$email_code    = isset($_POST['email_code']) ? trim($_POST['email_code']) : '';
+		$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
+		$reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
+	
+		$back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
+	
+	
+		if (empty($username))
+		{
+			show_message("用户名不能为空!");
+		}
+		
+		if (strlen($password) < 6)
+		{
+			show_message($_LANG['passport_js']['password_shorter']);
+		}
+	
+		if (strpos($password, ' ') > 0)
+		{
+			show_message($_LANG['passwd_balnk']);
+		}
+	
+		/* 验证码检查 */
+		/* if ((CAPTCHA_REGISTER) && gd_version() > 0)
+		{
+			if (empty($_POST['captcha']))
+			{
+				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
+			}
+	
+			// 检查验证码 
+			include_once('includes/cls_captcha.php');
+	
+			$validator = new captcha();
+			if (!$validator->check_word($_POST['captcha']))
+			{
+				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
+			}
+		} */
+		if($reg_type==1){
+			$check_result =cur_post("email_code=".$email_code, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
+			// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
+			if(empty($check_result)){
+				show_message("邮箱验证码输入不正确！", '修改密码', 'user.php?act=modify_pwd', 'error');
+			}
+			
+			$result = json_decode($check_result);
+			if(($result->status)!=1){
+				show_message($result->message, '修改密码', 'user.php?act=modify_pwd', 'error');
+			}
+			
+		}else{
+			//验证手机验证码
+			$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/sms/sms.php?act=check");
+			// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
+			if(empty($check_result)){
+				show_message("手机验证码输入不正确！", '修改密码', 'user.php?act=modify_pwd', 'error');
+			}
+			
+			$result = json_decode($check_result);
+			if(($result->code)!=2){
+				show_message($result->msg, '修改密码', 'user.php?act=modify_pwd', 'error');
+			}
+		}		
+	
+		if (update_user_password($username, $password, $email, $mobile_phone, $reg_type) !== false)
+		{
+			$user->logout();
+// 			$ucdata = empty($user->ucdata)? "" : $user->ucdata;
+			
+			show_message($_LANG['edit_password_success'], $_LANG['relogin_lnk'], 'user.php?act=login', 'info');
+// 			show_message(sprintf($_LANG['register_success'], $username . $ucdata), array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act, 'user.php'), 'info');
+		}
+		else
+		{
+			$err->show("修改密码", 'user.php?act=modify_pwd');
+		}
 }
 
 

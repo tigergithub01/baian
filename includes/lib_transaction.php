@@ -349,6 +349,13 @@ function get_user_orders_count($user_id, $keyword = '',$composite_status = -1,$o
 			}
 	}
 	
+	if($order_period==1){
+		//近三个月订单
+		$where .= " AND o.add_time  >= ".gmstr2time("-3 month");
+	}else if($order_period==2){
+		//今年内订单
+		$where .= " AND o.add_time  >= ".local_mktime(0,0,0,1,1,date('Y'));
+	}
 	
 	
 	$sql = "SELECT COUNT(1) ".
@@ -368,7 +375,7 @@ function get_user_orders_count($user_id, $keyword = '',$composite_status = -1,$o
  * @param   int         $start          列表起始位置
  * $keyword 关键字，订单编号
  * $composite_status 综合状态
- * $order_period 时间段
+ * $order_period 时间段 array(0=>'全部订单',1=>'近三个月订单',2=>'今年内订单')
  * @return  array       $order_list     订单列表
  * 
  */
@@ -415,6 +422,14 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     		{
     			$where .= " AND o.order_status = '$composite_status' ";
     		}
+    }
+    
+    if($order_period==1){
+    	//近三个月订单
+    	$where .= " AND o.add_time  >= ".gmstr2time("-3 month");
+    }else if($order_period==2){
+    	//今年内订单
+    	$where .= " AND o.add_time  >= ".local_mktime(0,0,0,1,1,date('Y'));
     }
     
     

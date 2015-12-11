@@ -1816,6 +1816,13 @@ elseif ($action == 'comment_list')
 	
 }
 
+/* 发表评论 */
+elseif ($action == 'act_add_comment')
+{
+	
+	lib_main_make_json_result('发表成功！');
+}
+
 /* 添加我的留言 */
 elseif ($action == 'act_add_message')
 {

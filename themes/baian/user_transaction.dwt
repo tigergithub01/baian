@@ -447,7 +447,8 @@
      
      <!-- 修改密码  start-->
        <!--{if $action eq 'modify_pwd'}-->
-        
+        <script type="text/javascript" src="sms/sms.js"></script>    
+		<script type="text/javascript" src="sms/email.js"></script>  
         <script type="text/javascript">
        	  $(function(){
 				//表单验证
@@ -461,6 +462,30 @@
 					
 					
 				});
+				
+				$("#formMsg_by_mobile").validate({
+	    			submitHandler:function(form){
+	    				 var mobile = document.getElementById('mobile_phone').value;
+	    				 if (mobile != '') {
+	    					var mobile_code = document.getElementById("mobile_code").value;
+	    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
+	    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
+	    					if (result.code == 2) {
+	    						return true;
+	    					} else {
+	    						alert(result.msg);
+	    						return false;
+	    					}
+	    				} 
+	    				return true;
+	    	        }   
+	        	});
+				
+				$("#formMsg_by_email").validate({
+	    			submitHandler:function(form){
+	    				return register_by_email();
+	    	        }   
+	        	});
 	        });
         </script>
         
@@ -489,33 +514,35 @@
 					 </table>
 	       		<!-- {else} -->
 	       		
-	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg" id="formMsg_by_mobile">
 				     
-			       	 <table class="s-order-table noborder datalist tab_content">
+			       	 <table class="s-order-table noborder datalist">
 						<tbody>
 							<tr>
 								<td class="title">手机号码：</td>
 								<td>
 									{$profile.mobile_phone}
+									<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
 								</td>
 							</tr>
 							<tr>
 								<td class="title">短信验证码：</td>
 								<td>
-									<input name="mobile_code" type="text" size="30"
-							class="inputBg" />
-								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();">
+									<input name="mobile_code" id="mobile_code" type="text" size="30"
+							class="inputBg required" />
+								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();"/>
 								</td>
 							</tr>
 							<tr>
 							<td class="title">新密码：</td>
 							<td>
-								<input name="password" type="text" size="30"
-						class="inputBg" />
+								<input name="password" type="password" size="30"
+						class="inputBg required" minlength = "6" />
 							</td>
 						</tr>
 							<tr>
 								<td colspan="2">
+									<input type='hidden' value='0' name='reg_type' id='reg_type'/>
 									<input type="hidden" name="act" value="act_modify_pwd" /> 
 									<input type="submit" value="{$lang.submit}" class="btn_submit" />
 								</td>
@@ -542,7 +569,7 @@
 						</tbody>
 					 </table>
 	       	<!-- {else} -->
-         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg" id="formMsg_by_email">
 		         
 		       	 <table class="s-order-table noborder datalist">
 					<tbody>
@@ -550,25 +577,27 @@
 							<td class="title">绑定邮箱：</td>
 							<td>
 								{$profile.email}
+								<input name="email" id="email" type="hidden" value="{$profile.email}" /> 
 							</td>
 						</tr>
 						<tr>
 							<td class="title">邮箱验证码：</td>
 							<td>
-								<input name="email_code" type="text" size="30"
-						class="inputBg" />
-							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();">
+								<input name="email_code" id="email_code" type="text" size="30"
+						class="inputBg required" />
+							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();"/>
 							</td>
 						</tr>
 						<tr>
 							<td class="title">新密码：</td>
 							<td>
-								<input name="password" type="text" size="30"
-						class="inputBg" />
+								<input name="password" type="password" size="30"
+						class="inputBg required" minlength = "6" />
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
+								<input type='hidden' value='1' name='reg_type' id='reg_type'/>
 								<input type="hidden" name="act" value="act_modify_pwd" /> 
 								<input type="submit" value="{$lang.submit}" class="btn_submit" />
 							</td>

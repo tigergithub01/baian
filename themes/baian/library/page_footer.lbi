@@ -143,6 +143,7 @@
      <!-- <script type="text/javascript" src="/themes/baian/js/jquery.js"></script> -->
      
     <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
 	<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
 	<script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
 	<!-- <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.metadata.js"></script> -->

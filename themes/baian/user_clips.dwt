@@ -317,7 +317,18 @@
 				  <!--{foreach from=$goods_list item=goods name=orders_foreach}-->
 				  $("#formMsg_{$smarty.foreach.orders_foreach.index}").validate({
 		    			submitHandler:function(form){
-		    				return true;
+		    				$(form).ajaxSubmit({
+		    					type:"post",
+                                dataType:"json",
+                                url:'user.php?act=act_add_comment',
+						        success:function(data){
+						        	 	alert(data.message);
+						        		if(data.status==1){
+						        			$(form).parent().parent().toggleClass('show');
+						        		}
+	                            	}
+						        });
+		    				return false;
 		    	        }   
 		        	});
 				  <!--{/foreach} -->
@@ -408,7 +419,7 @@
 										<tr>
 											<td class="title">评分<font color="#FF0000">*</font>：</td>
 											<td>
-												<input type="radio" name="comment_rank" value="1"/>1分
+												<input type="radio" name="comment_rank" value="1" class=""/>1分
 												<input type="radio" name="comment_rank" value="2"/>2分
 												<input type="radio" name="comment_rank" value="3"/>3分
 												<input type="radio" name="comment_rank" value="3"/>4分
@@ -434,6 +445,8 @@
 										</tr>
 										<tr>
 											<td colspan="2">
+											
+												<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
 												<input type="hidden" name="act" value="act_add_comment" /> 
 												<input type="submit" value="发表评价" class="btn_submit" />
 											</td>

@@ -39,8 +39,8 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
-'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email',
-		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd');
+'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email', 
+		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -1818,9 +1818,54 @@ elseif ($action == 'comment_list')
 
 /* 发表评论 */
 elseif ($action == 'act_add_comment')
-{
+{	
 	
-	lib_main_make_json_result('发表成功！');
+	
+	/* $sql = "INSERT INTO " . $GLOBALS['ecs']->table('feedback') .
+	" (msg_id, parent_id, user_id, user_name, user_email, msg_title, msg_type, msg_status,  msg_content, msg_time, message_img, order_id, msg_area)".
+	" VALUES (NULL, 0, '$message[user_id]', '$message[user_name]', '$message[user_email]', ".
+	" '$message[msg_title]', '$message[msg_type]', '$status', '$message[msg_content]', '".gmtime()."', '$img_name', '$message[order_id]', '$message[msg_area]')";
+	$GLOBALS['db']->query($sql); */
+	
+	$cmt = new stdClass();
+	/**评论类型：0：商品；1：文章**/
+	$cmt->type = !empty($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
+	$cmt->id = !empty($_REQUEST['goods_id']) ? intval($_REQUEST['goods_id']) : 0;
+	$cmt->content = !empty($_REQUEST['content']) ? $_REQUEST['content'] : "";
+	$cmt->rank = !empty($_REQUEST['comment_rank']) ? intval($_REQUEST['comment_rank']) : 0;
+	
+	if(empty($cmt->rank)){
+		lib_main_make_json_error("请选择评分!");
+	}
+	
+	if(empty($cmt->content)){
+		lib_main_make_json_error("请输入评论内容!");
+	}
+	
+	/* 评论是否需要审核 */
+	$status = 1 - $GLOBALS['_CFG']['comment_check'];
+	
+// 	$user_id = empty($_SESSION['user_id']) ? 0 : $_SESSION['user_id'];
+	$email = empty($cmt->email) ? $_SESSION['email'] : trim($cmt->email);
+	$user_name = empty($cmt->username) ? $_SESSION['user_name'] : trim($cmt->username);
+	$email = htmlspecialchars($email);
+	$user_name = htmlspecialchars($user_name);
+	
+	/* 保存评论内容 */
+	$sql = "INSERT INTO " .$GLOBALS['ecs']->table('comment') .
+	"(comment_type, id_value, email, user_name, content, comment_rank, add_time, ip_address, status, parent_id, user_id) VALUES " .
+	"('" .$cmt->type. "', '" .$cmt->id. "', '$email', '$user_name', '" .$cmt->content."', '".$cmt->rank."', ".gmtime().", '".real_ip()."', '$status', '0', '$user_id')";
+	
+	if($GLOBALS['db']->query($sql)){
+// 		lib_main_make_json_result('发表成功！'.$GLOBALS['db']->insert_id());
+		lib_main_make_json_result('评论发表成功！');
+	}else{
+		lib_main_make_json_error("评论发表失败!");
+	}
+	
+	
+	
+	
 }
 
 /* 添加我的留言 */

@@ -239,7 +239,7 @@ function get_gift_giving_list()
     foreach ($row AS $key => $val)
     {
     	$row[$key]['apply_time'] = local_date($GLOBALS['_CFG']['time_format'], $val['apply_time']);
-        $row[$key]['sent_time']   = local_date($GLOBALS['_CFG']['time_format'], $val['sent_time']);
+        $row[$key]['sent_time']   = empty($val['sent_time'])?"":local_date($GLOBALS['_CFG']['time_format'], $val['sent_time']);
     }
 
     $arr = array('gift_givings' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);

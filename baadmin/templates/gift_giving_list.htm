@@ -1,0 +1,84 @@
+<!-- $Id $ -->
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<div class="form-div">
+  <form action="javascript:searchgift_giving()" name="searchForm">
+    <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+    <!-- {$lang.gift_giving_name -->用户名 <input type="text" name="keyword" /> <input type="submit" value="{$lang.button_search}" class="button" />
+  </form>
+</div>
+
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+  <table cellpadding="3" cellspacing="1">
+    <tr>
+      <!-- <th><a href="javascript:listTable.sort('giving_id'); ">{$lang.record_id}</a>{$sort_giving_id}</th> -->
+      <th><a href="javascript:listTable.sort('user_name'); ">用户</a>{$sort_user_name}</th>
+      <th><a href="javascript:listTable.sort('apply_time');">申请日期</a>{$sort_apply_time}</th>
+      <th><a href="javascript:listTable.sort('send_flag'); ">是否发放</a>{$sort_send_flag}</th>
+      <th><a href="javascript:listTable.sort('sent_time'); ">发放日期</a>{$sort_sent_time}</th>
+      <th><a href="javascript:listTable.sort('order_sn'); ">发放订单</a>{$sort_order_sn}</th>
+      <th><a href="javascript:void(0); ">发放备注</a>{$sort_end_time}</th>
+      <th>{$lang.handler}</th>
+    </tr>
+    {foreach from=$gift_giving_list item=gift_giving}
+    <tr>
+      <!-- <td align="center">{$gift_giving.giving_id}</td> -->
+      <td align="center">{$gift_giving.user_name}</td>
+      <td align="center">{$gift_giving.apply_time}</td>
+      <td align="center"><!-- {if ($gift_giving.send_flag eq 1)} -->是<!-- {else} -->否<!-- {/if} --></td>
+      <td align="center">{$gift_giving.sent_time}</td>
+      <td align="center">{$gift_giving.order_sn}</td>
+      <td align="center">{$gift_giving.sent_memo}</td>
+      <td align="center">
+        <a href="gift_giving.php?act=edit&amp;id={$gift_giving.giving_id}" title="{$lang.edit}"><img src="images/icon_edit.gif" border="0" height="16" width="16"></a>
+      </td>
+    </tr>
+    {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    {/foreach}
+    <tr>
+      <td align="right" nowrap="true" colspan="10">{include file="page.htm"}</td>
+    </tr>
+  </table>
+
+{if $full_page}
+</div>
+</form>
+<!-- end article list -->
+
+<script type="text/javascript" language="JavaScript">
+<!--
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+      document.forms['searchForm'].elements['keyword'].focus();
+      // 开始检查订单
+      startCheckOrder();
+  }
+
+  /**
+   * 搜索礼包
+   */
+  function searchgift_giving()
+  {
+    var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+    listTable.filter.keywords = keyword;
+    listTable.filter.page = 1;
+    listTable.loadList();
+  }
+  {/literal}
+//-->
+</script>
+{include file="pagefooter.htm"}
+{/if}

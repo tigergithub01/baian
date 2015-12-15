@@ -1,0 +1,60 @@
+<!-- $Id $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js,validator.js,selectzone.js"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<div class="main-div">
+<form method="post" action="gift_giving.php" name="theForm" onsubmit="return validate()">
+<table cellspacing="1" cellpadding="3" width="100%">
+  <tr>
+    <td class="label">申请人</td>
+    <td>{$gift_giving.user_name}</td>
+  </tr>
+  <tr>
+    <td class="label">申请时间</td>
+    <td>{$gift_giving.apply_time}</td>
+  </tr>
+  <tr>
+    <td class="label">是否发放</td>
+    <td>
+    <!-- {if ($gift_giving.send_flag eq 1)} -->
+       <input name="send_flag" type="checkbox" checked="checked" value="1"/>
+    <!-- {else} -->
+       <input name="send_flag" type="checkbox" value="1"/>
+    <!-- {/if} -->
+    </td>
+  </tr>
+  <tr>
+  
+    <td class="label">发放时间</td>
+    <td>
+      <input type="text" name="sent_time" maxlength="60" size="40" value="{$gift_giving.sent_time}" id="sent_time" />
+      <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('sent_time', '%Y-%m-%d %H:%M', '24', false, 'selbtn1');" value="{$lang.btn_select}" class="button"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">订单编号</td>
+    <td><input type="text" name="order_sn" maxlength="60" size="20" value="{$gift_giving.order_sn}" /></td>
+  </tr>
+  <tr>
+    <td class="label">发放描述</td>
+    <td><textarea  name="sent_memo" cols="60" rows="4">{$gift_giving.sent_memo}</textarea></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+      <input type="reset" value="{$lang.button_reset}" class="button" />
+      <input type="hidden" name="act" value="{$form_action}" />
+      <input type="hidden" name="id" value="{$gift_giving.giving_id}" />
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+<script language="JavaScript">
+function validate(){
+	return true;
+}
+</script>
+{include file="pagefooter.htm"}

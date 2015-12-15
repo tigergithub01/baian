@@ -308,6 +308,11 @@ $_LANG['15_exchange_goods'] = '积分商城商品';
 $_LANG['15_exchange_goods_list'] = '积分商城商品列表';
 $_LANG['exchange_goods_add'] = '添加新商品';
 
+/* 礼品索要管理 */
+$_LANG['16_gift_giving'] = '礼品索要';
+$_LANG['15_gift_giving_list'] = '礼品索要列表';
+
+
 /* cls_image类的语言项 */
 $_LANG['directory_readonly'] = '目录 % 不存在或不可写';
 $_LANG['invalid_upload_image_type'] = '不是允许的图片格式';

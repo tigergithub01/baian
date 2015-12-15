@@ -83,6 +83,8 @@ $_LANG['log_action']['db_backup'] = '数据库备份';
 
 $_LANG['log_action']['package'] = '超值礼包';
 
+$_LANG['log_action']['gift_giving'] = '礼品索要';
+
 $_LANG['log_action']['exchange_goods'] = '积分可兑换的商品';
 
 $_LANG['log_action']['suppliers'] = '供货商管理';

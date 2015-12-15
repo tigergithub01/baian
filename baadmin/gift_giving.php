@@ -85,7 +85,7 @@ elseif ($_REQUEST['act'] == 'edit')
     $gift_giving['sent_time']   = empty($gift_giving['sent_time'])?"":local_date($GLOBALS['_CFG']['time_format'], $gift_giving['sent_time']);
 
     $smarty->assign('gift_giving',           $gift_giving);
-    $smarty->assign('ur_here',           $_LANG['gift_giving_edit']);
+    $smarty->assign('ur_here',           "编辑礼品索要信息");
     $smarty->assign('action_link',       array('text' => $_LANG['15_gift_giving_list'], 'href'=>'gift_giving.php?act=list&' . list_link_postfix()));
     $smarty->assign('form_action',       'update');
 

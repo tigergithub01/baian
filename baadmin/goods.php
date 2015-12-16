@@ -1259,6 +1259,23 @@ else
     		}
     	}
     }
+    
+    /*设置某个商品在在某些地区可以包邮，某些地区不能 start*/
+    $sql = "DELETE FROM " . $GLOBALS['ecs']->table('goods_free_shipping_area') . " WHERE goods_id = '$goods_id'";
+    $db->query($sql);
+    
+    $regions = isset($_REQUEST['regions'])?$_REQUEST['regions']:null;
+    if($regions){
+    	foreach ($regions as $value) {
+    		if(!empty($value)){
+    			$sql = "INSERT INTO " . $GLOBALS['ecs']->table('goods_free_shipping_area') . " (goods_id, region_id) " .
+    					"VALUES ('$goods_id', '$value')";
+    			$db->query($sql);
+    		}
+    	}
+    }   
+    /*设置某个商品在在某些地区可以包邮，某些地区不能 end*/
+    
 
     /* 记录上一次选择的分类和品牌 */
     setcookie('ECSCP[last_choose]', $catgory_id . '|' . $brand_id, gmtime() + 86400);

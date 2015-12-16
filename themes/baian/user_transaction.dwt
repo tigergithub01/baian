@@ -1763,7 +1763,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	                            	消费积分
 	                         </th>
 	                         <th>
-	                            	等级积分
+	                            	成长值
 	                         </th>
 	                         <th>
 	                            	备注

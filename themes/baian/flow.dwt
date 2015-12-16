@@ -279,7 +279,7 @@
             	    data:{'rec_id':rec_id,'is_checked':is_checked},     
             	    async :true, 
             	    error:function(){ 
-            	    	alert('更新出错！');
+            	    	//alert('更新出错！');
             	    },     
             	    success:function(data){ 
             		    if(data.status==1){
@@ -301,7 +301,7 @@
             	    data:{'is_checked':is_checked},     
             	    async :true, 
             	    error:function(){ 
-            	    	alert('更新出错！');
+            	    	//alert('更新出错！');
             	    },     
             	    success:function(data){ 
             		    if(data.status==1){
@@ -323,7 +323,7 @@
             	    data:{'rec_id':rec_id,'goods_number':goods_number},     
             	    async :true, 
             	    error:function(){ 
-            	    	alert('更新出错！');
+            	    	//alert('更新出错！');
             	    },     
             	    success:function(data){ 
             		    if(data.status==1){
@@ -367,7 +367,7 @@
             	    data:{},     
             	    async :true, 
             	    error:function(){ 
-            	    	alert('更新出错！');
+            	    	//alert('更新出错！');
             	    },     
             	    success:function(data){ 
             		    if(data.status==1){
@@ -1116,7 +1116,7 @@
 			<span class="r">
 			<input type="hidden" value="" id="address_id"/>
 	 		<input type="hidden" name="step" value="done"/>
-	 		<input type="submit" class="btn" value="提交订单"/>
+	 		<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
 			</span>
  		</div> 
  		<!-- 订单提交end -->
@@ -1205,7 +1205,7 @@
         	    data:$("#address_form_"+address_id).serialize(),     
         	    async :true, 
         	    error:function(){ 
-        	    	alert('更新出错！');
+        	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
@@ -1248,7 +1248,7 @@
         	    data:{"id":address_id,'is_ajax':'1'},     
         	    async :true, 
         	    error:function(){ 
-        	    	alert('更新出错！');
+        	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
@@ -1276,7 +1276,7 @@
         	    data:{"id":address_id,'is_ajax':'1'},     
         	    async :true, 
         	    error:function(){ 
-        	    	alert('更新出错！');
+        	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
@@ -1303,7 +1303,7 @@
         	    data:{},     
         	    async :true, 
         	    error:function(){ 
-        	    	alert('更新出错！');
+        	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
         		    $("#order_address_list").html(data);
@@ -1326,7 +1326,7 @@
         	    data:{"shipping_id":shipping_id,'pay_id':pay_id},     
         	    async :true, 
         	    error:function(){ 
-        	    	alert('更新出错！');
+        	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
@@ -1490,6 +1490,7 @@
 		
 		/***订单提交验证***/
 		function checkOrder(){
+			
 			var address_id = $("#address_id").val();
 			if(address_id==null || address_id==''){
 				alert('请选择收货人信息。');
@@ -1507,6 +1508,9 @@
 				alert('请选择支付方式。');
 				return false;
 			}
+        	
+        	$("#btn_submit_order").attr("disabled",true).css("background-color",'#efefef'); 
+        	
         	
 			return true;
 		}

@@ -107,6 +107,18 @@
     <td>{$order.referer}</td>
   </tr>
   <tr>
+    <td><div align="right"><strong>IP地址</strong></div></td>
+    <td>{$order.ip}</td>
+    <td><div align="right"><strong>IP所在地区</strong></div></td>
+    <td>{$order.ip_area}</td>
+  </tr>
+  <tr>
+    <td><div align="right"><strong>手机电脑订单</strong></div></td>
+    <td><!-- {if $order.from_mobile eq 1} -->手机订单<!-- {else} -->电脑订单<!-- {/if} --></td>
+    <td><div align="right"><strong>手机地区</strong></div></td>
+    <td>{$order.mobile_area}</td>
+  </tr>
+  <tr>
     <th colspan="4">{$lang.other_info}<a href="order.php?act=edit&order_id={$order.order_id}&step=other" class="special">{$lang.edit}</a></th>
     </tr>
   <tr>

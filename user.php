@@ -130,6 +130,11 @@ if ($action == 'default')
     		$goods_list[$key]['goods_price']  = price_format($value['goods_price'], false);
     		$goods_list[$key]['subtotal']     = price_format($value['subtotal'], false);
     	};
+    	
+    	//获取赠送等级积分与消费积分
+    	$integral = integral_to_give($order);
+    	$orders[$index]['integral'] = $integral;
+    	
     	$orders[$index]['goods_list']=$goods_list;
     }
     
@@ -1397,6 +1402,11 @@ elseif ($action == 'order_list')
     		$goods_list[$key]['goods_price']  = price_format($value['goods_price'], false);
     		$goods_list[$key]['subtotal']     = price_format($value['subtotal'], false);
     	};
+    	
+    	//获取赠送等级积分与消费积分
+    	$integral = integral_to_give($order);
+    	$orders[$index]['integral'] = $integral;
+    	
     	$orders[$index]['goods_list']=$goods_list;
     }
     $merge  = get_user_merge($user_id);

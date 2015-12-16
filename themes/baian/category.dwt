@@ -57,7 +57,7 @@
                 
 <div class="filterCondition sbox">
                     <div class="filter_title"><strong class="orange f16">{$cat_name}</strong><b class="f14">商品筛选</b><span>共<em class="orange">{$pager.record_count}</em>件商品</span></div>
-    <!--i-right end-->   <!--{if $brands.1 || $price_grade.1 || $filter_attr_list}-->
+    <!--i-right end-->   
     
     <div class="filter_con">
                         <table>
@@ -78,6 +78,7 @@
                                 </td>
                             </tr>	
                             <tr>
+                            <!--{if $brands.1 || $price_grade.1 || $filter_attr_list}-->
                                <!--{if $brands.1}-->
          <th>品牌：</th>
            <td>

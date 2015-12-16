@@ -3518,9 +3518,46 @@ elseif ($action == 'transform_points')
         $smarty->assign('rule_list',  $rule_list);
     }
     $smarty->assign('shop_points', $row);
+    
+    
+    //最近积分记录
+    include_once(ROOT_PATH . 'includes/lib_clips.php');
+    
+    $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
+    
+//     $account_type = 'user_money';
+    
+    /* 获取记录条数 */
+    $sql = "SELECT COUNT(*) FROM " .$ecs->table('account_log').
+    " WHERE user_id = '$user_id'" .
+    " AND (rank_points <> 0 or pay_points <> 0 )";
+    $record_count = $db->getOne($sql);
+    
+    //分页函数
+    $pager = get_pager('user.php', array('act' => $action), $record_count, $page);
+    
+    //获取余额记录
+    $account_log = array();
+    $sql = "SELECT * FROM " . $ecs->table('account_log') .
+    " WHERE user_id = '$user_id'" .
+    " AND (rank_points <> 0 or pay_points <> 0 ) " .
+    " ORDER BY log_id DESC";
+    $res = $GLOBALS['db']->selectLimit($sql, $pager['size'], $pager['start']);
+    while ($row = $db->fetchRow($res))
+    {
+    	$row['change_time'] = local_date($_CFG['date_format'], $row['change_time']);
+    	$account_log[] = $row;
+    }
+    
+    //模板赋值
+    $smarty->assign('account_log',    $account_log);
+    $smarty->assign('pager',          $pager);
     $smarty->assign('exchange_type',     $exchange_type);
     $smarty->assign('action',     $action);
     $smarty->assign('lang',       $_LANG);
+    
+    
+    
     $smarty->display('user_transaction.dwt');
 }
 elseif ($action == 'act_transform_points')

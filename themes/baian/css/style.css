@@ -344,7 +344,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 /*******************************
 	-------[=登录页面-百安]-------
 ********************************/
-.login-wrap{width: 1065px;margin: 0 auto;}
+.login-wrap{width: 1065px;margin: 0 auto;min-height: 450px;}
 
 .s-login-tab{overflow: hidden;margin-left: 195px;margin-bottom: -1px;}
 .s-login-tab li{float: left;margin-right: 10px;font-size: 16px;display: inline-block;padding: 0 20px;

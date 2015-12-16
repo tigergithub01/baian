@@ -2879,7 +2879,7 @@ function integral_to_give($order)
     }
     else
     {
-        $sql = "SELECT SUM(og.goods_number * IF(g.give_integral > -1, g.give_integral, og.goods_price)) AS custom_points, ROUND(SUM(og.goods_number * IF(g.rank_integral > -1, g.rank_integral, og.goods_price)* 0.5),2) AS rank_points " .
+        $sql = "SELECT ROUND(SUM(og.goods_number * IF(g.give_integral > -1, g.give_integral, og.goods_price)),0) AS custom_points, ROUND(SUM(og.goods_number * IF(g.rank_integral > -1, g.rank_integral, og.goods_price)* 0.5),0) AS rank_points " .
                 "FROM " . $GLOBALS['ecs']->table('order_goods') . " AS og, " .
                           $GLOBALS['ecs']->table('goods') . " AS g " .
                 "WHERE og.goods_id = g.goods_id " .

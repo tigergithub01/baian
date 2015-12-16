@@ -124,7 +124,9 @@ elseif ($_REQUEST['act'] == 'insert')
         $config[$count]['value']    = empty($_POST['free_money']) ? '' : $_POST['free_money'];
         $count++;
         $config[$count]['name']     = 'fee_compute_mode';
-        $config[$count]['value']    = empty($_POST['fee_compute_mode']) ? '' : $_POST['fee_compute_mode'];
+        $config[$count]['value']    = empty($_POST['fee_compute_mode']) ? '' : $_POST['fee_compute_mode'];     
+        
+        
         /* 如果支持货到付款，则允许设置货到付款支付费用 */
         if ($modules[0]['cod'])
         {
@@ -133,10 +135,13 @@ elseif ($_REQUEST['act'] == 'insert')
             $config[$count]['value']    =  make_semiangle(empty($_POST['pay_fee']) ? '' : $_POST['pay_fee']);
         }
 
+        //上门自提需要自提点的地址
+        $detail_addr     = isset($_POST['detail_addr']) ? $_POST['detail_addr'] : '';
+        
         $sql = "INSERT INTO " .$ecs->table('shipping_area').
-                " (shipping_area_name, shipping_id, configure) ".
+                " (shipping_area_name, shipping_id, configure,detail_addr) ".
                 "VALUES".
-                " ('$_POST[shipping_area_name]', '$_POST[shipping]', '" .serialize($config). "')";
+                " ('$_POST[shipping_area_name]', '$_POST[shipping]', '" .serialize($config). "','" .$detail_addr."')";
 
         $db->query($sql);
 
@@ -294,9 +299,13 @@ elseif ($_REQUEST['act'] == 'update')
             $config[$count]['value']    =  make_semiangle(empty($_POST['pay_fee']) ? '' : $_POST['pay_fee']);
         }
 
+        //上门自提需要自提点的地址
+        $detail_addr     = isset($_POST['detail_addr']) ? $_POST['detail_addr'] : '';
+        
         $sql = "UPDATE " .$ecs->table('shipping_area').
                 " SET shipping_area_name='$_POST[shipping_area_name]', ".
-                    "configure='" .serialize($config). "' ".
+                    "configure='" .serialize($config). "', ".
+                    "detail_addr='" .$detail_addr. "' ".
                 "WHERE shipping_area_id='$_POST[id]'";
 
         $db->query($sql);

@@ -1647,6 +1647,12 @@ function assign_comment($id, $type, $page = 1)
         $arr[$row['comment_id']]['content']  = nl2br(str_replace('\n', '<br />', $arr[$row['comment_id']]['content']));
         $arr[$row['comment_id']]['rank']     = $row['comment_rank'];
         $arr[$row['comment_id']]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+        
+        //货品评论图片
+        $sql = "SELECT * FROM ". $GLOBALS['ecs']->table('comment_photo') .' WHERE comment_id = '.$row['comment_id'];
+        $comment_photos = $GLOBALS['db']->getAll($sql);
+        $arr[$row['comment_id']]['photos'] = $comment_photos;
+        
     }
     /* 取得已有回复的评论 */
     if ($ids)

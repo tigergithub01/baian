@@ -315,7 +315,30 @@
 			  $(function(){
 				  //$('.fancybox').fancybox();
 				  <!--{foreach from=$goods_list item=goods name=orders_foreach}-->
-				  $("#formMsg_{$smarty.foreach.orders_foreach.index}").validate({
+				  
+				  $("#formMsg_{$smarty.foreach.orders_foreach.index}").submit(function(){
+					  	console.debug($(this).serialize());
+					  	$.ajax({     
+					  		url:'user.php?act=act_add_comment',
+			        	    type:'post',  
+			        	    dataType:'json', 
+			        	    data:$("#formMsg_{$smarty.foreach.orders_foreach.index}").serialize(),     
+			        	    async :true, 
+			        	    error:function(){ 
+			        	    	//alert('更新出错！');
+			        	    },     
+			        	    success:function(data){ 
+			        	    	alert(data.message);
+				        		if(data.status==1){
+				        			$("#formMsg_{$smarty.foreach.orders_foreach.index}").parent().parent().toggleClass('show');
+				        		}
+			        	    	
+			        	    }  
+			        	});
+		    			return false;
+		        	});
+				  
+				  /* $("#formMsg_{$smarty.foreach.orders_foreach.index}").validate({
 		    			submitHandler:function(form){
 		    				$(form).ajaxSubmit({
 		    					type:"post",
@@ -330,15 +353,93 @@
 						        });
 		    				return false;
 		    	        }   
-		        	});
+		        	}); */
 				  <!--{/foreach} -->
 				  
+				  
+				$(".fileupload").wrap("<form class='fileupload_form' action='user.php?act=act_add_comment_pic' method='post' enctype='multipart/form-data'></form>");
+				$(".fileupload").change(function(){
+					//console.debug($(this).parent());
+					var id = $(this).attr('id');
+					$(this).parent().ajaxSubmit({
+						dataType:  'json',
+						beforeSend: function() {
+							//alert('4');
+			        		/* showimg.empty();
+							progress.show();
+			        		var percentVal = '0%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal);
+							btn.html("上传中..."); */
+			    		},
+			    		uploadProgress: function(event, position, total, percentComplete) {
+			    			//alert('5');
+			        		/* var percentVal = percentComplete + '%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal); */
+			    		},
+						success: function(data) {
+							//alert(data.message);
+							if(data.status==1){
+								$("#"+id+"_img").attr("src",data.content.image_url);
+								$("#"+id+"_img_url").val(data.content.image_url);
+							}else{
+								alert(data.message);
+							}
+							//alert('6');
+							/* files.html("<b>"+data.name+"("+data.size+"k)</b> <span class='delimg' rel='"+data.pic+"'>删除</span>");
+							var img = "http://localhost/upload/files/"+data.pic;
+							showimg.html("<img src='"+img+"'>");
+							btn.html("添加附件"); */
+						},
+						error:function(xhr){
+							alert("上传失败");
+							/* btn.html("上传失败");
+							bar.width('0')
+							files.html(xhr.responseText); */
+						}
+					});
+				});
+					  
 			  });
 		  
 		  </script>
-		  <style>
+		  <style type="text/css">
 			.comment_detail{display: none}
 			.comment_detail.show{display: table-row;}
+			.btn{
+				position: relative;
+				overflow: hidden;
+				margin-right: 4px;
+				display:inline-block;
+				*display:inline;
+				font-size:14px;
+				width:65px;
+				height:65px;
+				text-align:center;
+				vertical-align:middle;
+				cursor:pointer;
+				-webkit-border-radius:4px;
+				-moz-border-radius:4px;
+				/* background-image: url('/themes/baian/images/photo_add.png'); */
+				background-repeat:no-repeat; 
+			}
+			.btn input {
+				position: absolute;
+				top: 0; 
+				right: 0;
+				margin: 0;
+				border: solid transparent;
+				opacity: 0;
+				filter:alpha(opacity=0); 
+				cursor: pointer;
+				height: 100%;
+				width: 100%;
+			}
+			.btn img {
+				height: 65px;
+				width: 65px;
+			}
 			</style>
           <div class="hyzx"><li>客户服务</li><li class="now"><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
@@ -436,11 +537,31 @@
 										<tr>
 											<td class="title">晒单：</td>
 											<td>
-												<img src="themes/baian/images/photo_add.png" alt="" />
-												<img src="themes/baian/images/photo_add.png" alt="" />
-												<img src="themes/baian/images/photo_add.png" alt="" />
-												<img src="themes/baian/images/photo_add.png" alt="" />
-												<img src="themes/baian/images/photo_add.png" alt="" />
+												<div class="btn" id="fileupload_{$goods.rec_id}_0_btn">
+													<img id="fileupload_{$goods.rec_id}_0_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_0" class="fileupload" type="file" name="comment_img" />
+													<input id="fileupload_{$goods.rec_id}_0_img_url" type="hidden" name="img_url[0]"/>
+												</div>
+												<div class="btn" id="fileupload_{$goods.rec_id}_1_btn">
+													<img id="fileupload_{$goods.rec_id}_1_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_1" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_1_img_url" type="hidden" name="img_url[1]"/>
+												</div>
+												<div class="btn" id="fileupload_{$goods.rec_id}_2_btn">
+													<img id="fileupload_{$goods.rec_id}_2_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_2" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_2_img_url" type="hidden" name="img_url[2]"/>
+												</div>
+												<div class="btn" id="fileupload_{$goods.rec_id}_3_btn">
+													<img id="fileupload_{$goods.rec_id}_3_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_3" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_3_img_url" type="hidden" name="img_url[3]"/>
+												</div>
+												<div class="btn" id="fileupload_{$goods.rec_id}_4_btn">
+													<img id="fileupload_{$goods.rec_id}_4_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_4" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_4_img_url" type="hidden" name="img_url[4]"/>
+												</div>
 											</td>
 										</tr>
 										<tr>

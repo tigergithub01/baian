@@ -12,6 +12,13 @@
                                         
 										<p><em><img src="images/v1.png" alt=""> <!-- {if $comment.username} -->{$comment.username|escape:html}<!-- {else} -->{$lang.anonymous}<!-- {/if} --></em> <span>{$comment.add_time}</span></p>
 										
+										
+										<p class="img">
+											<!-- {foreach from=$comment.photos item=photo} -->
+											<img alt="" src="{$photo.thumb_url}">
+											<!-- {/foreach} -->
+										</p>
+										
 									</div>
 								</li>
        

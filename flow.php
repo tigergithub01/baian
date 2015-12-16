@@ -973,7 +973,7 @@ elseif ($_REQUEST['step'] == 'select_shipping_payment')
 	$order['pay_id'] = intval($pay_id);
 	$_SESSION['flow_order'] = $order; */
 	
-	lib_main_make_json_result('收配送方式和支付方式设置成功。');
+	lib_main_make_json_result('配送方式和支付方式设置成功。');
 }
 
 elseif ($_REQUEST['step'] == 'select_shipping')

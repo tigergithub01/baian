@@ -1195,7 +1195,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	                   <th colspan="4">
 	                       <span class="order_num">订单号：<a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$order.order_sn}</a></span>
 	                       <span class="order_time">下单时间：{$order.order_time}</span>
-	                       本次订单预计获得 <b class="orange">X</b> 积分 <b class="orange">X</b> 成长值
+	                       本次订单预计获得 <b class="orange">{$order.integral.custom_points}</b> 积分 <b class="orange">{$order.integral.rank_points}</b> 成长值
 	                   </th>
 	               </tr>
 	           </thead>

@@ -9,6 +9,16 @@
       <td class="label">{$lang.shipping_area_name}:</td>
 <td><input type="text" name="shipping_area_name" maxlength="60" size="30" value="{$shipping_area.shipping_area_name}" />{$lang.require_field}</td>
     </tr>
+    
+   {if $shipping_area.shipping_code =='cac' }
+    <tr>
+    <td class="label">地址:</td>
+    <td>
+    	<input type="text" name="detail_addr" value="{$shipping_area.detail_addr}" maxlength="200" size="100">
+    </td>
+    </tr>	
+   {/if}
+    
   {if $shipping_area.shipping_code =='ems' || $shipping_area.shipping_code =='yto' || $shipping_area.shipping_code =='zto' || $shipping_area.shipping_code =='sto_express' || $shipping_area.shipping_code =='post_mail' || $shipping_area.shipping_code =='sf_express' || $shipping_area.shipping_code =='post_express' }
     <tr>
     <td class="label">{$lang.fee_compute_mode}:</td>

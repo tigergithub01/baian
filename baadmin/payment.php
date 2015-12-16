@@ -260,7 +260,27 @@ elseif ($_REQUEST['act'] == 'edit')
             $pay['pay_fee'] = 0;
         }
     }
-
+    
+    $smarty->assign('countries',        get_regions());
+    $smarty->assign('default_country',  $_CFG['shop_country']);
+    
+	
+    
+    $regions = array();
+    if(!empty($pay['cod_area'])){
+    	$id_list = explode(',', $pay['cod_area']);
+    	
+    	foreach ($id_list as $key => $value) {
+    		if(empty($value)){
+    			continue;
+    		}
+    		$sql="select * from ". $GLOBALS['ecs']->table("region") ." where region_id = $value";
+    		$row=$GLOBALS['db']->getRow($sql);
+    		$regions[$row['region_id']]['name'] = $row['region_name'];
+    	}
+    }
+    $smarty->assign('regions',        $regions);
+    
     assign_query_info();
 
     $smarty->assign('action_link',  array('text' => $_LANG['02_payment_list'], 'href' => 'payment.php?act=list'));
@@ -309,14 +329,19 @@ elseif (isset($_POST['Submit']))
     $link[] = array('text' => $_LANG['back_list'], 'href' => 'payment.php?act=list');
     if ($_POST['pay_id'])
     {
+        $regions = $_POST['regions'] ? "" . implode(",",$_POST['regions'])  : "";
+        
         /* 编辑 */
         $sql = "UPDATE " . $ecs->table('payment') .
                "SET pay_name = '$_POST[pay_name]'," .
                "    pay_desc = '$_POST[pay_desc]'," .
                "    pay_config = '$pay_config', " .
-               "    pay_fee    =  '$pay_fee' ".
+               "    pay_fee    =  '$pay_fee' ,".
+               "    cod_area    =  '$regions' ".
                "WHERE pay_code = '$_POST[pay_code]' LIMIT 1";
         $db->query($sql);
+        
+        $goods_store['store_province']    =  $_POST['regions'] ? "" . implode(",",$_POST['regions'])  : "";
 
         /* 记录日志 */
         admin_log($_POST['pay_name'], 'edit', 'payment');
@@ -473,5 +498,6 @@ elseif ($_REQUEST['act'] == 'edit_pay_fee')
     $exc->edit("pay_fee = '$pay_fee'", $code);
     make_json_result(stripcslashes($pay_fee));
 }
+
 
 ?>

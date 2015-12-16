@@ -1826,6 +1826,8 @@ elseif ($action == 'act_add_comment')
 	" VALUES (NULL, 0, '$message[user_id]', '$message[user_name]', '$message[user_email]', ".
 	" '$message[msg_title]', '$message[msg_type]', '$status', '$message[msg_content]', '".gmtime()."', '$img_name', '$message[order_id]', '$message[msg_area]')";
 	$GLOBALS['db']->query($sql); */
+	include_once(ROOT_PATH . '/includes/cls_image.php');
+	$image = new cls_image($_CFG['bgcolor']);
 	
 	$cmt = new stdClass();
 	/**评论类型：0：商品；1：文章**/
@@ -1858,14 +1860,135 @@ elseif ($action == 'act_add_comment')
 	
 	if($GLOBALS['db']->query($sql)){
 // 		lib_main_make_json_result('发表成功！'.$GLOBALS['db']->insert_id());
-		lib_main_make_json_result('评论发表成功！');
+		//lib_main_make_json_result('评论发表成功！');
 	}else{
 		lib_main_make_json_error("评论发表失败!");
 	}
 	
+	/* 保存评论图片 */
+	$comment_id= $GLOBALS['db']->insert_id();
+	$img_url_list = isset($_REQUEST['img_url'])?$_REQUEST['img_url']:array();
+	
+	
+	if(!empty($img_url_list)){
+		foreach ($img_url_list as $key => $img_name) {
+			if(!empty($img_name)){
+				
+				//原始图片
+				$comment_img_path = dirname($img_name).'/'.'comment_img'.'/';
+				$comment_img_dir = ROOT_PATH . $comment_img_path;
+				if (!file_exists($comment_img_dir))
+				{
+					if (!make_dir($comment_img_dir))
+					{
+						lib_main_make_json_error("目录创建失败!");
+					}
+				}
+				
+					
+				$comment_img_name    =  $cmt->id.'_'.$comment_id.'_P_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
+				copy(ROOT_PATH.'/'.$img_name, $comment_img_dir.$comment_img_name);
+				$img_url = $comment_img_path.$comment_img_name;
+				
+				//缩略图
+				$thumb_img_path = dirname($img_name).'/'.'thumb_img'.'/';
+				$thumb_img_dir = ROOT_PATH . $thumb_img_path;
+				if (!file_exists($thumb_img_dir))
+				{
+					if (!make_dir($thumb_img_dir))
+					{
+						lib_main_make_json_error("目录创建失败!");
+					}
+				}
+				$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $GLOBALS['_CFG']['image_width'],  $GLOBALS['_CFG']['image_height']);
+				$thumb_img_name    =  $cmt->id.'_'.$comment_id.'_thumb_P_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
+				copy(ROOT_PATH.'/'.$thumb_img, $thumb_img_dir.$thumb_img_name);
+				$thumb_url = $thumb_img_path.$thumb_img_name;
+				
+				//删除临时图片
+				unlink(ROOT_PATH.'/'.$img_name);				
+				
+				//写入数据库
+				$sql = "INSERT INTO " .$GLOBALS['ecs']->table('comment_photo') .
+				"(comment_id, img_url, thumb_url, img_original) VALUES " .
+				"('$comment_id', '$img_url', '$thumb_url', '$img_url')";
+				$GLOBALS['db']->query($sql);
+			}
+		}
+	}
 	
 	
 	
+	lib_main_make_json_result('评论发表成功！');
+	
+}
+/* 用户上传评论图片 */
+elseif ($action == 'act_add_comment_pic')
+{
+	$comment = array();
+	$comment['upload'] =  (isset($_FILES['comment_img']['error']) && $_FILES['comment_img']['error'] == 0) || (!isset($_FILES['comment_img']['error']) && isset($_FILES['comment_img']['tmp_name']) && $_FILES['comment_img']['tmp_name'] != 'none')
+												? $_FILES['comment_img'] : array();
+	if(empty($comment['upload'])){
+		lib_main_make_json_error("请选择需要上传的图片!");
+	}
+	$upload_size_limit = $GLOBALS['_CFG']['upload_size_limit'] == '-1' ? ini_get('upload_max_filesize') : $GLOBALS['_CFG']['upload_size_limit'];
+	
+	$last_char = strtolower($upload_size_limit{strlen($upload_size_limit)-1});
+	
+	switch ($last_char)
+	{
+		case 'm':
+			$upload_size_limit *= 1024*1024;
+			break;
+		case 'k':
+			$upload_size_limit *= 1024;
+			break;
+	}
+	
+	//图片大小设置
+		if($_FILES['comment_img']['size'] / 1024 > $upload_size_limit)
+		{
+			lib_main_make_json_error(sprintf($GLOBALS['_LANG']['upload_file_limit'], $upload_size_limit));
+		}
+		
+		//文件格式
+		include_once(ROOT_PATH . '/includes/cls_image.php');
+		$image = new cls_image($_CFG['bgcolor']);
+		if (!$image->check_img_type($_FILES['comment_img']['type']))
+		{
+			lib_main_make_json_error("文件格式不正确!");
+		}
+		
+		
+		$tmp_dir = 'comment'.'/'.date('Ym')."/";
+		
+		/* $dir = ROOT_PATH . $tmp_dir_name . '/';
+		if (!file_exists($dir))
+		{
+			if (!make_dir($dir))
+			{
+				lib_main_make_json_error("目录创建失败!");
+			}
+		} */
+		
+		$img_name = $image->upload_image($_FILES['comment_img'],$tmp_dir);
+		
+		
+		
+		
+// 		dirname($img_name);
+		
+
+// 		copy(ROOT_PATH.$img_name, $dest)
+		
+// 		$img_name = upload_file($_FILES['comment_img'], 'comment');
+	
+		if ($img_name === false)
+		{
+			lib_main_make_json_error("文件上传失败！"); 
+		}			
+		
+		lib_main_make_json_result("图片上传成功",array('image_url'=>$img_name));	
 }
 
 /* 添加我的留言 */

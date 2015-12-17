@@ -251,4 +251,10 @@ CREATE TABLE `ecs_comment_photo` (
  CONSTRAINT `fk_comment_photo_ref_comment` FOREIGN KEY (`comment_id`) REFERENCES `ecs_comment` (`comment_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='评论图片';
 
+alter table ecs_shipping_area add detail_addr varchar(500) comment '详细地址';
+
+
+alter table ecs_goods add  gift_goods_flag  tinyint(1) default 0  comment '是否赠送其他商品';
+alter table ecs_goods add  gift_goods_id mediumint(8)  unsigned  comment '赠送其他商品编号';
+
  

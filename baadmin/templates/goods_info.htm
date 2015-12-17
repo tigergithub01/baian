@@ -7,9 +7,7 @@
 <link href="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet"  type="text/css"   />
 <script type="text/javascript">
 	$(function(){
-		function format(row) {
-			return row.goods_name + " &lt;" + row.goods_sn + "&gt";
-		}
+		
 		$("#selectdGiftGoods").autocomplete('goods.php?act=ajax_query_goods', {
 			width: 500,
 			multiple: false,
@@ -42,6 +40,10 @@
 		});
 		
 	});
+	
+	function format(row) {
+		return row.goods_name + " &lt;" + row.goods_sn + "&gt";
+	}
 </script>
 
 {if $warning}

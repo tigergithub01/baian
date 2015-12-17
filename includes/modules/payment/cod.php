@@ -62,7 +62,7 @@ if (isset($set_modules) && $set_modules == TRUE)
 /**
  * 类
  */
-class weixin
+class cod
 {
     /**
      * 构造函数
@@ -74,10 +74,10 @@ class weixin
      */
 	function __construct()
 	{
-		$this->weixin();
+		$this->cod();
 	}
 	
-    function weixin()
+    function cod()
     {
     }
 

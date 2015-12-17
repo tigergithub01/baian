@@ -3,6 +3,46 @@
 {insert_scripts files="../js/utils.js,selectzone.js,colorselector.js"}
 <script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
 <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.js"></script>
+<link href="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet"  type="text/css"   />
+<script type="text/javascript">
+	$(function(){
+		function format(row) {
+			return row.goods_name + " &lt;" + row.goods_sn + "&gt";
+		}
+		$("#selectdGiftGoods").autocomplete('goods.php?act=ajax_query_goods', {
+			width: 500,
+			multiple: false,
+			dataType: "json",
+			parse: function(data) {
+				return $.map(data, function(row) {
+					return {
+						data: row,
+						value: row.goods_name,
+						result: row.goods_name + " <" + row.goods_sn + ">"
+					}
+				});
+			},
+			formatItem: function(item) {
+				return format(item);
+			}
+		}).result(function(e, item) {
+			$("#gift_goods_id").val(item.goods_id);
+			//$("#content").append("<p>selected " + format(item) + "</p>");
+		});
+		
+		
+		$("#gift_goods_flag").click(function(){
+			console.debug($(this).attr("checked"));
+			if($(this).attr("checked")=="checked"){
+				$("#selectdGiftGoods").attr('disabled',false);
+			}else{
+				$("#selectdGiftGoods").attr('disabled',true);
+			}
+		});
+		
+	});
+</script>
 
 {if $warning}
 <ul style="padding:0; margin: 0; list-style-type:none; color: #CC0000;">
@@ -349,6 +389,24 @@
 		  <tr>
             <td class="label">买几送几：</td>
             <td> 买满<input type="text" name="buy_number_activity" value="{$goods.buy_number_activity|escape}" size="5" />件送<input type="text" name="give_number_activity" value="{$goods.give_number_activity|escape}" size="5" />件</td>
+          </tr>
+          <tr>
+            <td class="label">
+            	<!-- {if $goods.gift_goods_flag eq 1 } -->
+            	<input type="checkbox" value="1" name="gift_goods_flag" id="gift_goods_flag" checked="checked"/>
+            	<!-- {else} -->
+            	<input type="checkbox" value="1" name="gift_goods_flag" id="gift_goods_flag" />
+            	<!-- {/if} -->
+            	
+            	赠送其它商品：</td>
+            <td>
+            	<!-- {if $goods.gift_goods_flag neq 1 } -->
+            	<input type="text" id="selectdGiftGoods"  size="50" value="{$goods.gift_goods_name}" disabled="disabled"/>
+            	<!-- {else} -->
+            	<input type="text" id="selectdGiftGoods"  size="50" value="{$goods.gift_goods_name}"/>
+            	<!-- {/if} -->(请输入商品名称或货号进行检索)
+            	<input type="hidden" id="gift_goods_id" name="gift_goods_id" value="{$goods.gift_goods_id}"/>
+            </td>
           </tr>
           <!-- 
           <tr>

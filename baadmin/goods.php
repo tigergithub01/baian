@@ -298,6 +298,15 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             $goods['promote_start_date'] = local_date('Y-m-d', $goods['promote_start_date']);
             $goods['promote_end_date'] = local_date('Y-m-d', $goods['promote_end_date']);
         }
+        
+        //赠送其它商品名称
+        if(isset($goods['gift_goods_id'])){
+        	$sql = "SELECT goods_name " .
+        			"FROM " . $ecs->table('goods') .
+        			" WHERE goods_id = '$goods[gift_goods_id]' LIMIT 1";
+        	$gift_goods_name = $db->getOne($sql);
+        	$goods['gift_goods_name'] = $gift_goods_name;
+        }       
 
         /* 如果是复制商品，处理 */
         if ($_REQUEST['act'] == 'copy')
@@ -378,7 +387,6 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             {
                 $db->autoExecute($ecs->table('goods_attr'), addslashes_deep($row), 'INSERT');
             }
-            
             
         }
 
@@ -881,6 +889,8 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     //买几送几,买满赠送件数 added by tiger.guo 20151010
     $buy_number_activity = isset($_POST['buy_number_activity']) ? $_POST['buy_number_activity'] : 0;
     $give_number_activity = isset($_POST['give_number_activity']) ? $_POST['give_number_activity'] : 0;
+    $gift_goods_flag = isset($_POST['gift_goods_flag']) ? intval($_POST['gift_goods_flag']) : 0;
+    $gift_goods_id = isset($_POST['gift_goods_id']) ? $_POST['gift_goods_id'] : null;
 
     /* 入库 */
     if ($is_insert)
@@ -891,13 +901,15 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
-                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity,pinyin,bonus)" .
+                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,".
+                    "buy_number_activity,give_number_activity,pinyin,bonus,gift_goods_flag,gift_goods_id)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', '$is_on_sale', '$is_alone_sale', $is_shipping, ".
-                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity','$pinyin','$bonus')";
+                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt',".
+            		" '$buy_number_activity','$give_number_activity','$pinyin','$bonus','$gift_goods_flag','$gift_goods_id')";
         }
         else
         {
@@ -905,13 +917,15 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
-                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,buy_number_activity,give_number_activity,pinyin,bonus)" .
+                    "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,".
+                    "buy_number_activity,give_number_activity,pinyin,bonus,gift_goods_flag,gift_goods_id)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', 0, '$is_on_sale', '$is_alone_sale', $is_shipping, ".
-                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt','$buy_number_activity','$give_number_activity','$pinyin','$bonus')";
+                    " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt',".
+            		" '$buy_number_activity','$give_number_activity','$pinyin','$bonus','$gift_goods_flag','$gift_goods_id')";
         }
     }
     else
@@ -980,13 +994,15 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "reduce_ship_amt = '$reduce_ship_amt', " .
                 "buy_number_activity = '$buy_number_activity', " .
                 "give_number_activity = '$give_number_activity', " .
+                "gift_goods_flag = '$gift_goods_flag', " .
+                "gift_goods_id = '$gift_goods_id', " .
                 "pinyin = '$pinyin', " .
                 "bonus = '$bonus', " .
                 "goods_type = '$goods_type' " .
                 "WHERE goods_id = '$_REQUEST[goods_id]' LIMIT 1";
     }
     $db->query($sql);
-
+    
     /* 商品编号 */
     $goods_id = $is_insert ? $db->insert_id() : $_REQUEST['goods_id'];
 
@@ -3457,6 +3473,23 @@ elseif ($_REQUEST['act'] == 'batch_product')
     
     
     sys_msg($_LANG['no_operation'], 1, $link);
+}
+
+/*------------------------------------------------------ */
+//-- ajax查询商品信息，自动匹配框使用
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'ajax_query_goods'){
+	include('../includes/cls_json.php');
+	
+	$json   = new JSON;
+	
+	$_REQUEST['keyword'] = $_REQUEST["q"];
+	$goods_list = goods_list(0);
+	$goods = array();
+	foreach ($goods_list['goods']  as $key => $value) {
+		$goods[] = array('goods_id'=>$value['goods_id'],'goods_name'=>$value['goods_name'],'goods_sn'=>$value['goods_sn']);
+	}
+	die(json_encode($goods,JSON_UNESCAPED_UNICODE));
 }
 
 /**

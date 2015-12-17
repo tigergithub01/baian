@@ -132,7 +132,7 @@ function addRegion()
     <td class="label">{$lang.payment_is_online}</td>
     <td>{if $pay.is_online == "1"}{$lang.yes}{else}{$lang.no}{/if}</td>
   </tr>
-  <tr id="showRegion" style="{if $goods.payment_is_cod neq 0}display:none{/if}">
+  <tr id="showRegion" style="{if $pay.is_cod neq 1}display:none{/if}">
              <td colspan="2">
                <fieldset style="border:1px solid #DDEEF2">
 				  <legend style="background:#FFF">货到付款所辖地区:</legend>

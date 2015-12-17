@@ -890,7 +890,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $buy_number_activity = isset($_POST['buy_number_activity']) ? $_POST['buy_number_activity'] : 0;
     $give_number_activity = isset($_POST['give_number_activity']) ? $_POST['give_number_activity'] : 0;
     $gift_goods_flag = isset($_POST['gift_goods_flag']) ? intval($_POST['gift_goods_flag']) : 0;
-    $gift_goods_id = isset($_POST['gift_goods_id']) ? $_POST['gift_goods_id'] : null;
+    $gift_goods_id = empty($gift_goods_flag)?null:(isset($_POST['gift_goods_id']) ? $_POST['gift_goods_id'] : null);
 
     /* 入库 */
     if ($is_insert)

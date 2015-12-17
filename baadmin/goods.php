@@ -2922,6 +2922,89 @@ elseif ($_REQUEST['act'] == 'product_remove')
 }
 
 /*------------------------------------------------------ */
+//-- 货品从商品信息中拷贝信息
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'product_copy_from_goods'){
+	$product_id = isset($_REQUEST['product_id'])?$_REQUEST['product_id']:null;
+	if(!isset($product_id)){
+		sys_msg($_LANG['sys']['wrong'] . "产品不能为空！", 1, array(), false);
+	}
+	
+	$sql = "SELECT * FROM  " . $GLOBALS['ecs']->table('products') . " WHERE product_id = '$product_id'";
+	$product = $GLOBALS['db']->getRow($sql);
+	if (!isset($product)){
+		sys_msg($_LANG['sys']['wrong'] . '货品不存在2', 1, array(), true);
+	}
+	
+	
+	$smarty->assign('product',    $product);
+	$smarty->assign('ur_here',      '从商品信息中拷贝信息');
+	$smarty->assign('action_link',  array('href' => 'goods.php?act=product_edit&product_id='.$product_id, 'text' => '编辑货品信息'));
+	$smarty->assign('full_page',    1);
+	
+	/* 显示商品列表页面 */
+	assign_query_info();
+	
+	$smarty->display('product_cp_goods.htm');
+}
+/*------------------------------------------------------ */
+//-- 货品从商品信息中拷贝信息
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'product_copy_from_goods_execute'){
+	//TODO:库存，相册（多仓库库存暂时不拷贝）
+	$goods_id = isset($_REQUEST['goods_id'])?$_REQUEST['goods_id']:null;
+	$product_id = isset($_REQUEST['product_id'])?$_REQUEST['product_id']:null;
+	if(!isset($goods_id)){
+		sys_msg($_LANG['sys']['wrong'] . "请选择需要复制的商品！", 1, array(), false);
+	}
+	
+	if(!isset($product_id)){
+		sys_msg($_LANG['sys']['wrong'] . "产品不能为空！", 1, array(), false);
+	}
+	
+	//同步库存,价格，促销价格
+	$sql = "SELECT shop_price, goods_number,is_promote,promote_start_date,promote_end_date,promote_price FROM ". $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$goods_id' LIMIT 1";
+	$goods = $GLOBALS['db']->getRow($sql);
+	$sql = "UPDATE  " . $GLOBALS['ecs']->table('products') . 
+	" SET product_number = '$goods[goods_number]', 
+	product_price = '$goods[shop_price]',
+	is_promote = '$goods[is_promote]',
+	promote_start_date = '$goods[promote_start_date]',
+	promote_end_date = '$goods[promote_end_date]',
+	promote_price = '$goods[promote_price]'
+	WHERE  product_id = '$product_id'";
+	$GLOBALS['db']->query($sql);
+	
+	//同步相册
+	$sql = "SELECT img_url,img_desc,thumb_url,img_original FROM ". $GLOBALS['ecs']->table('goods_gallery') . " WHERE goods_id = '$goods_id'";
+	$rows = $GLOBALS['db']->getAll($sql);
+	foreach ($rows as $key => $value) {
+		$goods_img_url = $value['img_url'];
+		$goods_thumb_url = $value['thumb_url'];
+		$goods_img_original = $value['img_original'];		
+		
+		$img_url = str_replace($goods_id."_", $goods_id.'_'.$product_id."_", $goods_img_url);
+		$thumb_url = str_replace($goods_id."_", $goods_id.'_'.$product_id."_", $goods_thumb_url);
+		$img_original = str_replace($goods_id."_", $goods_id.'_'.$product_id."_", $goods_img_original);
+		
+		copy(ROOT_PATH.'/'.$goods_img_url, ROOT_PATH.'/'.$img_url);
+		copy(ROOT_PATH.'/'.$goods_thumb_url, ROOT_PATH.'/'.$thumb_url);
+		copy(ROOT_PATH.'/'.$goods_img_original, ROOT_PATH.'/'.$img_original);
+		
+		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('products_gallery') . " (product_id, img_url, img_desc, thumb_url, img_original) " .
+			"VALUES ('$product_id', '$img_url', '$value[img_desc]', '$thumb_url', '$img_original')";
+		$GLOBALS['db']->query($sql);
+	}	
+	
+	clear_cache_files();
+	
+	/* 返回 */
+	$link[] = array('href' => 'goods.php?act=product_list&goods_id=' . $goods_id, 'text' => $_LANG['18_product_list']);
+	$link[] = array('href' => 'goods.php?act=product_edit&product_id='.$product_id, 'text' => '编辑货品信息');
+	$link[] = array('href' => 'goods.php?act=list', 'text' => $_LANG['01_goods_list']);
+	sys_msg("复制信息成功!", 0, $link);
+}
+/*------------------------------------------------------ */
 //-- 修改货品唯一编号
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'edit_product_sn')

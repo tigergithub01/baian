@@ -46,7 +46,7 @@
       <a href="goods.php?act=product_edit&product_id={$product.product_id}"  title="{$lang.edit}"><img src="images/icon_edit.gif" width="16" height="16" border="0" /></a>
       <!-- <a href="javascript:void(0)" onclick="return product_remove('{$product.product_id}','{$goods_id}');" title="{$lang.trash}"><img src="images/icon_trash.gif" width="16" height="16" border="0" /></a> -->
       <a href="javascript:;" onclick="listTable.remove({$product.product_id}, '您确实要删除该货品吗?','product_remove')" title="删除"><img src="images/icon_trash.gif" width="16" height="16" border="0" /></a>
-      
+      <a href="goods.php?act=product_copy_from_goods&product_id={$product.product_id}" title="复制商品库存、价格、相册"><img src="images/icon_copy.gif" width="16" height="16" border="0" /></a>
       <!-- <input type="button" class="button" value="删除货品 " onclick="return product_remove('{$product.product_id}','{$goods_id}')"/>
       <input type="button" class="button" value="编辑货品 " onclick="window.location.href='goods.php?act=product_edit&product_id={$product.product_id}'"/> -->
       

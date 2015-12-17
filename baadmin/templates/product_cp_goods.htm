@@ -1,0 +1,94 @@
+<!-- $Id: goods_list.htm 16529 2009-08-12 05:38:57Z wangleisvn $ -->
+
+{if $full_page}
+
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+{insert_scripts files="validator.js"}
+<script type="text/javascript" src="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.js"></script>
+<link href="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet"  type="text/css"   />
+
+<div class="list-div" style="margin-bottom: 5px; margin-top: 10px;" id="listDiv">
+
+{/if}
+
+<form  enctype="multipart/form-data" method="post" action="goods.php" name="addForm" id="addForm" >
+ <!-- 商品相册 -->
+        <table width="90%" id="gallery-table"  align="center">
+          <!-- 图片列表 -->
+          <tr>
+		      <th colspan="20" scope="col">货号：{$product.product_sn}</th>
+		    </tr>
+          <tr>
+            <td>
+            	<table>
+            		<tbody>
+            			<tr>
+            				<td>
+            					需要复制的商品：
+            				</td>
+            				<td>
+            					<input type="text" id="select_goods"  size="50" value=""/>
+            					<input type="hidden" id="goods_id" name="goods_id"	/>
+            				</td>
+            			</tr>
+            		</tbody>
+            	</table>
+             
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+		
+
+        </table>
+        
+        <div class="button-div">
+          <input type="hidden" name="product_id" value="{$product.product_id}" />
+          <input type="submit" value="{$lang.button_submit}" class="button" />
+          <input type="reset" value="{$lang.button_reset}" class="button" />
+          <input type="hidden" name="act" value="product_copy_from_goods_execute" />
+        </div>
+        
+</form>
+
+{if $full_page}
+
+</div>
+<!-- end 添加货品 -->
+
+<script type="text/javascript">
+
+$(function(){
+	$("#select_goods").autocomplete('goods.php?act=ajax_query_goods', {
+		width: 500,
+		multiple: false,
+		dataType: "json",
+		parse: function(data) {
+			return $.map(data, function(row) {
+				return {
+					data: row,
+					value: row.goods_name,
+					result: row.goods_name + " <" + row.goods_sn + ">"
+				}
+			});
+		},
+		formatItem: function(item) {
+			return format(item);
+		}
+	}).result(function(e, item) {
+		$("#goods_id").val(item.goods_id);
+		//$("#content").append("<p>selected " + format(item) + "</p>");
+	});
+});
+
+function format(row) {
+	return row.goods_name + " &lt;" + row.goods_sn + "&gt";
+}
+
+
+
+
+</script>
+{include file="pagefooter.htm"}
+
+{/if}

@@ -1,7 +1,7 @@
 <?php
 
 // 快递100查询接口专用KEY，申请KEY地址：http://www.kuaidi100.com/openapi/
-$kuaidi100key = "xxxxxxxxxxxxxxxx";
+$kuaidi100key = "8770d23abd0a8fa7";
 
 /*
 提示：如果您需要的公司不在以下列表，请按以下方法自行添加或修改，快递公司名称区分大小写

@@ -100,9 +100,9 @@ $(function(){
 
  
 									<li>
-										<div class="pic"><a href="{$goods.url}" title="{$goods.goods_name|escape:html|truncate:13}" ><img src="{$goods.thumb}"  /></a></div>
+										<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" ><img src="{$goods.thumb}"  /></a></div>
 										<div class="title">
-											<h3><a href="{$goods_url}"  title="{$goods_name|escape:html|truncate:13}">{$goods.name|escape:html|truncate:13}</a></h3>
+											<h3><a href="{$goods_url}"  title="{$goods.name|escape:html}">{$goods.name|escape:html|truncate:13}</a></h3>
 											<div class="price"><span>抢购价<b><!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></b></span><s>{$goods.shop_price}</s></div>
 										</div>
 									</li> 			

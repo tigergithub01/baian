@@ -6,8 +6,8 @@
 			<li><a href="{$item_goods.url}" title="{$item_goods.short_name}">
 									<img src="{$item_goods.goods_thumb}" alt="">
 								</a>
-								<p><a href="{$item_goods.url}" title="{$item_goods.short_name}">{$item_goods.short_name}...</a></p>
-								<p><b> 
+								<p><a href="{$item_goods.url}" title="{$item_goods.short_name}">{$item_goods.short_name|escape:html|truncate:12}</a></p>
+								<p style="text-align: center;"><b> 
 							<!-- {if $item_goods.promote_price neq 0} -->
            {$item_goods.formated_promote_price}
             <!-- {else}-->

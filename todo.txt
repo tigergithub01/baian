@@ -44,6 +44,7 @@ http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
 
 产品编辑：
 http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=15
+http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=27
 
 
 http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/goods_img/32_G_1431744389845.jpg
@@ -224,7 +225,14 @@ http://blog.51yip.com/jsjquery/1484.html
 2、缺货登记（套装）有问题。 
 3、后台直接设置库存不成功问题。 ->ok
 
+2015/12/8:
+全部限时抢购需要根据产品来显示：
 
+163邮箱：baian123121@163.com   密码：weiwanglin329
+
+http://localhost:8086/baadmin/goods.php?act=ajax_query_goods&keyword=%E9%98%B3%E5%85%89%E5%AE%9D%E8%B4%9D0-3%E5%B2%81%E5%AE%9D%E5%AE%9D%E6%97%A9%E6%95%99%E5%8D%A12_%E5%84%BF%E7%AB%A5%E5%90%AF%E8%92%99%E6%97%A9%E6%95%99%E8%AE%A4%E7%9F%A5
+
+文章与文章分类中的买了还买先注释掉，以后加上。
 
 
 

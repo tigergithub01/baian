@@ -23,7 +23,7 @@
                  <!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
                 <div class="h"></div>
 
-                <div class="sbox">
+                <!-- <div class="sbox">
                     <h3 class="st1">买了还买</h3>
                     <ul class="s-img-list">
                         <li>
@@ -33,7 +33,7 @@
                         </li>
                       
                     </ul>
-                </div>
+                </div> -->
                 <div class="h"></div>
 
                 <div class="sadBox">

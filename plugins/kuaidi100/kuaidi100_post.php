@@ -34,6 +34,8 @@ if(isset($postcom)&&isset($getNu)){
 	//if(strpos($get_content,'地点和跟踪进度')== false){
 	//  echo '查询失败，请重试';
 	//}
+	
+	//有广告：去掉 <div id="PAGE_AD_880117" class="kd-bottom" style="width:468px;left:32px">
     echo '<iframe src="'.$get_content.'" width="534" height="340" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"><br/>' . $powered;
 	
 }else{

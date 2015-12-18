@@ -96,13 +96,13 @@
   </tr>
   <tr>
     <td><div align="right"><strong>{$lang.label_shipping}</strong></div></td>
-    <td>{if $exist_real_goods}{if $order.shipping_id > 0}{$order.shipping_name}{else}{$lang.require_field}{/if}<a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>&nbsp;&nbsp;<input type="button" onclick="window.open('order.php?act=info&order_id={$order.order_id}&shipping_print=1')" class="button" value="{$lang.print_shipping}"> {if $order.insure_fee > 0}（{$lang.label_insure_fee}{$order.formated_insure_fee}）{/if}{/if}</td>
+    <td>{if $exist_real_goods}{if $order.shipping_id > 0}<span id="shipping_name">{$order.shipping_name}</span>{else}{$lang.require_field}{/if}<a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>&nbsp;&nbsp;<input type="button" onclick="window.open('order.php?act=info&order_id={$order.order_id}&shipping_print=1')" class="button" value="{$lang.print_shipping}"> {if $order.insure_fee > 0}（{$lang.label_insure_fee}{$order.formated_insure_fee}）{/if}{/if}</td>
     <td><div align="right"><strong>{$lang.label_shipping_time}</strong></div></td>
     <td>{$order.shipping_time}</td>
   </tr>
   <tr>
     <td><div align="right"><strong>{$lang.label_invoice_no}</strong></div></td>
-    <td>{if $order.shipping_id>0 and $order.shipping_status>0}<span>{if $order.invoice_no}{$order.invoice_no}{else}N/A{/if}</span><a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>{/if}</td>
+    <td>{if $order.shipping_id>0 and $order.shipping_status>0}<span>{if $order.invoice_no}<span id="invoice_no">{$order.invoice_no}</span>{else}N/A{/if}</span><a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>{/if}</td>
     <td><div align="right"><strong>{$lang.from_order}</strong></div></td>
     <td>{$order.referer}</td>
   </tr>
@@ -342,6 +342,15 @@
   </tr>
   {/foreach}
 </table>
+
+<h5><span>物流跟踪(如果未填单号，下方将显示“正在查询物流信息，请稍后...”）</span></h5>
+<div class="blank"></div>
+<table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+  <tr>
+    <td bgcolor="#ffffff"><div id="retData"></div></td>
+  </tr>
+</table>
+
 </div>
 </form>
 {literal}
@@ -373,6 +382,12 @@
     }
     return true;
   }
+</script>
+<script language="javascript">
+  document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍后...</center>";
+  var expressid = document.getElementById("shipping_name").innerHTML;
+  var expressno = document.getElementById("invoice_no").innerHTML;
+  Ajax.call('/plugins/kuaidi100/kuaidi100_post.php?com='+ expressid+'&nu=' + expressno,'showtest=showtest', function(data){document.getElementById("retData").innerHTML=data;}, 'GET', 'TEXT');
 </script>
 {/literal}
 

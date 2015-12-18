@@ -343,13 +343,16 @@
   {/foreach}
 </table>
 
-<h5><span>物流跟踪(如果未填单号，下方将显示“正在查询物流信息，请稍后...”）</span></h5>
+<!-- {if $order.shipping_id>0 and $order.shipping_status>0 and $order.invoice_no} -->
+<h5><span>物流跟踪</span></h5>
 <div class="blank"></div>
 <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
   <tr>
     <td bgcolor="#ffffff"><div id="retData"></div></td>
   </tr>
 </table>
+<!-- {/if} -->
+
 
 </div>
 </form>
@@ -383,12 +386,14 @@
     return true;
   }
 </script>
+<!-- {if $order.shipping_id>0 and $order.shipping_status>0 and $order.invoice_no} -->
 <script language="javascript">
   document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍后...</center>";
   var expressid = document.getElementById("shipping_name").innerHTML;
   var expressno = document.getElementById("invoice_no").innerHTML;
   Ajax.call('/plugins/kuaidi100/kuaidi100_post.php?com='+ expressid+'&nu=' + expressno,'showtest=showtest', function(data){document.getElementById("retData").innerHTML=data;}, 'GET', 'TEXT');
 </script>
+<!-- {/if} -->
 {/literal}
 
 {include file="pagefooter.htm"}

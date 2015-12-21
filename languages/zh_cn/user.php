@@ -266,11 +266,14 @@ $_LANG['merge_order'] = '合并订单';
 $_LANG['no_priv'] = '你没有权限操作他人订单';
 $_LANG['buyer_cancel'] = '用户取消';
 $_LANG['cancel'] = '取消订单';
+$_LANG['remove'] = '删除订单';
+$_LANG['comment'] = '去评价';
 $_LANG['pay_money'] = '付款';
 $_LANG['view_order'] = '查看订单';
 $_LANG['received'] = '确认收货';
 $_LANG['ss_received'] = '已完成';
 $_LANG['confirm_cancel'] = '您确认要取消该订单吗？取消后此订单将视为无效订单';
+$_LANG['confirm_remove'] = '您确认要取删除订单吗？删除后此订单将无法恢复';
 $_LANG['merge_ok'] = '订单合并成功！';
 $_LANG['merge_invalid_order'] = '对不起，您选择合并的订单不允许进行合并的操作。';
 $_LANG['select'] = '请选择...';
@@ -293,10 +296,17 @@ $_LANG['cs'][CS_AWAIT_PAY] = '待付款';
 $_LANG['cs'][CS_AWAIT_SHIP] = '待发货';
 $_LANG['cs'][CS_FINISHED] = '已完成';
 $_LANG['cs'][PS_PAYING] = '付款中';
-$_LANG['cs'][OS_CANCELED] = '取消';
+$_LANG['cs'][OS_CANCELED] = '已取消';
 $_LANG['cs'][OS_INVALID] = '无效';
-$_LANG['cs'][OS_RETURNED] = '退货';
+$_LANG['cs'][OS_RETURNED] = '已退货';
 $_LANG['cs'][OS_SHIPPED_PART] = '部分发货';
+
+/* 综合状态-订单中心过滤的状态 */
+$_LANG['cs_filter'][CS_AWAIT_PAY] = '待付款';
+$_LANG['cs_filter'][CS_AWAIT_SHIP] = '待发货';
+$_LANG['cs_filter'][CS_FINISHED] = '已完成';
+$_LANG['cs_filter'][OS_CANCELED] = '已取消';
+$_LANG['cs_filter'][OS_RETURNED] = '已退货';
 
 /* 订单状态 */
 $_LANG['os'][OS_UNCONFIRMED] = '未确认';
@@ -305,8 +315,9 @@ $_LANG['os'][OS_SPLITED] = '已确认';
 $_LANG['os'][OS_SPLITING_PART] = '已确认';
 $_LANG['os'][OS_CANCELED] = '已取消';
 $_LANG['os'][OS_INVALID] = '无效';
-$_LANG['os'][OS_RETURNED] = '退货';
+$_LANG['os'][OS_RETURNED] = '已退货';
 
+/* 配送状态 */
 $_LANG['ss'][SS_UNSHIPPED] = '未发货';
 $_LANG['ss'][SS_PREPARING] = '配货中';
 $_LANG['ss'][SS_SHIPPED] = '已发货';
@@ -314,18 +325,26 @@ $_LANG['ss'][SS_RECEIVED] = '收货确认';
 $_LANG['ss'][SS_SHIPPED_PART] = '已发货(部分商品)';
 $_LANG['ss'][SS_SHIPPED_ING] = '配货中'; // 已分单
 
+/* 付款状态 */
 $_LANG['ps'][PS_UNPAYED] = '未付款';
 $_LANG['ps'][PS_PAYING] = '付款中';
 $_LANG['ps'][PS_PAYED] = '已付款';
 
-
+/* 退货申请单状态 */
+$_LANG['obs'][OBS_AUDITING] = '待审核';
+$_LANG['obs'][OBS_AUDITED] = '审核通过';
+$_LANG['obs'][OBS_REJECTED] = '审核不通过';
+$_LANG['obs'][OBS_CANCELED] = '已撤销';
+$_LANG['obs'][OBS_SHIPPED] = '已寄出';
 
 $_LANG['shipping_not_need'] = '无需使用配送方式';
 $_LANG['current_os_not_unconfirmed'] = '当前订单状态不是“未确认”。';
+$_LANG['current_os_not_canceled'] = '当前订单状态不是“已取消”。';
 $_LANG['current_os_already_confirmed'] = '当前订单已经被确认，无法取消，请与店主联系。';
 $_LANG['current_ss_not_cancel'] = '只有在未发货状态下才能取消，你可以与店主联系。';
 $_LANG['current_ps_not_cancel'] = '只有未付款状态才能取消，要取消请联系店主。';
 $_LANG['confirm_received'] = '你确认已经收到货物了吗？';
+
 
 /* 合并订单及订单详情 */
 $_LANG['merge_order_success'] = '合并的订单的操作已成功！';
@@ -702,5 +721,9 @@ $_LANG['passwd_questions']['favorite_equipe'] = '我最喜欢的运动队？';
 $_LANG['order_period'][0] = '全部订单';
 $_LANG['order_period'][1] = '近三个月订单';
 $_LANG['order_period'][2] = '今年内订单';
+
+$_LANG['order_back'] = '申请退货';
+$_LANG['order_back_success'] = '您的退货申请已经成功提交！';
+$_LANG['back_order_back_list'] = '返回退货申请列表';
 
 ?>

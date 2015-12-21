@@ -566,7 +566,7 @@
 										</tr>
 										<tr>
 											<td colspan="2">
-											
+												<input type="hidden" name="order_id" value="{$goods.order_id}" />
 												<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
 												<input type="hidden" name="act" value="act_add_comment" /> 
 												<input type="submit" value="发表评价" class="btn_submit" />

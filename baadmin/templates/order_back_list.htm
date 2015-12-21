@@ -1,0 +1,122 @@
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<!-- 订单搜索 -->
+<div class="form-div">
+  <form action="javascript:searchOrder()" name="searchForm">
+    <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+    退货申请流水号<input name="back_sn" type="text" id="back_sn" size="15">
+    {$lang.order_sn}<input name="order_sn" type="text" id="order_sn" size="15">
+    	申请人<input name="user_name" type="text" id="user_name" size="15">
+    <input type="submit" value="{$lang.button_search}" class="button" />
+  </form>
+</div>
+
+<!-- 订单列表 -->
+<form method="post" action="order.php?act=operate" name="listForm" onsubmit="return check()">
+  <div class="list-div" id="listDiv">
+{/if}
+
+<table cellpadding="3" cellspacing="1">
+  <tr>
+    <th>
+      <!-- <input onclick='listTable.selectAll(this, "back_id")' type="checkbox"/> -->
+      <a href="javascript:listTable.sort('back_sn', 'DESC'); ">退货申请流水号</a>{$sort_back_sn}
+    </th>
+    <th><a href="javascript:listTable.sort('order_sn', 'DESC'); ">{$lang.order_sn}</a>{$sort_order_sn}</th>
+    <th><a href="javascript:listTable.sort('add_time', 'DESC'); ">申请时间</a>{$sort_add_time}</th>
+    <th><a href="javascript:listTable.sort('user_name', 'DESC'); ">申请人</a>{$sort_user_name}</th>
+    <th><a href="javascript:listTable.sort('status', 'DESC'); ">审核状态</a>{$sort_status}</th>
+    <th><a href="javascript:listTable.sort('admin_user_name', 'DESC'); ">审核人</a>{$sort_admin_user_name}</th>
+    <th><a href="javascript:listTable.sort('audit_time', 'DESC'); ">审核时间</a>{$sort_audit_time}</th>
+    <th>{$lang.handler}</th>
+  <tr>
+  {foreach from=$back_list item=back key=dkey}
+  <tr>
+    <td valign="top" nowrap="nowrap"><!-- <input type="checkbox" name="back_id[]" value="{$back.back_id}" /> -->{$back.back_sn}</td>
+    <td>{$back.order_sn}<br /></td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.add_time}</td>
+    <td align="left" valign="top"><a href="mailto:{$back.email}"> {$back.user_name|escape}</a></td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.status_name}</td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.admin_user_name}</td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.audit_time}</td>
+    <td align="center" valign="top"  nowrap="nowrap">
+    	<a href="order.php?act=order_back_edit&amp;id={$back.back_id}" title="{$lang.edit}"><img src="images/icon_edit.gif" border="0" height="16" width="16"></a>
+        <!-- <a href="order.php?act=back_info&back_id={$back.back_id}">{$lang.detail}</a> -->
+    </td>
+  </tr>
+  {/foreach}
+</table>
+
+<!-- 分页 -->
+<table id="page-table" cellspacing="0">
+  <tr>
+    <td align="right" nowrap="true">
+    {include file="page.htm"}
+    </td>
+  </tr>
+</table>
+
+{if $full_page}
+  </div>
+  <!-- <div>
+    <input name="remove_back" type="submit" id="btnSubmit3" value="{$lang.remove}" class="button" disabled="true" onclick="{if(confirm('{$lang.confirm_delete}')){return true;}return false;}" />
+  </div> -->
+</form>
+<script language="JavaScript">
+listTable.recordCount = {$record_count};
+listTable.pageCount = {$page_count};
+
+{foreach from=$filter item=item key=key}
+listTable.filter.{$key} = '{$item}';
+{/foreach}
+{literal}
+
+    onload = function()
+    {
+        // 开始检查订单
+        startCheckOrder();
+                
+        //
+        listTable.query = "order_back_query";
+    }
+
+    /**
+     * 搜索订单
+     */
+    function searchOrder()
+    {
+        listTable.filter['order_sn'] = Utils.trim(document.forms['searchForm'].elements['order_sn'].value);
+        listTable.filter['user_name'] = Utils.trim(document.forms['searchForm'].elements['user_name'].value);
+                listTable.filter['back_sn'] = document.forms['searchForm'].elements['back_sn'].value;
+        listTable.filter['page'] = 1;
+                listTable.query = "order_back_query";
+        listTable.loadList();
+    }
+
+    function check()
+    {
+      var snArray = new Array();
+      var eles = document.forms['listForm'].elements;
+      for (var i=0; i<eles.length; i++)
+      {
+        if (eles[i].tagName == 'INPUT' && eles[i].type == 'checkbox' && eles[i].checked && eles[i].value != 'on')
+        {
+          snArray.push(eles[i].value);
+        }
+      }
+      if (snArray.length == 0)
+      {
+        return false;
+      }
+      else
+      {
+        eles['order_id'].value = snArray.toString();
+        return true;
+      }
+    }
+</script>
+{/literal}
+
+{include file="pagefooter.htm"}
+{/if}

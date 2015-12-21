@@ -1180,6 +1180,174 @@ elseif ($_REQUEST['act'] == 'back_info')
     $smarty->display('back_info.htm');
     exit; //
 }
+/*------------------------------------------------------ */
+//-- 退货申请单列表
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'order_back_list')
+{
+	/* 检查权限 */
+	admin_priv('order_back_view');
+
+	/* 查询 */
+	$result = order_back_list();
+
+	/* 模板赋值 */
+	$smarty->assign('ur_here', $_LANG['10_back_order']);
+
+	$smarty->assign('os_unconfirmed',   OS_UNCONFIRMED);
+	$smarty->assign('cs_await_pay',     CS_AWAIT_PAY);
+	$smarty->assign('cs_await_ship',    CS_AWAIT_SHIP);
+	$smarty->assign('full_page',        1);
+
+	$smarty->assign('back_list',   $result['back']);
+	$smarty->assign('filter',       $result['filter']);
+	$smarty->assign('record_count', $result['record_count']);
+	$smarty->assign('page_count',   $result['page_count']);
+	$smarty->assign('sort_update_time', '<img src="images/sort_desc.gif">');
+
+	/* 显示模板 */
+	assign_query_info();
+	$smarty->display('order_back_list.htm');
+}
+
+/*------------------------------------------------------ */
+//-- 搜索、排序、分页
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'order_back_query')
+{
+	/* 检查权限 */
+	admin_priv('order_back_view');
+
+	$result = order_back_list();
+
+	$smarty->assign('back_list',   $result['back']);
+	$smarty->assign('filter',       $result['filter']);
+	$smarty->assign('record_count', $result['record_count']);
+	$smarty->assign('page_count',   $result['page_count']);
+
+	$sort_flag = sort_flag($result['filter']);
+	$smarty->assign($sort_flag['tag'], $sort_flag['img']);
+	make_json_result($smarty->fetch('order_back_list.htm'), '', array('filter' => $result['filter'], 'page_count' => $result['page_count']));
+}
+
+/*------------------------------------------------------ */
+//-- 编辑退货申请单
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'order_back_edit')
+{
+	/* 检查权限 */
+	admin_priv('order_back_view');
+
+	$back_id = intval(trim($_REQUEST['id']));
+
+	/* 根据退货申请id查询发货单信息 */
+	if (!empty($back_id))
+	{
+		$order_back = order_back_info($back_id);
+	}
+	else
+	{
+		die("退货申请单不存在");
+	}
+
+// 	/* 如果管理员属于某个办事处，检查该订单是否也属于这个办事处 */
+// 	$sql = "SELECT agency_id FROM " . $ecs->table('admin_user') . " WHERE user_id = '$_SESSION[admin_id]'";
+// 	$agency_id = $db->getOne($sql);
+// 	if ($agency_id > 0)
+// 	{
+// 		if ($back_order['agency_id'] != $agency_id)
+// 		{
+// 			sys_msg($_LANG['priv_error']);
+// 		}
+
+// 		/* 取当前办事处信息*/
+// 		$sql = "SELECT agency_name FROM " . $ecs->table('agency') . " WHERE agency_id = '$agency_id' LIMIT 0, 1";
+// 		$agency_name = $db->getOne($sql);
+// 		$back_order['agency_name'] = $agency_name;
+// 	}
+
+// 	/* 取得用户名 */
+// 	if ($back_order['user_id'] > 0)
+// 	{
+// 		$user = user_info($back_order['user_id']);
+// 		if (!empty($user))
+// 		{
+// 			$back_order['user_name'] = $user['user_name'];
+// 		}
+// 	}
+
+// 	/* 取得区域名 */
+// 	$sql = "SELECT concat(IFNULL(c.region_name, ''), '  ', IFNULL(p.region_name, ''), " .
+// 			"'  ', IFNULL(t.region_name, ''), '  ', IFNULL(d.region_name, '')) AS region " .
+// 			"FROM " . $ecs->table('order_info') . " AS o " .
+// 			"LEFT JOIN " . $ecs->table('region') . " AS c ON o.country = c.region_id " .
+// 			"LEFT JOIN " . $ecs->table('region') . " AS p ON o.province = p.region_id " .
+// 			"LEFT JOIN " . $ecs->table('region') . " AS t ON o.city = t.region_id " .
+// 			"LEFT JOIN " . $ecs->table('region') . " AS d ON o.district = d.region_id " .
+// 			"WHERE o.order_id = '" . $back_order['order_id'] . "'";
+// 	$back_order['region'] = $db->getOne($sql);
+
+// 	/* 是否保价 */
+// 	$order['insure_yn'] = empty($order['insure_fee']) ? 0 : 1;
+
+// 	/* 取得发货单商品 */
+// 	$goods_sql = "SELECT *
+//                   FROM " . $ecs->table('back_goods') . "
+//                   WHERE back_id = " . $back_order['back_id'];
+// 	$goods_list = $GLOBALS['db']->getAll($goods_sql);
+
+// 	/* 是否存在实体商品 */
+// 	$exist_real_goods = 0;
+// 	if ($goods_list)
+// 	{
+// 		foreach ($goods_list as $value)
+// 		{
+// 			if ($value['is_real'])
+// 			{
+// 				$exist_real_goods++;
+// 			}
+// 		}
+// 	}
+
+	/* 模板赋值 */
+	$smarty->assign('order_back', $order_back);
+	$smarty->assign('back_id', $back_id); // 发货单id
+	$smarty->assign('status_list', $GLOBALS['_LANG']['obs']); // 状态列表
+	$smarty->assign('form_action',       'order_back_update');
+
+	/* 显示模板 */
+	$smarty->assign('ur_here',           "编辑退货申请单信息");
+	$smarty->assign('action_link', array('href' => 'order.php?act=order_back_list&' . list_link_postfix(), 'text' => "退货申请单列表"));
+	assign_query_info();
+	$smarty->display('order_back_info.htm');
+	exit; //
+}
+
+/*------------------------------------------------------ */
+//-- 更新退货申请单
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'order_back_update')
+{
+	/* 检查权限 */
+	admin_priv('order_back_view');
+
+	$back_id = intval(trim($_REQUEST['id'])); 
+	
+	/* 更新数据 */
+    $record = array(
+    		'status' => isset($_POST['status'])?intval($_POST['status']):0, 
+    		'audit_admin_user_id' => $_SESSION[admin_id],
+    		'audit_time' => gmtime(),
+            'audit_desc' => isset($_POST['audit_desc'])?$_POST['audit_desc']:null
+            );
+    $db->autoExecute($ecs->table('order_back'), $record, 'UPDATE', "back_id = '" . $back_id . "'" );
+
+    admin_log($_POST['id'],'edit','order_back_view');
+    $link[] = array('href' => 'order.php?act=order_back_edit&id='.$_POST['id'], 'text' => '编辑退货申请单');
+    $link[] = array('href' => 'order.php?act=order_back_list', 'text' => $_LANG['11_order_back_list']);
+    
+    sys_msg($_LANG['edit_succeed'],0,$link);
+}
 
 /*------------------------------------------------------ */
 //-- 修改订单（处理提交）
@@ -5799,52 +5967,164 @@ function delivery_list()
  */
 function back_list()
 {
+	$result = get_filter();
+	if ($result === false)
+	{
+		$aiax = isset($_GET['is_ajax']) ? $_GET['is_ajax'] : 0;
+
+		/* 过滤信息 */
+		$filter['delivery_sn'] = empty($_REQUEST['delivery_sn']) ? '' : trim($_REQUEST['delivery_sn']);
+		$filter['order_sn'] = empty($_REQUEST['order_sn']) ? '' : trim($_REQUEST['order_sn']);
+		$filter['order_id'] = empty($_REQUEST['order_id']) ? 0 : intval($_REQUEST['order_id']);
+		if ($aiax == 1 && !empty($_REQUEST['consignee']))
+		{
+			$_REQUEST['consignee'] = json_str_iconv($_REQUEST['consignee']);
+		}
+		$filter['consignee'] = empty($_REQUEST['consignee']) ? '' : trim($_REQUEST['consignee']);
+
+		$filter['sort_by'] = empty($_REQUEST['sort_by']) ? 'update_time' : trim($_REQUEST['sort_by']);
+		$filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
+
+		$where = 'WHERE 1 ';
+		if ($filter['order_sn'])
+		{
+			$where .= " AND order_sn LIKE '%" . mysql_like_quote($filter['order_sn']) . "%'";
+		}
+		if ($filter['consignee'])
+		{
+			$where .= " AND consignee LIKE '%" . mysql_like_quote($filter['consignee']) . "%'";
+		}
+		if ($filter['delivery_sn'])
+		{
+			$where .= " AND delivery_sn LIKE '%" . mysql_like_quote($filter['delivery_sn']) . "%'";
+		}
+
+		/* 获取管理员信息 */
+		$admin_info = admin_info();
+
+		/* 如果管理员属于某个办事处，只列出这个办事处管辖的发货单 */
+		if ($admin_info['agency_id'] > 0)
+		{
+			$where .= " AND agency_id = '" . $admin_info['agency_id'] . "' ";
+		}
+
+		/* 如果管理员属于某个供货商，只列出这个供货商的发货单 */
+		if ($admin_info['suppliers_id'] > 0)
+		{
+			$where .= " AND suppliers_id = '" . $admin_info['suppliers_id'] . "' ";
+		}
+
+		/* 分页大小 */
+		$filter['page'] = empty($_REQUEST['page']) || (intval($_REQUEST['page']) <= 0) ? 1 : intval($_REQUEST['page']);
+
+		if (isset($_REQUEST['page_size']) && intval($_REQUEST['page_size']) > 0)
+		{
+			$filter['page_size'] = intval($_REQUEST['page_size']);
+		}
+		elseif (isset($_COOKIE['ECSCP']['page_size']) && intval($_COOKIE['ECSCP']['page_size']) > 0)
+		{
+			$filter['page_size'] = intval($_COOKIE['ECSCP']['page_size']);
+		}
+		else
+		{
+			$filter['page_size'] = 15;
+		}
+
+		/* 记录总数 */
+		$sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('back_order') . $where;
+		$filter['record_count']   = $GLOBALS['db']->getOne($sql);
+		$filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
+
+		/* 查询 */
+		$sql = "SELECT back_id, delivery_sn, order_sn, order_id, add_time, action_user, consignee, country,
+                       province, city, district, tel, status, update_time, email, return_time
+                FROM " . $GLOBALS['ecs']->table("back_order") . "
+                $where
+                ORDER BY " . $filter['sort_by'] . " " . $filter['sort_order']. "
+                LIMIT " . ($filter['page'] - 1) * $filter['page_size'] . ", " . $filter['page_size'] . " ";
+
+		set_filter($filter, $sql);
+	}
+	else
+	{
+		$sql    = $result['sql'];
+		$filter = $result['filter'];
+	}
+
+	$row = $GLOBALS['db']->getAll($sql);
+
+	/* 格式化数据 */
+	foreach ($row AS $key => $value)
+	{
+		$row[$key]['return_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['return_time']);
+		$row[$key]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time']);
+		$row[$key]['update_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['update_time']);
+		if ($value['status'] == 1)
+		{
+			$row[$key]['status_name'] = $GLOBALS['_LANG']['delivery_status'][1];
+		}
+		else
+		{
+			$row[$key]['status_name'] = $GLOBALS['_LANG']['delivery_status'][0];
+		}
+	}
+	$arr = array('back' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
+
+	return $arr;
+}
+
+/**
+ *  获取退货申请单列表信息
+ *
+ * @access  public
+ * @param
+ *
+ * @return void
+ */
+function order_back_list()
+{
     $result = get_filter();
     if ($result === false)
     {
         $aiax = isset($_GET['is_ajax']) ? $_GET['is_ajax'] : 0;
 
         /* 过滤信息 */
-        $filter['delivery_sn'] = empty($_REQUEST['delivery_sn']) ? '' : trim($_REQUEST['delivery_sn']);
+        $filter['back_sn'] = empty($_REQUEST['back_sn']) ? '' : trim($_REQUEST['back_sn']);
         $filter['order_sn'] = empty($_REQUEST['order_sn']) ? '' : trim($_REQUEST['order_sn']);
         $filter['order_id'] = empty($_REQUEST['order_id']) ? 0 : intval($_REQUEST['order_id']);
-        if ($aiax == 1 && !empty($_REQUEST['consignee']))
-        {
-            $_REQUEST['consignee'] = json_str_iconv($_REQUEST['consignee']);
-        }
-        $filter['consignee'] = empty($_REQUEST['consignee']) ? '' : trim($_REQUEST['consignee']);
+        $filter['user_name'] = empty($_REQUEST['user_name']) ? '' : trim($_REQUEST['user_name']);
 
-        $filter['sort_by'] = empty($_REQUEST['sort_by']) ? 'update_time' : trim($_REQUEST['sort_by']);
+        $filter['sort_by'] = empty($_REQUEST['sort_by']) ? 'add_time' : trim($_REQUEST['sort_by']);
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
 
         $where = 'WHERE 1 ';
         if ($filter['order_sn'])
         {
-            $where .= " AND order_sn LIKE '%" . mysql_like_quote($filter['order_sn']) . "%'";
+            $where .= " AND ob.order_sn LIKE '%" . mysql_like_quote($filter['order_sn']) . "%'";
         }
-        if ($filter['consignee'])
+        if ($filter['user_name'])
         {
-            $where .= " AND consignee LIKE '%" . mysql_like_quote($filter['consignee']) . "%'";
+            $where .= " AND u.user_name LIKE '%" . mysql_like_quote($filter['user_name']) . "%'";
         }
-        if ($filter['delivery_sn'])
+        if ($filter['back_sn'])
         {
-            $where .= " AND delivery_sn LIKE '%" . mysql_like_quote($filter['delivery_sn']) . "%'";
+            $where .= " AND ob.back_sn LIKE '%" . mysql_like_quote($filter['back_sn']) . "%'";
         }
 
-        /* 获取管理员信息 */
-        $admin_info = admin_info();
+//         /* 获取管理员信息 */
+//         $admin_info = admin_info();
 
-        /* 如果管理员属于某个办事处，只列出这个办事处管辖的发货单 */
-        if ($admin_info['agency_id'] > 0)
-        {
-            $where .= " AND agency_id = '" . $admin_info['agency_id'] . "' ";
-        }
+//         /* 如果管理员属于某个办事处，只列出这个办事处管辖的退货申请单*/
+//         if ($admin_info['agency_id'] > 0)
+//         {
+//             $where .= " AND agency_id = '" . $admin_info['agency_id'] . "' ";
+//         }
 
-        /* 如果管理员属于某个供货商，只列出这个供货商的发货单 */
-        if ($admin_info['suppliers_id'] > 0)
-        {
-            $where .= " AND suppliers_id = '" . $admin_info['suppliers_id'] . "' ";
-        }
+//         /* 如果管理员属于某个供货商，只列出这个供货商的发货单 */
+//         if ($admin_info['suppliers_id'] > 0)
+//         {
+//             $where .= " AND suppliers_id = '" . $admin_info['suppliers_id'] . "' ";
+//         }
 
         /* 分页大小 */
         $filter['page'] = empty($_REQUEST['page']) || (intval($_REQUEST['page']) <= 0) ? 1 : intval($_REQUEST['page']);
@@ -5863,16 +6143,22 @@ function back_list()
         }
 
         /* 记录总数 */
-        $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('back_order') . $where;
+        $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('order_back')." AS ob ".
+        "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
+        "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " . 
+        "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .
+        $where;
         $filter['record_count']   = $GLOBALS['db']->getOne($sql);
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT back_id, delivery_sn, order_sn, order_id, add_time, action_user, consignee, country,
-                       province, city, district, tel, status, update_time, email, return_time
-                FROM " . $GLOBALS['ecs']->table("back_order") . "
-                $where
-                ORDER BY " . $filter['sort_by'] . " " . $filter['sort_order']. "
+        $sql = "SELECT ob.*,u.user_name, au.user_name AS admin_user_name
+                FROM "  . $GLOBALS['ecs']->table('order_back')." AS ob ".
+		        "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
+		        "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " . 
+		        "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .
+		        $where . 
+                " ORDER BY " . $filter['sort_by'] . " " . $filter['sort_order']. "
                 LIMIT " . ($filter['page'] - 1) * $filter['page_size'] . ", " . $filter['page_size'] . " ";
 
         set_filter($filter, $sql);
@@ -5888,17 +6174,9 @@ function back_list()
     /* 格式化数据 */
     foreach ($row AS $key => $value)
     {
-        $row[$key]['return_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['return_time']);
         $row[$key]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time']);
-        $row[$key]['update_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['update_time']);
-        if ($value['status'] == 1)
-        {
-            $row[$key]['status_name'] = $GLOBALS['_LANG']['delivery_status'][1];
-        }
-        else
-        {
-        $row[$key]['status_name'] = $GLOBALS['_LANG']['delivery_status'][0];
-        }
+        $row[$key]['audit_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['audit_time']);
+        $row[$key]['status_name'] = $GLOBALS['_LANG']['obs'][$value['status']];
     }
     $arr = array('back' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
 
@@ -5962,6 +6240,52 @@ function delivery_order_info($delivery_id, $delivery_sn = '')
     }
 
     return $return_order;
+}
+
+/**
+ * 取得退货申请单信息
+ * @param   int     $back_id   退货单 id（如果 back_id > 0 就按 id 查，否则按 sn 查）
+ * @return  array   退货单信息（金额都有相应格式化的字段，前缀是 formated_ ）
+ */
+function order_back_info($back_id)
+{
+	if (empty($back_id) || !is_numeric($back_id))
+	{
+		return array();
+	}
+
+	$where = '';
+// 	/* 获取管理员信息 */
+// 	$admin_info = admin_info();
+
+// 	/* 如果管理员属于某个办事处，只列出这个办事处管辖的发货单 */
+// 	if ($admin_info['agency_id'] > 0)
+// 	{
+// 		$where .= " AND agency_id = '" . $admin_info['agency_id'] . "' ";
+// 	}
+
+// 	/* 如果管理员属于某个供货商，只列出这个供货商的发货单 */
+// 	if ($admin_info['suppliers_id'] > 0)
+// 	{
+// 		$where .= " AND suppliers_id = '" . $admin_info['suppliers_id'] . "' ";
+// 	}
+
+	$sql = "SELECT ob.*,u.user_name, au.user_name AS admin_user_name
+                FROM "  . $GLOBALS['ecs']->table('order_back')." AS ob ".
+                "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
+                "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " .
+                "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .		
+                $where . " LIMIT 0, 1";
+	$back = $GLOBALS['db']->getRow($sql);
+	if ($back)
+	{
+		/* 格式化时间字段 */
+		$back['add_time']       = local_date($GLOBALS['_CFG']['time_format'], $back['add_time']);
+		$back['audit_time'] = local_date($GLOBALS['_CFG']['time_format'], $back['audit_time']);
+		$back['status_name']       = $GLOBALS['_LANG']['obs'][$back['status']];
+	}
+
+	return $back;
 }
 
 /**

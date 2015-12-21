@@ -1,0 +1,74 @@
+<!-- $Id $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js,validator.js,selectzone.js"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<div class="main-div">
+<form method="post" action="order.php" name="theForm" onsubmit="return validate()">
+<table cellspacing="1" cellpadding="3" width="100%">
+  <tr>
+    <td class="label">退货申请流水号</td>
+    <td>{$order_back.back_sn}</td>
+  </tr>
+  <tr>
+    <td class="label">申请人</td>
+    <td>{$order_back.user_name}</td>
+  </tr>
+  <tr>
+    <td class="label">申请时间</td>
+    <td>{$order_back.add_time}</td>
+  </tr>
+  <tr>
+    <td class="label">订单号</td>
+    <td>{$order_back.order_sn}</td>
+  </tr>
+  <tr>
+    <td class="label">申请理由</td>
+    <td><textarea  name="reason" cols="60" rows="4" readonly="readonly">{$order_back.reason}</textarea></td>
+  </tr>
+  <tr>
+    <td class="label">审核状态</td>
+    <td>
+    	<select name="status">
+   		  {foreach from=$status_list item=stat key=key}
+   		  	<!-- {if $key eq $order_back.status } -->
+   		  		<option selected="selected" value="{$key}">{$stat}</option>
+   		  	<!-- {else} -->
+   		  		<option value="{$key}">{$stat}</option>
+   		  	<!-- {/if} -->
+             
+          {/foreach}
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="label">最后操作人</td>
+    <td>{$order_back.admin_user_name}</td>
+  </tr>
+  <tr>
+    <td class="label">最后操作时间</td>
+    <td>{$order_back.audit_time}</td>
+  </tr>
+  <tr>
+    <td class="label">审核意见</td>
+    <td>
+    	<textarea  name="audit_desc" cols="60" rows="4">{$order_back.audit_desc}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" value="{$lang.button_submit}" class="button" />
+      <input type="reset" value="{$lang.button_reset}" class="button" />
+      <input type="hidden" name="act" value="{$form_action}" />
+      <input type="hidden" name="id" value="{$order_back.back_id}" />
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+<script language="JavaScript">
+function validate(){
+	return true;
+}
+</script>
+{include file="pagefooter.htm"}

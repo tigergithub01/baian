@@ -1192,7 +1192,7 @@ elseif ($_REQUEST['act'] == 'order_back_list')
 	$result = order_back_list();
 
 	/* 模板赋值 */
-	$smarty->assign('ur_here', $_LANG['10_back_order']);
+	$smarty->assign('ur_here', $_LANG['11_order_back_list']);
 
 	$smarty->assign('os_unconfirmed',   OS_UNCONFIRMED);
 	$smarty->assign('cs_await_pay',     CS_AWAIT_PAY);
@@ -6175,7 +6175,7 @@ function order_back_list()
     foreach ($row AS $key => $value)
     {
         $row[$key]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time']);
-        $row[$key]['audit_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['audit_time']);
+        $row[$key]['audit_time'] = isset($value['audit_time'])?(local_date($GLOBALS['_CFG']['time_format'], $value['audit_time'])):'';
         $row[$key]['status_name'] = $GLOBALS['_LANG']['obs'][$value['status']];
     }
     $arr = array('back' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
@@ -6254,7 +6254,7 @@ function order_back_info($back_id)
 		return array();
 	}
 
-	$where = '';
+	$where = " WHERE ob.back_id = '$back_id' " ;
 // 	/* 获取管理员信息 */
 // 	$admin_info = admin_info();
 
@@ -6281,7 +6281,7 @@ function order_back_info($back_id)
 	{
 		/* 格式化时间字段 */
 		$back['add_time']       = local_date($GLOBALS['_CFG']['time_format'], $back['add_time']);
-		$back['audit_time'] = local_date($GLOBALS['_CFG']['time_format'], $back['audit_time']);
+		$back['audit_time'] = isset($back['audit_time'])?(local_date($GLOBALS['_CFG']['time_format'], $back['audit_time'])):'';
 		$back['status_name']       = $GLOBALS['_LANG']['obs'][$back['status']];
 	}
 

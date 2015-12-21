@@ -40,7 +40,7 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
 'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email', 
-		'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment');
+'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment','act_cancel_order_back','add_order_back','act_add_order_back');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -106,6 +106,7 @@ if ($action == 'default')
     include_once(ROOT_PATH .'includes/lib_clips.php');
     include_once(ROOT_PATH . 'includes/lib_order.php');
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
+    include_once(ROOT_PATH . 'includes/lib_payment.php');
     
     if ($rank = get_rank_info())
     {
@@ -1372,6 +1373,8 @@ elseif ($action == 'order_list')
 {
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
     include_once(ROOT_PATH . 'includes/lib_order.php');
+    include_once(ROOT_PATH . 'includes/lib_payment.php');
+    include_once(ROOT_PATH . 'includes/lib_clips.php');
     
     //订单编号或名称
     $keyword =  isset($_REQUEST['keyword']) ? trim($_REQUEST['keyword']) : '';
@@ -1416,7 +1419,7 @@ elseif ($action == 'order_list')
     $smarty->assign('merge',  $merge);
     $smarty->assign('pager',  $pager);
     $smarty->assign('orders', $orders);
-    $smarty->assign('status_list', $_LANG['cs']);   // 订单状态
+    $smarty->assign('status_list', $_LANG['cs_filter']);   // 订单状态
     $smarty->assign('order_period_list', $_LANG['order_period']);   // 订单查询时间段
     $smarty->display('user_transaction.dwt');
 }
@@ -1517,6 +1520,26 @@ elseif ($action == 'cancel_order')
     {
         $err->show($_LANG['order_list_lnk'], 'user.php?act=order_list');
     }
+}
+/*------------------------------------------------------ */
+//-- 删除订单
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'remove_order')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'includes/lib_order.php');
+	
+	$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
+	
+	if (remove_order($order_id, $user_id))
+	{
+		ecs_header("Location: user.php?act=order_list\n");
+		exit;
+	}
+	else
+	{
+		$err->show($_LANG['order_list_lnk'], 'user.php?act=order_list');
+	}
 }
 
 /* 收货地址列表界面*/
@@ -1843,6 +1866,7 @@ elseif ($action == 'act_add_comment')
 	/**评论类型：0：商品；1：文章**/
 	$cmt->type = !empty($_REQUEST['type']) ? intval($_REQUEST['type']) : 0;
 	$cmt->id = !empty($_REQUEST['goods_id']) ? intval($_REQUEST['goods_id']) : 0;
+	$cmt->order_id = !empty($_REQUEST['order_id']) ? intval($_REQUEST['order_id']) : 0;
 	$cmt->content = !empty($_REQUEST['content']) ? $_REQUEST['content'] : "";
 	$cmt->rank = !empty($_REQUEST['comment_rank']) ? intval($_REQUEST['comment_rank']) : 0;
 	
@@ -1865,8 +1889,8 @@ elseif ($action == 'act_add_comment')
 	
 	/* 保存评论内容 */
 	$sql = "INSERT INTO " .$GLOBALS['ecs']->table('comment') .
-	"(comment_type, id_value, email, user_name, content, comment_rank, add_time, ip_address, status, parent_id, user_id) VALUES " .
-	"('" .$cmt->type. "', '" .$cmt->id. "', '$email', '$user_name', '" .$cmt->content."', '".$cmt->rank."', ".gmtime().", '".real_ip()."', '$status', '0', '$user_id')";
+	"(comment_type, id_value, email, user_name, content, comment_rank, add_time, ip_address, status, parent_id, user_id, order_id) VALUES " .
+	"('" .$cmt->type. "', '" .$cmt->id. "', '$email', '$user_name', '" .$cmt->content."', '".$cmt->rank."', ".gmtime().", '".real_ip()."', '$status', '0', '$user_id','".$cmt->order_id."')";
 	
 	if($GLOBALS['db']->query($sql)){
 // 		lib_main_make_json_result('发表成功！'.$GLOBALS['db']->insert_id());
@@ -3770,8 +3794,127 @@ elseif ($action == 'my_advice')
 /* 退换货管理 */
 elseif ($action == 'order_back')
 {
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'includes/lib_order.php');
+	include_once(ROOT_PATH . 'includes/lib_payment.php');
+	include_once(ROOT_PATH . 'includes/lib_clips.php');
+	
+	//订单编号或名称
+	$keyword =  isset($_REQUEST['keyword']) ? trim($_REQUEST['keyword']) : '';
+	
+	$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
+	
+	$record_count = get_user_order_back_count($user_id);
+	
+	$pager  = get_pager('user.php', array('act' => $action,'keyword'=>$keyword), $record_count, $page);
+	
+	$order_back_list = get_user_order_back_list($user_id, $pager['size'], $pager['start'], $keyword);
+	
+	
+	//获取订单明细信息 added by tiger.guo 20151023
+	/* foreach ($orders as $index => $order) {
+		$order_id = $order['order_id'];
+		$goods_list = order_goods($order_id);
+		foreach ($goods_list AS $key => $value)
+		{
+			$goods_list[$key]['market_price'] = price_format($value['market_price'], false);
+			$goods_list[$key]['goods_price']  = price_format($value['goods_price'], false);
+			$goods_list[$key]['subtotal']     = price_format($value['subtotal'], false);
+		};
+		 
+		//获取赠送等级积分与消费积分
+		$integral = integral_to_give($order);
+		$orders[$index]['integral'] = $integral;
+		 
+		$orders[$index]['goods_list']=$goods_list;
+	} */
+// 	$merge  = get_user_merge($user_id);
+	$smarty->assign('keyword',  $keyword);
+	$smarty->assign('pager',  $pager);
+	$smarty->assign('order_back_list', $order_back_list);
 	$smarty->display('user_transaction.dwt');
 }
+
+/* 撤销退货申请  */
+elseif ($action == 'act_cancel_order_back')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+
+	$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+	if ($id == 0 || $user_id == 0)
+	{
+		ecs_header("Location: user.php?act=order_back\n");
+		exit;
+	}
+
+	$result = cancel_order_back($id, $user_id);
+	if ($result)
+	{
+		ecs_header("Location: user.php?act=order_back\n");
+		exit;
+	}
+}
+/* 申请退货 */
+elseif ($action == 'add_order_back')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+
+	$order_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	if ($order_id == 0)
+	{
+		show_message("订单不能为空", $_LANG['back_page_up'], '', 'error');
+	}
+	
+	/* 查询订单信息，检查状态 */
+	$sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+	$order = $GLOBALS['db']->GetRow($sql);
+	
+	if (empty($order))
+	{
+		show_message($GLOBALS['_LANG']['order_exist'], $_LANG['back_page_up'], '', 'error');
+	}
+	
+	
+	// 如果用户ID大于0，检查订单是否属于该用户
+	if ($user_id > 0 && $order['user_id'] != $user_id)
+	{
+		show_message($GLOBALS['_LANG']['no_priv'], $_LANG['back_page_up'], '', 'error');
+	}
+	
+	
+	$smarty->assign('order_id',  $order_id);
+	$smarty->assign('order',  $order);
+	$smarty->display('user_transaction.dwt');
+
+}
+
+/* 添加退货申请 */
+elseif ($action == 'act_add_order_back')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'includes/lib_order.php');
+	
+	$order_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	if ($order_id == 0)
+	{
+		show_message("订单不能为空", $_LANG['back_page_up'], '', 'error');
+	}
+	
+	$order_back = array(
+		'reason'   => isset($_REQUEST['reason']) ? trim($_REQUEST['reason'])  : ''
+	);
+
+	if (add_order_back($order_id,$user_id,$order_back))
+	{
+		show_message($_LANG['order_back_success'], $_LANG['back_order_back_list'], 'user.php?act=order_back',
+				'info');
+	}
+	else
+	{
+		$err->show($_LANG['booking_list_lnk'], 'user.php?act=add_order_back&id='.$order_id);
+	}
+}
+
 /* 我的等级 */
 elseif ($action == 'user_level')
 {

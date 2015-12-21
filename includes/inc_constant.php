@@ -95,6 +95,13 @@ define('CS_AWAIT_PAY',              100); // 待付款：货到付款且已发�
 define('CS_AWAIT_SHIP',             101); // 待发货：货到付款且未发货，非货到付款且已付款且未发货
 define('CS_FINISHED',               102); // 已完成：已确认、已付款、已发货
 
+/* 退货申请单状态 */
+define('OBS_AUDITING',            0); //待审核
+define('OBS_AUDITED',              1); // 审核通过
+define('OBS_REJECTED',               2); // 审核不通过
+define('OBS_CANCELED',                3); // 已撤销
+define('OBS_SHIPPED',               4); // 已寄出
+
 /* 缺货处理 */
 define('OOS_WAIT',                  0); // 等待货物备齐后再发
 define('OOS_CANCEL',                1); // 取消订单

@@ -430,11 +430,10 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     }else if($order_period==2){
     	//今年内订单
     	$where .= " AND o.add_time  >= ".local_mktime(0,0,0,1,1,date('Y'));
-    }
+    }  
     
     
-    
-    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, " .
+    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, o.pay_id, " .
            "(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
            " FROM " .$GLOBALS['ecs']->table('order_info') ." AS o ".
            " WHERE $where ORDER BY o.add_time DESC";
@@ -444,7 +443,11 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
 
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
-        if ($row['order_status'] == OS_UNCONFIRMED)
+        
+    	$pay_online = get_order_pay_online($row);
+    	
+    	
+    	if ($row['order_status'] == OS_UNCONFIRMED)
         {
             $row['handler'] = "<a href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
         }
@@ -457,7 +460,14 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             }
             elseif ($row['shipping_status'] == SS_RECEIVED)
             {
-                @$row['handler'] = '<span style="color:red">'.$GLOBALS['_LANG']['ss_received'] .'</span>';
+//                 @$row['handler'] = '<span style="color:red">'.$GLOBALS['_LANG']['ss_received'] .'</span>';
+            	if(!is_commented($row['order_id'])){
+            		$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
+            	}
+            	//申请退货
+            	if(!is_order_backed($row['order_id'])){
+            		$row['handler'] .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
+            	}
             }
             else
             {
@@ -471,6 +481,26 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
                 }
 
             }
+        }
+        else if ($row['order_status'] == OS_CONFIRMED){
+        	//added by tiger.guo 20151220
+        	if ($row['pay_status'] == PS_UNPAYED){
+        		$row['handler'] = $pay_online;
+        		$row['handler'] .= "<a href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
+        	}else if(in_array($row['shipping_status'], array(SS_SHIPPED, SS_RECEIVED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
+        		//去评价
+        		if(!is_commented($row['order_id'])){
+        			$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
+        		}
+        		//申请退货
+        		if(!is_order_backed($row['order_id'])){
+        			$row['handler'] .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
+        		}
+        	}
+        }
+        else if ($row['order_status'] == OS_CANCELED){
+        	//added by tiger.guo 20151220
+        	$row['handler'] = "<a href=\"user.php?act=remove_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_remove']."')) return false;\">".$GLOBALS['_LANG']['remove']."</a>";
         }
         else
         {
@@ -494,10 +524,186 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
         			   'composite_status_name'   => $row['composite_status_name'],
                        'total_fee'      => price_format($row['total_fee'], false),
         			   'shipping_fee'      => price_format($row['shipping_fee'], false),
+        			   'pay_online' => $row['pay_online'],
                        'handler'        => $row['handler']);
     }
 
     return $arr;
+}
+
+
+/**
+ *  获取用户指定范围的退货申请单列表
+ *
+ * @access  public
+ * @param   int         $user_id        用户ID号
+ * @param   int         $num            列表最大数量
+ * @param   int         $start          列表起始位置
+ * $keyword 关键字，订单编号
+ * @return  array       $order_list     订单列表
+ *
+ */
+function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
+{
+	/* 取得订单列表 */
+	$arr    = array();
+
+	$where = "ob.user_id = '$user_id'";
+	if (!empty($keyword))
+	{
+		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+	}
+    
+	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.goods_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ".
+			"o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time AS order_time, o.shipping_fee, o.pay_id, " .
+			"(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
+			" FROM " .$GLOBALS['ecs']->table('order_back') ." AS ob ".
+			" LEFT JOIN  ".$GLOBALS['ecs']->table('order_info') ." AS o ON (o.order_id = ob.order_id) " .
+			" WHERE $where ORDER BY ob.add_time DESC";
+
+
+	$res = $GLOBALS['db']->SelectLimit($sql, $num, $start);
+
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+
+
+		$row['order_status'] = $GLOBALS['_LANG']['os'][$row['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$row['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$row['shipping_status']];
+		$row['status_name'] = $GLOBALS['_LANG']['obs'][$row['status']];
+
+
+		$arr[] = array(
+				'back_id'        => $row['back_id'],
+				'back_sn'        => $row['back_sn'],
+				'add_time'     => local_date($GLOBALS['_CFG']['time_format'], $row['add_time']),
+				'user_id'       => $row['user_id'],
+				'reason'       => $row['reason'],
+				'status' =>  $row['status'],
+				'status_name' =>  $row['status_name'],
+				'order_id'       => $row['order_id'],
+				'order_sn'       => $row['order_sn'],
+				'order_time'     => local_date($GLOBALS['_CFG']['time_format'], $row['order_time']),
+				'order_status'   => $row['order_status'],
+				'total_fee'      => price_format($row['total_fee'], false),
+				'shipping_fee'      => price_format($row['shipping_fee'], false)
+		);
+	}
+
+	return $arr;
+}
+
+/**
+ * 退货申请单行数 
+ * @param unknown $user_id
+ */
+function get_user_order_back_count($user_id,$keyword=''){
+	/* 取得订单列表 */
+	$arr    = array();
+
+	$where = "ob.user_id = '$user_id'";
+	if (!empty($keyword))
+	{
+		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+	}
+    
+	$sql = "SELECT COUNT(1) ".
+			" FROM " .$GLOBALS['ecs']->table('order_back') ." AS ob ".
+			" LEFT JOIN  ".$GLOBALS['ecs']->table('order_info') ." AS o ON (o.order_id = ob.order_id) " .
+			" WHERE $where ORDER BY ob.add_time DESC";
+
+
+	return $GLOBALS['db']->getOne($sql);
+}
+
+/**
+ *  撤销退货申请信息
+ *
+ * @access  public
+ * @param   int         $back_id     退货申请的ID
+ * @param   int         $user_id        会员的ID
+ * @return  boolen      $bool
+ */
+function cancel_order_back($back_id, $user_id)
+{
+	$sql = 'UPDATE ' .$GLOBALS['ecs']->table('order_back'). 
+			" SET status = '".OBS_CANCELED. "' " . 
+	" WHERE back_id = '$back_id' AND user_id = '$user_id'";
+
+	return $GLOBALS['db']->query($sql);
+}
+
+/**
+ * 获取支付链接
+ * @param unknown $order
+ * @return string
+ */
+function get_order_pay_online($order){
+	$pay_online='';
+	
+	/* 如果是未付款状态，生成支付按钮 */
+	if ($order['pay_status'] == PS_UNPAYED &&
+			($order['order_status'] == OS_UNCONFIRMED ||
+					$order['order_status'] == OS_CONFIRMED))
+	{
+		/*
+		 * 在线支付按钮
+		 */
+		//支付方式信息
+		$payment_info = array();
+		$payment_info = payment_info($order['pay_id']);
+		//无效支付方式
+		if ($payment_info === false)
+		{
+			$pay_online = '';
+		}
+		else
+		{
+			//取得支付信息，生成支付代码
+			$payment = unserialize_config($payment_info['pay_config']);
+			 
+			//获取需要支付的log_id
+			$order['log_id']    = get_paylog_id($order['order_id'], $pay_type = PAY_ORDER);
+			$order['user_name'] = $_SESSION['user_name'];
+			$order['pay_desc']  = $payment_info['pay_desc'];
+			 
+			/* 调用相应的支付方式文件 */
+			include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
+			 
+			/* 取得在线支付方式的支付按钮 */
+			$pay_obj    = new $payment_info['pay_code'];
+			$pay_online = $pay_obj->get_code($order, $payment);
+		}
+	}
+	else
+	{
+		$pay_online = '';
+	}
+	return $pay_online;
+}
+
+/*
+ * 订单是否已经评论
+ */
+function is_commented($order_id,$goods_id=''){
+	$sql = "SELECT COUNT(1) FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.order_id = '$order_id'";
+	if(!empty($goods_id)){
+		$sql.= " AND c.id_value = '$goods_id'";
+	}
+	$count = $GLOBALS['db']->getOne($sql);
+	return ($count>0)?true:false;
+}
+
+
+/*
+ * 订单是否已经申请退货
+ */
+function is_order_backed($order_id,$goods_id=''){
+	$sql = "SELECT COUNT(1) FROM  ".$GLOBALS['ecs']->table('order_back')." AS ob WHERE ob.order_id = '$order_id'";
+	if(!empty($goods_id)){
+		$sql.= " AND ob.goods_id = '$goods_id'";
+	}
+	$count = $GLOBALS['db']->getOne($sql);
+	return ($count>0)?true:false;
 }
 
 
@@ -519,9 +725,9 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 	$where .= order_query_sql('finished');
 	
 	if($commented==1){
-		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}elseif ($commented==0){
-		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}
 	
 	$sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, " .
@@ -596,9 +802,9 @@ function get_user_comment_goods_count($user_id, $commented=-1)
 	$where .= order_query_sql('finished');
 
 	if($commented==1){
-		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}elseif ($commented==0){
-		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id".")";
+		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}
 
 	$sql = "SELECT COUNT(1) " .
@@ -691,12 +897,13 @@ function cancel_order($order_id, $user_id = 0)
     }
 
     //订单一旦确认，不允许用户取消
-    if ( $order['order_status'] == OS_CONFIRMED)
+    //订单确认了也可以取消,added by tiger.guo 20151220
+    /* if ( $order['order_status'] == OS_CONFIRMED)
     {
         $GLOBALS['err']->add($GLOBALS['_LANG']['current_os_already_confirmed']);
 
         return false;
-    }
+    } */
 
     // 发货状态只能是“未发货”
     if ($order['shipping_status'] != SS_UNSHIPPED)
@@ -759,6 +966,192 @@ function cancel_order($order_id, $user_id = 0)
         die($GLOBALS['db']->errorMsg());
     }
 
+}
+
+
+/**
+ * 退货申请
+ *
+ * @access  public
+ * @param   int         $order_id       订单ID
+ * @param   int         $user_id        用户ID
+ *
+ * @return void
+ */
+function add_order_back($order_id, $user_id = 0,$order_back)
+{
+	/* 查询订单信息，检查状态 */
+	$sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+	$order = $GLOBALS['db']->GetRow($sql);
+
+	if (empty($order))
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['order_exist']);
+		return false;
+	}
+
+	// 如果用户ID大于0，检查订单是否属于该用户
+	if ($user_id > 0 && $order['user_id'] != $user_id)
+	{
+		$GLOBALS['err'] ->add($GLOBALS['_LANG']['no_priv']);
+
+		return false;
+	}
+
+	// 订单状态只能是“已确认”或“已分单”
+	if ($order['order_status'] != OS_CONFIRMED && $order['order_status'] != OS_SPLITED)
+	{
+		$GLOBALS['err']->add("订单未确认，不能退货！");
+
+		return false;
+	}
+
+	// 发货状态只能是“已发货”或“已收货”
+	if ($order['shipping_status'] != SS_SHIPPED && $order['shipping_status'] != SS_RECEIVED)
+	{
+		$GLOBALS['err']->add("订单未发货，不能退货");
+
+		return false;
+	}
+
+	// 付款状态只能是“已付款”、“付款中”
+	if ($order['pay_status'] != PS_PAYED && $order['pay_status'] != PS_PAYING)
+	{
+		$GLOBALS['err']->add("订单未付款，不能退货");
+
+		return false;
+	}
+
+	$back_sn = get_order_back_sn();
+	$sql = "INSERT INTO " .$GLOBALS['ecs']->table('order_back')."( back_sn, order_sn, order_id, 
+			goods_id, add_time, reason, 
+			user_id, status)".
+	" VALUES ('$back_sn', '$order[order_sn]', '$order[order_id]', ".
+	"null, '".gmtime()."', '$order_back[reason]', ".
+	"'$_SESSION[user_id]', '".OBS_AUDITING."')";
+	
+	$GLOBALS['db']->query($sql);
+	
+
+	if ($GLOBALS['db'] ->errno() == 0)
+	{
+		return true;
+	}
+	else
+	{
+		die($GLOBALS['db']->errorMsg());
+	}
+}
+
+/**
+ * 删除一个用户订单
+ *
+ * @access  public
+ * @param   int         $order_id       订单ID
+ * @param   int         $user_id        用户ID
+ *
+ * @return void
+ */
+function remove_order($order_id, $user_id = 0)
+{
+	/* 查询订单信息，检查状态 */
+	$sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+	$order = $GLOBALS['db']->GetRow($sql);
+
+	if (empty($order))
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['order_exist']);
+		return false;
+	}
+
+	// 如果用户ID大于0，检查订单是否属于该用户
+	if ($user_id > 0 && $order['user_id'] != $user_id)
+	{
+		$GLOBALS['err'] ->add($GLOBALS['_LANG']['no_priv']);
+
+		return false;
+	}
+
+	// 订单状态只能是“已取消”
+	if ($order['order_status'] != OS_CANCELED)
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['current_os_not_canceled']);
+
+		return false;
+	}
+
+	// 发货状态只能是“未发货”
+	if ($order['shipping_status'] != SS_UNSHIPPED)
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['current_ss_not_cancel']);
+
+		return false;
+	}
+
+	// 如果付款状态是“已付款”、“付款中”，不允许删除
+	if ($order['pay_status'] != PS_UNPAYED)
+	{
+		$GLOBALS['err']->add($GLOBALS['_LANG']['current_ps_not_cancel']);
+
+		return false;
+	}
+	
+	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_info'). " WHERE order_id = '$order_id'");
+	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_goods'). " WHERE order_id = '$order_id'");
+	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_action'). " WHERE order_id = '$order_id'");
+	$action_array = array('delivery', 'back');
+	del_delivery($order_id, $action_array);
+	
+	if ($GLOBALS['db'] ->errno() == 0)
+	{
+		return true;
+	}
+	else
+	{
+		die($GLOBALS['db']->errorMsg());
+	}
+}
+
+/**
+ * 删除订单所有相关单子
+ * @param   int     $order_id      订单 id
+ * @param   int     $action_array  操作列表 Array('delivery', 'back', ......)
+ * @return  int     1，成功；0，失败
+ */
+function del_delivery($order_id, $action_array)
+{
+	$return_res = 0;
+
+	if (empty($order_id) || empty($action_array))
+	{
+		return $return_res;
+	}
+
+	$query_delivery = 1;
+	$query_back = 1;
+	if (in_array('delivery', $action_array))
+	{
+		$sql = 'DELETE O, G
+                FROM ' . $GLOBALS['ecs']->table('delivery_order') . ' AS O, ' . $GLOBALS['ecs']->table('delivery_goods') . ' AS G
+                WHERE O.order_id = \'' . $order_id . '\'
+                AND O.delivery_id = G.delivery_id';
+		$query_delivery = $GLOBALS['db']->query($sql, 'SILENT');
+	}
+	if (in_array('back', $action_array))
+	{
+		$sql = 'DELETE O, G
+                FROM ' . $GLOBALS['ecs']->table('back_order') . ' AS O, ' . $GLOBALS['ecs']->table('back_goods') . ' AS G
+                WHERE O.order_id = \'' . $order_id . '\'
+                AND O.back_id = G.back_id';
+		$query_back = $GLOBALS['db']->query($sql, 'SILENT');
+	}
+
+	if ($query_delivery && $query_back)
+	{
+		$return_res = 1;
+	}
+
+	return $return_res;
 }
 
 /**

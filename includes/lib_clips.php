@@ -323,7 +323,7 @@ function get_goodsinfo($goods_id)
 }
 
 /**
- *  验证删除某个收藏商品
+ *  删除缺货登记信息
  *
  * @access  public
  * @param   int         $booking_id     缺货登记的ID

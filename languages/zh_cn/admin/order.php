@@ -48,6 +48,13 @@ $_LANG['ps'][PS_UNPAYED] = '未付款';
 $_LANG['ps'][PS_PAYING] = '付款中';
 $_LANG['ps'][PS_PAYED] = '已付款';
 
+/* 退货申请单状态 */
+$_LANG['obs'][OBS_AUDITING] = '待审核';
+$_LANG['obs'][OBS_AUDITED] = '审核通过';
+$_LANG['obs'][OBS_REJECTED] = '审核不通过';
+$_LANG['obs'][OBS_CANCELED] = '已撤销';
+$_LANG['obs'][OBS_SHIPPED] = '已寄出';
+
 $_LANG['ss_admin'][SS_SHIPPED_ING] = '发货中（前台状态：未发货）';
 /* 订单操作 */
 $_LANG['label_operable_act'] = '当前可执行操作：';
@@ -377,6 +384,8 @@ $_LANG['delivery_sn'] = '发货单';
 $_LANG['delivery_status'][0] = '已发货';
 $_LANG['delivery_status'][1] = '退货';
 $_LANG['delivery_status'][2] = '正常';
+
+
 
 /* 发货单标签 */
 $_LANG['label_delivery_status'] = '发货单状态';

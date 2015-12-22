@@ -671,6 +671,10 @@ elseif ($_REQUEST['step'] == 'checkout')
     $smarty->assign('shipping_list',   $shipping_list);
     $smarty->assign('insure_disabled', $insure_disabled);
     $smarty->assign('cod_disabled',    $cod_disabled);
+    
+    //获取自提点
+    $pick_up_point_list = get_pick_up_point_list($region);    
+    $smarty->assign('pick_up_point_list',    $pick_up_point_list);
 
     /* 取得支付列表 */
     if ($order['shipping_id'] == 0)
@@ -1689,6 +1693,7 @@ elseif ($_REQUEST['step'] == 'done')
     $_POST['inv_payee'] = isset($_POST['inv_payee']) ? compile_str($_POST['inv_payee']) : '';
     $_POST['inv_content'] = isset($_POST['inv_content']) ? compile_str($_POST['inv_content']) : '';
     $_POST['postscript'] = isset($_POST['postscript']) ? compile_str($_POST['postscript']) : '';
+    $_POST['point_id'] = isset($_POST['point_id']) ? intval($_POST['point_id']) : null;
 	
     //TODO:可以使用多个红包，bonus_id赋值待优化
     //TODO:inv_type应该保存的是发票类型，如“普通发票”、“增值税发票”
@@ -1714,7 +1719,8 @@ elseif ($_REQUEST['step'] == 'done')
     	'order_status'    => OS_CONFIRMED,
         'shipping_status' => SS_UNSHIPPED,
         'pay_status'      => PS_UNPAYED,
-        'agency_id'       => get_agency_by_regions(array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']))
+        'agency_id'       => get_agency_by_regions(array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district'])),
+    	'point_id'	      => $_POST['point_id']
         );
 
     /* 扩展信息 */
@@ -1846,6 +1852,11 @@ elseif ($_REQUEST['step'] == 'done')
     {
         $shipping = shipping_info($order['shipping_id']);
         $order['shipping_name'] = addslashes($shipping['shipping_name']);
+        
+        //如果配送方式不是门店自定，清空自提点
+        if($shipping['shipping_code']!='cac'){
+        	$order['point_id'] = null;
+        }
     }
     $order['shipping_fee'] = $total['shipping_fee'];
     $order['insure_fee']   = $total['shipping_insure'];
@@ -2611,6 +2622,10 @@ elseif ($_REQUEST['step'] == 'order_shipping_payment_total'){
 	$smarty->assign('shipping_list',   $shipping_list);
 	$smarty->assign('insure_disabled', $insure_disabled);
 	$smarty->assign('cod_disabled',    $cod_disabled);
+	
+	//获取自提点
+	$pick_up_point_list = get_pick_up_point_list($region);
+	$smarty->assign('pick_up_point_list',    $pick_up_point_list);	
 	
 	/* 取得支付列表 */
 	if ($order['shipping_id'] == 0)

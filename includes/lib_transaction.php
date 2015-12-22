@@ -1461,6 +1461,16 @@ function get_order_detail($order_id, $user_id = 0)
 
     /* 无配送时的处理 */
     $order['shipping_id'] == -1 and $order['shipping_name'] = $GLOBALS['_LANG']['shipping_not_need'];
+    
+    /*门店自提显示自提点**/
+    if($order['point_id']){
+    	$pick_up_point =  $GLOBALS['db']->getRow("SELECT point_name,point_addr FROM ".$GLOBALS['ecs']->table('pick_up_point') ." WHERE point_id = '$order[point_id]'");
+    	if($pick_up_point){
+    		$order['pick_up_point_name'] = $pick_up_point['point_name'];
+    		$order['pick_up_point_addr'] = $pick_up_point['point_addr'];
+    	}
+    }
+    
 
     /* 其他信息初始化 */
     $order['how_oos_name']     = $order['how_oos'];

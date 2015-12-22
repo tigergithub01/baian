@@ -295,6 +295,7 @@ function available_payment_list($support_cod, $cod_fee = 0, $is_online = false,$
         		foreach ($region_id_list as $key => $value) {
         			if(in_array($value, $cod_area_ids)){
         				$support_cod_area = true;
+        				break;
         			}
         		}
         	} 
@@ -3402,5 +3403,30 @@ function check_all_cart_goods($is_checked){
 	return $GLOBALS['db']->query($sql);
 }
 
+/**
+ *  获取门店自提的自提点
+ *  @param   array   $region_id_list     收货人地区id数组
+ */
+function get_pick_up_point_list($region_id_list){
+	$sql = "SELECT point_id, point_name, point_addr, regions, status FROM ". $GLOBALS['ecs']->table('pick_up_point');
+	$rows = $GLOBALS['db']->getAll($sql);
+	$arr= array();
+	foreach ($rows as $key => $row) {
+		$support_pick_up = false;
+		if(!empty($row['regions']) && $region_id_list){
+			$pick_up_area_ids = explode(',', $row['regions']);
+			foreach ($region_id_list as $key => $value) {
+				if(in_array($value, $pick_up_area_ids)){
+					$support_pick_up = true;
+					break;
+				}
+			}
+		}
+		if($support_pick_up){
+			$arr[] = $row;
+		}
+	}
+	return $arr;	
+}
 
 ?>

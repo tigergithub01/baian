@@ -928,6 +928,8 @@ function selectShipping(obj)
     selectedShipping = obj;
 
   }
+  
+  
 
 
 
@@ -989,7 +991,12 @@ function selectShipping(obj)
 
   }
 
-
+  //付款方式为门店自提的时候，显示自提点选择
+  if($(obj).attr('shipping_code')=='cac'){
+	  $(".CAC_POINT_LIST").show();
+  }else{
+	  $(".CAC_POINT_LIST").hide();
+  }
 
   var now = new Date();
 

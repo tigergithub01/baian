@@ -28,7 +28,7 @@ if ($_REQUEST['act'] == 'list')
 {
     /* 取得过滤条件 */
     $filter = array();
-    $smarty->assign('ur_here',      $_LANG['pick_up_point']);
+    $smarty->assign('ur_here',      $_LANG['54_pick_up_point']);
     $smarty->assign('action_link',  array('text' => "新增自提点", 'href' => 'pick_up_point.php?act=add'));
     $smarty->assign('full_page',    1);
     $smarty->assign('filter',       $filter);
@@ -87,7 +87,7 @@ if ($_REQUEST['act'] == 'add')
     $smarty->assign('countries',        get_regions());
     $smarty->assign('pick_up_point',     $pick_up_point);
     $smarty->assign('ur_here',     "新增自提点");
-    $smarty->assign('action_link', array('text' => $_LANG['pick_up_point'], 'href' => 'pick_up_point.php?act=list'));
+    $smarty->assign('action_link', array('text' => $_LANG['54_pick_up_point'], 'href' => 'pick_up_point.php?act=list'));
     $smarty->assign('form_action', 'insert');
 
     assign_query_info();
@@ -150,7 +150,7 @@ if ($_REQUEST['act'] == 'edit')
     $smarty->assign('countries',        get_regions());
     $smarty->assign('pick_up_point',     $pick_up_point);
     $smarty->assign('ur_here',     "编辑自提点");
-    $smarty->assign('action_link', array('text' => $_LANG['pick_up_point'], 'href' => 'pick_up_point.php?act=list&' . list_link_postfix()));
+    $smarty->assign('action_link', array('text' => $_LANG['54_pick_up_point'], 'href' => 'pick_up_point.php?act=list&' . list_link_postfix()));
     $smarty->assign('form_action', 'update');
 
     assign_query_info();

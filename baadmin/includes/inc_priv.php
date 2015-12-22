@@ -37,7 +37,7 @@ if (!defined('IN_ECS'))
     $purview['52_virtual_card_change'] = 'virualcard';
     $purview['goods_auto']           = 'goods_auto';
 	$purview['goods_storeroom'] = 'goods_manage';   //代码增加   By www.ecshop120.com
-	$purview['pick_up_point'] = 'pick_up_point';
+	$purview['54_pick_up_point'] = 'pick_up_point';
 
 //促销管理权限
     $purview['02_snatch_list']       = 'snatch_manage';

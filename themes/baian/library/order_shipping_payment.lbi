@@ -24,9 +24,17 @@
 														<!-- {foreach from=$shipping_list name=shipping_list item=shipping} 循环配送方式 -->
 														<tr>
 														<td width="30%" height=25  valign=top>
-															<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
+															<input name="shipping" type="radio" value="{$shipping.shipping_id}" shipping_code="{$shipping.shipping_code}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
 														[{$shipping.format_shipping_fee}]
 														
+														<!-- {if $shipping.shipping_code eq 'cac' } 门店自提显示自提点 start--> 
+															<div style="margin-top: 3px;display: none;" class="CAC_POINT_LIST">
+															<!--{foreach from=$pick_up_point_list item=pick_up_point}-->
+																	<div><input type="checkbox" class="pick_up_point_ckb" onclick="select_pick_up_point(this);" name="point_id" value="{$pick_up_point.point_id}" title="{$pick_up_point.point_addr}">{$pick_up_point.point_name} 地址：{$pick_up_point.point_addr}</div>
+															<!-- {/foreach} -->
+															</div>
+														 <!-- {/if} 门店自提显示自提点 end-->
+														 
 														<input type="hidden" id="shipping_name_{$shipping.shipping_id}" value="{$shipping.shipping_name}"/>
 														</td>
 														<td width="70%" valign=top>

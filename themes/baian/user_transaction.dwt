@@ -1388,6 +1388,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<h3 class="c-tit3">配送及支付方式</h3>
 			<div class="ps-zf">
 				<p class="info dn" style="display: block;">配送方式： {$order.shipping_name}&#12288;&#12288;支付方式： {$order.pay_name}</p>
+				<!-- {if $order.pick_up_point_name} -->
+				<p class="info dn" style="display: block;">自提点： {$order.pick_up_point_name}&#12288;&#12288;自提地址：{$order.pick_up_point_addr}</p>
+				<!-- {/if} -->
 			</div>
 			<div class="h15"></div>
 			<h3 class="c-tit3">商品信息</h3>

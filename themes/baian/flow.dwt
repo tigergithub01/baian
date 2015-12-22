@@ -1025,7 +1025,7 @@
         <div class="h"></div>
         <div class="c-jie1 c-jie2">	
 			<span class="r">
-			<input type="hidden" value="" id="address_id"/>
+			<input type="hidden" value="{$smarty.session.flow_consignee.address_id}" id="address_id"/>
 	 		<input type="hidden" name="step" value="done"/>
 	 		<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
 			</span>
@@ -1162,7 +1162,7 @@
         	    	//alert('更新出错！');
         	    },     
         	    success:function(data){ 
-        	    	console.debug(data);
+        	    	//console.debug(data);
         		    if(data.error==''){
         		    	$("#ECS_SHIPPING_PARMENT").html(data.content);
         		    	$("#ECS_ORDERTOTAL").html(data.total);
@@ -1452,6 +1452,13 @@
         	
         	
 			return true;
+		}
+		
+		/*选择自提点**/
+		
+		function select_pick_up_point(obj){
+			$(".pick_up_point_ckb").attr('checked',false);
+			$(obj).attr('checked',true);
 		}
 		</script>
 	 	

@@ -264,11 +264,12 @@ function pay_fee($payment_id, $order_amount, $cod_fee=null)
  * @param   bool    $support_cod        配送方式是否支持货到付款
  * @param   int     $cod_fee            货到付款手续费（当配送方式支持货到付款时才传此参数）
  * @param   int     $is_online          是否支持在线支付
+ * @param   array   $region_id_list     收货人地区id数组
  * @return  array   配送方式数组
  */
-function available_payment_list($support_cod, $cod_fee = 0, $is_online = false)
+function available_payment_list($support_cod, $cod_fee = 0, $is_online = false,$region_id_list=null)
 {
-    $sql = 'SELECT pay_id, pay_code, pay_name, pay_fee, pay_desc, pay_config, is_cod' .
+    $sql = 'SELECT pay_id, pay_code, pay_name, pay_fee, pay_desc, pay_config, is_cod, cod_area' .
             ' FROM ' . $GLOBALS['ecs']->table('payment') .
             ' WHERE enabled = 1 ';
     if (!$support_cod)
@@ -287,7 +288,21 @@ function available_payment_list($support_cod, $cod_fee = 0, $is_online = false)
     {
         if ($row['is_cod'] == '1')
         {
-            $row['pay_fee'] = $cod_fee;
+            //判断货到付款支付的区域：
+			$support_cod_area = false;
+        	if(!empty($row['cod_area']) && $region_id_list){
+        		$cod_area_ids = explode(',', $row['cod_area']);
+        		foreach ($region_id_list as $key => $value) {
+        			if(in_array($value, $cod_area_ids)){
+        				$support_cod_area = true;
+        			}
+        		}
+        	} 
+        	if(!$support_cod_area){
+        		continue;
+        	}   
+        	     	
+        	$row['pay_fee'] = $cod_fee;
         }
 
         $row['format_pay_fee'] = strpos($row['pay_fee'], '%') !== false ? $row['pay_fee'] :

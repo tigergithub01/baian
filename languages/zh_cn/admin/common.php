@@ -175,7 +175,7 @@ $_LANG['goods_auto'] = '商品自动上下架';
 $_LANG['article_auto'] = '文章自动发布';
 $_LANG['navigator'] = '自定义导航栏';
 $_LANG['goods_storeroom'] = '仓库管理';   //代码增加   By www.ecshop120.com
-$_LANG['pick_up_point'] = '自提点管理';
+$_LANG['54_pick_up_point'] = '自提点管理';
 
 /* 促销管理 */
 $_LANG['02_snatch_list'] = '夺宝奇兵';

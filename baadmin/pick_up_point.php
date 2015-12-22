@@ -123,7 +123,7 @@ if ($_REQUEST['act'] == 'insert')
     {
     	admin_log($_POST['point_name'],'add','pick_up_point');
     	
-    	$links = array(array('href' => 'pick_up_point.php?act=list', 'text' => $_LANG['back_list']));
+    	$links = array(array('href' => 'pick_up_point.php?act=list', 'text' => "自提点列表"));
     	sys_msg("自提点插入成功", 0, $links);
     }
     else
@@ -181,7 +181,7 @@ if ($_REQUEST['act'] =='update')
     
     if ($db->autoExecute($ecs->table('pick_up_point'), $pick_up_point, 'UPDATE', "point_id='".$_POST['id']."'") !== false)
     {
-    	$links = array(array('href' => 'pick_up_point.php?act=list', 'text' => $_LANG['back_list']));
+    	$links = array(array('href' => 'pick_up_point.php?act=list', 'text' => "自提点列表"));
     	sys_msg("自提点更新成功", 0, $links);
     }
     else

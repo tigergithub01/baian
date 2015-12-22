@@ -1,5 +1,5 @@
 <!--#订单确认收货地址包含页面，无样式  start-->
-<table class="s-order-table noborder datalist address_list" style="border: 0px;">
+<table class="s-order-table noborder datalist address_list" style="min-height:100px;border: 0px;<!-- {if $smarty.session.flow_consignee && $act neq 'edit'} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->" >
 <tbody>
 	 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
 	 <!-- {if $consignee.address_id} -->

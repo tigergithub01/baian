@@ -1,0 +1,90 @@
+<div class="ps-zf <!-- {if $smarty.session.flow_consignee} -->c-cur-bor<!-- {else} --><!-- {/if} -->">
+				<p class="tishi" style="<!-- {if $smarty.session.flow_consignee} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->">请先保存收货人信息</p>
+				<div class="form dn" style="<!-- {if $smarty.session.flow_consignee} -->display:block;<!-- {else} -->display:none;<!-- {/if} -->">
+					<h4 class="c-tit4">配送方式</h4>
+                     <!--{if $total.real_goods_count neq 0}-->
+					<ul class="ul-radio">
+						    <div class="flowBox-0" >
+							    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="shippingTable">
+									    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >
+									    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配送方式 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<font id="shippingBox_msg" style="font-weight:normal;color:#f08300;">注：请先选择配送区域（省市县），再选择配送方式</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											{if $mes==1}<font style="font-weight:bold;color:red;">本地区购物未积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，如需免运费请继续购物！</font>{/if}
+											{if $mes==2}<font style="font-weight:bold;color:red;">恭喜！本地区购物已积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，配送方式选择汇通快递或汇通(货到付款) 时免运费！</font>{/if}
+										</th>
+							  
+							   			<tr>
+							   				<td width=10% height="15"></td><td width="90%" >&nbsp;</td>
+							   			</tr>            
+							            <tr>
+										      <td width="10%" align="right" valign="top"></td>
+										      <td width="90%" valign=top>
+													<div id="shippingBox">
+														<table width="100%"  cellpadding="0" cellspacing="0" >
+														<!-- {foreach from=$shipping_list name=shipping_list item=shipping} 循环配送方式 -->
+														<tr>
+														<td width="30%" height=25  valign=top>
+															<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
+														[{$shipping.format_shipping_fee}]
+														
+														<input type="hidden" id="shipping_name_{$shipping.shipping_id}" value="{$shipping.shipping_name}"/>
+														</td>
+														<td width="70%" valign=top>
+															{$shipping.shipping_desc}
+														</td>
+														</tr>
+														<!-- {/foreach} 循环配送方式 -->
+														</table>
+													</div>
+										      </td>	      
+							            </tr>            
+							            <tr>
+							              <td colspan="2" align="right"><label for="ECS_NEEDINSURE" style="display:none;">
+							                <input name="need_insure" id="ECS_NEEDINSURE" type="checkbox"  onclick="selectInsure(this.checked)" value="1" {if $order.need_insure}checked="true"{/if} {if $insure_disabled}disabled="true"{/if}  />
+							                {$lang.need_insure} </label>&nbsp;</td>
+							            </tr>
+							    </table>
+						    </div>
+				        <!--{else}-->
+				        <input name = "shipping" type="radio" value = "-1" checked="checked"  style="<!-- {if $smarty.session.flow_consignee} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->" />
+				        <!--{/if}-->
+					</ul>
+					
+					
+					<div class="h"></div>
+					<h4 class="c-tit4">支付方式</h4>
+					<ul class="ul-radio">
+					    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+					    <div >
+					    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
+					    	<th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
+							<tr><td colspan=6 height="15">&nbsp;</td></tr>
+					            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
+					            <!-- 循环支付方式，不包含微信支付 -->
+					            {if $payment.pay_id != 18}
+					            <tr>
+						    	<td width="10%" height="25">&nbsp;</td>
+					              <td valign="top" height=25 width="27%">
+					              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
+					              		{$payment.pay_name}
+					              		
+					              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>
+					              </td>              
+					              <td valign="top" >{$payment.pay_desc}</td>
+					            </tr>
+					            {/if}
+					            <!-- {/foreach} 循环支付方式 -->
+					          </table>
+					    </div>
+					    <!--{else}-->
+					        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
+					    <!--{/if}-->
+					</ul>
+					<div class="h"></div>
+					<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
+					
+				</div>
+				
+				
+				<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+		</div>

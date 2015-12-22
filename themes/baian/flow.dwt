@@ -802,14 +802,13 @@
       <div>      
 			<!--修改代码 by pgge  start -->
            <!--收货人地址开始-->
-           <h3 class="c-tit3">收货人信息 <a class="xg1" href="javascript:void(0)">修改</a></h3>	
-			
+           <h3 class="c-tit3">收货人信息 <a class="xg1" href="javascript:void(0)" style="<!-- {if $smarty.session.flow_consignee} -->display:inline-block;<!-- {else} -->display:none;<!-- {/if} -->">修改</a></h3>	
             <!-- 如果有收货地址，循环显示用户的收货地址 -->
-             <div class="shou-info c-cur-bor">
-	             <p class="info dn" style="display:none;">收货人信息：
-             		<span id="consignee" style="padding-left: 5px;">郭平3</span>
-             		<span id="mobile" style="padding-left: 10px;">13724347765</span>  
-             		<span id="address" style="padding-left: 5px;">7777777</span>
+             <div class="shou-info <!-- {if $smarty.session.flow_consignee} --><!-- {else} -->c-cur-bor<!-- {/if} -->">
+	             <p class="info dn" style="<!-- {if $smarty.session.flow_consignee} -->display:block;<!-- {else} -->display:none;<!-- {/if} -->">收货人信息：
+             		<span id="consignee" style="padding-left: 5px;">{$smarty.session.flow_consignee.consignee}</span>
+             		<span id="mobile" style="padding-left: 10px;">{$smarty.session.flow_consignee.mobile}</span>  
+             		<span id="address" style="padding-left: 5px;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
 	             </p>
 		       	 <div id="order_address_list" class="">
 		       	 <!-- #BeginLibraryItem "/Library/order_address_list.lbi" --><!-- #EndLibraryItem -->
@@ -825,97 +824,9 @@
      	<form action="flow.php" method="post" name="theForm" onsubmit="return checkOrder();"> 
 		<div class="h15"></div>
 			<h3 class="c-tit3">配送及支付方式 <a class="xg2" href="javascript:void(0);">修改</a></h3>
-            <div class="ps-zf">
-				<p class="tishi">请先保存收货人信息</p>
-				<div class="form dn">
-					<h4 class="c-tit4">配送方式</h4>
-                     <!--{if $total.real_goods_count neq 0}-->
-					<ul class="ul-radio">
-						    <div class="flowBox-0" >
-							    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="shippingTable">
-									    <th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >
-									    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;配送方式 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<font id="shippingBox_msg" style="font-weight:normal;color:#f08300;">注：请先选择配送区域（省市县），再选择配送方式</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											{if $mes==1}<font style="font-weight:bold;color:red;">本地区购物未积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，如需免运费请继续购物！</font>{/if}
-											{if $mes==2}<font style="font-weight:bold;color:red;">恭喜！本地区购物已积满{$XL_FULL}个<img src="themes/baian/images/ba_jyxl_l.gif" style="width:20px; height:20px;" title="笑脸">，配送方式选择汇通快递或汇通(货到付款) 时免运费！</font>{/if}
-										</th>
-							  
-							   			<tr>
-							   				<td width=10% height="15"></td><td width="90%" >&nbsp;</td>
-							   			</tr>            
-							            <tr>
-										      <td width="10%" align="right" valign="top"></td>
-										      <td width="90%" valign=top>
-													<div id="shippingBox">
-														<table width="100%"  cellpadding="0" cellspacing="0" >
-														<!-- {foreach from=$shipping_list name=shipping_list item=shipping} 循环配送方式 -->
-														<tr>
-														<td width="30%" height=25  valign=top>
-															<input name="shipping" type="radio" value="{$shipping.shipping_id}"  supportCod="{$shipping.support_cod}" insure="{$shipping.insure}" onclick="selectShipping(this)" /> {$shipping.shipping_name} 
-														[{$shipping.format_shipping_fee}]
-														
-														<input type="hidden" id="shipping_name_{$shipping.shipping_id}" value="{$shipping.shipping_name}"/>
-														</td>
-														<td width="70%" valign=top>
-															{$shipping.shipping_desc}
-														</td>
-														</tr>
-														<!-- {/foreach} 循环配送方式 -->
-														</table>
-													</div>
-										      </td>	      
-							            </tr>            
-							            <tr>
-							              <td colspan="2" align="right"><label for="ECS_NEEDINSURE" style="display:none;">
-							                <input name="need_insure" id="ECS_NEEDINSURE" type="checkbox"  onclick="selectInsure(this.checked)" value="1" {if $order.need_insure}checked="true"{/if} {if $insure_disabled}disabled="true"{/if}  />
-							                {$lang.need_insure} </label>&nbsp;</td>
-							            </tr>
-							    </table>
-						    </div>
-				        <!--{else}-->
-				        <input name = "shipping" type="radio" value = "-1" checked="checked"  style="display:none"/>
-				        <!--{/if}-->
-					</ul>
-					
-					
-					<div class="h"></div>
-					<h4 class="c-tit4">支付方式</h4>
-					<ul class="ul-radio">
-					    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
-					    <div >
-					    <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="white" id="paymentTable">
-					    	<th colspan=6 style="text-align:left;height:30px;line-height:30px;font-size:14px;font-weight:bold;background:#fffddb;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$lang.payment_method}</th>
-							<tr><td colspan=6 height="15">&nbsp;</td></tr>
-					            <!-- {foreach from=$payment_list name="payment_list" item=payment} -->
-					            <!-- 循环支付方式，不包含微信支付 -->
-					            {if $payment.pay_id != 18}
-					            <tr>
-						    	<td width="10%" height="25">&nbsp;</td>
-					              <td valign="top" height=25 width="27%">
-					              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
-					              		{$payment.pay_name}
-					              		
-					              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>
-					              </td>              
-					              <td valign="top" >{$payment.pay_desc}</td>
-					            </tr>
-					            {/if}
-					            <!-- {/foreach} 循环支付方式 -->
-					          </table>
-					    </div>
-					    <!--{else}-->
-					        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
-					    <!--{/if}-->
-					</ul>
-					<div class="h"></div>
-					<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
-					
-				</div>
-				
-				
-				<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
-		</div>
-	 
+            <div id="ECS_SHIPPING_PARMENT" >
+            <!-- #BeginLibraryItem "/Library/order_shipping_payment.lbi" --><!-- #EndLibraryItem -->
+	 		</div>
 	            
 	  <!-- 商品信息start -->          
 	  <div class="h15"></div>
@@ -1141,7 +1052,7 @@
 				$(".ps-zf .form").hide();
 				$(".ps-zf .info").show();
 				
-				refresh_address_list();
+				refresh_address_list('edit');
 			});
 			
 			/***点击修改配送已经支付方式链接***/
@@ -1228,12 +1139,40 @@
         				$("#mobile").text(data.content.mobile);
         				$("#address").text(data.content.province_name+data.content.city_name+data.content.district_name+data.content.address);
         				
+        				
+        				//TODO:重新刷新页面，计算的逻辑太多了
+        				//window.location.href = 'flow.php?step=checkout';
+        				order_shipping_payment_total();
         		    }else{
         		    	alert(data.message);
         		    }
         	    }  
         	}); 
         }
+		
+        /***改变收货人信息时修改配送、支付、订单汇总***/
+        function order_shipping_payment_total(address_id){
+        	$.ajax({     
+        	    url:'flow.php?step=order_shipping_payment_total',     
+        	    type:'post',  
+        	    dataType:'json', 
+        	    data:{},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	//alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        	    	console.debug(data);
+        		    if(data.error==''){
+        		    	$("#ECS_SHIPPING_PARMENT").html(data.content);
+        		    	$("#ECS_ORDERTOTAL").html(data.total);
+        		    }else{
+        		    	alert(data.error);     		    	
+        		    }
+        	    }  
+        	}); 
+        }
+		
 		
 		
         /***删除货人信息***/
@@ -1295,12 +1234,12 @@
         }
         
         /**重新加载地址列表****/
-        function refresh_address_list(){
+        function refresh_address_list(act){
         	$.ajax({     
         	    url:'flow.php?step=address_list',     
         	    type:'post',  
         	    dataType:'html', 
-        	    data:{},     
+        	    data:{act:'edit'},     
         	    async :true, 
         	    error:function(){ 
         	    	//alert('更新出错！');

@@ -1907,10 +1907,22 @@ function get_consignee($user_id)
 
         if ($user_id > 0)
         {
-            /* 取默认地址 */
-            $sql = "SELECT ua.*".
+        	/* 取默认地址 */
+        	$sql = "SELECT ua.*, rg_country.region_name AS country_name, ".
+        			"rg_province.region_name AS province_name, ".
+        			"rg_city.region_name AS city_name, ".
+        			"rg_district.region_name AS district_name ".
+        			' FROM ' . $GLOBALS['ecs']->table('user_address') .' AS ua ' .
+        			' INNER JOIN ' . $GLOBALS['ecs']->table('users') . ' AS u ON ua.address_id = u.address_id' .
+        			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_country ON ua.country = rg_country.region_id' .
+        			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_province ON ua.province = rg_province.region_id' .
+        			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_city ON ua.city = rg_city.region_id' .
+        			' LEFT JOIN ' . $GLOBALS['ecs']->table('region') . ' AS rg_district ON ua.district = rg_district.region_id' .
+        			" WHERE u.user_id = '$user_id' LIMIT 1";
+            
+            /* $sql = "SELECT ua.*".
                     " FROM " . $GLOBALS['ecs']->table('user_address') . "AS ua, ".$GLOBALS['ecs']->table('users').' AS u '.
-                    " WHERE u.user_id='$user_id' AND ua.address_id = u.address_id";
+                    " WHERE u.user_id='$user_id' AND ua.address_id = u.address_id"; */
 
             $arr = $GLOBALS['db']->getRow($sql);
         }

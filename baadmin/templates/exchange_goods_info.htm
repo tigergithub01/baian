@@ -69,7 +69,7 @@ function searchGoods()
     var filter = new Object;
     filter.keyword = document.forms['theForm'].elements['keywords'].value;
 
-    Ajax.call('exchange_goods.php?is_ajax=1&act=search_goods', filter, searchGoodsResponse, 'GET', 'JSON')
+    Ajax.call('exchange_goods.php?is_ajax=1&act=search_goods', 'JSON='+$.toJSON(filter), searchGoodsResponse, 'GET', 'JSON')
 }
 
 function searchGoodsResponse(result)

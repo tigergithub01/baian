@@ -722,7 +722,7 @@ elseif ($_REQUEST['step'] == 'checkout')
     }
 
     // 给货到付款的手续费加<span id>，以便改变配送的时候动态显示
-    $payment_list = available_payment_list(1, $cod_fee);
+    $payment_list = available_payment_list(1, $cod_fee,false,$region);
     if(isset($payment_list))
     {
         foreach ($payment_list as $key => $payment)
@@ -2662,7 +2662,7 @@ elseif ($_REQUEST['step'] == 'order_shipping_payment_total'){
 	}
 	
 	// 给货到付款的手续费加<span id>，以便改变配送的时候动态显示
-	$payment_list = available_payment_list(1, $cod_fee);
+	$payment_list = available_payment_list(1, $cod_fee,false,$region);
 	if(isset($payment_list))
 	{
 		foreach ($payment_list as $key => $payment)

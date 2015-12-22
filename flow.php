@@ -563,7 +563,7 @@ elseif ($_REQUEST['step'] == 'checkout')
     
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/ 
 	/* 代码增加start  By  www.ecshop120.com */
-	$sql_qq2211707="select store_id  from ". $ecs->table('goods_storeroom') ." where store_province like '%,". $consignee['province'] .",%' ";
+	/* $sql_qq2211707="select store_id  from ". $ecs->table('goods_storeroom') ." where store_province like '%,". $consignee['province'] .",%' ";
 	$store_id_qq2211707 = $db -> getOne($sql_qq2211707);
 	foreach ($cart_goods as $cart_goods_ecshop120com => $cart_goods_wwwECshop120com)
 	{
@@ -586,7 +586,7 @@ elseif ($_REQUEST['step'] == 'checkout')
 		$sql_wwwecshop120com="select store_number from ". $ecs->table("products_storeroom") ." where goods_id= '".$cart_goods_wwwECshop120com['goods_id']."' and goods_attr='".$attr_wwwECSHOP120com."' and  store_id= '$store_id_qq2211707' limit 0,1";
 		$store_number_wwwecshop120com = $db->getOne($sql_wwwecshop120com);
 		$cart_goods[$cart_goods_ecshop120com]['is_youhuo_wwwECSHOP120com'] = $store_number_wwwecshop120com  ? "有货" : "<font color=#ff3300>无货</font>";
-	}
+	} */
 	//echo '<pre>';
 	//print_r($cart_goods);
 	//echo '</pre>';
@@ -643,10 +643,11 @@ elseif ($_REQUEST['step'] == 'checkout')
     // 查看购物车中是否全为免运费商品，若是则把运费赋为零
     $sql = 'SELECT count(*) FROM ' . $ecs->table('cart') . " WHERE `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
     $shipping_count = $db->getOne($sql);
-/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
     $shipping_count = get_not_free_shipping_count($region);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
 
+    //TODO:reduce_ship_amt,需要加入可减运费的判断
     foreach ($shipping_list AS $key => $val)
     {
         $shipping_cfg = unserialize_config($val['configure']);
@@ -854,6 +855,9 @@ elseif ($_REQUEST['step'] == 'address_list')
 	include_once(ROOT_PATH . 'includes/lib_transaction.php');
 	include_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/shopping_flow.php');
 	$smarty->assign('lang',  $_LANG);
+	
+	/* 当前操作、新增、编辑、设置默认收货地址、删除收货地址 */
+	$act = isset($_REQUEST['act'])   ? $_REQUEST['act']  : '';
 
 	/* 取得国家列表、商店所在国家、商店所在国家的省列表 */
 	$smarty->assign('country_list',       get_regions());
@@ -903,7 +907,8 @@ elseif ($_REQUEST['step'] == 'address_list')
 	$smarty->assign('currency_format',  $_CFG['currency_format']);
 	$smarty->assign('integral_scale',   $_CFG['integral_scale']);
 	$smarty->assign('name_of_region',   array($_CFG['name_of_region_1'], $_CFG['name_of_region_2'], $_CFG['name_of_region_3'], $_CFG['name_of_region_4']));
-
+	$smarty->assign('act', $act);
+	
 	$smarty->display('library/order_address_list.lbi');
 	exit;
 }
@@ -2505,7 +2510,7 @@ elseif ($_REQUEST['step'] == 'flow_update_cart_goods'){
 // 		lib_main_make_json_error($res['msg']);
 	}	
 }elseif ($_REQUEST['step'] == 'get_cart_goods'){
-	//货物购物车商品信息
+	//获取购物车商品信息
 	$cart_goods = get_cart_goods();
 	lib_main_make_json_result('',$cart_goods);
 }elseif ($_REQUEST['step'] == 'drop_goods_batch'){
@@ -2525,6 +2530,177 @@ elseif ($_REQUEST['step'] == 'flow_update_cart_goods'){
 	ecs_header("Location: flow.php\n");
 	exit;
 }
+/*------------------------------------------------------ */
+//-- 改变配送地址时，获取配送方式，支付方式，订单汇总信息
+/*------------------------------------------------------ */
+elseif ($_REQUEST['step'] == 'order_shipping_payment_total'){
+	include_once('includes/cls_json.php');
+	$json = new JSON;
+	$result = array('error' => '', 'content' => '', 'need_insure' => 0);
+	//TODO:业务逻辑太多，现在现在配送地址时，直接刷新页面
+	
+	/* 取得购物类型 */
+	$flow_type = isset($_SESSION['flow_type']) ? intval($_SESSION['flow_type']) : CART_GENERAL_GOODS;
+	
+	//获取收货人信息
+	$consignee = $_SESSION['flow_consignee'];
+	
+	/* 对商品信息赋值 */
+	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/
+	$region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
+	$cart_goods = cart_goods($flow_type,$region,1); // 取得商品列表，计算合计
+	
+	//echo '<pre>';
+	//print_r($cart_goods);
+	//echo '</pre>';
+	/* 代码增加end   By  www.ecshop120.com */
+	$smarty->assign('goods_list', $cart_goods);
+	
+	
+	/*
+	 * 取得订单信息
+	*/
+	$order = flow_order_info();
+	$order['shipping_id'] = 1; //默认配送方式ID
+	$order['pay_id'] = 1; //默认支付方式ID
+	$smarty->assign('order', $order);
+	
+	
+	/*
+	 * 计算订单的费用
+	 */
+	$total = order_fee($order, $cart_goods, $consignee);
+	
+	$smarty->assign('total', $total);
+	
+	/* 取得配送列表 */
+	$region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
+	$shipping_list     = available_shipping_list($region);
+	$cart_weight_price = cart_weight_price($flow_type);
+	$insure_disabled   = true;
+	$cod_disabled      = true;
+	
+	// 查看购物车中是否全为免运费商品，若是则把运费赋为零
+	$sql = 'SELECT count(*) FROM ' . $ecs->table('cart') . " WHERE session_id = '" . SESS_ID. "' AND extension_code != 'package_buy' AND is_shipping = 0";
+	$shipping_count = $db->getOne($sql);
+	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/
+	$shipping_count = get_not_free_shipping_count($region);
+	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/
+	
+	//TODO:reduce_ship_amt,需要加入可减运费的判断
+	foreach ($shipping_list AS $key => $val)
+	{
+		$shipping_cfg = unserialize_config($val['configure']);
+		$shipping_fee = ($shipping_count == 0 AND $cart_weight_price['free_shipping'] == 1) ? 0 : shipping_fee($val['shipping_code'], unserialize($val['configure']),
+				$cart_weight_price['weight'], $cart_weight_price['amount'], $cart_weight_price['number']);
+	
+		$shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee, false);
+		$shipping_list[$key]['shipping_fee']        = $shipping_fee;
+		$shipping_list[$key]['free_money']          = price_format($shipping_cfg['free_money'], false);
+		$shipping_list[$key]['insure_formated']     = strpos($val['insure'], '%') === false ?
+		price_format($val['insure'], false) : $val['insure'];
+	
+		/* 当前的配送方式是否支持保价 */
+		if ($val['shipping_id'] == $order['shipping_id'])
+		{
+			$insure_disabled = ($val['insure'] == 0);
+			$cod_disabled    = ($val['support_cod'] == 0);
+		}
+	}
+	
+	$smarty->assign('shipping_list',   $shipping_list);
+	$smarty->assign('insure_disabled', $insure_disabled);
+	$smarty->assign('cod_disabled',    $cod_disabled);
+	
+	/* 取得支付列表 */
+	if ($order['shipping_id'] == 0)
+	{
+		$cod        = true;
+		$cod_fee    = 0;
+	}
+	else
+	{
+		$shipping = shipping_info($order['shipping_id']);
+		$cod = $shipping['support_cod'];
+	
+		if ($cod)
+		{
+			/* 如果是团购，且保证金大于0，不能使用货到付款 */
+			if ($flow_type == CART_GROUP_BUY_GOODS)
+			{
+				$group_buy_id = $_SESSION['extension_id'];
+				if ($group_buy_id <= 0)
+				{
+					show_message('error group_buy_id');
+				}
+				$group_buy = group_buy_info($group_buy_id);
+				if (empty($group_buy))
+				{
+					show_message('group buy not exists: ' . $group_buy_id);
+				}
+	
+				if ($group_buy['deposit'] > 0)
+				{
+					$cod = false;
+					$cod_fee = 0;
+	
+					/* 赋值保证金 */
+					$smarty->assign('gb_deposit', $group_buy['deposit']);
+				}
+			}
+	
+			if ($cod)
+			{
+				$shipping_area_info = shipping_area_info($order['shipping_id'], $region);
+				$cod_fee            = $shipping_area_info['pay_fee'];
+			}
+		}
+		else
+		{
+			$cod_fee = 0;
+		}
+	}
+	
+	// 给货到付款的手续费加<span id>，以便改变配送的时候动态显示
+	$payment_list = available_payment_list(1, $cod_fee);
+	if(isset($payment_list))
+	{
+		foreach ($payment_list as $key => $payment)
+		{
+			if ($payment['is_cod'] == '1')
+			{
+				$payment_list[$key]['format_pay_fee'] = '<span id="ECS_CODFEE">' . $payment['format_pay_fee'] . '</span>';
+			}
+			/* 如果有易宝神州行支付 如果订单金额大于300 则不显示 */
+			if ($payment['pay_code'] == 'yeepayszx' && $total['amount'] > 300)
+			{
+				unset($payment_list[$key]);
+			}
+			/* 如果有余额支付 */
+			if ($payment['pay_code'] == 'balance')
+			{
+				/* 如果未登录，不显示 */
+				if ($_SESSION['user_id'] == 0)
+				{
+					unset($payment_list[$key]);
+				}
+				else
+				{
+					if ($_SESSION['flow_order']['pay_id'] == $payment['pay_id'])
+					{
+						$smarty->assign('disable_surplus', 1);
+					}
+				}
+			}
+		}
+	}
+	$smarty->assign('payment_list', $payment_list);	
+	
+	$result['content'] = $smarty->fetch('library/order_shipping_payment.lbi');
+	$result['total'] = $smarty->fetch('library/order_total.lbi');
+	die($json->encode($result));
+}
+
 
 $smarty->assign('currency_format', $_CFG['currency_format']);
 $smarty->assign('integral_scale',  $_CFG['integral_scale']);

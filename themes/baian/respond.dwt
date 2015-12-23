@@ -9,7 +9,11 @@
 <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="icon" href="animated_favicon.gif" type="image/gif" />
-<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/themes/baian/css/cui.css" />
+	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
+	<link rel="stylesheet" href="/themes/baian/css/style.css" />
+	{insert_scripts files='common.js,transport1.js'}
+	
 {* 包含脚本文件 *}
 {insert_scripts files='common.js'}
 <style type="text/css">
@@ -44,7 +48,7 @@ p a{color:#006acd; text-decoration:underline;}
         <!--{/foreach}-->
         </table>
         <!--{/if}-->
-        <a href="{$shop_url}">{$lang.back_home}</a>
+        <a href="{$shop_url}">查看订单列表</a>
       </div>
     </div>
    </div>

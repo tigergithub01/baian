@@ -433,7 +433,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     }  
     
     
-    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, o.pay_id, " .
+    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, o.pay_id, o.shipping_name, o.invoice_no, " .
            "(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
            " FROM " .$GLOBALS['ecs']->table('order_info') ." AS o ".
            " WHERE $where ORDER BY o.add_time DESC";
@@ -456,7 +456,10 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             /* 对配送状态的处理 */
             if ($row['shipping_status'] == SS_SHIPPED)
             {
-                @$row['handler'] = "<a href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                @$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                if(!empty($row['invoice_no'])){
+                	@$row['handler'] .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
+                }
             }
             elseif ($row['shipping_status'] == SS_RECEIVED)
             {
@@ -1402,7 +1405,8 @@ function get_order_detail($order_id, $user_id = 0)
         {
               include_once($plugin);
               $shipping = new $shipping_code;
-              $order['invoice_no'] = $shipping->query($order['invoice_no']);
+              //接入kuaidi100
+//               $order['invoice_no'] = $shipping->query($order['invoice_no']);
         }
     }
 

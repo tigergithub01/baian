@@ -1234,3 +1234,30 @@ function cart_goods_number(){
 	    }  
 	});
 }
+
+/**
+ * 查看物流详细信息
+ * @param shipping_name
+ * @param invoice_no
+ */
+function get_shipping_detail(shipping_name,invoice_no){
+	$("#shipping_detail_info").css({width:600,height:400}).empty().append("<span>数据加载中，请稍等...</span>");
+	$.fancybox.open("#shipping_detail_info");
+	$.ajax({     
+	    url:'plugins/kuaidi100/kuaidi100_post.php?com='+ shipping_name+'&nu=' + invoice_no,     
+	    type:'post',  
+	    dataType:'html', 
+	    data:{},     
+	    async :true, 
+	    error:function(){ 
+//	    	alert('更新出错！');
+	    },     
+	    success:function(data){ 
+	    	$("#shipping_detail_info").empty();
+	    	$("#shipping_detail_info").html(data);
+	    	//console.debug($("#shipping_detail_info"));
+	    	//$.fancybox.open("#shipping_detail_info");
+	    }  
+	});
+	
+}

@@ -33,6 +33,9 @@
 
             <!-- *用户中心默认显示页面 start-->
             <!-- {if $action eq 'default'} -->
+            <script type="text/javascript" src="/themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	   		<link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	   		
             <div class="s-userBox">
                     <div class="avatar"><img src="images/sp2.jpg" alt=""><a class="orange" href="user.php?act=profile">【修改个人资料】</a></div>
                     <div class="signBox" onclick="return sign_day();">
@@ -142,6 +145,9 @@
 				       <!--{/foreach}-->
                     
                 </div>
+                <!-- 用来显示物流明细信息 -->
+                <div id="shipping_detail_info"></div>
+                
                 <script type="text/javascript">
                 	<!-- 每日签到 -->
 	                function sign_day(){

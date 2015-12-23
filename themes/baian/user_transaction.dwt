@@ -1203,6 +1203,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
    
       <!--#订单列表界面 start-->
        <!-- {if $action eq 'order_list'} -->
+       <script type="text/javascript" src="/themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	   <link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
        <div class="hyzx"><li>交易管理</li><li class="now"><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
        <div class="blank"></div>
        
@@ -1327,6 +1330,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
        
+       <!-- 用来显示物流明细信息 -->
+       <div id="shipping_detail_info"></div>
+       
        <div class="blank5"></div>
        <!--{/if}-->
       <!--#订单列表界面 end-->    
@@ -1387,10 +1393,22 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="h15"></div>
 			<h3 class="c-tit3">配送及支付方式</h3>
 			<div class="ps-zf">
-				<p class="info dn" style="display: block;">配送方式： {$order.shipping_name}&#12288;&#12288;支付方式： {$order.pay_name}</p>
+				<p class="info dn" style="display: block;">配送方式： {$order.shipping_name}&#12288;&#12288;支付方式： {$order.pay_name}&#12288;&#12288;<!-- {if $order.invoice_no}-->快递单号： {$order.invoice_no}<!-- {/if} --></p>
+				
 				<!-- {if $order.pick_up_point_name} -->
 				<p class="info dn" style="display: block;">自提点： {$order.pick_up_point_name}&#12288;&#12288;自提地址：{$order.pick_up_point_addr}</p>
 				<!-- {/if} -->
+				
+				<!-- {if $order.invoice_no}-->
+		          <h5><span>物流跟踪</span></h5>
+		          <div class="blank"></div>
+		          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+		            <tr>
+		              <td bgcolor="#ffffff"><div id="retData"></div></td>
+		            </tr>
+		          </table>
+		          <!--{/if}-->
+          
 			</div>
 			<div class="h15"></div>
 			<h3 class="c-tit3">商品信息</h3>
@@ -1452,7 +1470,13 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		</div>
 	</div>
 	<div class="h20"></div>
-      
+     
+     <script language="javascript">
+		document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍后...</center>";
+		var expressid = '{$order.shipping_name}';
+		var expressno = '{$order.invoice_no}';
+		Ajax.call('plugins/kuaidi100/kuaidi100_post.php?com='+ expressid+'&nu=' + expressno,'showtest=showtest', function(data){document.getElementById("retData").innerHTML=data;}, 'GET', 'TEXT');
+	</script> 
       
 
          

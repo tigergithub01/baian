@@ -123,7 +123,7 @@ class chinabank
         $def_url .= "<input type=HIDDEN name='v_url'  value='".$data_vreturnurl."'>";
         $def_url .= "<input type=HIDDEN name='v_md5info' value='".$MD5KEY."'>";
         $def_url .= "<input type=HIDDEN name='remark1' value='".$remark1."'>";
-        $def_url .= "<input type=submit value='" .$GLOBALS['_LANG']['pay_button']. "'>";
+        $def_url .= "<input class='btn_submit' type=submit value='" .$GLOBALS['_LANG']['pay_button']. "'>";
         $def_url .= "</form>";
 
         return $def_url;

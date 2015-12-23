@@ -493,7 +493,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
         	//added by tiger.guo 20151220
         	if ($row['pay_status'] == PS_UNPAYED){
         		$row['handler'] = $pay_online;
-        		$row['handler'] .= "<a href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
+        		$row['handler'] .= "<a class=\"a-btn\" href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
         	}else if(in_array($row['shipping_status'], array(SS_SHIPPED, SS_RECEIVED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
         		//去评价
         		if(!is_commented($row['order_id'])){
@@ -1428,44 +1428,47 @@ function get_order_detail($order_id, $user_id = 0)
     $order['exist_real_goods'] = exist_real_goods($order_id);
 
     /* 如果是未付款状态，生成支付按钮 */
-    if ($order['pay_status'] == PS_UNPAYED &&
-        ($order['order_status'] == OS_UNCONFIRMED ||
-        $order['order_status'] == OS_CONFIRMED))
-    {
-        /*
-         * 在线支付按钮
-         */
-        //支付方式信息
-        $payment_info = array();
-        $payment_info = payment_info($order['pay_id']);
+    $order['pay_online'] = get_order_pay_online($order);
+    
+//     /* 如果是未付款状态，生成支付按钮 */
+//     if ($order['pay_status'] == PS_UNPAYED &&
+//         ($order['order_status'] == OS_UNCONFIRMED ||
+//         $order['order_status'] == OS_CONFIRMED))
+//     {
+//         /*
+//          * 在线支付按钮
+//          */
+//         //支付方式信息
+//         $payment_info = array();
+//         $payment_info = payment_info($order['pay_id']);
 
-        //无效支付方式
-        if ($payment_info === false)
-        {
-            $order['pay_online'] = '';
-        }
-        else
-        {
-            //取得支付信息，生成支付代码
-            $payment = unserialize_config($payment_info['pay_config']);
+//         //无效支付方式
+//         if ($payment_info === false)
+//         {
+//             $order['pay_online'] = '';
+//         }
+//         else
+//         {
+//             //取得支付信息，生成支付代码
+//             $payment = unserialize_config($payment_info['pay_config']);
 
-            //获取需要支付的log_id
-            $order['log_id']    = get_paylog_id($order['order_id'], $pay_type = PAY_ORDER);
-            $order['user_name'] = $_SESSION['user_name'];
-            $order['pay_desc']  = $payment_info['pay_desc'];
+//             //获取需要支付的log_id
+//             $order['log_id']    = get_paylog_id($order['order_id'], $pay_type = PAY_ORDER);
+//             $order['user_name'] = $_SESSION['user_name'];
+//             $order['pay_desc']  = $payment_info['pay_desc'];
 
-            /* 调用相应的支付方式文件 */
-            include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
+//             /* 调用相应的支付方式文件 */
+//             include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
 
-            /* 取得在线支付方式的支付按钮 */
-            $pay_obj    = new $payment_info['pay_code'];
-            $order['pay_online'] = $pay_obj->get_code($order, $payment);
-        }
-    }
-    else
-    {
-        $order['pay_online'] = '';
-    }
+//             /* 取得在线支付方式的支付按钮 */
+//             $pay_obj    = new $payment_info['pay_code'];
+//             $order['pay_online'] = $pay_obj->get_code($order, $payment);
+//         }
+//     }
+//     else
+//     {
+//         $order['pay_online'] = '';
+//     }
 
     /* 无配送时的处理 */
     $order['shipping_id'] == -1 and $order['shipping_name'] = $GLOBALS['_LANG']['shipping_not_need'];

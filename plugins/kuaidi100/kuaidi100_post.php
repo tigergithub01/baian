@@ -1,6 +1,6 @@
 <?php
-$getcom = trim($_GET["com"]);
-$getNu = trim($_GET["nu"]);
+$getcom = trim($_REQUEST["com"]);
+$getNu = trim($_REQUEST["nu"]);
 
 //echo $typeCom.'<br/>' ;
 //echo $getNu ;
@@ -36,7 +36,7 @@ if(isset($postcom)&&isset($getNu)){
 	//}
 	
 	//有广告：去掉 <div id="PAGE_AD_880117" class="kd-bottom" style="width:468px;left:32px">
-    echo '<iframe src="'.$get_content.'" width="534" height="340" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"><br/>' . $powered;
+    echo '<iframe src="'.$get_content.'" width="100%" height="340" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"><br/>' . $powered;
 	
 }else{
 	echo '查询失败，请重试';

@@ -471,6 +471,10 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             	if(!is_order_backed($row['order_id'])){
             		$row['handler'] .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
             	}
+            	
+            	if(!empty($row['invoice_no'])){
+            		@$row['handler'] .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
+            	}
             }
             else
             {

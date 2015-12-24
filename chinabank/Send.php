@@ -1,9 +1,9 @@
 <!--  
  * ====================================================================
  *
- *                Send.php ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½á¹©
+ *                Send.php ÓÉÍøÒøÔÚÏß¼¼ÊõÖ§³ÖÌá¹©
  *
- *  ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢,ï¿½ï¿½ï¿½á½»Ö§ï¿½ï¿½ï¿½?ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½Æ½Ì¨....
+ *  ±¾Ò³Ãæ½ÓÊÕÀ´×ÔÉÏÒ³ËùÓÐ¶©µ¥ÐÅÏ¢,²¢Ìá½»Ö§¸¶±íµ¥ÐÅÏ¢µ½ÍøÏßÔÚÏßÖ§¸¶Æ½Ì¨....
  *
  * 
  * ====================================================================
@@ -12,64 +12,64 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½Ó¿ï¿½PHPï¿½ï¿½</title>
+<title>ÔÚÏßÖ§¸¶½Ó¿ÚPHP°æ</title>
 
 <link href="css/index.css" rel="stylesheet" type="text/css">
 </head>
 <body onLoad="javascript:document.E_FORM.submit()">
 <?php
 //****************************************
-	$v_mid = '22857636';								    // 1001ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµÄ²ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½Å£ï¿½ï¿½Ì»ï¿½Òªï¿½æ»»Îªï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½Å¡ï¿½
+	$v_mid = '22857636';								    // 1001ÊÇÍøÒøÔÚÏßµÄ²âÊÔÉÌ»§ºÅ£¬ÉÌ»§ÒªÌæ»»Îª×Ô¼ºµÄÉÌ»§ºÅ¡£
 
-	$v_url = 'http://123121.com/chinabak/Receive.php';	// ï¿½Ì»ï¿½ï¿½Ô¶ï¿½ï¿½å·µï¿½Ø½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æ¡£ï¿½ï¿½Ó¦Receive.phpÊ¾ï¿½ï¿½
-	                                                    //ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½B2CÏµÍ³ï¿½Ì»ï¿½ï¿½Ó¿ï¿½ï¿½Äµï¿½v4.1.doc"ï¿½ï¿½2.3.3.1
+	$v_url = 'http://123121.com/chinabak/Receive.php';	// ÉÌ»§×Ô¶¨Òå·µ»Ø½ÓÊÕÖ§¸¶½á¹ûµÄÒ³Ãæ¡£¶ÔÓ¦Receive.phpÊ¾Àý¡£
+	                                                    //²ÎÕÕ"ÍøÒøÔÚÏßÖ§¸¶B2CÏµÍ³ÉÌ»§½Ó¿ÚÎÄµµv4.1.doc"ÖÐ2.3.3.1
 	
-	$key   = 'wei&wang#baian';								    // ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½B2CÏµÍ³ï¿½Ì»ï¿½ï¿½Ó¿ï¿½ï¿½Äµï¿½v4.1.doc"ï¿½ï¿½2.4.1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¡ï¿½
+	$key   = 'wei&wang#baian';								    // ²ÎÕÕ"ÍøÒøÔÚÏßÖ§¸¶B2CÏµÍ³ÉÌ»§½Ó¿ÚÎÄµµv4.1.doc"ÖÐ2.4.1½øÐÐÉèÖÃ¡£
 
-	$remark2 = '[url:=http://123121.com/chinabank/AutoReceive.php]'; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì²½Í¨Öªï¿½Ä½ï¿½ï¿½Õµï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ó¦AutoReceive.phpÊ¾ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½[url:=]ï¿½ï¿½Ê½ï¿½ï¿½
-																//ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½B2CÏµÍ³ï¿½Ì»ï¿½ï¿½Ó¿ï¿½ï¿½Äµï¿½v4.1.doc"ï¿½ï¿½2.3.3.2ï¿½ï¿½
+	$remark2 = '[url:=http://123121.com/chinabank/AutoReceive.php]'; //·þÎñÆ÷Òì²½Í¨ÖªµÄ½ÓÊÕµØÖ·¡£¶ÔÓ¦AutoReceive.phpÊ¾Àý¡£±ØÐëÒªÓÐ[url:=]¸ñÊ½¡£
+																//²ÎÕÕ"ÍøÒøÔÚÏßÖ§¸¶B2CÏµÍ³ÉÌ»§½Ó¿ÚÎÄµµv4.1.doc"ÖÐ2.3.3.2¡£
 
 //****************************************
 
 
-if(trim($_POST['v_oid'])<>"")					//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ð´ï¿½ï¿½Ý¶ï¿½ï¿½ï¿½ï¿½ï¿½
+if(trim($_POST['v_oid'])<>"")					//ÅÐ¶ÏÊÇ·ñÓÐ´«µÝ¶©µ¥ºÅ
 {
 	   $v_oid = trim($_POST['v_oid']); 
 }
 else
 {
-	   $v_oid = date('Ymd',time())."-".$v_mid."-".date('His',time());//ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½é¹¹ï¿½É¸ï¿½Ê½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-ï¿½Ì»ï¿½ï¿½ï¿½-Ð¡Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	   $v_oid = date('Ymd',time())."-".$v_mid."-".date('His',time());//¶©µ¥ºÅ£¬½¨Òé¹¹³É¸ñÊ½ ÄêÔÂÈÕ-ÉÌ»§ºÅ-Ð¡Ê±·ÖÖÓÃë
 
 }
 	 
-	$v_amount = trim($_POST['v_amount']);                   //Ö§ï¿½ï¿½ï¿½ï¿½ï¿½                 
-    $v_moneytype = "CNY";                                            //ï¿½ï¿½ï¿½ï¿½
+	$v_amount = trim($_POST['v_amount']);                   //Ö§¸¶½ð¶î                 
+    $v_moneytype = "CNY";                                            //±ÒÖÖ
 
-	$text = $v_amount.$v_moneytype.$v_oid.$v_mid.$v_url.$key;        //md5ï¿½ï¿½ï¿½ï¿½Æ´ï¿½Õ´ï¿½,×¢ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Ü±ï¿½
-    $v_md5info = strtoupper(md5($text));                             //md5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½×ªï¿½ï¿½ï¿½É´ï¿½Ð´ï¿½ï¿½Ä¸
+	$text = $v_amount.$v_moneytype.$v_oid.$v_mid.$v_url.$key;        //md5¼ÓÃÜÆ´´Õ´®,×¢ÒâË³Ðò²»ÄÜ±ä
+    $v_md5info = strtoupper(md5($text));                             //md5º¯Êý¼ÓÃÜ²¢×ª»¯³É´óÐ´×ÖÄ¸
 
-	 $remark1 = trim($_POST['remark1']);					 //ï¿½ï¿½×¢ï¿½Ö¶ï¿½1
+	 $remark1 = trim($_POST['remark1']);					 //±¸×¢×Ö¶Î1
 	 
 
 
 
-	$v_rcvname   = trim($_POST['v_rcvname'])  ;		// ï¿½Õ»ï¿½ï¿½ï¿½
-	$v_rcvaddr   = trim($_POST['v_rcvaddr'])  ;		// ï¿½Õ»ï¿½ï¿½ï¿½Ö·
-	$v_rcvtel    = trim($_POST['v_rcvtel'])   ;		// ï¿½Õ»ï¿½ï¿½Ëµç»°
-	$v_rcvpost   = trim($_POST['v_rcvpost'])  ;		// ï¿½Õ»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½
-	$v_rcvemail  = trim($_POST['v_rcvemail']) ;		// ï¿½Õ»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½
-	$v_rcvmobile = trim($_POST['v_rcvmobile']);		// ï¿½Õ»ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½
+	$v_rcvname   = trim($_POST['v_rcvname'])  ;		// ÊÕ»õÈË
+	$v_rcvaddr   = trim($_POST['v_rcvaddr'])  ;		// ÊÕ»õµØÖ·
+	$v_rcvtel    = trim($_POST['v_rcvtel'])   ;		// ÊÕ»õÈËµç»°
+	$v_rcvpost   = trim($_POST['v_rcvpost'])  ;		// ÊÕ»õÈËÓÊ±à
+	$v_rcvemail  = trim($_POST['v_rcvemail']) ;		// ÊÕ»õÈËÓÊ¼þ
+	$v_rcvmobile = trim($_POST['v_rcvmobile']);		// ÊÕ»õÈËÊÖ»úºÅ
 
-	$v_ordername   = trim($_POST['v_ordername'])  ;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	$v_orderaddr   = trim($_POST['v_orderaddr'])  ;	// ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ö·
-	$v_ordertel    = trim($_POST['v_ordertel'])   ;	// ï¿½ï¿½ï¿½ï¿½ï¿½Ëµç»°
-	$v_orderpost   = trim($_POST['v_orderpost'])  ;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½
-	$v_orderemail  = trim($_POST['v_orderemail']) ;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½
-	$v_ordermobile = trim($_POST['v_ordermobile']);	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ 
+	$v_ordername   = trim($_POST['v_ordername'])  ;	// ¶©»õÈËÐÕÃû
+	$v_orderaddr   = trim($_POST['v_orderaddr'])  ;	// ¶©»õÈËµØÖ·
+	$v_ordertel    = trim($_POST['v_ordertel'])   ;	// ¶©»õÈËµç»°
+	$v_orderpost   = trim($_POST['v_orderpost'])  ;	// ¶©»õÈËÓÊ±à
+	$v_orderemail  = trim($_POST['v_orderemail']) ;	// ¶©»õÈËÓÊ¼þ
+	$v_ordermobile = trim($_POST['v_ordermobile']);	// ¶©»õÈËÊÖ»úºÅ 
 
 ?>
 
-<!--ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Îªï¿½ï¿½×¼ï¿½ï¿½ HTML ï¿½ï¿½Ê½ + PHP ï¿½ï¿½ï¿½ï¿½ Æ´ï¿½Õ¶ï¿½Éµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ö§ï¿½ï¿½ï¿½Ó¿Ú±ï¿½×¼ï¿½ï¿½Ê¾Ò³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½-->
+<!--ÒÔÏÂÐÅÏ¢Îª±ê×¼µÄ HTML ¸ñÊ½ + PHP ÓïÑÔ Æ´´Õ¶ø³ÉµÄ ÍøÒøÔÚÏß Ö§¸¶½Ó¿Ú±ê×¼ÑÝÊ¾Ò³Ãæ ÎÞÐèÐÞ¸Ä-->
 
 <form method="post" name="E_FORM" action="https://Pay3.chinabank.com.cn/PayGate">
 	<input type="hidden" name="v_mid"         value="<?php echo $v_mid;?>">
@@ -79,14 +79,14 @@ else
 	<input type="hidden" name="v_url"         value="<?php echo $v_url;?>">
 	<input type="hidden" name="v_md5info"     value="<?php echo $v_md5info;?>">
  
- <!--ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ò»Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ò³ -->	
+ <!--ÒÔÏÂ¼¸ÏîÏîÎªÍøÉÏÖ§¸¶Íê³Éºó£¬ËæÖ§¸¶·´À¡ÐÅÏ¢Ò»Í¬´«¸øÐÅÏ¢½ÓÊÕÒ³ -->	
 	
 	<input type="hidden" name="remark1"       value="<?php echo $remark1;?>">
 	<input type="hidden" name="remark2"       value="<?php echo $remark2;?>">
 
 
 
-<!--ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Í»ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ó°ï¿½ï¿½Ö§ï¿½ï¿½ -->
+<!--ÒÔÏÂ¼¸ÏîÖ»ÊÇÓÃÀ´¼ÇÂ¼¿Í»§ÐÅÏ¢£¬¿ÉÒÔ²»ÓÃ£¬²»Ó°ÏìÖ§¸¶ -->
 	<input type="hidden" name="v_rcvname"      value="<?php echo $v_rcvname;?>">
 	<input type="hidden" name="v_rcvtel"       value="<?php echo $v_rcvtel;?>">
 	<input type="hidden" name="v_rcvpost"      value="<?php echo $v_rcvpost;?>">

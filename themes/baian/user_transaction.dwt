@@ -1234,6 +1234,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        			<input type="submit" class="btn_submit" value="查找" />
        		</div>
        </div>
+       </form>
        
        
        <div class="s-myorder">
@@ -1326,7 +1327,6 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	       </table>
 	       <!--{/foreach}-->
        </div>
-       </form>
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
        

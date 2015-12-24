@@ -96,7 +96,7 @@ class cmb
     function get_code($order, $payment)
     {
         $data_merchant_id = $payment['yp_account'];
-        $data_order_id    = $order['order_sn'];
+        $data_order_id    = substr($order['order_sn'], 2,10);//定单号，6位或10位数字，由商户系统生成，一天内不能重复
         $data_amount      = $order['order_amount'];
         //$message_type     = 'Buy';
        // $data_cur         = 'CNY';
@@ -107,8 +107,8 @@ class cmb
 
         $data_return_url  = return_url(basename(__FILE__, '.php'));
 
-        $data_branchid     = $payment['yp_key'];
-        $data_pay_account = $payment['yp_account'];
+        $data_branchid     = $payment['yp_key']; //分行号
+        $data_pay_account = $payment['yp_account']; //商户号
         date_default_timezone_set('UTC');
         $today = date("Ymd");
         $def_url =  $data_merchant_id . $data_order_id . $data_amount . $data_return_url.$today.$data_branchid ;
@@ -120,7 +120,7 @@ class cmb
         $def_url .= "<input type='hidden' name='MerchantUrl' value='".$data_return_url."'>\n";
        $def_url .= "<input type='hidden' name='Date' value='".$today."'>\n";
         $def_url .= "<input type='hidden' name='BranchID' value='".$data_branchid."'>\n";
-        $def_url .= "<input type='submit' value='" . $GLOBALS['_LANG']['pay_button'] . "'>";
+        $def_url .= "<input class='btn_submit' type='submit' value='" . $GLOBALS['_LANG']['pay_button'] . "'>";
         $def_url .= "</form>\n";
 
         return $def_url;
@@ -139,7 +139,7 @@ class cmb
         $succeed        = trim($_REQUEST['Succeed']);   // 获取交易结果,Y成功,N失败
         $amount         = trim($_REQUEST['Amount']);    // 获取订单金额
         $BillNo        = trim($_REQUEST['BillNo']);  // 获取订单ID
-	$Msg = trim($_REQUEST['Msg']);
+		$Msg = trim($_REQUEST['Msg']);
 	//echo $Msg;
         $v_result = false;
 
@@ -149,9 +149,12 @@ class cmb
             {
                 ///支付成功
                 $v_result = true;
+                
+                //验证通过后,将订单sn转换为ID 来操作ec订单表（招行的订单号为6或者10为数字，因为与系统订单号规则不符，模糊匹配）
+                $log_id = get_order_id_by_sn($BillNo,'false',true);
 
                 //$order_id = str_replace($orderid, '', $product_id);
-                order_paid($BillNo, PS_PAYED);
+                order_paid($log_id, PS_PAYED);
             }
         }
 

@@ -85,6 +85,8 @@ $modules['08_members']['10_user_account_manage']    = 'user_account_manage.php?a
 $modules['10_priv_admin']['admin_logs']             = 'admin_logs.php?act=list';
 $modules['10_priv_admin']['admin_list']             = 'privilege.php?act=list';
 $modules['10_priv_admin']['admin_role']             = 'role.php?act=list';
+$modules['10_priv_admin']['agency_list']            = 'agency.php?act=list';
+// $modules['10_priv_admin']['suppliers_list']         = 'suppliers.php?act=list'; // 供货商
 
 $modules['11_system']['01_shop_config']             = 'shop_config.php?act=list_edit';
 $modules['11_system']['02_payment_list']            = 'payment.php?act=list';

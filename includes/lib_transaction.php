@@ -444,6 +444,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
         
+    	$row['order_amount'] = $row['total_fee'];
     	$pay_online = get_order_pay_online($row);
     	
     	

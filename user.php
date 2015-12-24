@@ -1433,6 +1433,10 @@ elseif ($action == 'order_detail')
     include_once(ROOT_PATH . 'includes/lib_clips.php');
 
     $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
+    $order_sn = isset($_GET['order_sn']) ? $_GET['order_sn'] : '';
+    if(!empty($order_sn)){
+    	$order_id = $GLOBALS['db']->getOne("SELECT order_id FROM ".$GLOBALS['ecs']->table('order_info') ." WHERE order_sn = '$order_sn' LIMIT 1");
+    }
 
     /* 订单详情 */
     $order = get_order_detail($order_id, $user_id);

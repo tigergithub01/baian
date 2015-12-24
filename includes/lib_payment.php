@@ -77,7 +77,7 @@ function get_order_id_by_sn($order_sn, $voucher = 'false' ,$fuzzy = false)
         {
             $sql = 'SELECT order_id FROM ' . $GLOBALS['ecs']->table('order_info'). " WHERE order_sn = '$order_sn'";
             if($fuzzy){
-            	$sql = 'SELECT order_id FROM ' . $GLOBALS['ecs']->table('order_info'). " WHERE order_sn like %'$order_sn'%";
+            	$sql = 'SELECT order_id FROM ' . $GLOBALS['ecs']->table('order_info'). " WHERE order_sn like '%$order_sn%'";
             }
             $order_id = $GLOBALS['db']->getOne($sql);
         }

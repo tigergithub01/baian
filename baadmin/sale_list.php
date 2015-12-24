@@ -85,6 +85,8 @@ else
         $end_date = local_strtotime('today');
     }
     
+    $cat_id = empty($_REQUEST['cat_id']) ? 0 : intval($_REQUEST['cat_id']);
+    
     $sale_list_data = get_sale_list();
     /* 赋值到模板 */
     $smarty->assign('filter',       $sale_list_data['filter']);
@@ -97,6 +99,8 @@ else
     $smarty->assign('end_date',         local_date('Y-m-d', $end_date));
     $smarty->assign('ur_here',      $_LANG['sale_list']);
     $smarty->assign('cfg_lang',     $_CFG['lang']);
+    $smarty->assign('cat_list',     cat_list(0, $cat_id));
+    $smarty->assign('brand_list',   get_brand_list());
     $smarty->assign('action_link',  array('text' => $_LANG['down_sales'],'href'=>'#download'));
 
     /* 显示页面 */
@@ -117,13 +121,27 @@ function get_sale_list($is_pagination = true){
     $filter['start_date'] = empty($_REQUEST['start_date']) ? local_strtotime('-7 days') : local_strtotime($_REQUEST['start_date']);
     $filter['end_date'] = empty($_REQUEST['end_date']) ? local_strtotime('today') : local_strtotime($_REQUEST['end_date']);
   
+    $filter['cat_id']           = empty($_REQUEST['cat_id']) ? 0 : intval($_REQUEST['cat_id']);
+    $filter['brand_id']         = empty($_REQUEST['brand_id']) ? 0 : intval($_REQUEST['brand_id']);
+    
     /* 查询数据的条件 */
-    $where = " WHERE og.order_id = oi.order_id". order_query_sql('finished', 'oi.') .
+    $where = " WHERE og.order_id = oi.order_id AND og.goods_id = g.goods_id ". order_query_sql('finished', 'oi.') .
              " AND oi.add_time >= '".$filter['start_date']."' AND oi.add_time < '" . ($filter['end_date'] + 86400) . "'";
+    
+    if($filter['cat_id'] > 0){
+    	$where .=" AND " . get_children($filter['cat_id']);
+    }
+    
+    /* 品牌 */
+    if ($filter['brand_id'])
+    {
+    	$where .= " AND g.brand_id='$filter[brand_id]'";
+    }
     
     $sql = "SELECT COUNT(og.goods_id) FROM " .
            $GLOBALS['ecs']->table('order_info') . ' AS oi,'.
-           $GLOBALS['ecs']->table('order_goods') . ' AS og '.
+           $GLOBALS['ecs']->table('order_goods') . ' AS og, '.
+           $GLOBALS['ecs']->table('goods')." AS g ".
            $where;
     $filter['record_count'] = $GLOBALS['db']->getOne($sql);
 
@@ -132,8 +150,10 @@ function get_sale_list($is_pagination = true){
 
     $sql = 'SELECT og.goods_id, og.goods_sn, og.goods_name, og.goods_number AS goods_num, og.goods_price '.
            'AS sales_price, oi.add_time AS sales_time, oi.order_id, oi.order_sn '.
-           "FROM " . $GLOBALS['ecs']->table('order_goods')." AS og, ".$GLOBALS['ecs']->table('order_info')." AS oi ".
+           "FROM " . $GLOBALS['ecs']->table('order_goods')." AS og, ".$GLOBALS['ecs']->table('order_info')." AS oi, ".
+           	$GLOBALS['ecs']->table('goods')." AS g ".
            $where. " ORDER BY sales_time DESC, goods_num DESC";
+    
     if ($is_pagination)
     {
         $sql .= " LIMIT " . $filter['start'] . ', ' . $filter['page_size'];

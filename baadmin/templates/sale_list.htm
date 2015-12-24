@@ -6,6 +6,10 @@
 {insert_scripts files="../js/utils.js,listtable.js"}
 <div class="form-div">
   <form name="TimeInterval"  action="javascript:getList()" style="margin:0px">
+   <!-- 分类 -->
+    <select name="cat_id"><option value="0">{$lang.goods_cat}</option>{$cat_list}</select>
+    <!-- 品牌 -->
+    <select name="brand_id"><option value="0">{$lang.goods_brand}</option>{html_options options=$brand_list}</select>
   {$lang.start_date}&nbsp;
     <input name="start_date" type="text" id="start_date" size="15" value='{$start_date}' readonly="readonly" /><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('start_date', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.btn_select}" class="button"/>&nbsp;&nbsp;
     {$lang.end_date}&nbsp;
@@ -29,7 +33,7 @@
       <td align="left"><a href="../goods.php?id={$list.goods_id}" target="_blank">{$list.goods_name}</a></td>
       <td><a href="order.php?act=info&order_id={$list.order_id}">{$list.order_sn}</a></td>
       <td align="right">{$list.goods_num}</td>
-      <td align="right">{$list.sales_price}{$end_date}</td>
+      <td align="right">{$list.sales_price}</td>
       <td>{$list.sales_time}</td>
     </tr>
   {foreachelse}
@@ -68,6 +72,8 @@ function getList()
     var frm =  document.forms['TimeInterval'];
     listTable.filter['start_date'] = frm.elements['start_date'].value;
     listTable.filter['end_date'] = frm.elements['end_date'].value;
+    listTable.filter['cat_id'] = frm.elements['cat_id'].value;
+    listTable.filter['brand_id'] = frm.elements['brand_id'].value;
     listTable.filter['page'] = 1;
     listTable.loadList();
     getDownUrl();

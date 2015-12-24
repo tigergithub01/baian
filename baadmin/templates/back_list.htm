@@ -8,6 +8,7 @@
     {$lang.label_delivery_sn}<input name="delivery_sn" type="text" id="delivery_sn" size="15">
     {$lang.order_sn}<input name="order_sn" type="text" id="order_sn" size="15">
     {$lang.consignee|escape}<input name="consignee" type="text" id="consignee" size="15">
+   	 发货单号<input name="invoice_no" type="text" id="invoice_no" size="15">
     <input type="submit" value="{$lang.button_search}" class="button" />
   </form>
 </div>
@@ -87,7 +88,8 @@ listTable.filter.{$key} = '{$item}';
     {
         listTable.filter['order_sn'] = Utils.trim(document.forms['searchForm'].elements['order_sn'].value);
         listTable.filter['consignee'] = Utils.trim(document.forms['searchForm'].elements['consignee'].value);
-                listTable.filter['delivery_sn'] = document.forms['searchForm'].elements['delivery_sn'].value;
+        listTable.filter['delivery_sn'] = document.forms['searchForm'].elements['delivery_sn'].value;
+        listTable.filter['invoice_no'] = document.forms['searchForm'].elements['invoice_no'].value;
         listTable.filter['page'] = 1;
                 listTable.query = "back_query";
         listTable.loadList();

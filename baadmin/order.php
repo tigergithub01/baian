@@ -5976,6 +5976,7 @@ function back_list()
 		$filter['delivery_sn'] = empty($_REQUEST['delivery_sn']) ? '' : trim($_REQUEST['delivery_sn']);
 		$filter['order_sn'] = empty($_REQUEST['order_sn']) ? '' : trim($_REQUEST['order_sn']);
 		$filter['order_id'] = empty($_REQUEST['order_id']) ? 0 : intval($_REQUEST['order_id']);
+		$filter['invoice_no'] = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);
 		if ($aiax == 1 && !empty($_REQUEST['consignee']))
 		{
 			$_REQUEST['consignee'] = json_str_iconv($_REQUEST['consignee']);
@@ -5997,6 +5998,10 @@ function back_list()
 		if ($filter['delivery_sn'])
 		{
 			$where .= " AND delivery_sn LIKE '%" . mysql_like_quote($filter['delivery_sn']) . "%'";
+		}
+		if ($filter['invoice_no'])
+		{
+			$where .= " AND invoice_no LIKE '%" . mysql_like_quote($filter['invoice_no']) . "%'";
 		}
 
 		/* 获取管理员信息 */

@@ -492,7 +492,8 @@ elseif ($_REQUEST['step'] == 'checkout')
     if (empty($_SESSION['direct_shopping']) && $_SESSION['user_id'] == 0)
     {
         /* 用户没有登录且没有选定匿名购物，转向到登录页面 */
-        ecs_header("Location: flow.php?step=login\n");
+//         ecs_header("Location: flow.php?step=login\n");
+        ecs_header("Location: user.php?act=login\n");
         exit;
     }
     

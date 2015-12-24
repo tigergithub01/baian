@@ -91,8 +91,10 @@ function getDownUrl()
         var frm =  document.forms['TimeInterval'];
         listTable.filter['start_date'] = frm.elements['start_date'].value;
         listTable.filter['end_date'] = frm.elements['end_date'].value;
+        listTable.filter['cat_id'] = frm.elements['cat_id'].value;
+        listTable.filter['brand_id'] = frm.elements['brand_id'].value;
       }
-      aTags[i].href = "sale_list.php?act=download&start_date=" + listTable.filter['start_date'] + "&end_date=" + listTable.filter['end_date'];
+      aTags[i].href = "sale_list.php?act=download&start_date=" + listTable.filter['start_date'] + "&end_date=" + listTable.filter['end_date']+ "&cat_id=" + listTable.filter['cat_id']+ "&brand_id=" + listTable.filter['brand_id'];
     }
   }
 }

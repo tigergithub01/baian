@@ -15,6 +15,8 @@
 
 global $_LANG;
 
+
+$_LANG['bankcomm_account'] = '交通银行商户号';
 $_LANG['bankcomm'] = '交通银行在线支付';
 $_LANG['bankcomm_desc'] = '交通银行在线支付';
 $_LANG['pay_button'] = '交通银行支付';

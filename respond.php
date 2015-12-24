@@ -88,7 +88,7 @@ $smarty->assign('ur_here',    $position['ur_here']); // 当前位置
 $smarty->assign('helps',      get_shop_help());      // 网店帮助
 
 $smarty->assign('message',    $msg);
-$smarty->assign('shop_url',   $ecs->url());
+$smarty->assign('shop_url',   $ecs->url().'user.php?act=order_list');
 
 $smarty->display('respond.dwt');
 

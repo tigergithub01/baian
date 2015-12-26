@@ -1816,7 +1816,7 @@ function build_uri($app, $params, $append = '', $page = 0, $keywords = '', $size
             }
             else
             {
-                $uri = $rewrite ? 'exchange-id' . $gid : 'exchange.php?id=' . $gid . '&amp;act=view';
+                $uri = $rewrite ? 'exchange_goods-' . $gid : 'exchange.php?id=' . $gid . '&amp;act=view';
             }
 
             break;

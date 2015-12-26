@@ -637,7 +637,7 @@ elseif ($_REQUEST['step'] == 'checkout')
     /* 取得配送列表 */
     $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $shipping_list     = available_shipping_list($region);
-    $cart_weight_price = cart_weight_price($flow_type);
+    $cart_weight_price = cart_weight_price($flow_type,$region);
     $insure_disabled   = true;
     $cod_disabled      = true;
 
@@ -655,8 +655,11 @@ elseif ($_REQUEST['step'] == 'checkout')
         $shipping_fee = ($shipping_count == 0 AND $cart_weight_price['free_shipping'] == 1) ? 0 : shipping_fee($val['shipping_code'], unserialize($val['configure']),
         $cart_weight_price['weight'], $cart_weight_price['amount'], $cart_weight_price['number']);
 
-        $shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee, false);
+        //运费可减 added by tiger.guo 20151226
+        $shipping_fee = ($shipping_fee - $cart_weight_price['reduce_ship_amt'] <= 0)?0:($shipping_fee - $cart_weight_price['reduce_ship_amt']);
+        
         $shipping_list[$key]['shipping_fee']        = $shipping_fee;
+        $shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee, false);
         $shipping_list[$key]['free_money']          = price_format($shipping_cfg['free_money'], false);
         $shipping_list[$key]['insure_formated']     = strpos($val['insure'], '%') === false ?
             price_format($val['insure'], false) : $val['insure'];
@@ -2588,7 +2591,7 @@ elseif ($_REQUEST['step'] == 'order_shipping_payment_total'){
 	/* 取得配送列表 */
 	$region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
 	$shipping_list     = available_shipping_list($region);
-	$cart_weight_price = cart_weight_price($flow_type);
+	$cart_weight_price = cart_weight_price($flow_type,$region);
 	$insure_disabled   = true;
 	$cod_disabled      = true;
 	
@@ -2606,8 +2609,11 @@ elseif ($_REQUEST['step'] == 'order_shipping_payment_total'){
 		$shipping_fee = ($shipping_count == 0 AND $cart_weight_price['free_shipping'] == 1) ? 0 : shipping_fee($val['shipping_code'], unserialize($val['configure']),
 				$cart_weight_price['weight'], $cart_weight_price['amount'], $cart_weight_price['number']);
 	
-		$shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee, false);
+		//运费可减 added by tiger.guo 20151226
+		$shipping_fee = ($shipping_fee - $cart_weight_price['reduce_ship_amt'] <= 0)?0:($shipping_fee - $cart_weight_price['reduce_ship_amt']);
+		
 		$shipping_list[$key]['shipping_fee']        = $shipping_fee;
+		$shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee, false);
 		$shipping_list[$key]['free_money']          = price_format($shipping_cfg['free_money'], false);
 		$shipping_list[$key]['insure_formated']     = strpos($val['insure'], '%') === false ?
 		price_format($val['insure'], false) : $val['insure'];
@@ -3461,9 +3467,9 @@ function add_gift_to_cart($act_id, $id, $price)
 {
     $sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
                 "user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
-                "goods_number, is_real, extension_code, parent_id, is_gift, rec_type ) ".
+                "goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
             "SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price, ".
-                "'$price', 1, is_real, extension_code, 0, '$act_id', '" . CART_GENERAL_GOODS . "' " .
+                "'$price', 1, is_real, extension_code, 0, '$act_id', '" . CART_GENERAL_GOODS . "', 1 " .
             "FROM " . $GLOBALS['ecs']->table('goods') .
             " WHERE goods_id = '$id'";
     $GLOBALS['db']->query($sql);

@@ -593,6 +593,8 @@ elseif ($_REQUEST['step'] == 'checkout')
 	//echo '</pre>';
 	/* 代码增加end   By  www.ecshop120.com */
     $smarty->assign('goods_list', $cart_goods);
+    
+    //TODO:订单提交的时候应该判断库存
 
     /* 对是否允许修改购物车赋值 */
     if ($flow_type != CART_GENERAL_GOODS || $_CFG['one_step_buy'] == '1')

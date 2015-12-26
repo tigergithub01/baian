@@ -289,6 +289,10 @@ elseif ($action == 'act_register')
             }
             $ucdata = empty($user->ucdata)? "" : $user->ucdata;
             show_message(sprintf($_LANG['register_success'], $username . $ucdata), array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act, 'user.php'), 'info');
+            
+            //TODO:应该跳转到最后一次访问的链接,针对提交订单时未登录的情况  added by tiger.guo 20151225
+            
+            
         }
         else
         {
@@ -598,6 +602,9 @@ elseif ($action == 'act_login')
 
         $ucdata = isset($user->ucdata)? $user->ucdata : '';
         show_message($_LANG['login_success'] . $ucdata , array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act,'user.php'), 'info');
+        
+        //TODO:应该跳转到最后一次访问的链接,针对提交订单时未登录的情况  added by tiger.guo 20151225
+        
     }
     else
     {

@@ -74,8 +74,8 @@
               {$lang.exchange_integral}<font class="shop_s">{$goods.exchange_integral}</font><br />
             </div>
           {/if}
-        {/foreach} -->
-        </div>
+        {/foreach} 
+        </div>-->
 
 
     <!-- {elseif $pager.display == 'text'} -->

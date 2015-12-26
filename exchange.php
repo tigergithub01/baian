@@ -98,7 +98,7 @@ if ($_REQUEST['act'] == 'list')
 
         //$smarty->assign('best_goods',      get_exchange_recommend_goods('best', $children, $integral_min, $integral_max));
         //$smarty->assign('new_goods',       get_exchange_recommend_goods('new',  $children, $integral_min, $integral_max));
-        $smarty->assign('hot_goods',       get_exchange_recommend_goods('hot',  $children, $integral_min, $integral_max));
+//         $smarty->assign('hot_goods',       get_exchange_recommend_goods('hot',  $children, $integral_min, $integral_max));
 
 
         $count = get_exchange_goods_count($children, $integral_min, $integral_max);
@@ -145,7 +145,6 @@ elseif ($_REQUEST['act'] == 'view')
 
     $cache_id = $goods_id . '-' . $_SESSION['user_rank'] . '-' . $_CFG['lang'] . '-exchange';
     $cache_id = sprintf('%X', crc32($cache_id));
-
     if (!$smarty->is_cached('exchange_goods.dwt', $cache_id))
     {
         $smarty->assign('image_width',  $_CFG['image_width']);
@@ -172,6 +171,30 @@ elseif ($_REQUEST['act'] == 'view')
             }
 
             $goods['goods_style_name'] = add_style($goods['goods_name'], $goods['goods_name_style']);
+            
+            include "phpqrcode/qrlib.php";
+            $data = 'http://'.$_SERVER ['HTTP_HOST'].'/'.build_uri('exchange_goods', array('gid'=>$goods['goods_id']), $goods['goods_name']);
+            $errorCorrectionLevel = 'L';
+            $matrixPointSize = 4;
+            $path = "qrcode/";
+            if (!file_exists($path)){
+            	mkdir($path);
+            }
+            $filename = $path.$errorCorrectionLevel.'-'.$matrixPointSize.'-'.md5($goods['goods_id']).'.png';
+            if(!file_exists($filename)){
+            	QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 3);
+            }
+            $goods['img_qrcode'] = $filename;
+            
+            //生成微信购买二维码
+            $wxbuy_filename = $path.$errorCorrectionLevel.'-'.$matrixPointSize.'-'.md5('weixin_add_to_cart'.$goods['goods_id']).'.png';
+            
+            $data = 'http://'.$_SERVER ['HTTP_HOST'].'/weixin_add_to_cart.php?goods_id='.$goods_id;
+            if(!file_exists($wxbuy_filename)){
+            	QRcode::png($data, $wxbuy_filename, $errorCorrectionLevel, $matrixPointSize, 3);
+            }
+            $goods['wxbuy_img_qrcode'] = $wxbuy_filename;
+            
 
             $smarty->assign('goods',              $goods);
             $smarty->assign('goods_id',           $goods['goods_id']);
@@ -199,6 +222,74 @@ elseif ($_REQUEST['act'] == 'view')
                 $next_good['url'] = build_uri('exchange_goods', array('gid' => $next_gid), $goods['goods_name']);
                 $smarty->assign('next_good', $next_good);//下一个商品
             }
+            
+            //评论数添加start
+            $count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$goods_id' and status=1");
+            $smarty->assign('review_count',       $count);
+            //评论数添加end
+            
+            //获取coockie中保存的地址信息
+            $addr_country = "";
+            $addr_province = "";
+            $addr_city = "";
+            $addr_district = "";
+            $addr_town = "";
+            
+            if(!empty($_COOKIE['ECS']['selected_address'])){
+            	$addrs= explode(",",$_COOKIE['ECS']['selected_address']);
+            	$addr_country  = $addrs[0];
+            	$addr_province = $addrs[1];
+            	$addr_city = $addrs[2];
+            	$addr_district = $addrs[3];
+            	$addr_town = $addrs[4];
+            }else{
+            	//获取网店默认地址,并设置到cookie中
+            	$addr_country = $_CFG['shop_country'];
+            	$addr_province = $_CFG['shop_province'];
+            	$addr_city = $_CFG['shop_city'];
+            	$addr_district = $_CFG['shop_district'];
+            	$addr_town = $_CFG['shop_town'];
+            }
+            
+            /*国家省市区街道显示值 start*/
+            $smarty->assign('addr_country', $addr_country);
+            
+            $addr_province_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_province' limit 1");
+            $smarty->assign('addr_province_name', $addr_province_name);
+            $smarty->assign('addr_province', $addr_province);
+            
+            $addr_city_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_city' limit 1");
+            $smarty->assign('addr_city_name', $addr_city_name);
+            $smarty->assign('addr_city', $addr_city);
+            
+            $addr_district_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_district' limit 1");
+            $smarty->assign('addr_district_name', $addr_district_name);
+            $smarty->assign('addr_district', $addr_district);
+            
+            $addr_town_name = $GLOBALS['db']->getOne("SELECT region_name FROM " . $GLOBALS['ecs']->table('region') . " where region_id ='$addr_town' limit 1");
+            $smarty->assign('addr_town_name', $addr_town_name);
+            $smarty->assign('addr_town', $addr_town);
+            
+            $smarty->assign('country_list',       get_regions());
+            $smarty->assign('province_list', get_regions(1, $addr_country));
+            $smarty->assign('city_list', get_regions(2, $addr_province));
+            $smarty->assign('district_list', get_regions(3, $addr_city));
+            $smarty->assign('town_list', get_regions(4, $addr_district));
+            
+            /*省市区街道显示值 end*/
+            
+            /*TODO:显示库存情况 start***/
+            $goods_number = get_goods_store($goods_id, $product_id, [$addr_country,$addr_province,$addr_city,$addr_district,$addr_town]);
+            $smarty->assign("goods_number",$goods_number);
+            /*TODO:显示库存情况 end***/
+            
+            
+            $smarty->assign('sibling_categories',       get_sibling_category($goods['cat_id'])); //相关分类
+            $smarty->assign('related_brands_by_cat_id',       com_sale_goods_get_related_brands_by_cat_id($goods['cat_id'])); //相关品牌;
+            $smarty->assign('category_related_random_goods',       category_related_random_goods($goods['cat_id'])); //同类别商品
+            
+            $may_like_goods = com_sale_get_may_like_goods($goods_id, null, null);
+            $smarty->assign('may_like_goods',$may_like_goods);
 
             /* current position */
             $position = assign_ur_here('exchange', $goods['goods_name']);
@@ -219,7 +310,7 @@ elseif ($_REQUEST['act'] == 'view')
 }
 
 /*------------------------------------------------------ */
-//--  兑换
+//--  兑换,TODO：兑换商品也需要根据地址判断库存，处理多属性的情况
 /*------------------------------------------------------ */
 
 elseif ($_REQUEST['act'] == 'buy')
@@ -237,7 +328,7 @@ elseif ($_REQUEST['act'] == 'buy')
     }
 
     /* 查询：取得参数：商品id */
-    $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+    $goods_id = isset($_REQUEST['goods_id']) ? intval($_REQUEST['goods_id']) : 0;
     if ($goods_id <= 0)
     {
         ecs_header("Location: ./\n");
@@ -254,7 +345,8 @@ elseif ($_REQUEST['act'] == 'buy')
     /* 查询：检查兑换商品是否有库存 */
     if($goods['goods_number'] == 0 && $_CFG['use_storage'] == 1)
     {
-        show_message($_LANG['eg_error_number'], array($_LANG['back_up_page']), array($back_act), 'error');
+        //TODO：应该可以根据区域判断库存
+    	show_message($_LANG['eg_error_number'], array($_LANG['back_up_page']), array($back_act), 'error');
     }
     /* 查询：检查兑换商品是否是取消 */
     if ($goods['is_exchange'] == 0)
@@ -334,7 +426,8 @@ elseif ($_REQUEST['act'] == 'buy')
         'extension_code' => addslashes($goods['extension_code']),
         'parent_id'      => 0,
         'rec_type'       => CART_EXCHANGE_GOODS,
-        'is_gift'        => 0
+        'is_gift'        => 0,
+    	'is_checked'	 => 1
     );
     $db->autoExecute($ecs->table('cart'), $cart, 'INSERT');
 
@@ -344,7 +437,7 @@ elseif ($_REQUEST['act'] == 'buy')
     $_SESSION['extension_id'] = $goods_id;
 
     /* 进入收货人页面 */
-    ecs_header("Location: ./flow.php?step=consignee\n");
+    ecs_header("Location: ./flow.php?step=checkout\n");
     exit;
 }
 
@@ -436,8 +529,8 @@ function exchange_get_goods($children, $min, $max, $ext, $size, $page, $sort, $o
         $arr[$row['goods_id']]['type']              = $row['goods_type'];
         $arr[$row['goods_id']]['goods_thumb']       = get_image_path($row['goods_id'], $row['goods_thumb'], true);
         $arr[$row['goods_id']]['goods_img']         = get_image_path($row['goods_id'], $row['goods_img']);
-//         $arr[$row['goods_id']]['url']               = build_uri('exchange_goods', array('gid'=>$row['goods_id']), $row['goods_name']);
-        $arr[$row['goods_id']]['url']               = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $arr[$row['goods_id']]['url']               = build_uri('exchange_goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+//         $arr[$row['goods_id']]['url']               = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
     }
 
     return $arr;
@@ -552,11 +645,14 @@ function get_exchange_recommend_goods($type = '', $cats = '', $min =0,  $max = 0
 function get_exchange_goods_info($goods_id)
 {
     $time = gmtime();
-    $sql = 'SELECT g.*, c.measure_unit, b.brand_id, b.brand_name AS goods_brand, eg.exchange_integral, eg.is_exchange ' .
+    $sql = 'SELECT g.*, c.measure_unit, b.brand_id, b.brand_name AS goods_brand, eg.exchange_integral, eg.is_exchange, ' .
+      'IFNULL(AVG(r.comment_rank), 0) AS comment_rank ' .
             'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('exchange_goods') . ' AS eg ON g.goods_id = eg.goods_id ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('category') . ' AS c ON g.cat_id = c.cat_id ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('brand') . ' AS b ON g.brand_id = b.brand_id ' .
+            'LEFT JOIN ' . $GLOBALS['ecs']->table('comment') . ' AS r '.
+            'ON r.id_value = g.goods_id AND comment_type = 0 AND r.parent_id = 0 AND r.status = 1 ' .
             "WHERE g.goods_id = '$goods_id' AND g.is_delete = 0 " .
             'GROUP BY g.goods_id';
 
@@ -596,6 +692,9 @@ function get_exchange_goods_info($goods_id)
         /* 修正商品图片 */
         $row['goods_img']   = get_image_path($goods_id, $row['goods_img']);
         $row['goods_thumb'] = get_image_path($goods_id, $row['goods_thumb'], true);
+        
+        /* 用户评论级别取整 */
+        $row['comment_rank']  = ceil($row['comment_rank']) == 0 ? 5 : ceil($row['comment_rank']);
 
         return $row;
     }

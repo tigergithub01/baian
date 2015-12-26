@@ -1025,7 +1025,7 @@
 	         
         <!-- 订单提交start -->
         <div class="h"></div>
-        <div class="c-jie1 c-jie2">	
+        <div class="c-jie1 c-jie2" style="width:990px;margin: 0 auto;padding-left: inherit;">	
 			<span class="r">
 			<input type="hidden" value="{$smarty.session.flow_consignee.address_id}" id="address_id"/>
 	 		<input type="hidden" name="step" value="done"/>

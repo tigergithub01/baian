@@ -51,28 +51,29 @@
                         <a href="" class="next">&gt;</a>
                     </span>
                 </div>
-                <div class="h"></div> <ul class="s-filter-pro">
+                <div class="h"></div> 
+                <ul class="s-filter-pro">
                  <!--{foreach from=$goods_list item=goods}-->
-    <!-- {if $goods.goods_id} -->
-    
-    <li>
-                      <div class="pic"><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
-                        <div class="txt">
-                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
-                            <strong class="price"><!--{if $goods.promote_price neq "" } -->{$goods.promote_price}<!--{else}-->{$goods.shop_price}<!--{/if}--></strong>
-                            <span class="orange r">条评价</span>
-                        </div>
-                        <div class="btnBox">
-                            <a href="javascript:addToCart({$goods.goods_id})">立即购买</a>
-                            <a href="javascript:addToCart({$goods.goods_id})">加入购物车</a>
-                            <a href="javascript:collect({$goods.goods_id});">收藏</a>
-                        </div>
-                        
-    </li>
-    
-     <!--{/if}-->
-    <!--{/foreach}-->
-    </ul>
+				    <!-- {if $goods.goods_id} -->
+				    
+				    <li>
+				                      <div class="pic"><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
+				                        <div class="txt">
+				                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
+				                            <strong class="price"><!--{if $goods.promote_price neq "" } -->{$goods.promote_price}<!--{else}-->{$goods.shop_price}<!--{/if}--></strong>
+				                            <span class="orange r">条评价</span>
+				                        </div>
+				                        <div class="btnBox">
+				                            <a href="javascript:addToCart({$goods.goods_id})">立即购买</a>
+				                            <a href="javascript:addToCart({$goods.goods_id})">加入购物车</a>
+				                            <a href="javascript:collect({$goods.goods_id});">收藏</a>
+				                        </div>
+				                        
+				    </li>
+				    
+				    <!--{/if}-->
+				   <!--{/foreach}-->
+    			</ul>
                
                 <div class="h"></div>
 

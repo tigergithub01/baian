@@ -1452,19 +1452,28 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="h15"></div>
 			<h3 class="c-tit3">结算信息</h3>
 			<div class="jsxx">
-				<!-- <p>使用积分：<em>1000分</em>，使用红包：<em>￥10.00</em></p> -->
+				<p><!-- {if $order.integral > 0} 是否使用积分 -->{$lang.use_integral}：<em>{$order.integral}分</em><!-- {/if} 是否使用积分 -->
+				<!-- ，使用红包：<em>￥10.00</em> -->
+				</p>
 				<p class="tr he">商品总计：{$order.formated_goods_amount} + 运费：{$order.formated_shipping_fee} - 积分：{$order.formated_integral_money} - 红包： {$order.formated_bonus}</p>
 			</div>
 			<div class="h"></div>
 			<div class="c-jie1 c-jie2">
 				<span class="r">
-					应付总额：<strong>{$order.formated_order_amount}</strong>　{$order.pay_online}<!-- <input type="submit" class="btn" value="立即支付"> -->
+					应付总额：<strong>{$order.formated_order_amount}</strong>　<!-- <input type="submit" class="btn" value="立即支付"> -->
 				</span>
 				<!-- {if $order.inv_payee} -->
 				发票抬头：{$order.inv_payee}		
 				<!-- {else} -->
 				不需要发票		
 				<!-- {/if} -->
+			</div>
+			<div class="h"></div>
+			<div class="jsxx" style="text-align: right;">
+				<style>
+				.jsxx .btn_submit{font-size: 18px;}
+				</style>
+				{$order.pay_online}
 			</div>
 			<div class="h20"></div><div class="h"></div>
 		</div>

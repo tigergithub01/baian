@@ -100,10 +100,12 @@
             <!-- {foreach from=$goods_list item=goods} -->
             <tr class="bg">
             <td  class="tl">
-             		<!-- {if ($goods.is_checked eq 1)} -->	
-                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods" checked="checked">
-                     <!-- {else} -->
-                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods">
+            		<!-- {if $goods.is_gift eq 0} 赠品不能手工删除 -->
+             			 <!-- {if ($goods.is_checked eq 1)} -->	
+	                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods" checked="checked">
+	                     <!-- {else} -->
+	                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods">
+	                     <!-- {/if} -->
                      <!-- {/if} -->
                         
             </td>
@@ -131,10 +133,10 @@
 						   <!-- {/if} is_momsuit end-->
 			      
 		                  <!-- {if $goods.parent_id gt 0} 配件 -->
-		                  <span style="color:#FFFDEE">（{$lang.accessories}）</span>
+		                  <span style="color:#FF0000">（{$lang.accessories}）</span>
 		                  <!-- {/if} -->
 		                  <!-- {if $goods.is_gift gt 0} 赠品 -->
-		                  <span style="color:#FFFDEE">（{$lang.largess}）</span>
+		                  <span style="color:#FF0000">（{$lang.largess}）</span>
 		                  <!-- {/if} -->
 		                  
 		                  <a class="tit" href="{$goods.goods_url}" target="_blank" >{$goods.goods_name}</a>

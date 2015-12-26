@@ -709,7 +709,7 @@ function order_fee($order, $goods, $consignee)
 
         if (!empty($shipping_info))
         {
-			/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+			 
 			$region    = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
             if ($order['extension_code'] == 'group_buy')
             {
@@ -722,24 +722,17 @@ function order_fee($order, $goods, $consignee)
 			
 
             // 查看购物车中是否全为免运费商品，若是则把运费赋为零
+            /* $sql = 'SELECT count(*) FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE  `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
+            $shipping_count = $GLOBALS['db']->getOne($sql); */
+            
+            // 设置某个商品在在某些地区可以包邮
             $shipping_count = get_not_free_shipping_count($region);
-			/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
-			
-            if ($order['extension_code'] == 'group_buy')
-            {
-                $weight_price = cart_weight_price(CART_GROUP_BUY_GOODS);
-            }
-            else
-            {
-                $weight_price = cart_weight_price();
-            }
-
-            // 查看购物车中是否全为免运费商品，若是则把运费赋为零
-            $sql = 'SELECT count(*) FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE  `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
-            $shipping_count = $GLOBALS['db']->getOne($sql);
 
             $total['shipping_fee'] = ($shipping_count == 0 AND $weight_price['free_shipping'] == 1) ?0 :  shipping_fee($shipping_info['shipping_code'],$shipping_info['configure'], $weight_price['weight'], $total['goods_price'], $weight_price['number']);
-
+			
+            //运费可减 added by tiger.guo 20151226
+            $total['shipping_fee'] = ($total['shipping_fee'] - $weight_price['reduce_ship_amt']<=0)?0:($total['shipping_fee'] - $weight_price['reduce_ship_amt']);
+            
             if (!empty($order['need_insure']) && $shipping_info['insure'] > 0)
             {
                 $total['shipping_insure'] = shipping_insure_fee($shipping_info['shipping_code'],
@@ -1035,10 +1028,9 @@ function cart_goods_exists($id, $spec, $type = CART_GENERAL_GOODS)
  * @param   int     $type   类型：默认普通商品
  * @return  array
  */
- /*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+ /*设置某个商品在在某些地区可以包邮，某些地区不能*/  
 function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 {
-	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
     $package_row['weight'] = 0;
     $package_row['amount'] = 0;
     $package_row['number'] = 0;
@@ -1056,7 +1048,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 
         foreach ($row as $val)
         {
-           /*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+           /*设置某个商品在在某些地区可以包邮，某些地区不能*/  
 			// 如果商品全为免运费商品，设置一个标识变量
 			 $sql = 'SELECT pg.goods_id FROM ' .
                     $GLOBALS['ecs']->table('package_goods') . ' AS pg, ' .
@@ -1095,16 +1087,25 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
         }
 
         $packages_row['free_shipping'] = $free_shipping_count == count($row) ? 1 : 0;
+        
+        //可减运费金额 added by tiger.guo 20151226
+        $sql = 'SELECT SUM(g.reduce_ship_amt * pg.goods_number) AS reduce_ship_amt ' .
+        		$GLOBALS['ecs']->table('package_goods') . ' AS pg, ' .
+        		$GLOBALS['ecs']->table('goods') . ' AS g ' .
+        		"WHERE g.goods_id = pg.goods_id AND pg.package_id = '"  . $val['goods_id'] . "'";
+        $goods_row = $GLOBALS['db']->getRow($sql);
+        $package_row['reduce_ship_amt'] += floatval($goods_row['reduce_ship_amt']) * $val['goods_number'];
     }
 
     /* 获得购物车中非超值礼包商品的总重量 */
-   /*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
-
-	
+   /*设置某个商品在在某些地区可以包邮，某些地区不能*/ 
 	$sql = 'SELECT c.goods_id FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c, ' .
-                $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r ' .
+                $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r, ' .
+                $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'WHERE r.region_id ' . db_create_in($region_id_list) .
-            ' AND c.is_shipping = 1 AND c.goods_id = r.goods_id';
+            " AND c.session_id = '" . SESS_ID . "' AND c.rec_type = '$type' " .
+            " AND g.is_shipping = 1 AND c.is_checked = 1 AND c.goods_id = r.goods_id ".
+            " AND c.goods_id = g.goods_id AND c.extension_code != 'package_buy' ";
     $goods_ids =  $GLOBALS['db']->getCol($sql);
 	
 
@@ -1118,7 +1119,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
                 'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
                 'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
                 "WHERE c.session_id = '" . SESS_ID . "' " .
-                "AND rec_type = '$type' $where AND c.extension_code != 'package_buy'";
+                "AND c.is_checked = 1 AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
     $row = $GLOBALS['db']->getRow($sql);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
 
@@ -1127,6 +1128,15 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
     $packages_row['number'] = intval($row['number']) + $package_row['number'];
     /* 格式化重量 */
     $packages_row['formated_weight'] = formated_weight($packages_row['weight']);
+    
+    //可减运费金额 added by tiger.guo 20151226
+    $sql    = 'SELECT SUM(g.reduce_ship_amt * c.goods_number) AS reduce_ship_amt ' .
+    		'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
+    		'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
+    		"WHERE c.session_id = '" . SESS_ID . "' " .
+    		"AND c.is_checked = 1 AND c.rec_type = '$type' AND c.extension_code != 'package_buy'";
+    $row = $GLOBALS['db']->getRow($sql);
+    $packages_row['reduce_ship_amt'] = floatval($row['reduce_ship_amt']) + $package_row['reduce_ship_amt'];
 
     return $packages_row;
 }
@@ -3265,6 +3275,8 @@ function add_package_to_cart($package_id, $num = 1)
     $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '" . SESS_ID . "' AND is_gift <> 0";
     $GLOBALS['db']->query($sql);
 
+    //TODO: 重新计算赠品 added by tiger.guo 20151225
+    
     return true;
 }
 
@@ -3356,17 +3368,23 @@ function judge_package_stock($package_id, $package_num = 1)
 
     return false;
 }
-/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
+
+/*设置某个商品在在某些地区可以包邮，某些地区不能*/  
+/**
+ * 购物车中不包邮商品数量
+ * @param unknown $region_id_list
+ */
 function get_not_free_shipping_count($region_id_list)
 {
 	
 	$sql = 'SELECT c.goods_id FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c, ' .
-                $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r ' .
+                $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r, ' .
+                $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'WHERE r.region_id ' . db_create_in($region_id_list) .
-            ' AND c.is_shipping = 1 AND c.goods_id = r.goods_id';
+            " AND g.is_shipping = 1 AND c.goods_id = r.goods_id AND c.goods_id = g.goods_id AND c.is_checked = 1 AND session_id = '".SESS_ID."' AND c.extension_code != 'package_buy'";
 			
     $goods_ids =  $GLOBALS['db']->getCol($sql);
-	$where =" and c.goods_id " . db_create_in($goods_ids) ."";
+	$where =" AND is_checked = 1 AND c.goods_id " . db_create_in($goods_ids) ."";
 	$where = str_replace('IN','NOT IN',$where);
 	
 	
@@ -3376,7 +3394,7 @@ function get_not_free_shipping_count($region_id_list)
 			
     return $GLOBALS['db']->getOne($sql);
 }
-/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
+/*设置某个商品在在某些地区可以包邮，某些地区不能end*/  
 
 
 /**

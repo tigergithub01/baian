@@ -1606,10 +1606,92 @@ function recalculate_price()
 
         $GLOBALS['db']->query($goods_sql);
     }
-
+    
     /* 删除赠品，重新选择 */
     $GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
         " WHERE session_id = '" . SESS_ID . "' AND is_gift > 0");
+    
+    //TODO: 重新计算赠品 added by tiger.guo 20151225
+    //re_recompute_gifts();
+    
+    
+}
+
+
+function re_recompute_gifts(){
+	$favourable_list = favourable_list($_SESSION['user_rank']);
+	foreach ($favourable_list as $key => $favourable) {
+		$act_id = $favourable['act_id'];
+		
+		/* 取得优惠活动信息 */
+	    if (empty($favourable))
+	    {
+	        continue;
+	    }
+	
+	    /* 判断用户能否享受该优惠 */
+	    if (!favourable_available($favourable))
+	    {
+	        continue;
+	    }
+	
+	    /* 检查购物车中是否已有该优惠 */
+	    $cart_favourable = cart_favourable();
+	    if (favourable_used($favourable, $cart_favourable))
+	    {
+	        continue;
+	    };
+	    
+	    $gift = array();
+	    foreach($favourable['gift'] as $g)
+	    {
+	    	$gift[] = $g['id'];
+	    }
+	    
+	    /* 赠品（特惠品）优惠 */
+	    if ($favourable['act_type'] == FAT_GOODS)
+	    {
+	    	/* 检查是否选择了赠品 */
+	    	if (empty($gift))
+	    	{
+	    		continue;
+	    	}
+	    
+	    	/* 检查是否已在购物车 */
+	    	$sql = "SELECT goods_name" .
+	    			" FROM " . $GLOBALS['ecs']->table('cart') .
+	    			" WHERE session_id = '" . SESS_ID . "'" .
+	    			" AND rec_type = '" . CART_GENERAL_GOODS . "'" .
+	    			" AND is_gift = '$act_id'" .
+	    			" AND goods_id " . db_create_in($gift);
+	    	$gift_name = $GLOBALS['db']->getCol($sql);
+	    	if (!empty($gift_name))
+	    	{
+	    		continue;
+	    	}
+	    
+	    	/* 检查数量是否超过上限 */
+	    	$count = isset($cart_favourable[$act_id]) ? $cart_favourable[$act_id] : 0;
+	    	if ($favourable['act_type_ext'] > 0 && $count + count($gift) > $favourable['act_type_ext'])
+	    	{
+	    		continue;
+	    	}
+	    
+	    	/* 添加赠品到购物车 */
+	    	foreach ($favourable['gift'] as $gift)
+	    	{
+	    		add_gift_to_cart($act_id, $gift['id'], $gift['price']);
+	    	}
+	    }
+	   /*  elseif ($favourable['act_type'] == FAT_DISCOUNT)
+	    {
+	    	add_favourable_to_cart($act_id, $favourable['act_name'], cart_favourable_amount($favourable) * (100 - $favourable['act_type_ext']) / 100);
+	    }
+	    elseif ($favourable['act_type'] == FAT_PRICE)
+	    {
+	    	add_favourable_to_cart($act_id, $favourable['act_name'], $favourable['act_type_ext']);
+	    } */
+	}
 }
 
 /**

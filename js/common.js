@@ -1261,3 +1261,23 @@ function get_shipping_detail(shipping_name,invoice_no){
 	});
 	
 }
+
+/***
+ * 积分兑换
+ * @param goods_id
+ */
+function exchange_buy(goods_id){
+	var url = "exchange.php?act=buy&goods_id="+goods_id;
+	if($("#addr_country")!=null && $("#addr_country").length>0 && $("#addr_province")!=null && $("#addr_province").length>0){
+		  //在商品详情页面选择仓库的情况
+		  var address = new Array();
+		  address.push($("#addr_country").val());
+		  address.push($("#addr_province").val());
+		  address.push($("#addr_city").val());
+		  address.push($("#addr_district").val());
+		  address.push($("#addr_town").val());
+		  url = url + "&address[0]="+address[0]+ "&address[1]="+address[1]+ "&address[2]="+address[2]+ "&address[3]="+address[3]+ "&address[4]="+address[4];
+	  }
+	//console.debug(url);
+	window.location.href= url;
+}

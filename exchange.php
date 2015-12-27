@@ -342,10 +342,15 @@ elseif ($_REQUEST['act'] == 'buy')
         ecs_header("Location: ./\n");
         exit;
     }
+    
+    $address  = isset($_REQUEST['address']) ? $_REQUEST['address'] : null;
+    
+    $goods_number = get_goods_store($goods_id, null,$address);
     /* 查询：检查兑换商品是否有库存 */
-    if($goods['goods_number'] == 0 && $_CFG['use_storage'] == 1)
+    if($goods_number == 0 && $_CFG['use_storage'] == 1)
     {
         //TODO：应该可以根据区域判断库存
+    	
     	show_message($_LANG['eg_error_number'], array($_LANG['back_up_page']), array($back_act), 'error');
     }
     /* 查询：检查兑换商品是否是取消 */

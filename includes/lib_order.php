@@ -1258,7 +1258,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_i
         }
         
         //TODO:如果传入了配送地址，根据配送地址匹配、仓库检查库存情况
-        if($address && $product){
+        if($address){
         	$store_number = get_goods_store($goods_id, $product['product_id'], $address);
         	if ($num > $store_number){
         		$GLOBALS['err']->add(sprintf($GLOBALS['_LANG']['shortage'], $store_number), ERR_OUT_OF_STOCK);

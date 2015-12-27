@@ -323,7 +323,7 @@
 	            		<div class="h30"></div>
 	            		<div class="btn">
 	            			<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
-							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="$('#ECS_FORMBUY').submit();">立即兑换</a>            			
+							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="exchange_buy('{$goods.goods_id}');">立即兑换</a>            			
 							<a class="btn2"  id="flowChart" href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')" style="display: none;">加入购物车</a>            			
 	            		</div>
                 	</div>

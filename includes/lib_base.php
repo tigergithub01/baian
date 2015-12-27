@@ -1427,7 +1427,8 @@ function get_mobile_api_area($mobile)
     curl_setopt($ch,CURLOPT_URL,$url);  
     curl_setopt($ch,CURLOPT_POST,true);  
     curl_setopt($ch,CURLOPT_POSTFIELDS,'mobileCode='.$mobile.'&userId=');  
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);  
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true); 
+    curl_setopt($ch,CURLOPT_TIMEOUT, 5);
     $data=curl_exec($ch);  
     curl_close($ch);  
     $data=simplexml_load_string($data);  
@@ -1438,5 +1439,30 @@ function get_mobile_api_area($mobile)
     }  
 } 
 /*--pgge显示下单人手机号以有所在地区插件修改过代码end--*/
+
+/**
+ * 显示下单人手机号
+ * @param unknown $mobile
+ * @return string
+ */
+function get_mobile_api_area_taobao($mobile)
+{
+	$url='http://tcc.taobao.com/cc/json/mobile_tel_segment.htm';
+	$ch=curl_init();
+	curl_setopt($ch,CURLOPT_URL,$url);
+	curl_setopt($ch,CURLOPT_POST,true);
+	curl_setopt($ch,CURLOPT_POSTFIELDS,'tel='.$mobile);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	$data=curl_exec($ch);
+	curl_close($ch);
+	preg_match_all("/(\w+):'([^']+)/", $data, $m);
+	$data = array_combine($m[1], $m[2]);
+	if($data){
+		return $data['province'].$data['catName'].$data['carrier'];
+	}else{
+		return '手机号码格式错误！';
+	}
+}
 
 ?>

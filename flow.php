@@ -1970,7 +1970,8 @@ elseif ($_REQUEST['step'] == 'done')
      /*--wzys显示下单人IP插件修改过代码 end--*/
 
 
-     /*--wzys显示下单人手机号以有所在地区插件修改过代码--*/
+     /*--wzys显示下单人手机号以有所在地区插件修改过代码 
+      * TODO:速度很慢，影响订单的提交，考虑替换--*/
 	 $order['mobile_area'] = get_mobile_api_area($order['mobile']);
 	 /*--wzys显示下单人手机号以有所在地区插件修改过代码end--*/
 	 

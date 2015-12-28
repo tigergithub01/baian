@@ -324,7 +324,8 @@ elseif ($_REQUEST['act'] == 'buy')
     /* 查询：判断是否登录 */
     if ($_SESSION['user_id'] <= 0)
     {
-        show_message($_LANG['eg_error_login'], array($_LANG['back_up_page']), array($back_act), 'error');
+    	ecs_header("Location: user.php?act=login\n");
+//     	show_message($_LANG['eg_error_login'], array($_LANG['back_up_page']), array($back_act), 'error');
     }
 
     /* 查询：取得参数：商品id */

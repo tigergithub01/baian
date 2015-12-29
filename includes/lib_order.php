@@ -1474,7 +1474,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_i
  * 清空购物车中选中的商品
  * @param   int     $type   类型：默认普通商品
  */
-function clear_cart($type = CART_GENERAL_GOODS,$is_checked)
+function clear_cart($type = CART_GENERAL_GOODS, $is_checked, $goods_id)
 {
     $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' AND rec_type = '$type'";
@@ -1483,7 +1483,23 @@ function clear_cart($type = CART_GENERAL_GOODS,$is_checked)
     	$sql = $sql." AND is_checked = '$is_checked'";
     }
     
+    if(isset($goods_id)){
+    	$sql = $sql." AND goods_id = '$goods_id'";
+    }
     $GLOBALS['db']->query($sql);
+}
+
+
+/**
+ * 选中/反选购物车中商品
+ * @param   int     $type   类型：默认普通商品
+ */
+function checked_cart($type = CART_GENERAL_GOODS, $is_checked = 1)
+{
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') .
+	" SET is_checked = '$is_checked' WHERE session_id = '" . SESS_ID . "' AND rec_type = '$type'";
+
+	$GLOBALS['db']->query($sql);
 }
 
 /**
@@ -3402,7 +3418,21 @@ function get_not_free_shipping_count($region_id_list)
  * @param unknown $rec_id
  * @param unknown $is_checked
  */
-function check_cart_goods($rec_id,$is_checked){
+function check_cart_goods($rec_id,$is_checked){	
+	//TODO:更新 配件的选中状态
+	
+	//更新赠品的选中状态
+	$sql = "SELECT goods_id, is_gift FROM " . $GLOBALS['ecs']->table('cart') . "WHERE rec_id = '" . $rec_id . "'" ;
+	$row = $GLOBALS['db']->getRow($sql);
+	if($row && $row['is_gift']>0){
+		$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
+				"is_checked = '" .$is_checked . "' " .
+				"WHERE is_gift = '" . $row['is_gift'] . "'" ;
+		$GLOBALS['db']->query($sql);
+	}
+	
+	
+	//更新主商品的选中状态
 	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
 			"is_checked = '" .$is_checked . "' " .
 			"WHERE rec_id = '" . $rec_id . "'" ;

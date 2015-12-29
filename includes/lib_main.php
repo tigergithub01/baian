@@ -1608,12 +1608,9 @@ function recalculate_price()
     }
     
     /* 删除赠品，重新选择 */
-    $GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
-        " WHERE session_id = '" . SESS_ID . "' AND is_gift > 0");
-    
-    //TODO: 重新计算赠品 added by tiger.guo 20151225
-    //re_recompute_gifts();
-    
+    /* 屏蔽 20151228 by tiger.guo  */
+//     $GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
+//         " WHERE session_id = '" . SESS_ID . "' AND is_gift > 0");
     
 }
 

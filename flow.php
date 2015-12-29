@@ -144,6 +144,13 @@ if ($_REQUEST['step'] == 'add_to_cart')
     {
         clear_cart();
     }
+    
+    if($goods->one_step_buy==1){
+    	checked_cart(CART_GENERAL_GOODS,0);
+    	clear_cart(CART_GENERAL_GOODS,null,$goods->goods_id);
+    	/* 标记购物流程为普通商品 */
+    	$_SESSION['flow_type'] = CART_GENERAL_GOODS;
+    }
 
     /* 检查：商品数量是否合法 */
     if (!is_numeric($goods->number) || intval($goods->number) <= 0)
@@ -170,7 +177,8 @@ if ($_REQUEST['step'] == 'add_to_cart')
             }
 
             $result['content'] = insert_cart_info();
-            $result['one_step_buy'] = $_CFG['one_step_buy'];
+//             $result['one_step_buy'] = $_CFG['one_step_buy'];
+            $result['one_step_buy'] = $goods->one_step_buy;
         }
         else
         {
@@ -492,16 +500,9 @@ elseif ($_REQUEST['step'] == 'checkout')
     if (empty($_SESSION['direct_shopping']) && $_SESSION['user_id'] == 0)
     {
         /* 用户没有登录且没有选定匿名购物，转向到登录页面 */
-//         ecs_header("Location: flow.php?step=login\n");
-        ecs_header("Location: user.php?act=login\n");
+        ecs_header("Location: flow.php?step=login\n");
         exit;
     }
-    
-    
-   
-    
-
-    
 
     include_once(ROOT_PATH . 'includes/lib_transaction.php');
     /* 取得国家列表、商店所在国家、商店所在国家的省列表 */
@@ -560,7 +561,6 @@ elseif ($_REQUEST['step'] == 'checkout')
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
 	$region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $cart_goods = cart_goods($flow_type,$region,1); // 取得商品列表，计算合计
-    
     
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/ 
 	/* 代码增加start  By  www.ecshop120.com */
@@ -2431,6 +2431,9 @@ elseif ($_REQUEST['step'] == "cart")
     /* 标记购物流程为普通商品 */
     $_SESSION['flow_type'] = CART_GENERAL_GOODS;
 
+    /* 重新根据优惠活动计算赠品 */
+    //add_favourable_goods_to_cart();
+    
     /* 如果是一步购物，跳到结算中心 */
     if ($_CFG['one_step_buy'] == '1')
     {
@@ -2455,7 +2458,7 @@ elseif ($_REQUEST['step'] == "cart")
         $collection_goods = get_collection_goods($_SESSION['user_id']);
         $smarty->assign('collection_goods', $collection_goods);
     }
-
+    
     /* 取得优惠活动 */
     $favourable_list = favourable_list($_SESSION['user_rank']);
     usort($favourable_list, 'cmp_favourable');
@@ -3543,4 +3546,149 @@ function cart_favourable_amount($favourable)
     /* 优惠范围内的商品总额 */
     return $GLOBALS['db']->getOne($sql);
 }
+
+/**
+ * 取得购物车中某优惠活动范围内的商品列表
+ * @param   array   $favourable     优惠活动
+ * @return  array
+ */
+function cart_favourable_goods_list($favourable)
+{
+	/* 查询优惠范围内商品总额的sql */
+	$sql = "SELECT c.rec_id, c.goods_id " .
+			"FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " . $GLOBALS['ecs']->table('goods') . " AS g " .
+			"WHERE c.goods_id = g.goods_id " .
+			"AND c.session_id = '" . SESS_ID . "' " .
+			"AND c.rec_type = '" . CART_GENERAL_GOODS . "' " .
+			"AND c.is_gift = 0 " .
+			"AND c.goods_id > 0 ";
+
+	/* 根据优惠范围修正sql */
+	if ($favourable['act_range'] == FAR_ALL)
+	{
+		// sql do not change
+	}
+	elseif ($favourable['act_range'] == FAR_CATEGORY)
+	{
+		/* 取得优惠范围分类的所有下级分类 */
+		$id_list = array();
+		$cat_list = explode(',', $favourable['act_range_ext']);
+		foreach ($cat_list as $id)
+		{
+			$id_list = array_merge($id_list, array_keys(cat_list(intval($id), 0, false)));
+		}
+
+		$sql .= "AND g.cat_id " . db_create_in($id_list);
+	}
+	elseif ($favourable['act_range'] == FAR_BRAND)
+	{
+		$id_list = explode(',', $favourable['act_range_ext']);
+
+		$sql .= "AND g.brand_id " . db_create_in($id_list);
+	}
+	else
+	{
+		$id_list = explode(',', $favourable['act_range_ext']);
+
+		$sql .= "AND g.goods_id " . db_create_in($id_list);
+	}
+
+	/* 优惠范围内的商品总额 */
+	return $GLOBALS['db']->getAll($sql);
+}
+
+	
+	/**
+	 * 重新根据优惠活动计算赠品
+	 */
+	function add_favourable_goods_to_cart(){		
+		//先删除赠品，然后重新加入赠品，优惠活动有变化时，可以及时更新购物车
+		$GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
+				" WHERE session_id = '" . SESS_ID . "' AND is_gift > 0");
+		
+		$favourable_list = favourable_list($_SESSION['user_rank']);
+		foreach ($favourable_list as $key => $favourable) {
+			$act_id = $favourable['act_id'];
+	
+			/* 取得优惠活动信息 */
+			if (empty($favourable))
+			{
+				continue;
+			}
+	
+			/* 判断用户能否享受该优惠 */
+			if (!favourable_available($favourable))
+			{
+				continue;
+			}
+	
+			/* 检查购物车中是否已有该优惠 */
+			$cart_favourable = cart_favourable();
+			if (favourable_used($favourable, $cart_favourable))
+			{
+				continue;
+			};
+	
+			 
+			$gift = array();
+			foreach($favourable['gift'] as $g)
+			{
+				$gift[] = $g['id'];
+			}
+			 
+			/* 赠品（特惠品）优惠 */
+			if ($favourable['act_type'] == FAT_GOODS)
+			{
+				/* 检查是否选择了赠品 */
+				if (empty($gift))
+				{
+					continue;
+				}
+	
+				//检查购物车中的商品，购物车记录中需要确认赠品是由那条商品产生
+				$cart_goods_list = cart_favourable_goods_list($favourable);
+				foreach ($cart_goods_list as $cart_goods) {
+					/* 检查是否已在购物车 */
+					$sql = "SELECT goods_name" .
+							" FROM " . $GLOBALS['ecs']->table('cart') .
+							" WHERE session_id = '" . SESS_ID . "'" .
+							" AND rec_type = '" . CART_GENERAL_GOODS . "'" .
+							" AND is_gift = '$act_id'" .
+							" AND parent_id = '$cart_goods[goods_id]'" .
+							" AND goods_id " . db_create_in($_POST['gift']);
+					$gift_name = $GLOBALS['db']->getCol($sql);
+					if (!empty($gift_name))
+					{
+						continue;
+					}
+		
+					/* 检查数量是否超过上限 TODO: 这个是否还有作用，待验证*/
+					$count = isset($cart_favourable[$act_id]) ? $cart_favourable[$act_id] : 0;
+					if ($favourable['act_type_ext'] > 0 && $count + count($gift) > $favourable['act_type_ext'])
+					{
+						continue;
+					}
+					
+					
+					$is_checked  = $GLOBALS['db']->getOne("SELECT is_checked FROM ".$GLOBALS['ecs']->table('cart')." WHERE rec_id = '$cart_goods[rec_id]'");
+					
+					
+					
+					/* 添加赠品到购物车 */
+					foreach ($favourable['gift'] as $gift)
+					{
+						add_gift_to_cart($act_id, $gift['id'], $gift['price'], $is_checked, $cart_goods['goods_id']);
+					}
+				}
+			}
+			/*  elseif ($favourable['act_type'] == FAT_DISCOUNT)
+			 {
+			 add_favourable_to_cart($act_id, $favourable['act_name'], cart_favourable_amount($favourable) * (100 - $favourable['act_type_ext']) / 100);
+			 }
+			 elseif ($favourable['act_type'] == FAT_PRICE)
+			 {
+			 add_favourable_to_cart($act_id, $favourable['act_name'], $favourable['act_type_ext']);
+			 } */
+		}
+	}
 ?>

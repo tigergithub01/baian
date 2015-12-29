@@ -3392,15 +3392,18 @@ function judge_package_stock($package_id, $package_num = 1)
  */
 function get_not_free_shipping_count($region_id_list)
 {
+	/* 取得购物类型 */
+	$flow_type = isset($_SESSION['flow_type']) ? intval($_SESSION['flow_type']) : CART_GENERAL_GOODS;
 	
 	$sql = 'SELECT c.goods_id FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c, ' .
                 $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r, ' .
                 $GLOBALS['ecs']->table('goods') . ' AS g ' .
             'WHERE r.region_id ' . db_create_in($region_id_list) .
-            " AND g.is_shipping = 1 AND c.goods_id = r.goods_id AND c.goods_id = g.goods_id AND c.is_checked = 1 AND session_id = '".SESS_ID."' AND c.extension_code != 'package_buy'";
+            " AND g.is_shipping = 1 AND c.goods_id = r.goods_id AND c.goods_id = g.goods_id ".
+            " AND rec_type = '$flow_type' AND c.is_checked = 1 AND session_id = '".SESS_ID."' AND c.extension_code != 'package_buy'";
 			
     $goods_ids =  $GLOBALS['db']->getCol($sql);
-	$where =" AND is_checked = 1 AND c.goods_id " . db_create_in($goods_ids) ."";
+	$where =" AND rec_type = '$flow_type' AND c.is_checked = 1 AND session_id = '".SESS_ID."' AND c.goods_id " . db_create_in($goods_ids) ."";
 	$where = str_replace('IN','NOT IN',$where);
 	
 	

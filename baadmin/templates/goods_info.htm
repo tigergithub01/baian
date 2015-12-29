@@ -7,8 +7,49 @@
 <link href="/themes/baian/js/jquery-autocomplete/jquery.autocomplete.css" rel="stylesheet"  type="text/css"   />
 <script type="text/javascript">
 	$(function(){
+		<!-- {if $goods.is_buy_gift eq '1'} -->
+			change_buy_gift(true);	
+		<!--{else}-->
+			change_buy_gift(false);	
+		<!--{/if}-->
 		
-		$("#selectdGiftGoods").autocomplete('goods.php?act=ajax_query_goods', {
+		$("#is_buy_gift").click(function(){
+			var is_buy_gift = ($(this).attr("checked")=="checked");
+			change_buy_gift(is_buy_gift);
+		});
+		
+		initSelectdGiftGoods();
+		init_clear_other_goods();
+	});
+	
+	function change_buy_gift(is_buy_gift){
+		$("#gift_start_date").attr('disabled',!is_buy_gift);
+		$("#gift_end_date").attr('disabled',!is_buy_gift);
+		$("#selbtn_gift_start").attr('disabled',!is_buy_gift);
+		$("#selbtn_gift_end").attr('disabled',!is_buy_gift);
+		if(is_buy_gift){
+			$("#row_buy_give").show();
+		}else{
+			$("#row_buy_give").hide();
+		}		
+	}
+	
+	function format(row) {
+		return row.goods_name + " &lt;" + row.goods_sn + "&gt";
+	}
+	
+	function init_clear_other_goods(){
+		$(".clear_other_goods_btn").click(function(){
+			$other_goods_id = $(this).siblings("input[name='other_goods_id[]']");
+			$other_goods_name = $(this).siblings("input[name='other_goods_name[]']");
+			$other_goods_id.val('');
+			$other_goods_name.val('');
+		});
+		
+	}
+	
+	function initSelectdGiftGoods(){
+		$(".selectdGiftGoods").autocomplete('goods.php?act=ajax_query_goods', {
 			width: 500,
 			multiple: false,
 			dataType: "json",
@@ -25,24 +66,12 @@
 				return format(item);
 			}
 		}).result(function(e, item) {
-			$("#gift_goods_id").val(item.goods_id);
+			$other_goods_id = $(e.target).siblings("input[name='other_goods_id[]']");
+			//console.debug($(e.target).siblings("input[name='other_goods_id[]']"));
+			$other_goods_id.val(item.goods_id);
+			//$("#gift_goods_id").val(item.goods_id);
 			//$("#content").append("<p>selected " + format(item) + "</p>");
 		});
-		
-		
-		$("#gift_goods_flag").click(function(){
-			console.debug($(this).attr("checked"));
-			if($(this).attr("checked")=="checked"){
-				$("#selectdGiftGoods").attr('disabled',false);
-			}else{
-				$("#selectdGiftGoods").attr('disabled',true);
-			}
-		});
-		
-	});
-	
-	function format(row) {
-		return row.goods_name + " &lt;" + row.goods_sn + "&gt";
 	}
 </script>
 
@@ -389,35 +418,45 @@
 		  <!--add by wanggz商品买满多少件送一件的优惠活动-->
 		  
 		  <tr>
-            <td class="label">买几送几：</td>
-            <td> 买满<input type="text" name="buy_number_activity" value="{$goods.buy_number_activity|escape}" size="5" />件送<input type="text" name="give_number_activity" value="{$goods.give_number_activity|escape}" size="5" />件</td>
+            <td class="label">买几送几促销?：</td>
+            <td id=""><label for="is_buy_gift"><input type="checkbox" id="is_buy_gift" name="is_buy_gift" value="1" {if $goods.is_buy_gift eq '1'}checked="checked"{/if}  />打勾表示设置买几送几促销</label></td>
           </tr>
           <tr>
-            <td class="label">
-            	<!-- {if $goods.gift_goods_flag eq 1 } -->
-            	<input type="checkbox" value="1" name="gift_goods_flag" id="gift_goods_flag" checked="checked"/>
-            	<!-- {else} -->
-            	<input type="checkbox" value="1" name="gift_goods_flag" id="gift_goods_flag" />
-            	<!-- {/if} -->
-            	
-            	赠送其它商品：</td>
-            <td>
-            	<!-- {if $goods.gift_goods_flag neq 1 } -->
-            	<input type="text" id="selectdGiftGoods"  size="50" value="{$goods.gift_goods_name}" disabled="disabled"/>
-            	<!-- {else} -->
-            	<input type="text" id="selectdGiftGoods"  size="50" value="{$goods.gift_goods_name}"/>
-            	<!-- {/if} -->(请输入商品名称或货号进行检索)
-            	<input type="hidden" id="gift_goods_id" name="gift_goods_id" value="{$goods.gift_goods_id}"/>
+            <td class="label" id="promote_5">买几送几促销日期：</td>
+            <td id="promote_6">
+              <input name="gift_start_date" type="text" id="gift_start_date" size="24" value='{$goods.gift_start_date}' /><input name="selbtn_gift_start" type="button" id="selbtn_gift_start" onclick="return showCalendar('gift_start_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn_gift_start');" value="{$lang.btn_select}" class="button"/> - <input name="gift_end_date" type="text" id="gift_end_date" size="24" value='{$goods.gift_end_date}' /><input name="selbtn_gift_end" type="button" id="selbtn_gift_end" onclick="return showCalendar('gift_end_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn_gift_end');" value="{$lang.btn_select}" class="button"/>
             </td>
           </tr>
-          <!-- 
-          <tr>
-            <td class="label">买满多少件送一件：</td>
-            <td><input type="text" name="buy_number_activity" value="{$goods.buy_number_activity|escape}" size="40" /></td>
+          <!--仓库库存 start-->
+          <tr id="row_buy_give">
+            <td colspan="2" style="text-align: center;">
+	            <fieldset style="border:1px solid #DDEEF2">
+	  			<legend style="background:#FFF">买赠详情:</legend>
+	              <table  style="width:100%" id="tbody_buy_give" align="center">
+	                {foreach from=$buy_give_activity_list item=bg_activity name=bg_activity}
+	                <tr>
+	                  <td>
+	                     {if $smarty.foreach.bg_activity.iteration eq 1}
+	                       <a href="javascript:;" onclick="add_bg_activity(this)">[+]</a>
+	                     {else}
+	                       <a href="javascript:;" onclick="remove_bg_activity(this)">[-]</a>
+	                     {/if}
+	                     	买满  <input type="text" name="buy_number_activity[]" size="8" value="{$bg_activity.buy_number_activity}"/>
+	                     	赠送 <input type="text" name="give_number_activity[]" size="8" value="{$bg_activity.give_number_activity}"/>
+	                     	<input type="checkbox" {if $bg_activity.is_double_give eq '1'}checked="checked"{/if} name="is_double_give[]" value="1"/>是否倍增? 
+	                     	赠送其它商品,为空赠送原品  
+	                     	<input type="text"   name="other_goods_name[]" size="50" class="selectdGiftGoods" value="{$bg_activity.other_goods_name}"/>
+	                     	<input type="hidden" name="other_goods_id[]" value="{$bg_activity.other_goods_id}"/>
+	                     	<input type="button" class="clear_other_goods_btn" value="清空赠送其它商品"/>
+	                  </td>
+	                </tr>
+	                {/foreach}
+	              </table>
+	              </fieldset>
           </tr>
-           -->
-          <!--add by wanggz商品买满多少件送一件的优惠活动end-->
-           <!--add by wanggz设置某个商品在在某些地区可以包邮，某些地区不能-->
+          <!--仓库库存 end -->
+          
+           <!--设置某个商品在在某些地区可以包邮，某些地区不能-->
           <tr>
             <td class="label">{$lang.lab_is_free_shipping}</td>
             <td><input type="checkbox" name="is_shipping" value="1" {if $goods.is_shipping}checked="checked"{/if} onclick="showRegion(this)"/> {$lang.free_shipping}</td>
@@ -480,7 +519,7 @@
              </td>
           
           </tr>
-          <!--add by wanggz设置某个商品在在某些地区可以包邮，某些地区不能end-->
+          <!--设置某个商品在在某些地区可以包邮，某些地区不能end-->
           <!-- added by tiger.guo 20151010 -->
           <tr>
             <td class="label">可减运费金额：</td>
@@ -1090,6 +1129,8 @@
       document.forms['theForm'].elements['promote_price'].disabled = !checked;
       document.forms['theForm'].elements['selbtn1'].disabled = !checked;
       document.forms['theForm'].elements['selbtn2'].disabled = !checked;
+      $("#promote_start_date").attr("disabled",!checked);
+      $("#promote_end_date").attr("disabled",!checked);
   }
 
   function handleMomsuit(checked)
@@ -1572,6 +1613,49 @@
 
     tbl.deleteRow(row);
   }
+  
+  /**
+   * 新增买赠活动
+   */
+  function add_bg_activity(obj)
+  {
+    var src      = obj.parentNode.parentNode;
+    var tbl      = document.getElementById('tbody_buy_give');
+
+    /*
+    var validator  = new Validator('theForm');
+    checkVolumeData("0",validator);
+    if (!validator.passed())
+    {
+      return false;
+    }
+    */
+
+    var row  = tbl.insertRow(tbl.rows.length);
+    var cell = row.insertCell(-1);
+    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1tbody_buy_give$3$4-");
+
+    var buy_number_activity = document.getElementsByName("buy_number_activity[]");
+    var give_number_activity  = document.getElementsByName("give_number_activity[]");
+
+    buy_number_activity[buy_number_activity.length-1].value = "0";
+    give_number_activity[give_number_activity.length-1].value = "0";
+    
+    initSelectdGiftGoods();
+    init_clear_other_goods();
+  }
+  
+  /**
+   * 删除买赠活动
+   */
+  function remove_bg_activity(obj)
+  {
+    var row = rowindex(obj.parentNode.parentNode);
+    var tbl = document.getElementById('tbody_buy_give');
+
+    tbl.deleteRow(row);
+  }
+  
 	  
 </script>
 {include file="pagefooter.htm"}

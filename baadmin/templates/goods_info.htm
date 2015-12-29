@@ -444,6 +444,7 @@
 	                     	买满  <input type="text" name="buy_number_activity[]" size="8" value="{$bg_activity.buy_number_activity}"/>
 	                     	赠送 <input type="text" name="give_number_activity[]" size="8" value="{$bg_activity.give_number_activity}"/>
 	                     	<input type="checkbox" {if $bg_activity.is_double_give eq '1'}checked="checked"{/if} name="is_double_give[]" value="1"/>是否倍增? 
+	                     	最大赠送数量，为-1表示不限 <input type="text" name="max_give_number[]" size="8" value="{$bg_activity.max_give_number}"/>
 	                     	赠送其它商品,为空赠送原品  
 	                     	<input type="text"   name="other_goods_name[]" size="50" class="selectdGiftGoods" value="{$bg_activity.other_goods_name}"/>
 	                     	<input type="hidden" name="other_goods_id[]" value="{$bg_activity.other_goods_id}"/>
@@ -1633,13 +1634,15 @@
 
     var row  = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(-1);
-    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1tbody_buy_give$3$4-");
+    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
 
     var buy_number_activity = document.getElementsByName("buy_number_activity[]");
     var give_number_activity  = document.getElementsByName("give_number_activity[]");
+    var max_give_number  = document.getElementsByName("max_give_number[]");
 
     buy_number_activity[buy_number_activity.length-1].value = "0";
     give_number_activity[give_number_activity.length-1].value = "0";
+    max_give_number[max_give_number.length-1].value = "-1";
     
     initSelectdGiftGoods();
     init_clear_other_goods();

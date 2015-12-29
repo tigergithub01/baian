@@ -451,13 +451,13 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     $storerooms =  get_goods_storeroom_list();
     
     //买几送几促销
-    $sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.is_double_give, bga.other_goods_id ,g.goods_name AS other_goods_name FROM "
+    $sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.max_give_number, bga.is_double_give, bga.other_goods_id ,g.goods_name AS other_goods_name FROM "
     		 . $ecs->table('buy_give_activity') . " AS bga " .
      " LEFT JOIN  " . $ecs->table('goods') . " AS g  ON (bga.other_goods_id = g.goods_id)" . 
      " WHERE bga.goods_id = '".$_REQUEST[goods_id]."' ORDER BY bga.is_double_give,bga.buy_number_activity ";
     $buy_give_activity_list = $db->getAll($sql);
     if(empty($buy_give_activity_list)){
-    	$buy_give_activity_list = array('0'=>array('buy_number_activity'=>0,'give_number_activity'=>0,'is_double_give'=>1,'is_other_goods'=>0)); //为空时插入一条初始记录
+    	$buy_give_activity_list = array('0'=>array('buy_number_activity'=>0,'give_number_activity'=>0,'max_give_number'=>-1,'is_double_give'=>0,'is_other_goods'=>0)); //为空时插入一条初始记录
     }
 
     /* 拆分商品名称样式 */
@@ -1316,6 +1316,7 @@ else
     /*买几送几 start*/
     $buy_number_activitys = isset($_POST['buy_number_activity'])?$_POST['buy_number_activity']:null;
     $give_number_activitys = isset($_POST['give_number_activity'])?$_POST['give_number_activity']:null;
+    $max_give_numbers = isset($_POST['max_give_number'])?$_POST['max_give_number']:null;
     $is_double_gives = isset($_POST['is_double_give'])?$_POST['is_double_give']:null;
     $other_goods_ids = isset($_POST['other_goods_id'])?$_POST['other_goods_id']:null;
     
@@ -1331,10 +1332,11 @@ else
     		$give_number_activity  = empty($give_number_activitys[$key])?0:intval($give_number_activitys[$key]);
     		$is_double_give  = empty($is_double_gives[$key])?0:intval($is_double_gives[$key]);
     		$other_goods_id  = empty($other_goods_ids[$key])?null:intval($other_goods_ids[$key]);
+    		$max_give_number  = empty($max_give_numbers[$key])?-1:intval($max_give_numbers[$key]);
     		
     		
-    		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('buy_give_activity') . " (goods_id, buy_number_activity, give_number_activity,is_double_give,other_goods_id) " .
-    				"VALUES ('$goods_id', '$buy_number_activity', '$give_number_activity', '$is_double_give', '$other_goods_id')";
+    		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('buy_give_activity') . " (goods_id, buy_number_activity, give_number_activity, max_give_number,is_double_give,other_goods_id) " .
+    				"VALUES ('$goods_id', '$buy_number_activity', '$give_number_activity', '$max_give_number', '$is_double_give', '$other_goods_id')";
     		$db->query($sql);
     	}
     }

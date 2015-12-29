@@ -95,7 +95,7 @@
 	                	</dl>
 	                	
 	                	
-	                	<!-- {if ($goods.bonus_money gt 0 || $goods.give_integral gt 0 || $goods.buy_number_activity gt 0)} -->
+	                	<!-- {if ($goods.bonus_money gt 0 || $goods.give_integral gt 0 || $goods.is_buy_gift eq 1)} -->
 	                	<dl>
 	                		<dt>促　销：</dt>
 	                		<dd class="cuxiao">
@@ -107,9 +107,9 @@
 	                			<p><i>送积分</i> {$goods.give_integral}积分
 	                			<!-- {/if} -->
 	                			
-	                			<!-- {if ($goods.buy_number_activity gt 0)} -->
+	                			<!-- {if ($goods.is_buy_gift eq 1)} -->
 	                			<p>
-	                			<span class="l" style="float: inherit;"><i>商品促销</i> 买{$goods.buy_number_activity}送{$goods.give_number_activity}</span> 
+	                			<span class="l" style="float: inherit;"><i>商品促销</i> 买送</span> 
 	                			</p>
 	                			<!-- 列出可赠送的原品或赠品 -->
 	                			<!-- 

@@ -327,7 +327,7 @@
 	            		<div class="h30"></div>
 	            		<div class="btn">
 	            			
-							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="addToCart({$goods.goods_id},null,'{$product_id}')">立即购买</a>            			
+							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)">立即购买</a>            			
 							<a class="btn2"  id="flowChart" href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')">加入购物车</a>            			
 	            		</div>
                 	</div>

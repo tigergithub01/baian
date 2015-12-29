@@ -1860,6 +1860,28 @@
           return true;
         }
         {/literal}
+        
+        	$(function(){
+            	$("#loginForm").validate({
+            		rules: {
+            			username: {
+        					required: true
+        				},
+        				password: {
+        					required: true
+        				},
+        			},
+        			messages: {
+        				username: {
+        					required: "请输入账户名",
+        				},
+        				password: {
+        					required: "请输入密码",
+        				}
+        			}
+            	});	                	
+            });
+        	
         </script>
         <!-- 开始用户登录注册界面 -->
          <div id="hd">
@@ -1879,24 +1901,24 @@
         <div id="bd">
         <div class="login-wrap">
             <ul class="s-login-tab">
-                <li><a href="">用户注册</a></li>
-                <li class="on"><a href="">用户登录</a></li>
+                <li><a href="user.php?act=login">用户注册</a></li>
+                <li class="on"><a href="flow.php?step=login">用户登录</a></li>
             </ul>
             <div class="loginBox2">
                 <div class="login-r r">
                     <a href=""><img src="images/bg-login.jpg" alt=""></a>
                 </div>
-                 <form action="flow.php?step=login" method="post" name="loginForm" id="loginForm" onsubmit="return checkLoginForm(this)">
+                 <form action="flow.php?step=login" method="post" name="loginForm" id="loginForm" onsubmit="">
                     <table>
                         <tr>
                             <th>账户名：</th>
-                            <td><input type="text" name="username" id="username" value="手机号/邮箱/用户名" onfocus="if(this.value='手机号/邮箱/用户名'){this.value='';}" onblur="if(!this.value){this.value=this.defaultValue;}"></td>
+                            <td><input type="text" name="username" id="username" placeholder="手机号/邮箱"></td>
                         </tr>
                         <tr>
                             <th>密码：</th>
                             <td>
                                 <input type="password" name="password">
-                                <p><a href="" class="r">忘记密码？</a><label for=""><input type="checkbox">自动登录</label></p>
+                                <p><a href="/user.php?act=get_password" class="r">忘记密码？</a><label for=""><input type="checkbox" name="remember">自动登录</label></p>
                             </td>
                         </tr>
                         <tr>
@@ -1990,7 +2012,7 @@ window.onerror = killerrors;
 <script type="text/javascript">pageConfig.FN_InitContrast();</script>
 
 
-<script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script>
+<!-- <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script> -->
 </div>
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>

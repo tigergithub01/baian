@@ -454,7 +454,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     $sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.is_double_give, bga.other_goods_id ,g.goods_name AS other_goods_name FROM "
     		 . $ecs->table('buy_give_activity') . " AS bga " .
      " LEFT JOIN  " . $ecs->table('goods') . " AS g  ON (bga.other_goods_id = g.goods_id)" . 
-     " WHERE bga.goods_id = '".$_REQUEST[goods_id]."'";
+     " WHERE bga.goods_id = '".$_REQUEST[goods_id]."' ORDER BY bga.is_double_give,bga.buy_number_activity ";
     $buy_give_activity_list = $db->getAll($sql);
     if(empty($buy_give_activity_list)){
     	$buy_give_activity_list = array('0'=>array('buy_number_activity'=>0,'give_number_activity'=>0,'is_double_give'=>1,'is_other_goods'=>0)); //为空时插入一条初始记录

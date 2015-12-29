@@ -3,7 +3,7 @@
 /* *
  * 添加商品到购物车 
  */
-function addToCart(goodsId, parentId,product_id,cart_confirm) 
+function addToCart(goodsId, parentId,product_id,cart_confirm,one_step_buy) 
 {
   var goods        = new Object();
   var spec_arr     = new Array();
@@ -30,6 +30,7 @@ function addToCart(goodsId, parentId,product_id,cart_confirm)
   goods.goods_id = goodsId;
   goods.number   = number;
   goods.parent   = (parentId==null || typeof(parentId) == "undefined") ? 0 : parseInt(parentId);
+  goods.one_step_buy   = (one_step_buy==null || typeof(one_step_buy) == "undefined") ? 0 : 1; //TODO:以后扩展用
   if(cart_confirm!=null){
 	  goods.cart_confirm = cart_confirm;
   }  
@@ -115,7 +116,7 @@ function addToCartResponse(result)
 
     if (result.one_step_buy == '1')
     {
-      location.href = cart_url;
+      location.href = 'flow.php?step=checkout';
     }
     else
     {

@@ -350,11 +350,8 @@ function goods_count_by_brand($brand_id, $cate = 0,$promote,$integral,$bonus)
 		$where .= " AND " . get_children($cate);
 	}
 	
-	/* if($promote==1){
-		$where .= " AND (g.is_promote = 1 and g.promote_price >0 and g.promote_start_date <=".gmtime().' AND g.promote_end_date >='.gmtime().') ';
-	} */
 	if($promote==1){
-		$where .= " AND (g.buy_number_activity > 0 and g.give_number_activity >0) ";
+		$where .= " AND (g.is_buy_gift = 1 and g.gift_start_date <=".gmtime().' AND g.gift_end_date >='.gmtime().') ';
 	}
 	
 	if($integral==1){

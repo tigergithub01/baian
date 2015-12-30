@@ -256,7 +256,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'cart_goods_number')
 	lib_main_make_json_result('',['cart_goods_number'=>$cart_goods_number]);
 }
 
-// clear_cache_files('goods');
+//clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
@@ -675,7 +675,9 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		
 		/**显示产品的促销信息**/
 		
-		
+		//买几送几
+		$buy_give_activity_list = get_buy_give_activity_list($goods_id);
+		$smarty->assign('buy_give_activity_list',       $buy_give_activity_list);		
 		
 				
         assign_dynamic('goods');

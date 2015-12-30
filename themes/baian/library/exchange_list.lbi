@@ -51,7 +51,7 @@
 				                        <div class="txt">
 				                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
 				                            <strong class="price">{$goods.exchange_integral}分</strong>
-				                            <span class="orange r">条评价</span>
+				                            <span class="orange r">{$goods.review_count}条评价</span>
 				                        </div>
 				                        <div class="btnBox" style="text-align: center;">
 				                            <!-- <a href="exchange.php?act=buy&goods_id={$goods.goods_id}" style="border: 0px;">立即兑换</a> -->

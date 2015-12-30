@@ -61,7 +61,7 @@
 				                        <div class="txt">
 				                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
 				                            <strong class="price"><!--{if $goods.promote_price neq "" } -->{$goods.promote_price}<!--{else}-->{$goods.shop_price}<!--{/if}--></strong>
-				                            <span class="orange r">条评价</span>
+				                            <span class="orange r">{$goods.review_count}条评价</span>
 				                        </div>
 				                        <div class="btnBox">
 				                            <a href="javascript:addToCart({$goods.goods_id})">立即购买</a>

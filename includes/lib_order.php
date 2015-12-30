@@ -485,12 +485,12 @@ function order_goods($order_id)
     $sql = "SELECT og.rec_id, og.goods_id, og.goods_name, og.goods_sn, og.market_price, og.goods_number, " .
             "og.goods_price, og.goods_attr, og.is_real, og.parent_id, og.is_gift, " .
             "og.goods_price * og.goods_number AS subtotal, og.extension_code, " .
-            "g.goods_thumb , g.goods_img, og.product_id " .
+            "g.goods_thumb , g.goods_img, og.product_id, IF(og.is_gift, og.is_gift, og.goods_id) AS gid " .
             "FROM " . $GLOBALS['ecs']->table('order_goods') . ' AS og ' .
             'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             "ON og.goods_id = g.goods_id " .
             " WHERE og.order_id = '$order_id'";
-    $sql = $sql." ORDER BY og.goods_id, og.is_gift";
+    $sql = $sql . " ORDER BY gid, og.is_gift";
 
     $res = $GLOBALS['db']->query($sql);
     $goods_list = array();
@@ -911,14 +911,14 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
     $sql = "SELECT rec_id, user_id, goods_id, goods_name, goods_sn, goods_number, " .
             "market_price, goods_price, goods_attr_id, goods_attr, is_real, extension_code, parent_id, is_gift, is_shipping, product_id, " .
-            "goods_price * goods_number AS subtotal " .
+            "goods_price * goods_number AS subtotal, IF(is_gift, is_gift, goods_id) AS gid " .
             "FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' " .
             "AND rec_type = '$type'";
     if(isset($is_checked)){
     	$sql = $sql." AND is_checked = '$is_checked'";
     } 
-    $sql = $sql . " ORDER BY goods_id, is_gift";
+    $sql = $sql . " ORDER BY gid, is_gift";
 
     $arr = $GLOBALS['db']->getAll($sql);
 
@@ -1824,13 +1824,13 @@ function get_cart_goods($is_checked)
     		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
     		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'" .
     		" ORDER BY pid, parent_id"; */
-    $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid " .
+    $sql = "SELECT *, IF(parent_id, parent_id, goods_id) AS pid, IF(is_gift, is_gift, goods_id) AS gid " .
     		" FROM " . $GLOBALS['ecs']->table('cart') . " " .
     		" WHERE session_id = '" . SESS_ID . "' AND rec_type = '" . CART_GENERAL_GOODS . "'";    
     if(isset($is_checked)){
     	$sql = $sql." AND is_checked = '$is_checked'";
     }    
-    $sql = $sql . " ORDER BY pid, parent_id, goods_id, is_gift";
+    $sql = $sql . " ORDER BY gid, is_gift";
     
     $res = $GLOBALS['db']->query($sql);
 

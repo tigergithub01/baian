@@ -12,8 +12,8 @@
 	<link rel="stylesheet" href="/themes/baian/css/jquery.jcarousel.css" />
 	<link rel="stylesheet" href="/themes/baian/css/jqzoom.css" />
 	<style>
-	.s-photo-viewer{display: block;width: 100%;overflow: hidden;clear: both;}
-	.s-photo-viewer img{display: block;border: 1px solid #ddd;}
+	.s-photo-viewer{display: block;width: 250px;overflow: hidden;clear: both;}
+	.s-photo-viewer img{display: block;border: 1px solid #ddd;width: 100%;}
 	.ul-ping li .con .img img{cursor: pointer;}
 	.ul-ping li .con .img img.ok{border: 1px solid #f08300;margin-bottom: 20px;}
 	.img-wp br{display: none;}

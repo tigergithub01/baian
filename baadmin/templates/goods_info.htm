@@ -1639,10 +1639,12 @@
     var buy_number_activity = document.getElementsByName("buy_number_activity[]");
     var give_number_activity  = document.getElementsByName("give_number_activity[]");
     var max_give_number  = document.getElementsByName("max_give_number[]");
+    var is_double_give  = document.getElementsByName("is_double_give[]");
 
     buy_number_activity[buy_number_activity.length-1].value = "0";
     give_number_activity[give_number_activity.length-1].value = "0";
     max_give_number[max_give_number.length-1].value = "-1";
+    $(is_double_give[is_double_give.length-1]).attr('checked',false);
     
     initSelectdGiftGoods();
     init_clear_other_goods();

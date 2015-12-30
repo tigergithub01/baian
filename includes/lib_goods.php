@@ -812,8 +812,9 @@ function get_goods_info($goods_id)
         	$row['gmt_end_time'] = null;
         }
         
+        //根据时间段修正是否买几送几
+        $row['is_buy_gift'] = ($row['is_buy_gift']==1 && gmtime() >= $row['gift_start_date'] && gmtime() <= $row['gift_end_date'])?1:0;
         
-
         return $row;
     }
     else
@@ -2588,6 +2589,28 @@ function price_grade_related_random_goods($category_id,$min_price,$max_price)
 		}
 	}
 	return $arr;
+}
+
+/**
+ * 查找商品的买赠规则
+ * @param unknown $goods_id
+ */
+function get_buy_give_activity_list($goods_id){
+	//计算可以赠送的商品
+	$sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.max_give_number, ".
+			" bga.is_double_give, bga.other_goods_id, gift.goods_name AS other_goods_name, " .
+			" gift.goods_thumb AS gift_goods_thumb, gift.goods_img AS gift_goods_img  FROM "
+			. $GLOBALS['ecs']->table('buy_give_activity') . " AS bga " .
+					" INNER JOIN  " . $GLOBALS['ecs']->table('goods') . " AS g ON (bga.goods_id = g.goods_id)" .
+					" LEFT JOIN  " . $GLOBALS['ecs']->table('goods') . " AS gift ON (bga.other_goods_id = gift.goods_id)" . 
+					" WHERE bga.goods_id = '$goods_id'" .
+					" AND (g.is_buy_gift = 1 and g.gift_start_date <=".gmtime().' AND g.gift_end_date >='.gmtime().') '.
+					" ORDER BY bga.is_double_give DESC,bga.buy_number_activity";
+	$buy_give_activity_list = $GLOBALS['db']->getAll($sql);
+	foreach ($buy_give_activity_list as $key => $row) {
+		$buy_give_activity_list[$key]['gift_goods_url']          = build_uri('goods', array('gid'=>$row['other_goods_id']), $row['other_goods_name']);
+	}
+	return $buy_give_activity_list;
 }
 
 

@@ -490,6 +490,7 @@ function order_goods($order_id)
             'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
             "ON og.goods_id = g.goods_id " .
             " WHERE og.order_id = '$order_id'";
+    $sql = $sql." ORDER BY og.goods_id, og.is_gift";
 
     $res = $GLOBALS['db']->query($sql);
     $goods_list = array();
@@ -917,6 +918,7 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
     if(isset($is_checked)){
     	$sql = $sql." AND is_checked = '$is_checked'";
     } 
+    $sql = $sql . " ORDER BY goods_id, is_gift";
 
     $arr = $GLOBALS['db']->getAll($sql);
 
@@ -1487,7 +1489,7 @@ function clear_cart($type = CART_GENERAL_GOODS, $is_checked, $goods_id)
     }
     
     if(isset($goods_id)){
-    	$sql = $sql." AND goods_id = '$goods_id'";
+    	$sql = $sql." AND ((goods_id = '$goods_id' AND is_gift = 0 AND parent_id = 0)  OR is_gift = '$goods_id' OR parent_id = '$goods_id')";
     }
     $GLOBALS['db']->query($sql);
 }
@@ -1828,7 +1830,7 @@ function get_cart_goods($is_checked)
     if(isset($is_checked)){
     	$sql = $sql." AND is_checked = '$is_checked'";
     }    
-    $sql = $sql . " ORDER BY pid, parent_id";
+    $sql = $sql . " ORDER BY pid, parent_id, goods_id, is_gift";
     
     $res = $GLOBALS['db']->query($sql);
 
@@ -3427,16 +3429,13 @@ function get_not_free_shipping_count($region_id_list)
 function check_cart_goods($rec_id,$is_checked){	
 	//TODO:更新 配件的选中状态
 	
-	//更新赠品的选中状态
-	$sql = "SELECT goods_id, is_gift FROM " . $GLOBALS['ecs']->table('cart') . "WHERE rec_id = '" . $rec_id . "'" ;
-	$row = $GLOBALS['db']->getRow($sql);
-	if($row && $row['is_gift']>0){
-		$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
-				"is_checked = '" .$is_checked . "' " .
-				"WHERE is_gift = '" . $row['is_gift'] . "'" ;
-		$GLOBALS['db']->query($sql);
-	}
-	
+	//更新赠品的选中状态(优惠活动中的赠品更新不包含)
+	$sql = "SELECT goods_id FROM " . $GLOBALS['ecs']->table('cart') . "WHERE rec_id = '" . $rec_id . "'" ;
+	$goods_id = $GLOBALS['db']->getOne($sql);
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
+			"is_checked = '" .$is_checked . "' " .
+			"WHERE is_gift = '" . $goods_id . "' AND extension_code <> 'package_buy' AND rec_type = '".CART_GENERAL_GOODS."'" ;
+	$GLOBALS['db']->query($sql);
 	
 	//更新主商品的选中状态
 	$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET " .
@@ -3484,27 +3483,41 @@ function get_pick_up_point_list($region_id_list){
 }
 
 /**
- * 重新根据优惠活动计算赠品
+ * 根据商品中的买几送几计算赠品，优惠套装不参与赠送
  */
 function add_goods_gift_to_cart($goods_id){
 	//先删除赠品，然后重新加入赠品
 // 	$GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
 // 			" WHERE session_id = '" . SESS_ID . "' AND is_gift = '$goods_id'");
-	
+
+	$sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('cart') .
+	" WHERE goods_id = '$goods_id' AND session_id='" . SESS_ID . "' AND extension_code <> 'package_buy' AND rec_type = '".CART_GENERAL_GOODS."'";
+	$count = $GLOBALS['db']->getOne($sql);
+	if($count<=0){
+		//优惠套装不参与赠送
+		return;
+	}
+		
 	//查询购物车中原品的数量
 	$goods_number = $GLOBALS['db']->getOne('SELECT goods_number FROM ' . $GLOBALS['ecs']->table('cart') .
-			" WHERE session_id = '" . SESS_ID . "' AND is_gift = 0 AND goods_id = '$goods_id'");
+			" WHERE session_id = '" . SESS_ID . "' AND is_gift = 0 AND goods_id = '$goods_id' AND extension_code <> 'package_buy' AND rec_type = '".CART_GENERAL_GOODS."'");
 	
 	//计算可以赠送的商品
-	$sql = "SELECT buy_give_id, goods_id, buy_number_activity, give_number_activity, max_give_number, is_double_give, other_goods_id  FROM "
-			. $GLOBALS['ecs']->table('buy_give_activity') . 
-			" WHERE goods_id = '".$goods_id."' ORDER BY is_double_give,buy_number_activity";
+	$sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.max_give_number, ".
+			" bga.is_double_give, bga.other_goods_id, gift.goods_name AS other_goods_name, " .
+			" gift.goods_thumb AS gift_goods_thumb, gift.goods_img AS gift_goods_img  FROM "
+					. $GLOBALS['ecs']->table('buy_give_activity') . " AS bga " .
+					" INNER JOIN  " . $GLOBALS['ecs']->table('goods') . " AS g ON (bga.goods_id = g.goods_id)" .
+					" LEFT JOIN  " . $GLOBALS['ecs']->table('goods') . " AS gift ON (bga.other_goods_id = gift.goods_id)" .
+					" WHERE bga.goods_id = '$goods_id'" .
+					" AND (g.is_buy_gift = 1 and g.gift_start_date <=".gmtime().' AND g.gift_end_date >='.gmtime().') '.
+					" ORDER BY bga.is_double_give,bga.buy_number_activity";
 	$buy_give_activity_list = $GLOBALS['db']->getAll($sql);
 	foreach ($buy_give_activity_list as $key => $row) {
 		$is_double_give = intval($row['is_double_give']);
 		if($is_double_give==0){
 			//先查找不按倍增赠送的
-			if($gift_num=$row['buy_number_activity']){
+			if($goods_number==$row['buy_number_activity']){
 				$act = $row;
 				break;
 			}
@@ -3525,25 +3538,21 @@ function add_goods_gift_to_cart($goods_id){
 		
 		$gift_goods_id = empty($act['other_goods_id'])?$act['goods_id']:$act['other_goods_id'];
 		
+		//先删除赠品，后插入赠品 
+		$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '" .SESS_ID. "' AND is_gift = '$goods_id' ";
+		$GLOBALS['db']->query($sql);
 		
-		
-		//已经存在赠品的情况下，直接更新赠品数量
-		$count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM ". $GLOBALS['ecs']->table('cart') ." WHERE session_id = '".SESS_ID."' AND is_gift = '$goods_id'");
-		if($count>0){
-			//更新赠品记录
-			$sql = "UPDATE " . $GLOBALS['ecs']->table('cart') . " SET goods_number = '$gift_num'" .
-			" WHERE session_id = '" .SESS_ID. "' AND is_gift = '$goods_id' ";
-		}else{
+		if($gift_num>0){
 			//插入赠品记录
 			$sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
 					"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
 					"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
 					"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'$price',".
-					"'$goods_number', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', 1 " .
+					"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', 1 " .
 					"FROM " . $GLOBALS['ecs']->table('goods') .
 					" WHERE goods_id = '$gift_goods_id'";
+			$GLOBALS['db']->query($sql);
 		}
-		$GLOBALS['db']->query($sql);
 	}
 }
 

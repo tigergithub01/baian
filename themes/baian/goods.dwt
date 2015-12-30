@@ -109,7 +109,12 @@
 	                			
 	                			<!-- {if ($goods.is_buy_gift eq 1)} -->
 	                			<p>
-	                			<span class="l" style="float: inherit;"><i>商品促销</i> 买送</span> 
+	                			<span class="l" style="float: inherit;"><i>商品促销</i> 
+	                				<!-- {foreach from=$buy_give_activity_list item=buy_act} -->
+										买{$buy_act.buy_number_activity}送{$buy_act.give_number_activity}<!-- {if ($buy_act.other_goods_id)} -->赠品
+										<a target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 20px;height: 20px" /></a><!-- {else} -->原品<!-- {/if} -->
+									<!-- {/foreach} -->
+	                			</span> 
 	                			</p>
 	                			<!-- 列出可赠送的原品或赠品 -->
 	                			<!-- 

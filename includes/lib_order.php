@@ -2606,15 +2606,25 @@ function change_goods_storage($good_id, $product_id, $number = 0,$store_id = nul
 
     $number = ($number > 0) ? '+ ' . $number : $number;
     
-    //TODO:根据配送区域，匹配货品，扣减对应的库存
-    $products_store_query = true;
-    if($store_id && !empty($product_id)){
-    	 $sql = "UPDATE " . $GLOBALS['ecs']->table('products_store') ."
-                SET product_number = product_number $number
-                WHERE store_id = '$store_id'
-                AND product_id = '$product_id'
-                LIMIT 1";
-        $products_store_query = $GLOBALS['db']->query($sql);
+    //TODO:根据配送区域，匹配仓库，扣减对应的库存
+    $store_query = true;
+    if($store_id){
+    	if(!empty($product_id)){
+    		//货品
+    		$sql = "UPDATE " . $GLOBALS['ecs']->table('products_store') ."
+    		SET product_number = product_number $number
+    		WHERE store_id = '$store_id'
+    		AND product_id = '$product_id'
+    		LIMIT 1";
+    	}else{
+    		//商品
+    		$sql = "UPDATE " . $GLOBALS['ecs']->table('goods_store') ."
+    		SET goods_number = goods_number $number
+    		WHERE store_id = '$store_id'
+    		AND goods_id = '$good_id'
+    		LIMIT 1";
+    	}
+        $store_query = $GLOBALS['db']->query($sql);
     }
 
     /* 处理货品库存 */
@@ -2628,6 +2638,8 @@ function change_goods_storage($good_id, $product_id, $number = 0,$store_id = nul
                 LIMIT 1";
         $products_query = $GLOBALS['db']->query($sql);
     }
+    
+    
 
     /* 处理商品库存 */
     $sql = "UPDATE " . $GLOBALS['ecs']->table('goods') ."

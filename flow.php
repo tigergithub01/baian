@@ -1659,7 +1659,7 @@ elseif ($_REQUEST['step'] == 'done')
     /* 如果使用库存，且下订单时减库存，则减少库存 */
     if ($_CFG['use_storage'] == '1' && $_CFG['stock_dec_time'] == SDT_PLACE)
     {
-        $cart_goods_stock = get_cart_goods();
+        $cart_goods_stock = get_cart_goods(1);
         $_cart_goods_stock = array();
         foreach ($cart_goods_stock['goods_list'] as $value)
         {
@@ -3081,7 +3081,7 @@ function flow_cart_stock($arr, $address=null)
                " WHERE rec_id='$key' AND session_id='" . SESS_ID . "'";
         $goods = $GLOBALS['db']->getRow($sql);
 
-        $sql = "SELECT g.goods_name, g.goods_number, c.product_id ".
+        $sql = "SELECT  g.goods_name, g.goods_number, c.product_id ".
                 "FROM " .$GLOBALS['ecs']->table('goods'). " AS g, ".
                     $GLOBALS['ecs']->table('cart'). " AS c ".
                 "WHERE g.goods_id = c.goods_id AND c.rec_id = '$key'";
@@ -3112,8 +3112,8 @@ function flow_cart_stock($arr, $address=null)
             }
             
             //TODO:根据配送地址匹配、仓库检查库存情况
-            if($address && !empty($row['product_id'])){
-            	$store_number = get_goods_store($row['goods_id'], $row['product_id'], $address);
+            if($address){
+            	$store_number = get_goods_store($goods['goods_id'], $row['product_id'], $address);
             	if ($store_number < $val ){
             		show_message(sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
                     $row['goods_number'], $row['goods_number']));

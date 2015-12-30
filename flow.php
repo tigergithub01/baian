@@ -3207,9 +3207,13 @@ function flow_drop_cart_goods($id)
             $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
                     " WHERE (rec_id IN ($_del_str) OR parent_id = '$row[goods_id]')";
             
+            $GLOBALS['db']->query($sql);
+            
             //删除赠品（针对商品设置中的买几送几）
             $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
-            " WHERE is_gift = '$row[goods_id]'";
+            " WHERE is_gift = '$row[goods_id]' AND session_id = '" . SESS_ID . "'";
+            
+            $GLOBALS['db']->query($sql);
         }
 
         //如果不是普通商品，只删除该商品即可

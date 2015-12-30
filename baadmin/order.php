@@ -807,6 +807,8 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
             /* 商品（实货）、超级礼包（实货） */
             if ($value['is_real'] != 0)
             {
+                //TODO: 需要考虑多仓库的情况，暂时不处理。
+                 
                 //（货品）
                 if (!empty($value['product_id']))
                 {

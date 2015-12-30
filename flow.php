@@ -47,6 +47,7 @@ $smarty->assign('lang',             $_LANG);
 $smarty->assign('show_marketprice', $_CFG['show_marketprice']);
 $smarty->assign('data_dir',    DATA_DIR);       // 数据目录
 
+
 /*------------------------------------------------------ */
 //-- 添加商品到购物车
 /*------------------------------------------------------ */
@@ -2494,6 +2495,16 @@ elseif ($_REQUEST['step'] == "cart")
 	$smarty->assign('may_like_goods',$may_like_goods);
 
     $smarty->assign('fittings_list', $fittings_list);
+    
+    $is_ajax = isset($_REQUEST['is_ajax'])?intval($_REQUEST['is_ajax']):0; //是否ajax请求
+    if($is_ajax==1){
+    	include_once('includes/cls_json.php');
+    	$result = array('status' => 1, 'message' => '', 'content' => '');
+    	$json  = new JSON;
+    	$result['content'] = $smarty->fetch('library/cart_goods.lbi');
+    	die($json->encode($result));
+    }
+    
 }elseif ($_REQUEST['step'] == 'check_cart_goods'){
 	//选中、反选购物车中商品
 	$rec_id = isset($_POST['rec_id']) ? trim($_POST['rec_id']) : '';
@@ -3041,6 +3052,9 @@ function flow_update_cart_goods($rec_id,$goods_number)
 
 		$GLOBALS['db']->query($sql);
 		
+		//更新赠品的数量
+		add_goods_gift_to_cart($goods['goods_id']);
+		
 		return ['success'=>true,'msg'=>''];
 }
 
@@ -3191,7 +3205,11 @@ function flow_drop_cart_goods($id)
                     "AND (rec_id IN ($_del_str) OR parent_id = '$row[goods_id]' OR is_gift <> 0)"; */
             
             $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
-                    " WHERE (rec_id IN ($_del_str) OR parent_id = '$row[goods_id]' OR is_gift <> 0)";
+                    " WHERE (rec_id IN ($_del_str) OR parent_id = '$row[goods_id]')";
+            
+            //删除赠品（针对商品设置中的买几送几）
+            $sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
+            " WHERE is_gift = '$row[goods_id]'";
         }
 
         //如果不是普通商品，只删除该商品即可

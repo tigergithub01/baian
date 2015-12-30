@@ -20,6 +20,26 @@
       </td>
     </tr>
     <tr>
+    	<td>
+    		<table width="90%" id="gallery-table"  align="center">
+          <tr>
+            <td>
+              {foreach from=$comment_photos item=photo key=i}
+              <div id="gallery_{$img.img_id}" style="float:left; text-align:center; border: 1px solid #DADADA; margin: 4px; padding:2px;">
+                <a href="goods.php?act=show_image&img_url={$photo.img_url}" target="_blank">
+                <img src="{$photo.thumb_url}" {if $thumb_width neq 0}width="{$thumb_width}"{/if} {if $thumb_height neq 0}height="{$thumb_height}"{/if} border="0" />
+                </a><br />
+              </div>
+              {/foreach}
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+
+        </table>
+    	</td>
+    </tr>
+    
+    <tr>
       <td align="center">
         {if $msg.status eq "0"}
         <input type="button" onclick="location.href='comment_manage.php?act=check&check=allow&id={$msg.comment_id}'" value="{$lang.allow}" class="button" />

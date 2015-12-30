@@ -122,13 +122,25 @@ if ($_REQUEST['act']=='reply')
                " WHERE article_id='$comment_info[id_value]'";
         $id_value = $db->getOne($sql);
     }
+    
+    //货品评论图片
+    $sql = "SELECT * FROM ". $GLOBALS['ecs']->table('comment_photo') .' WHERE comment_id = '.$_REQUEST[id];
+    $comment_photos = $GLOBALS['db']->getAll($sql);
+    foreach ($comment_photos as $key => $comment_photo) {
+        $comment_photos[$key]['thumb_url'] = '../' .  get_image_path($comment_photo['comment_id'], $comment_photo['thumb_url'], true, 'gallery');
+        $comment_photos[$key]['img_original'] = get_image_path($comment_photo['comment_id'], $comment_photo['img_original'], true, 'gallery');
+    	$comment_photos[$key]['img_url'] =  get_image_path($comment_photo['comment_id'], $comment_photo['img_url'], false, 'gallery');
+    }
 
     /* 模板赋值 */
     $smarty->assign('msg',          $comment_info); //评论信息
+    $smarty->assign('comment_photos',          $comment_photos); //评论图片
     $smarty->assign('admin_info',   $admin_info);   //管理员信息
     $smarty->assign('reply_info',   $reply_info);   //回复的内容
     $smarty->assign('id_value',     $id_value);  //评论的对象
     $smarty->assign('send_fail',   !empty($_REQUEST['send_ok']));
+    $smarty->assign('thumb_width', $_CFG['thumb_width']);
+    $smarty->assign('thumb_height', $_CFG['thumb_height']);
 
     $smarty->assign('ur_here',      $_LANG['comment_info']);
     $smarty->assign('action_link',  array('text' => $_LANG['05_comment_manage'],

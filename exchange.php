@@ -537,6 +537,10 @@ function exchange_get_goods($children, $min, $max, $ext, $size, $page, $sort, $o
         $arr[$row['goods_id']]['goods_img']         = get_image_path($row['goods_id'], $row['goods_img']);
         $arr[$row['goods_id']]['url']               = build_uri('exchange_goods', array('gid'=>$row['goods_id']), $row['goods_name']);
 //         $arr[$row['goods_id']]['url']               = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+	
+        //评论数
+        $count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$row[goods_id]' and status=1");
+        $arr[$row['goods_id']]['review_count']        = $count;
     }
 
     return $arr;

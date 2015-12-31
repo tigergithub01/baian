@@ -335,7 +335,10 @@ $_LANG['obs'][OBS_AUDITING] = '待审核';
 $_LANG['obs'][OBS_AUDITED] = '审核通过';
 $_LANG['obs'][OBS_REJECTED] = '审核不通过';
 $_LANG['obs'][OBS_CANCELED] = '已撤销';
-$_LANG['obs'][OBS_SHIPPED] = '已寄出';
+$_LANG['obs'][OBS_SHIPPING] = '已寄出';
+$_LANG['obs'][OBS_SHIPPED] = '确认收货';
+$_LANG['obs'][OBS_FINISHED] = '已完成';
+
 
 $_LANG['shipping_not_need'] = '无需使用配送方式';
 $_LANG['current_os_not_unconfirmed'] = '当前订单状态不是“未确认”。';
@@ -725,5 +728,6 @@ $_LANG['order_period'][2] = '今年内订单';
 $_LANG['order_back'] = '申请退货';
 $_LANG['order_back_success'] = '您的退货申请已经成功提交！';
 $_LANG['back_order_back_list'] = '返回退货申请列表';
+$_LANG['order_back_shipping_success'] = '您的发货单已经成功提交！';
 
 ?>

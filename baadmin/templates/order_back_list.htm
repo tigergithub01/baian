@@ -8,6 +8,13 @@
     退货申请流水号<input name="back_sn" type="text" id="back_sn" size="15">
     {$lang.order_sn}<input name="order_sn" type="text" id="order_sn" size="15">
     	申请人<input name="user_name" type="text" id="user_name" size="15">
+    	发货单号<input name=invoice_no type="text" id="user_name" size="20">
+    	状态<select name="status">
+    		<option value="-1">全部</option>
+   		  {foreach from=$status_list item=stat key=key}
+   		  	<option value="{$key}">{$stat}</option>
+          {/foreach}
+        </select>
     <input type="submit" value="{$lang.button_search}" class="button" />
   </form>
 </div>
@@ -26,9 +33,8 @@
     <th><a href="javascript:listTable.sort('order_sn', 'DESC'); ">{$lang.order_sn}</a>{$sort_order_sn}</th>
     <th><a href="javascript:listTable.sort('add_time', 'DESC'); ">申请时间</a>{$sort_add_time}</th>
     <th><a href="javascript:listTable.sort('user_name', 'DESC'); ">申请人</a>{$sort_user_name}</th>
-    <th><a href="javascript:listTable.sort('status', 'DESC'); ">审核状态</a>{$sort_status}</th>
-    <th><a href="javascript:listTable.sort('admin_user_name', 'DESC'); ">审核人</a>{$sort_admin_user_name}</th>
-    <th><a href="javascript:listTable.sort('audit_time', 'DESC'); ">审核时间</a>{$sort_audit_time}</th>
+    <th><a href="javascript:listTable.sort('status', 'DESC'); ">状态</a>{$sort_status}</th>
+    <th><a href="javascript:listTable.sort('invoice_no', 'DESC'); ">发货单号</a>{$sort_invoice_no}</th>
     <th>{$lang.handler}</th>
   <tr>
   {foreach from=$back_list item=back key=dkey}
@@ -38,10 +44,9 @@
     <td align="center" valign="top" nowrap="nowrap">{$back.add_time}</td>
     <td align="left" valign="top"><a href="mailto:{$back.email}"> {$back.user_name|escape}</a></td>
     <td align="center" valign="top" nowrap="nowrap">{$back.status_name}</td>
-    <td align="center" valign="top" nowrap="nowrap">{$back.admin_user_name}</td>
-    <td align="center" valign="top" nowrap="nowrap">{$back.audit_time}</td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.invoice_no}</td>
     <td align="center" valign="top"  nowrap="nowrap">
-    	<a href="order.php?act=order_back_edit&amp;id={$back.back_id}" title="{$lang.edit}"><img src="images/icon_edit.gif" border="0" height="16" width="16"></a>
+    	<a href="order.php?act=order_back_info&amp;id={$back.back_id}" title="查看">查看</a>
         <!-- <a href="order.php?act=back_info&back_id={$back.back_id}">{$lang.detail}</a> -->
     </td>
   </tr>
@@ -88,7 +93,9 @@ listTable.filter.{$key} = '{$item}';
     {
         listTable.filter['order_sn'] = Utils.trim(document.forms['searchForm'].elements['order_sn'].value);
         listTable.filter['user_name'] = Utils.trim(document.forms['searchForm'].elements['user_name'].value);
-                listTable.filter['back_sn'] = document.forms['searchForm'].elements['back_sn'].value;
+        listTable.filter['back_sn'] = document.forms['searchForm'].elements['back_sn'].value;
+        listTable.filter['invoice_no'] = document.forms['searchForm'].elements['invoice_no'].value;
+        listTable.filter['status'] = document.forms['searchForm'].elements['status'].value;
         listTable.filter['page'] = 1;
                 listTable.query = "order_back_query";
         listTable.loadList();

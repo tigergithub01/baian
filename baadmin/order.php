@@ -1206,7 +1206,8 @@ elseif ($_REQUEST['act'] == 'order_back_list')
 	$smarty->assign('record_count', $result['record_count']);
 	$smarty->assign('page_count',   $result['page_count']);
 	$smarty->assign('sort_update_time', '<img src="images/sort_desc.gif">');
-
+	$smarty->assign('status_list', $GLOBALS['_LANG']['obs']); // 状态列表
+	
 	/* 显示模板 */
 	assign_query_info();
 	$smarty->display('order_back_list.htm');
@@ -1235,7 +1236,7 @@ elseif ($_REQUEST['act'] == 'order_back_query')
 /*------------------------------------------------------ */
 //-- 编辑退货申请单
 /*------------------------------------------------------ */
-elseif ($_REQUEST['act'] == 'order_back_edit')
+elseif ($_REQUEST['act'] == 'order_back_info')
 {
 	/* 检查权限 */
 	admin_priv('order_back_view');
@@ -1315,7 +1316,7 @@ elseif ($_REQUEST['act'] == 'order_back_edit')
 	$smarty->assign('order_back', $order_back);
 	$smarty->assign('back_id', $back_id); // 发货单id
 	$smarty->assign('status_list', $GLOBALS['_LANG']['obs']); // 状态列表
-	$smarty->assign('form_action',       'order_back_update');
+	$smarty->assign('form_action',       'order_back_operate');
 
 	/* 显示模板 */
 	$smarty->assign('ur_here',           "编辑退货申请单信息");
@@ -1349,6 +1350,68 @@ elseif ($_REQUEST['act'] == 'order_back_update')
     $link[] = array('href' => 'order.php?act=order_back_list', 'text' => $_LANG['11_order_back_list']);
     
     sys_msg($_LANG['edit_succeed'],0,$link);
+}
+
+/*------------------------------------------------------ */
+//-- 操作退货申请单
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'order_back_operate')
+{
+	/* 检查权限 */
+	admin_priv('order_back_view');
+
+	$back_id = intval(trim($_REQUEST['id']));
+	
+	$order_back_info = order_back_info($back_id);	
+	if(empty($order_back_info)){
+		sys_msg("退货单不存在。", 1);
+	}
+	
+	$action_note = isset($_POST['action_note'])?$_POST['action_note']:'';
+// 	$invoice_no = isset($_POST['invoice_no'])?$_POST['invoice_no']:'';
+	
+	/* 审核通过 */
+	if (isset($_POST['agree']))
+	{
+		$action_note = $action_note."(退货申请-审核通过)";
+		$status = OBS_AUDITED;
+	}
+	/* 审核不通过 */
+	elseif (isset($_POST['reject']))
+	{
+		$action_note = $action_note."(退货申请-审核不通过)";
+		$status = OBS_REJECTED;
+	}
+	/* 确认收货 */
+	elseif (isset($_POST['received']))
+	{
+		$action_note = $action_note."(退货申请-确认收货)";
+		$status = OBS_SHIPPED;
+	}
+	/* 去退款 */
+	elseif (isset($_POST['return']))
+	{
+		$action_note = $action_note."(退货申请-确认退货)";
+		$status = OBS_FINISHED;
+	}
+	
+	/* 更新数据 */
+// 	if(empty())
+	$record = array();
+	$record['status'] = $status;
+// 	if(!empty($invoice_no)){
+// 		$record['invoice_no'] = $$invoice_nostatus;
+// 	}
+	$db->autoExecute($ecs->table('order_back'), $record, 'UPDATE', "back_id = '" . $back_id . "'" );
+	
+	/* 发货单发货记录log */
+	order_action($order_back_info['order_sn'], $order_back_info['order_status'], $order_back_info['shipping_status'], $order_back_info['pay_status'], $action_note, null, 1);
+
+	admin_log($_POST['id'],'edit','order_back_view');
+	$link[] = array('href' => 'order.php?act=order_back_info&id='.$_POST['id'], 'text' => '退货申请单');
+	$link[] = array('href' => 'order.php?act=order_back_list', 'text' => $_LANG['11_order_back_list']);
+
+	sys_msg($_LANG['edit_succeed'],0,$link);
 }
 
 /*------------------------------------------------------ */
@@ -6100,6 +6163,8 @@ function order_back_list()
         $filter['order_sn'] = empty($_REQUEST['order_sn']) ? '' : trim($_REQUEST['order_sn']);
         $filter['order_id'] = empty($_REQUEST['order_id']) ? 0 : intval($_REQUEST['order_id']);
         $filter['user_name'] = empty($_REQUEST['user_name']) ? '' : trim($_REQUEST['user_name']);
+        $filter['invoice_no'] = empty($_REQUEST['invoice_no']) ? '' : trim($_REQUEST['invoice_no']);
+        $filter['status'] = isset($_REQUEST['status']) ? intval($_REQUEST['status']) : -1;
 
         $filter['sort_by'] = empty($_REQUEST['sort_by']) ? 'add_time' : trim($_REQUEST['sort_by']);
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
@@ -6116,6 +6181,14 @@ function order_back_list()
         if ($filter['back_sn'])
         {
             $where .= " AND ob.back_sn LIKE '%" . mysql_like_quote($filter['back_sn']) . "%'";
+        }
+        if ($filter['invoice_no'])
+        {
+        	$where .= " AND ob.invoice_no LIKE '%" . mysql_like_quote($filter['invoice_no']) . "%'";
+        }
+        if ($filter['status'] >= 0 )
+        {
+        	$where .= " AND ob.status = '$filter[status]'";
         }
 
 //         /* 获取管理员信息 */
@@ -6153,17 +6226,15 @@ function order_back_list()
         $sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('order_back')." AS ob ".
         "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
         "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " . 
-        "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .
         $where;
         $filter['record_count']   = $GLOBALS['db']->getOne($sql);
         $filter['page_count']     = $filter['record_count'] > 0 ? ceil($filter['record_count'] / $filter['page_size']) : 1;
 
         /* 查询 */
-        $sql = "SELECT ob.*,u.user_name, au.user_name AS admin_user_name
+        $sql = "SELECT ob.*,u.user_name 
                 FROM "  . $GLOBALS['ecs']->table('order_back')." AS ob ".
 		        "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
 		        "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " . 
-		        "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .
 		        $where . 
                 " ORDER BY " . $filter['sort_by'] . " " . $filter['sort_order']. "
                 LIMIT " . ($filter['page'] - 1) * $filter['page_size'] . ", " . $filter['page_size'] . " ";
@@ -6182,7 +6253,6 @@ function order_back_list()
     foreach ($row AS $key => $value)
     {
         $row[$key]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $value['add_time']);
-        $row[$key]['audit_time'] = isset($value['audit_time'])?(local_date($GLOBALS['_CFG']['time_format'], $value['audit_time'])):'';
         $row[$key]['status_name'] = $GLOBALS['_LANG']['obs'][$value['status']];
     }
     $arr = array('back' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
@@ -6277,18 +6347,16 @@ function order_back_info($back_id)
 // 		$where .= " AND suppliers_id = '" . $admin_info['suppliers_id'] . "' ";
 // 	}
 
-	$sql = "SELECT ob.*,u.user_name, au.user_name AS admin_user_name
+	$sql = "SELECT ob.*,u.user_name, o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status 
                 FROM "  . $GLOBALS['ecs']->table('order_back')." AS ob ".
                 "LEFT JOIN ". $GLOBALS['ecs']->table('order_info'). " AS o ON (o.order_id = ob.order_id) " .
                 "LEFT JOIN ". $GLOBALS['ecs']->table('users'). " AS u ON (ob.user_id = u.user_id) " .
-                "LEFT JOIN ". $GLOBALS['ecs']->table('admin_user'). " AS au ON (ob.audit_admin_user_id = au.user_id) " .		
                 $where . " LIMIT 0, 1";
 	$back = $GLOBALS['db']->getRow($sql);
 	if ($back)
 	{
 		/* 格式化时间字段 */
 		$back['add_time']       = local_date($GLOBALS['_CFG']['time_format'], $back['add_time']);
-		$back['audit_time'] = isset($back['audit_time'])?(local_date($GLOBALS['_CFG']['time_format'], $back['audit_time'])):'';
 		$back['status_name']       = $GLOBALS['_LANG']['obs'][$back['status']];
 	}
 

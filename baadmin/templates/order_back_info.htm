@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <td class="label">订单号</td>
-    <td>{$order_back.order_sn}</td>
+    <td><a href="order.php?act=info&order_id={$order_back.order_id}">{$order_back.order_sn}</a></td>
   </tr>
   <tr>
     <td class="label">退货申请理由</td>
@@ -29,36 +29,36 @@
   <tr>
     <td class="label">审核状态</td>
     <td>
-    	<select name="status">
-   		  {foreach from=$status_list item=stat key=key}
-   		  	<!-- {if $key eq $order_back.status } -->
-   		  		<option selected="selected" value="{$key}">{$stat}</option>
-   		  	<!-- {else} -->
-   		  		<option value="{$key}">{$stat}</option>
-   		  	<!-- {/if} -->
-             
-          {/foreach}
-        </select>
+    	{$order_back.status_name}
     </td>
   </tr>
   <tr>
-    <td class="label">最后操作人</td>
-    <td>{$order_back.admin_user_name}</td>
-  </tr>
-  <tr>
-    <td class="label">最后操作时间</td>
-    <td>{$order_back.audit_time}</td>
-  </tr>
-  <tr>
-    <td class="label">审核意见</td>
+    <td class="label">发货单号</td>
     <td>
-    	<textarea  name="audit_desc" cols="60" rows="4">{$order_back.audit_desc}</textarea>
+    	{$order_back.invoice_no}
     </td>
   </tr>
   <tr>
-    <td colspan="2" align="center">
-      <input type="submit" value="{$lang.button_submit}" class="button" />
-      <input type="reset" value="{$lang.button_reset}" class="button" />
+    <td class="label">操作备注</td>
+    <td>
+    	<textarea  name="action_note" cols="60" rows="4"></textarea>
+    </td>
+  </tr>
+  <tr>
+  	<td class="label">当前可执行操作：</td>
+    <td>
+      <!-- {if $order_back.status eq 0 } -->
+      <input type="submit" value="审核通过" class="button"  name="agree" />
+      <input type="submit" value="审核不通过" class="button" name="reject"  />
+      <!-- {/if}  -->
+      
+      <!-- {if $order_back.status eq 4 }  -->
+      <input type="submit" value="确认收货" class="button" name="received" />
+      <!-- {/if}  -->
+      
+      <!-- {if $order_back.status eq 5}  -->
+      <input type="submit" value="退货" class="button"  name="return" />
+      <!-- {/if}  -->
       <input type="hidden" name="act" value="{$form_action}" />
       <input type="hidden" name="id" value="{$order_back.back_id}" />
     </td>

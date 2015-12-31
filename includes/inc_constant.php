@@ -100,7 +100,9 @@ define('OBS_AUDITING',            0); //待审核
 define('OBS_AUDITED',              1); // 审核通过
 define('OBS_REJECTED',               2); // 审核不通过
 define('OBS_CANCELED',                3); // 已撤销
-define('OBS_SHIPPED',               4); // 已寄出
+define('OBS_SHIPPING',               4); // 已寄出
+define('OBS_SHIPPED',               5); // 确认收货
+define('OBS_FINISHED',               6); // 已完成
 
 /* 缺货处理 */
 define('OOS_WAIT',                  0); // 等待货物备齐后再发

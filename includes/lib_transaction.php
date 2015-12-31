@@ -562,7 +562,7 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
 		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
 	}
     
-	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.goods_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ".
+	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ".
 			"o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time AS order_time, o.shipping_fee, o.pay_id, " .
 			"(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
 			" FROM " .$GLOBALS['ecs']->table('order_back') ." AS ob ".
@@ -586,6 +586,7 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
 				'add_time'     => local_date($GLOBALS['_CFG']['time_format'], $row['add_time']),
 				'user_id'       => $row['user_id'],
 				'reason'       => $row['reason'],
+				'invoice_no'       => $row['invoice_no'],
 				'status' =>  $row['status'],
 				'status_name' =>  $row['status_name'],
 				'order_id'       => $row['order_id'],
@@ -1032,14 +1033,68 @@ function add_order_back($order_id, $user_id = 0,$order_back)
 
 	$back_sn = get_order_back_sn();
 	$sql = "INSERT INTO " .$GLOBALS['ecs']->table('order_back')."( back_sn, order_sn, order_id, 
-			goods_id, add_time, reason, 
+			add_time, reason, 
 			user_id, status)".
 	" VALUES ('$back_sn', '$order[order_sn]', '$order[order_id]', ".
-	"null, '".gmtime()."', '$order_back[reason]', ".
+	"'".gmtime()."', '$order_back[reason]', ".
 	"'$_SESSION[user_id]', '".OBS_AUDITING."')";
 	
 	$GLOBALS['db']->query($sql);
 	
+
+	if ($GLOBALS['db'] ->errno() == 0)
+	{
+		return true;
+	}
+	else
+	{
+		die($GLOBALS['db']->errorMsg());
+	}
+}
+
+
+/**
+ * 去退货
+ * @param number $user_id
+ * @param unknown $back_id
+ * @param unknown $invoice_no
+ * @return boolean
+ */
+function order_back_shipping($user_id = 0, $back_id, $invoice_no)
+{
+/* 查询退货单信息 */
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('order_back') ." WHERE back_id = '$back_id'";
+	$order_back = $GLOBALS['db']->getRow($sql);
+	if (empty($order_back))
+	{
+		$GLOBALS['err'] ->add("退货申请单不存在");
+		return false;
+	}
+
+	// 如果用户ID大于0，检查退货申请单是否属于该用户
+	if ($user_id > 0 && $order_back['user_id'] != $user_id)
+	{
+		$GLOBALS['err'] ->add($GLOBALS['_LANG']['no_priv']);
+
+		return false;
+	}
+
+	// 退货申请单状态只能是“审核通过”
+	if ($order_back['status'] != OBS_AUDITED)
+	{
+		$GLOBALS['err']->add("退货申请单未审核通过，不能发货！");
+
+		return false;
+	}
+
+	$sql = "UPDATE " .$GLOBALS['ecs']->table('order_back')." SET invoice_no = '$invoice_no', ".
+			" status = '".OBS_SHIPPING."'".
+			" WHERE back_id = '$back_id'";
+	$GLOBALS['db']->query($sql);
+	
+	$order = $GLOBALS['db']->getRow("SELECT order_sn, order_status, shipping_status , pay_status FROM " . $GLOBALS['ecs']->table('order_info') ." WHERE order_id = $order_back[order_id]");
+	$action_note = "发货单号".$invoice_no."(退货申请-客户已发货)";
+	order_action($order['order_sn'], $order['order_status'], SS_RECEIVED, $order['pay_status'], $action_note, $GLOBALS['_LANG']['buyer']);
 
 	if ($GLOBALS['db'] ->errno() == 0)
 	{

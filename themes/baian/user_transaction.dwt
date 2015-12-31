@@ -628,7 +628,7 @@
 	                             	 
 	                          </th> -->
 	                          <th>
-	                             	 退货申请单号
+	                             	 退货申请流水号
 	                          </th>
 	                           <th>
 	                             	 订单编号
@@ -641,6 +641,9 @@
 	                          </th>
 	                          <th>
 	                             	审核状态
+	                          </th>
+	                           <th>
+	                             	发货单号
 	                          </th>
 	                          <th>
 	                             	 操作
@@ -668,9 +671,15 @@
 	                          <td>
 	                          	  {$order_back.status_name}
 	                          </td>
+	                           <td>
+	                          	  {$order_back.invoice_no}
+	                          </td>
 	                          <td>
-						           {if $order_back.status == 0}
+						            {if $order_back.status == 0}
 							        	<a href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="f6">撤销</a> 
+							        {/if}
+							        {if $order_back.status == 1}
+							        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="f6">去发货</a> 
 							        {/if}
 	                          </td>
 	                      </tr>
@@ -726,6 +735,51 @@
 		     </div>
 		    <!-- {/if} -->
     		<!--#退货申请页面 end -->
+    		
+    		<!--#退货申请-去发货页面 start-->
+		  <!--{if $action eq 'order_back_shipping'} -->
+		    {insert_scripts files='utils.js'}
+		    <script type="text/javascript">
+		    
+		    	$(function(){
+					//表单验证
+					$("#form_order_back").validate();
+		        });
+		    	
+		    </script>
+		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now"><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+		    <div class="blank"></div>
+		    <div class="s-myorder">
+		     <form action="user.php" method="post" id="form_order_back" name="form_order_back" onsubmit="">
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist"  style="line-height:30px; font-size:14px;">
+		      <tr>
+		        <td align="right" bgcolor="#ffffff" class="title" style="width: 16%">退货申请流水号：</td>
+		        <td bgcolor="#ffffff">{$order_back.back_sn}</td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">订单编号：</td>
+		        <td bgcolor="#ffffff">{$order_back.order_sn}</td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">快递单号:</td>
+		        <td bgcolor="#ffffff">
+		        	<input type="text" name="invoice_no" maxlength="50" size="50" class="required"/>
+		        </td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
+		        <td bgcolor="#ffffff">
+		        	<input name="act" type="hidden" value="act_order_back_shipping" />
+		          	<input name="id" type="hidden" value="{$order_back.back_id}" />
+		          	<input type="submit" name="submit" class="btn_submit" value="确认发货" />
+		        </td>
+		      </tr>
+		    </table>
+		     </form>
+		    </div>
+		     </div>
+		    <!-- {/if} -->
+    		<!--#退货申请-去发货页面 end -->
       
 	  <!--#退换货搜索界面 start-->
        <!-- {if $action eq 'order_back_search'} -->

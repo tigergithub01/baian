@@ -40,7 +40,8 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
 'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email', 
-'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment','act_cancel_order_back','add_order_back','act_add_order_back');
+'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment',
+		'act_cancel_order_back','add_order_back','act_add_order_back','order_back_shipping','act_order_back_shipping');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -3924,7 +3925,68 @@ elseif ($action == 'act_add_order_back')
 	}
 	else
 	{
-		$err->show($_LANG['booking_list_lnk'], 'user.php?act=add_order_back&id='.$order_id);
+		$err->show("退货申请单列表", 'user.php?act=add_order_back&id='.$order_id);
+	}
+}
+
+/* 去退货 */
+elseif ($action == 'order_back_shipping')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+
+	$back_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	if ($back_id == 0)
+	{
+		show_message("退货申请单号不能为空", $_LANG['back_page_up'], '', 'error');
+	}
+
+	/* 查询订单信息，检查状态 */
+	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('order_back') ." WHERE back_id = '$back_id'";
+	$order_back = $GLOBALS['db']->GetRow($sql);
+
+	if (empty($order_back))
+	{
+		show_message("退货申请单不存在", $_LANG['back_page_up'], '', 'error');
+	}
+
+
+	// 如果用户ID大于0，检查订单是否属于该用户
+	if ($user_id > 0 && $order_back['user_id'] != $user_id)
+	{
+		show_message($GLOBALS['_LANG']['no_priv'], $_LANG['back_page_up'], '', 'error');
+	}
+
+
+	$smarty->assign('order_back',  $order_back);
+	$smarty->display('user_transaction.dwt');
+
+}
+
+/* 退货申请-确认发货 */
+elseif ($action == 'act_order_back_shipping')
+{
+	include_once(ROOT_PATH . 'includes/lib_transaction.php');
+	include_once(ROOT_PATH . 'includes/lib_order.php');
+
+	$back_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	if ($back_id == 0)
+	{
+		show_message("退货申请单号不能为空", $_LANG['back_page_up'], '', 'error');
+	}
+
+	$invoice_no = isset($_REQUEST['invoice_no']) ? trim($_REQUEST['invoice_no'])  : '';
+	if(empty($invoice_no)){
+		show_message("快递单号不能为空", $_LANG['back_page_up'], '', 'error');
+	}	
+	
+	if (order_back_shipping($user_id,$back_id, $invoice_no))
+	{
+		show_message($_LANG['order_back_shipping_success'], $_LANG['back_order_back_list'], 'user.php?act=order_back',
+				'info');
+	}
+	else
+	{
+		$err->show("发货失败", 'user.php?act=add_order_back&id='.$order_id);
 	}
 }
 

@@ -3538,6 +3538,10 @@ function add_goods_gift_to_cart($goods_id){
 		}
 	}
 	
+	//先删除赠品，后插入赠品
+	$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '" .SESS_ID. "' AND is_gift = '$goods_id' ";
+	$GLOBALS['db']->query($sql);
+	
 	if($act){
 		if (intval($act['is_double_give']==0)){
 			//非倍增
@@ -3549,10 +3553,6 @@ function add_goods_gift_to_cart($goods_id){
 		}	
 		
 		$gift_goods_id = empty($act['other_goods_id'])?$act['goods_id']:$act['other_goods_id'];
-		
-		//先删除赠品，后插入赠品 
-		$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '" .SESS_ID. "' AND is_gift = '$goods_id' ";
-		$GLOBALS['db']->query($sql);
 		
 		if($gift_num>0){
 			//插入赠品记录

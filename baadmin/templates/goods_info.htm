@@ -943,6 +943,7 @@
       validator.required('shop_price', shop_price_not_null);
       validator.isNumber('shop_price', shop_price_not_number, true);
       validator.isNumber('market_price', market_price_not_number, false);
+      
       if (document.forms['theForm'].elements['is_promote'].checked)
       {
           validator.required('promote_start_date', promote_start_not_null);
@@ -955,8 +956,19 @@
           validator.isInt('goods_number', goods_number_not_int, false);
           validator.isInt('warn_number', warn_number_not_int, false);
       }
-
-
+      
+      if (document.forms['theForm'].elements['is_buy_gift'].checked)
+      {
+          validator.required('gift_start_date', "买几送几促销开始日期不能为空");
+          validator.required('gift_end_date', "买几送几促销结束日期不能为空");
+          validator.islt('gift_start_date', 'gift_end_date', "买几送几促销开始日期不能大于结束日期");
+          
+          if($("#tbody_buy_give input[name='is_double_give[]'][type=checkbox]").length > 0 && 
+        		  $("#tbody_buy_give input[name='is_double_give[]'][type=checkbox]:checked").length != 1 ){
+        	  alert('买几送几请设置一个倍增规则!');
+        	  return false;
+          } 
+      }
 
       return validator.passed();
   }

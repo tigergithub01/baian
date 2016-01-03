@@ -321,6 +321,13 @@ alter table ecs_goods drop column give_number_activity;
 alter table ecs_goods drop column gift_goods_flag;
 alter table ecs_goods drop column gift_goods_id;
 
+ALTER TABLE ecs_buy_give_activity ADD max_give_number tinyint(2) NOT NULL COMMENT '最大赠送数量' default -1;
+
+alter table ecs_order_back drop column goods_id;
+alter table ecs_order_back drop column audit_time;
+alter table ecs_order_back drop column audit_admin_user_id;
+alter table ecs_order_back drop column audit_desc;
+
 
 
 

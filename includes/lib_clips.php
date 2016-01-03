@@ -729,16 +729,17 @@ function get_rank_info()
 
     if (!empty($_SESSION['user_rank']))
     {
-        $sql = "SELECT rank_name, special_rank FROM " . $ecs->table('user_rank') . " WHERE rank_id = '$_SESSION[user_rank]'";
+        $sql = "SELECT rank_name, special_rank,birthday_gift FROM " . $ecs->table('user_rank') . " WHERE rank_id = '$_SESSION[user_rank]'";
         $row = $db->getRow($sql);
         if (empty($row))
         {
             return array();
         }
         $rank_name = $row['rank_name'];
+        $birthday_gift = $row['birthday_gift'];
         if ($row['special_rank'])
         {
-            return array('rank_name'=>$rank_name);
+            return array('rank_name'=>$rank_name,'birthday_gift'=>$birthday_gift);
         }
         else
         {
@@ -753,7 +754,7 @@ function get_rank_info()
             $rt  = $db->getRow($sql);
             $max_points = $rt['max_points'];
             
-            return array('rank_name'=>$rank_name,'next_rank_name'=>$next_rank_name,'next_rank'=>$next_rank,'max_points'=>$max_points);
+            return array('rank_name'=>$rank_name,'next_rank_name'=>$next_rank_name,'next_rank'=>$next_rank,'max_points'=>$max_points,'birthday_gift'=>$birthday_gift);
         }
     }
     else

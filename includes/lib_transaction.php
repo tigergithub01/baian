@@ -142,12 +142,12 @@ function get_profile($user_id)
     /* 会员等级 */
     if ($infos['user_rank'] > 0)
     {
-        $sql = "SELECT rank_id, rank_name, discount FROM ".$GLOBALS['ecs']->table('user_rank') .
+        $sql = "SELECT rank_id, rank_name, discount, birthday_gift  FROM ".$GLOBALS['ecs']->table('user_rank') .
                " WHERE rank_id = '$infos[user_rank]'";
     }
     else
     {
-        $sql = "SELECT rank_id, rank_name, discount, min_points".
+        $sql = "SELECT rank_id, rank_name, discount, min_points, birthday_gift ".
                " FROM ".$GLOBALS['ecs']->table('user_rank') .
                " WHERE min_points<= " . intval($infos['rank_points']) . " ORDER BY min_points DESC";
     }
@@ -155,10 +155,12 @@ function get_profile($user_id)
     if ($row = $GLOBALS['db']->getRow($sql))
     {
         $info['rank_name']     = $row['rank_name'];
+        $info['birthday_gift']     = $row['birthday_gift'];
     }
     else
     {
         $info['rank_name'] = $GLOBALS['_LANG']['undifine_rank'];
+        $info['birthday_gift'] = 0;
     }
 
     $cur_date = date('Y-m-d H:i:s');

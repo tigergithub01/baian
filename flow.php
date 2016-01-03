@@ -806,7 +806,7 @@ elseif ($_REQUEST['step'] == 'checkout')
     {
         // 能使用积分
         $smarty->assign('allow_use_integral', 1);
-        $smarty->assign('order_max_integral', flow_available_points());  // 可用积分
+        $smarty->assign('order_max_integral', flow_available_points(1));  // 可用积分
         $smarty->assign('your_integral',      $user_info['pay_points']); // 用户积分
     }
 
@@ -2758,13 +2758,20 @@ $smarty->display('flow.dwt');
  * @access  private
  * @return  integral
  */
-function flow_available_points()
+function flow_available_points($is_checked)
 {
-    $sql = "SELECT SUM(g.integral * c.goods_number) ".
-            "FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " . $GLOBALS['ecs']->table('goods') . " AS g " .
-            "WHERE c.session_id = '" . SESS_ID . "' AND c.goods_id = g.goods_id AND c.is_gift = 0 AND g.integral > 0 and c.is_checked = 1 " .
-            "AND c.rec_type = '" . CART_GENERAL_GOODS . "'";
+    $sql = "SELECT SUM(IF(g.integral > 0, g.integral, cat.integral) * c.goods_number) ".
+            "FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " .
+             $GLOBALS['ecs']->table('goods') . " AS g, " .
+             $GLOBALS['ecs']->table('category') . " AS cat " .
+            "WHERE c.session_id = '" . SESS_ID . "' AND c.goods_id = g.goods_id AND cat.cat_id = g.cat_id "
+            ." AND c.is_gift = 0 AND (g.integral > 0 OR cat.integral >0) and c.is_checked = 1 " .
+            " AND c.rec_type = '" . CART_GENERAL_GOODS . "'";
 
+    if(isset($is_checked)){
+    	$sql = $sql." AND c.is_checked = '$is_checked'";
+    }
+    
     $val = intval($GLOBALS['db']->getOne($sql));
 
     return integral_of_value($val);

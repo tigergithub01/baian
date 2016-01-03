@@ -36,7 +36,15 @@
 	   		<link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 	   		
             <div class="s-userBox">
-                    <div class="avatar"><img src="images/sp2.jpg" alt=""><a class="orange" href="user.php?act=profile">【修改个人资料】</a></div>
+                    <div class="avatar">
+                    	<!-- {if $info.photo_url && $info.photo_url neq '' } -->
+                    		<img src="{$info.photo_url}" alt=""/>
+                    	<!-- {else} -->
+                    		<img src="images/sp2.jpg" alt=""/>
+                    	<!-- {/if} -->
+                    	
+                    	
+                    <a class="orange" href="user.php?act=profile">【修改个人资料】</a></div>
                     <div class="signBox" onclick="return sign_day();">
                         <a href="javascript:void(0)"><img src="images/i-sign.png" alt=""></a>
                         <p>每次签到可积累10个成长值哦！</p>
@@ -412,39 +420,7 @@
 		  <style type="text/css">
 			.comment_detail{display: none}
 			.comment_detail.show{display: table-row;}
-			.btn{
-				position: relative;
-				overflow: hidden;
-				margin-right: 4px;
-				display:inline-block;
-				*display:inline;
-				font-size:14px;
-				width:65px;
-				height:65px;
-				text-align:center;
-				vertical-align:middle;
-				cursor:pointer;
-				-webkit-border-radius:4px;
-				-moz-border-radius:4px;
-				/* background-image: url('/themes/baian/images/photo_add.png'); */
-				background-repeat:no-repeat; 
-			}
-			.btn input {
-				position: absolute;
-				top: 0; 
-				right: 0;
-				margin: 0;
-				border: solid transparent;
-				opacity: 0;
-				filter:alpha(opacity=0); 
-				cursor: pointer;
-				height: 100%;
-				width: 100%;
-			}
-			.btn img {
-				height: 65px;
-				width: 65px;
-			}
+			
 			</style>
           <div class="hyzx"><li>客户服务</li><li class="now"><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
           <div class="blank"></div>
@@ -542,27 +518,27 @@
 										<tr>
 											<td class="title">晒单：</td>
 											<td>
-												<div class="btn" id="fileupload_{$goods.rec_id}_0_btn">
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_0_btn">
 													<img id="fileupload_{$goods.rec_id}_0_img" src="themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_0" class="fileupload" type="file" name="comment_img" />
 													<input id="fileupload_{$goods.rec_id}_0_img_url" type="hidden" name="img_url[0]"/>
 												</div>
-												<div class="btn" id="fileupload_{$goods.rec_id}_1_btn">
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_1_btn">
 													<img id="fileupload_{$goods.rec_id}_1_img" src="themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_1" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_1_img_url" type="hidden" name="img_url[1]"/>
 												</div>
-												<div class="btn" id="fileupload_{$goods.rec_id}_2_btn">
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_2_btn">
 													<img id="fileupload_{$goods.rec_id}_2_img" src="themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_2" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_2_img_url" type="hidden" name="img_url[2]"/>
 												</div>
-												<div class="btn" id="fileupload_{$goods.rec_id}_3_btn">
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_3_btn">
 													<img id="fileupload_{$goods.rec_id}_3_img" src="themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_3" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_3_img_url" type="hidden" name="img_url[3]"/>
 												</div>
-												<div class="btn" id="fileupload_{$goods.rec_id}_4_btn">
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_4_btn">
 													<img id="fileupload_{$goods.rec_id}_4_img" src="themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_4" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_4_img_url" type="hidden" name="img_url[4]"/>

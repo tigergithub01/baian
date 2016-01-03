@@ -55,6 +55,48 @@
 					
 					
 				});
+				
+				$("#fileupload_my_photo").wrap("<form action='user.php?act=act_profile_upload_photo' method='post' enctype='multipart/form-data'></form>");
+				$("#fileupload_baby_photo").wrap("<form action='user.php?act=act_profile_upload_photo&is_baby=1' method='post' enctype='multipart/form-data'></form>");
+				$(".fileupload").change(function(){
+					//console.debug($(this).parent());
+					var id = $(this).attr('id');
+					$(this).parent().ajaxSubmit({
+						dataType:  'json',
+						beforeSend: function() {
+			        		/* showimg.empty();
+							progress.show();
+			        		var percentVal = '0%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal);
+							btn.html("上传中..."); */
+			    		},
+			    		uploadProgress: function(event, position, total, percentComplete) {
+			        		/* var percentVal = percentComplete + '%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal); */
+			    		},
+						success: function(data) {
+							//alert(data.message);
+							if(data.status==1){
+								$("#"+id+"_img").attr("src",data.content.image_url);
+							}else{
+								alert(data.message);
+							}
+							//alert('6');
+							/* files.html("<b>"+data.name+"("+data.size+"k)</b> <span class='delimg' rel='"+data.pic+"'>删除</span>");
+							var img = "http://localhost/upload/files/"+data.pic;
+							showimg.html("<img src='"+img+"'>");
+							btn.html("添加附件"); */
+						},
+						error:function(xhr){
+							alert("上传失败");
+							/* btn.html("上传失败");
+							bar.width('0')
+							files.html(xhr.responseText); */
+						}
+					});
+				});
 	        });
        	  
        	  
@@ -82,7 +124,15 @@
 					<tr>
 						<td class="title">头像:</td>
 						<td>
-							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+							<div class="avatar upload_btn" style="width: 120px;height: 120px;">
+								<!-- {if $profile.photo_url && $profile.photo_url neq '' } -->
+		                    		<img src="{$profile.photo_url}" id="fileupload_my_photo_img" alt="" />
+		                    	<!-- {else} -->
+		                    		<img src="themes/baian/images/photo_add.png" id="fileupload_my_photo_img" alt="" />
+		                    	<!-- {/if} -->
+								
+								<input type="file" name="photo_img" class="fileupload" id="fileupload_my_photo"/>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -157,7 +207,16 @@
 					<tr>
 						<td class="title">宝宝头像:</td>
 						<td>
-							<div class="avatar" style="margin-right: 10px;"><img src="images/sp2.jpg" alt=""></div>
+							<div class="avatar upload_btn" style="width: 120px;height: 120px;margin-right: 10px;">
+								<!-- {if $profile.baby_photo_url && $profile.baby_photo_url neq '' } -->
+		                    		<img src="{$profile.baby_photo_url}" id="fileupload_baby_photo_img" alt="" />
+		                    	<!-- {else} -->
+		                    		<img src="themes/baian/images/photo_add.png" id="fileupload_baby_photo_img" alt="" />
+		                    	<!-- {/if} -->
+								
+								<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
+							</div>
+							
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
 							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
@@ -383,13 +442,62 @@
        <!--{if $action eq 'baby_info'}-->
         <script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
          <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
-        
+        <script type="text/javascript">
+          {foreach from=$lang.profile_js item=item key=key}
+            var {$key} = "{$item}";
+          {/foreach}
+          
+       	  $(function(){
+				$("#fileupload_baby_photo").wrap("<form action='user.php?act=act_profile_upload_photo&is_baby=1' method='post' enctype='multipart/form-data'></form>");
+				$(".fileupload").change(function(){
+					//console.debug($(this).parent());
+					var id = $(this).attr('id');
+					$(this).parent().ajaxSubmit({
+						dataType:  'json',
+						beforeSend: function() {
+			        		/* showimg.empty();
+							progress.show();
+			        		var percentVal = '0%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal);
+							btn.html("上传中..."); */
+			    		},
+			    		uploadProgress: function(event, position, total, percentComplete) {
+			        		/* var percentVal = percentComplete + '%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal); */
+			    		},
+						success: function(data) {
+							//alert(data.message);
+							if(data.status==1){
+								$("#"+id+"_img").attr("src",data.content.image_url);
+							}else{
+								alert(data.message);
+							}
+							//alert('6');
+							/* files.html("<b>"+data.name+"("+data.size+"k)</b> <span class='delimg' rel='"+data.pic+"'>删除</span>");
+							var img = "http://localhost/upload/files/"+data.pic;
+							showimg.html("<img src='"+img+"'>");
+							btn.html("添加附件"); */
+						},
+						error:function(xhr){
+							alert("上传失败");
+							/* btn.html("上传失败");
+							bar.width('0')
+							files.html(xhr.responseText); */
+						}
+					});
+				});
+	        });
+       	  
+       	  
+        </script>
      
 		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li class="now"><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
 		
 		<form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
      
-     <div class="s-myorder">
+     <div class="s-myorder s-userBox">
 		    
 		    <div class="title">宝宝信息</div>
 	       	 <table class="s-order-table noborder datalist">
@@ -397,7 +505,15 @@
 					<tr>
 						<td class="title">宝宝头像:</td>
 						<td>
-							<div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+							<div class="avatar upload_btn" style="width: 120px;height: 120px;margin-right: 10px;">
+								<!-- {if $profile.baby_photo_url && $profile.baby_photo_url neq '' } -->
+		                    		<img src="{$profile.baby_photo_url}" id="fileupload_baby_photo_img" alt="" />
+		                    	<!-- {else} -->
+		                    		<img src="themes/baian/images/photo_add.png" id="fileupload_baby_photo_img" alt="" />
+		                    	<!-- {/if} -->
+								
+								<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
+							</div>
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
 							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>

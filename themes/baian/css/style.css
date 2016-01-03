@@ -825,6 +825,40 @@ input.error{
 	border:1px dotted red;
 }
 
+.upload_btn{
+	position: relative;
+	overflow: hidden;
+	margin-right: 4px;
+	display:inline-block;
+	*display:inline;
+	font-size:14px;
+	width:65px;
+	height:65px;
+	text-align:center;
+	vertical-align:middle;
+	cursor:pointer;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	/* background-image: url('/themes/baian/images/photo_add.png'); */
+		background-repeat:no-repeat; 
+	}
+.upload_btn input {
+	position: absolute;
+	top: 0; 
+	right: 0;
+	margin: 0;
+	border: solid transparent;
+	opacity: 0;
+	filter:alpha(opacity=0); 
+	cursor: pointer;
+	height: 100%;
+	width: 100%;
+}
+.upload_btn img {
+	height: 65px;
+	width: 65px;
+}
+
 
 
 

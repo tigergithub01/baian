@@ -17,18 +17,17 @@
   
   <div id="bd">
         <div class="wp">
-			<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+            <div class="s-cur"><!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --></div>
+
             <div class="s-side-col l">
                 <div class="snavBox">
-                  <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
-                    
+                     <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
                 </div>
             </div>
-            
-             <!--right start-->
-  <div class="s-userBox">
-    <div class="box">
-     <div class="box_1">
+
+            <div class="s-main-col r">
+              <div class="h"></div>
+ <div class="box_1">
          
 
             <!-- *用户中心默认显示页面 start-->
@@ -44,11 +43,11 @@
                     </div>
                     <div class="txt">
                         <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}）</span></p>
-                        <p>会员等级：<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span> --><span class="vipBox"><b>v</b>1</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
+                        <p>会员等级：<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span> --><span class="vipBox"><b>v</b>{$rank_name}</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
                         <p>当前级别：<span class="degreeBox" score="{$info.rank_points}" total="{$max_points}"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
                         <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="user.php?act=transform_points">{$info.pay_points}</a>分</p>
                     </div>
-                    </div>
+                </div>
                 <div class="h"></div>
 
                 <div class="s-tit1"><a href="user.php?act=order_list" class="r">查看全部订单>></a><h3>我的订单</h3></div>
@@ -793,23 +792,18 @@ copyToClipboard = function(txt)
 
     <!-- {/if} -->
 
-  	 <!-- 猜你喜欢 start -->
-     <div class="h"></div>
-             <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
-             
-      <!-- 猜你喜欢 end -->
-              
-     </div>
-    </div>
-  </div>
- 
-  
-  <!--right end-->
-                
-            </div>
+  	</div>
+                 <!-- 猜你喜欢 start -->
+			     <div class="h"></div>
+			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+			             
+			      <!-- 猜你喜欢 end -->
+			      
+          </div>
         </div>
     </div>
-      <div class="h15"></div>
+
+ <div class="h30"></div>
    
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>

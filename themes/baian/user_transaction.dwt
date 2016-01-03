@@ -88,7 +88,7 @@
 					<tr>
 						<td class="title">会员等级:</td>
 						<td>
-							<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span> --><span class="vipBox"><b>v</b>1</span>
+							<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span> --><span class="vipBox"><b>v</b>{$profile.rank_name}</span>
 						</td>
 					</tr>
 					<tr>

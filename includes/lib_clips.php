@@ -574,7 +574,7 @@ function get_user_default($user_id)
 {
     $user_bonus = get_user_bonus();
 
-    $sql = "SELECT pay_points, user_money, credit_line, last_login, is_validated, rank_points FROM " .$GLOBALS['ecs']->table('users'). " WHERE user_id = '$user_id'";
+    $sql = "SELECT pay_points, user_money, credit_line, last_login, is_validated, rank_points, photo_url FROM " .$GLOBALS['ecs']->table('users'). " WHERE user_id = '$user_id'";
     $row = $GLOBALS['db']->getRow($sql);
     $info = array();
     $info['username']  = stripslashes($_SESSION['user_name']);
@@ -586,6 +586,8 @@ function get_user_default($user_id)
     $info['formated_credit_line'] = price_format($info['credit_line'], false);
     $info['rank_points']= $row['rank_points'];
     $info['pay_points']= $row['pay_points'];
+    $info['photo_url']= $row['photo_url'];
+    
 
     //如果$_SESSION中时间无效说明用户是第一次登录。取当前登录时间。
     $last_time = !isset($_SESSION['last_time']) ? $row['last_login'] : $_SESSION['last_time'];

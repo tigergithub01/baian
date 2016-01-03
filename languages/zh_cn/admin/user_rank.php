@@ -25,6 +25,7 @@ $_LANG['add_continue'] = '继续添加会员等级';
 $_LANG['back_list'] = '返回会员等级列表';
 $_LANG['show_price_short'] = '显示价格';
 $_LANG['notice_discount'] = '请填写为0-100的整数,如填入80，表示初始折扣率为8折';
+$_LANG['birthday_gift'] = '宝宝生日礼物';
 
 $_LANG['rank_name_exists'] = '会员等级名 %s 已经存在。';
 $_LANG['add_rank_success'] = '会员等级已经添加成功。';

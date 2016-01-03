@@ -86,4 +86,11 @@ $_LANG['js_languages']['not_leafcat'] = '您选定的分类不是一个末级分
 $_LANG['js_languages']['filter_attr_not_repeated'] = '筛选属性不可重复';
 $_LANG['js_languages']['filter_attr_not_selected'] = '请选择筛选属性';
 
+$_LANG['lab_give_integral'] = '赠送消费积分数：';
+$_LANG['lab_rank_integral'] = '赠送等级积分数：';
+$_LANG['lab_integral'] = '积分购买金额：';
+$_LANG['notice_give_integral'] = '购买该商品时赠送消费积分数,-1表示按商品价格赠送';
+$_LANG['notice_rank_integral'] = '购买该商品时赠送等级积分数,-1表示按商品价格一半赠送';
+$_LANG['notice_integral'] = '(此处需填写金额)购买该商品时最多可以使用积分的金额';
+
 ?>

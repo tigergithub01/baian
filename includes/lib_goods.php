@@ -789,6 +789,13 @@ function get_goods_info($goods_id)
         /* 修正积分：转换为可使用多少积分（原来是可以使用多少钱的积分） */
         $row['integral']      = $GLOBALS['_CFG']['integral_scale'] ? round($row['integral'] * 100 / $GLOBALS['_CFG']['integral_scale']) : 0;
         
+        
+        /***修正赠送消费积分，如果商品中无设置，则根据类别来进行设置 **/
+        if($row['give_integral']==-1){
+        	//查询类别中的消费积分赠送设置
+        	$row['give_integral'] = $GLOBALS['db']->getOne("SELECT give_integral FROM " . $GLOBALS['ecs']->table('category'). " WHERE cat_id = '$row[cat_id]' LIMIT 1" );
+        }
+        
         /*购买该商品时赠送消费积分数,-1表示按商品价格赠送*/
         $row['give_integral'] = ($row['give_integral']==-1)?round($row['shop_price']):$row['give_integral'];
         

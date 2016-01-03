@@ -4017,11 +4017,18 @@ elseif ($action == 'user_level')
 /*宝宝生日礼物索要*/
 elseif ($action == 'baby_gift_giving')
 {
+	include_once(ROOT_PATH .'includes/lib_clips.php');
 	//判断宝宝生日是否已经登记
 	$sql = "SELECT baby_birthday FROM ".$ecs->table('users')." WHERE user_id = '$user_id'";
 	$baby_birthday = $db->getCol($sql);
 	if(!isset($baby_birthday)){
 		lib_main_make_json_error('请先登记宝宝生日！');
+	}
+	
+	//判断成长值
+	$rank = get_rank_info();
+	if(empty($rank['birthday_gift'])){
+		lib_main_make_json_error('您的成长值不够，还不能索要生日礼物！');
 	}
 	
 	//判断是否已经索要了礼物

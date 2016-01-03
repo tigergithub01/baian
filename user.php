@@ -41,7 +41,9 @@ $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'a
 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 
 'get_passwd_question', 'check_answer','sign_day','my_advice','order_back','user_level','bind_mobile_email', 
 'baby_info','modify_pwd','baby_gift_giving','act_bind_mobile','act_bind_email','act_modify_pwd','act_add_comment',
-		'act_cancel_order_back','add_order_back','act_add_order_back','order_back_shipping','act_order_back_shipping');
+'act_cancel_order_back','add_order_back','act_add_order_back','order_back_shipping','act_order_back_shipping',
+'act_profile_upload_photo'		
+);
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -841,6 +843,92 @@ elseif ($action == 'act_edit_profile')
         }
         show_message($msg, '', '', 'info');
     }
+}
+
+/* 上传会员与宝宝照片 */
+elseif ($action == 'act_profile_upload_photo')
+{
+	$upload_file =  (isset($_FILES['photo_img']['error']) && $_FILES['photo_img']['error'] == 0) || (!isset($_FILES['photo_img']['error']) && isset($_FILES['photo_img']['tmp_name']) && $_FILES['photo_img']['tmp_name'] != 'none')
+	? $_FILES['photo_img'] : array();
+	if(empty($upload_file)){
+		lib_main_make_json_error("请选择需要上传的图片!");
+	}
+	$upload_size_limit = $GLOBALS['_CFG']['upload_size_limit'] == '-1' ? ini_get('upload_max_filesize') : $GLOBALS['_CFG']['upload_size_limit'];
+
+	$last_char = strtolower($upload_size_limit{strlen($upload_size_limit)-1});
+
+	switch ($last_char)
+	{
+		case 'm':
+			$upload_size_limit *= 1024*1024;
+			break;
+		case 'k':
+			$upload_size_limit *= 1024;
+			break;
+	}
+
+	//图片大小设置
+	if($_FILES['photo_img']['size'] / 1024 > $upload_size_limit)
+	{
+		lib_main_make_json_error(sprintf($GLOBALS['_LANG']['upload_file_limit'], $upload_size_limit));
+	}
+
+	//文件格式
+	include_once(ROOT_PATH . '/includes/cls_image.php');
+	$image = new cls_image($_CFG['bgcolor']);
+	if (!$image->check_img_type($_FILES['photo_img']['type']))
+	{
+		lib_main_make_json_error("文件格式不正确!");
+	}
+
+	//是否上传宝宝照片
+	$is_baby=isset($_REQUEST['is_baby'])?intval($_REQUEST['is_baby']):0;
+	
+	$dir = 'profile';
+	if($is_baby==1){
+		$img_name = $user_id ."_baby".".JPG";
+	}else{
+		$img_name = $user_id .".JPG";
+	}
+	
+
+	/* $dir = ROOT_PATH . $tmp_dir_name . '/';
+		if (!file_exists($dir))
+		{
+		if (!make_dir($dir))
+		{
+		lib_main_make_json_error("目录创建失败!");
+		}
+		} */
+
+	$img_name = $image->upload_image($_FILES['photo_img'],$dir,$img_name);
+
+
+
+
+	// 		dirname($img_name);
+
+
+	// 		copy(ROOT_PATH.$img_name, $dest)
+
+	// 		$img_name = upload_file($_FILES['comment_img'], 'comment');
+
+	if ($img_name === false)
+	{
+		lib_main_make_json_error("文件上传失败！");
+	}else{
+		if($is_baby==1){
+			$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET baby_photo_url = '$img_name' WHERE user_id = '$user_id'";
+		}else{
+			$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET photo_url = '$img_name' WHERE user_id = '$user_id'";
+		}
+		$result= $GLOBALS['db']->query($sql);
+		if($result){
+			lib_main_make_json_result("图片上传成功",array('image_url'=>$img_name));
+		}else{
+			lib_main_make_json_error("文件上传失败！");
+		}
+	}
 }
 
 /* 手机邮箱绑定 */
@@ -1993,7 +2081,7 @@ elseif ($action == 'act_add_comment_pic')
 			break;
 	}
 	
-	//图片大小设置
+	    //图片大小设置
 		if($_FILES['comment_img']['size'] / 1024 > $upload_size_limit)
 		{
 			lib_main_make_json_error(sprintf($GLOBALS['_LANG']['upload_file_limit'], $upload_size_limit));

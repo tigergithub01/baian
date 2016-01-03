@@ -144,6 +144,22 @@
           <textarea name='cat_desc' rows="6" cols="48">{$cat_info.cat_desc}</textarea>
         </td>
       </tr>
+      <tr>
+            <td class="label"><a href="javascript:showNotice('giveIntegral');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a> {$lang.lab_give_integral}</td>
+            <td><input type="text" name="give_integral" value="{$cat_info.give_integral}" size="20" />
+            <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="giveIntegral">{$lang.notice_give_integral}</span></td>
+          </tr>
+          <tr>
+            <td class="label"><a href="javascript:showNotice('rankIntegral');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a> {$lang.lab_rank_integral}</td>
+            <td><input type="text" name="rank_integral" value="{$cat_info.rank_integral}" size="20" />
+            <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="rankIntegral">{$lang.notice_rank_integral}</span></td>
+          </tr>
+          <tr>
+            <td class="label"><a href="javascript:showNotice('noticPoints');" title="{$lang.form_notice}"><img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a> {$lang.lab_integral}</td>
+            <td><input type="text" name="integral" value="{$cat_info.integral}" size="20" onblur="parseint_integral()";/>
+              <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticPoints">{$lang.notice_integral}</span>
+            </td>
+          </tr>
       </table>
       <div class="button-div">
         <input type="submit" value="{$lang.button_submit}" />
@@ -225,6 +241,14 @@ function removeFilterAttr(obj)
   var tbl = document.getElementById('tbody-attr');
 
   tbl.deleteRow(row);
+}
+
+/**
+ * 将积分购买额度取整
+ */
+function parseint_integral()
+{
+  document.forms['theForm'].elements['integral'].value = parseInt(document.forms['theForm'].elements['integral'].value);
 }
 //-->
 </script>

@@ -65,6 +65,7 @@ elseif ($_REQUEST['act'] == 'add')
     $rank['min_points']   = 0;
     $rank['max_points']   = 0;
     $rank['discount']     = 100;
+    $rank['birthday_gift']   = 0;
 
     $form_action          = 'insert';
 
@@ -123,10 +124,10 @@ elseif ($_REQUEST['act'] == 'insert')
     }
 
     $sql = "INSERT INTO " .$ecs->table('user_rank') ."( ".
-                "rank_name, min_points, max_points, discount, special_rank, show_price".
+                "rank_name, min_points, max_points, discount, special_rank, show_price,birthday_gift".
             ") VALUES (".
                 "'$_POST[rank_name]', '" .intval($_POST['min_points']). "', '" .intval($_POST['max_points']). "', ".
-                "'$_POST[discount]', '$special_rank', '" .intval($_POST['show_price']). "')";
+                "'$_POST[discount]', '$special_rank', '" .intval($_POST['show_price']). "', '" .intval($_POST['birthday_gift'])."')";
     $db->query($sql);
 
     /* 管理员日志 */
@@ -328,5 +329,26 @@ elseif ($_REQUEST['act'] == 'toggle_showprice')
         make_json_error($db->error());
     }
 }
+/*------------------------------------------------------ */
+//-- 切换是否赠送宝宝生日礼物
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'toggle_birthday_gift')
+{
+	check_authz_json('user_rank');
 
+	$rank_id       = intval($_POST['id']);
+	$is_show    = intval($_POST['val']);
+
+	if ($exc->edit("birthday_gift = '$is_show'", $rank_id))
+	{
+		$rank_name = $exc->get_name($rank_id);
+		admin_log(addslashes($rank_name), 'edit', 'user_rank');
+		clear_cache_files();
+		make_json_result($is_show);
+	}
+	else
+	{
+		make_json_error($db->error());
+	}
+}
 ?>

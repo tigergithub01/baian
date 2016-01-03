@@ -34,6 +34,11 @@
     </td>
   </tr>
   <tr>
+    <td class="label">{$lang.birthday_gift}</td>
+    <td>
+    <input type="checkbox" name="birthday_gift" value="1" {if $rank.birthday_gift eq 1} checked="true"{/if} /> </td>
+  </tr>
+  <tr>
     <td colspan="2" align="center">
       <input type="hidden" name="act" value="{$form_action}" />
       <input type="hidden" name="id" value="{$rank.rank_id}" />

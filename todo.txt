@@ -278,6 +278,8 @@ $count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table
 
 http://www.daixiaorui.com/read/72.html
 
+http://download.csdn.net/detail/q2326673/8495143
+
 
 
 

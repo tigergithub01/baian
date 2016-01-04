@@ -57,7 +57,8 @@
       <!-- {/if}  -->
       
       <!-- {if $order_back.status eq 5}  -->
-      <input type="submit" value="退货" class="button"  name="return" />
+      <input type="button" value="去退货" class="button" onclick="window.location.href='order.php?act=info&order_id={$order_back.order_id}'" />
+      <input type="submit" value="完成" class="button"  name="return" />
       <!-- {/if}  -->
       <input type="hidden" name="act" value="{$form_action}" />
       <input type="hidden" name="id" value="{$order_back.back_id}" />

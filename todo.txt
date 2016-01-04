@@ -41,6 +41,10 @@ http://localhost:8086/flow.php?step=cart
 http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371
 http://localhost:8086/goods-2371.html
 http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
+http://www.123121.com/goods-22138.html
+
+商品分类页：
+http://localhost:8086/baadmin/category.php?act=edit&cat_id=377
 
 产品编辑：
 http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=15
@@ -54,6 +58,12 @@ http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb
 
 购物车：
 http://localhost:8086/flow.php
+
+订单提交：
+http://localhost:8086/flow.php?step=checkout
+
+优惠活动：
+http://localhost:8086/activity.php
 
 http://localhost:8086/user.php?act=add_booking&id=2371&spec=
 
@@ -234,6 +244,39 @@ http://localhost:8086/baadmin/goods.php?act=ajax_query_goods&keyword=%E9%98%B3%E
 
 文章与文章分类中的买了还买先注释掉，以后加上。
 
+问题：
+后台设置成无效订单，前台依然可以显示。
+
+http://www.tuicool.com/articles/Bj2aQb
+http://www.oschina.net/project/tag/274/jquery-dialog
+
+http://localhost:8086/baadmin/order.php?act=info&order_id=916
+
+
+weiwang12312100
+
+
+"/usr/java/jdk1.6.0_45/jre/bin/java" -jar  "/bocommjava/libr/socket.jar" 8891 "/bocommjava/ini/B2CMerchant.xml" "/bocommjava/log/socket.log"
+
+"/usr/java/jdk1.6.0_45/jre/bin/java" -jar  "/bocommjava/libr/socket.jar" 8891 "/bocommjava/ini/B2CMerchant.xml" "/bocommjava/log/socket.log"&
+
+$_REQUEST['step'] == "cart"
+
+
+一步购物 ->ok
+flow.php内登陆与注册。
+积分商城 ->ok
+买几送几 
+
+http://www.thinkphp.cn/topic/10714.html
+
+订单提交出错点返回后，再重新提交时，提交按钮不能单击，可能是disabled属性生效了
+
+
+$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$goods_id' and status=1");
+        $smarty->assign('review_count',       $count); 
+
+http://www.daixiaorui.com/read/72.html
 
 
 

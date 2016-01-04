@@ -54,7 +54,6 @@ $_LANG['obs'][OBS_AUDITED] = '审核通过';
 $_LANG['obs'][OBS_REJECTED] = '审核不通过';
 $_LANG['obs'][OBS_CANCELED] = '已撤销';
 $_LANG['obs'][OBS_SHIPPING] = '已寄出';
-$_LANG['obs'][OBS_SHIPPED] = '确认收货';
 $_LANG['obs'][OBS_FINISHED] = '已完成';
 
 $_LANG['ss_admin'][SS_SHIPPED_ING] = '发货中（前台状态：未发货）';

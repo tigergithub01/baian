@@ -53,7 +53,7 @@ $_LANG['upop_back_pay']				= '后台交易';
 $_LANG['upop_query']				= '信息查询';
 
 
-$_LANG['upop_button']               = '马上使用银联支付';
+$_LANG['upop_button']               = '立即支付';
 $_LANG['upop_txn_id']               = '银联交易号';
 
 ?>

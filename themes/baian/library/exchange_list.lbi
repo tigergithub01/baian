@@ -49,7 +49,7 @@
 				    <li>
 				                      <div class="pic"><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
 				                        <div class="txt">
-				                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name}...</a></h3>
+				                            <h3><a href="{$goods.url}" title="{$goods.goods_name}" target="_blank">{$goods.goods_name|escape:html|truncate:30}</a></h3>
 				                            <strong class="price">{$goods.exchange_integral}分</strong>
 				                            <span class="orange r">{$goods.review_count}条评价</span>
 				                        </div>

@@ -1382,16 +1382,10 @@ elseif ($_REQUEST['act'] == 'order_back_operate')
 		$action_note = $action_note."(退货申请-审核不通过)";
 		$status = OBS_REJECTED;
 	}
-	/* 确认收货 */
-	elseif (isset($_POST['received']))
-	{
-		$action_note = $action_note."(退货申请-确认收货)";
-		$status = OBS_SHIPPED;
-	}
 	/* 去退款 */
 	elseif (isset($_POST['return']))
 	{
-		$action_note = $action_note."(退货申请-确认退货)";
+		$action_note = $action_note."(退货申请-退货完成)";
 		$status = OBS_FINISHED;
 	}
 	

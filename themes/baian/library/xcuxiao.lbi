@@ -94,7 +94,7 @@ $(function(){
 						<div id="rushScroll" class="rushScroll">
 							<a class="prev"></a>
 							<a class="next"></a>
-							<div class="bd" style="padding-left: 32px;">
+							<div class="bd" style="padding-left: 34px;">
 								<ul class="img-ul">
                                  <!--{foreach from=$promotion_goods key=key item=goods name="promotion_foreach"}-->
 

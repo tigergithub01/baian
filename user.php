@@ -885,49 +885,48 @@ elseif ($action == 'act_profile_upload_photo')
 	$is_baby=isset($_REQUEST['is_baby'])?intval($_REQUEST['is_baby']):0;
 	
 	$dir = 'profile';
+	
+	$img_name = $image->upload_image($_FILES['photo_img'],$dir);
+	if ($img_name === false){
+		lib_main_make_json_error("文件上传失败！");
+	}	
+	
+	
+	//格式化文件
 	if($is_baby==1){
-		$img_name = $user_id ."_baby".".JPG";
+		$formatted_img_name    =  dirname($img_name)."/". $user_id.'_baby_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
+		rename(ROOT_PATH.'/'. $img_name, ROOT_PATH.'/'.$formatted_img_name);
+		$img_url = $formatted_img_name;
 	}else{
-		$img_name = $user_id .".JPG";
+		$formatted_img_name    =  dirname($img_name)."/". $user_id.'_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
+		rename(ROOT_PATH.'/'. $img_name, ROOT_PATH.'/'.$formatted_img_name);
+		$img_url = $formatted_img_name;
 	}
 	
-
-	/* $dir = ROOT_PATH . $tmp_dir_name . '/';
-		if (!file_exists($dir))
-		{
-		if (!make_dir($dir))
-		{
-		lib_main_make_json_error("目录创建失败!");
-		}
-		} */
-
-	$img_name = $image->upload_image($_FILES['photo_img'],$dir,$img_name);
-
-
-
-
-	// 		dirname($img_name);
-
-
-	// 		copy(ROOT_PATH.$img_name, $dest)
-
-	// 		$img_name = upload_file($_FILES['comment_img'], 'comment');
-
-	if ($img_name === false)
-	{
-		lib_main_make_json_error("文件上传失败！");
+	//删除以前的文件
+	$row = $GLOBALS['db']->getRow("SELECT photo_url, baby_photo_url FROM ". $GLOBALS['ecs']->table('users') ." WHERE user_id = '$user_id' LIMIT 1");
+	if($is_baby==1){
+		if(!empty($row['baby_photo_url']) && file_exists(ROOT_PATH.'/'. $row['baby_photo_url'])){
+			unlink(ROOT_PATH.'/'. $row['baby_photo_url']);
+		}		
 	}else{
-		if($is_baby==1){
-			$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET baby_photo_url = '$img_name' WHERE user_id = '$user_id'";
-		}else{
-			$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET photo_url = '$img_name' WHERE user_id = '$user_id'";
+		if(!empty($row['photo_url']) && file_exists(ROOT_PATH.'/'. $row['photo_url'])){
+			unlink(ROOT_PATH.'/'. $row['photo_url']);
 		}
-		$result= $GLOBALS['db']->query($sql);
-		if($result){
-			lib_main_make_json_result("图片上传成功",array('image_url'=>$img_name));
-		}else{
-			lib_main_make_json_error("文件上传失败！");
-		}
+	}
+	
+	
+	//更新图片
+	if($is_baby==1){
+		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET baby_photo_url = '$img_url' WHERE user_id = '$user_id'";
+	}else{
+		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET photo_url = '$img_url' WHERE user_id = '$user_id'";
+	}
+	$result= $GLOBALS['db']->query($sql);
+	if($result){
+		lib_main_make_json_result("图片上传成功",array('image_url'=>$img_url));
+	}else{
+		lib_main_make_json_error("文件上传失败！");
 	}
 }
 

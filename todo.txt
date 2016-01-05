@@ -278,8 +278,15 @@ $count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table
 
 http://www.daixiaorui.com/read/72.html
 
+
 http://download.csdn.net/detail/q2326673/8495143
 
+php定时任务：
+http://www.cnblogs.com/phphuaibei/archive/2011/12/16/2290574.html
+
+发货时扣减库存时，没有处理多仓库库存的问题。
+
+0 * * * * /www/wdlinux/apache_php-5.4.26/bin/php /www/web/default/public_html/auto_cancel_order.php
 
 
 

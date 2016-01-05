@@ -721,6 +721,12 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
 
     /* 查询订单信息 */
     $order = order_info($order_id);
+    
+    //TODO：根据配送地址匹配仓库
+    $sql_address = "select country,province,city,district from ".$GLOBALS['ecs']->table('order_info')." where order_id='$order_id' limit 1";
+    $shipping_address = $GLOBALS['db'] ->getRow($sql_address);
+    $storeroom = get_storeroom(array($shipping_address['country'],$shipping_address['province'],$shipping_address['city'],$shipping_address['district']));
+    $store_id = isset($storeroom)?$storeroom['store_id']:null;
 
     /* 检查此单发货商品库存缺货情况 */
     $virtual_goods = array();
@@ -738,7 +744,15 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
     {
         foreach ($delivery_stock_result as $value)
         {
-            if (($value['sums'] > $value['storage'] || $value['storage'] <= 0) && (($_CFG['use_storage'] == '1'  && $_CFG['stock_dec_time'] == SDT_SHIP) || ($_CFG['use_storage'] == '0' && $value['is_real'] == 0)))
+            //根据仓库与产品编号查询库存  added by tiger.guo 20160105
+            if($store_id){
+            	$products_store = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('products_store') . " WHERE store_id = '$store_id' AND product_id = '$value[product_id]'");
+            	if(!empty($products_store)){
+            		$value['storage'] = intval($products_store['product_number']);
+            	}
+            }
+        	
+        	if (($value['sums'] > $value['storage'] || $value['storage'] <= 0) && (($_CFG['use_storage'] == '1'  && $_CFG['stock_dec_time'] == SDT_SHIP) || ($_CFG['use_storage'] == '0' && $value['is_real'] == 0)))
             {
                 /* 操作失败 */
                 $links[] = array('text' => $_LANG['order_info'], 'href' => 'order.php?act=delivery_info&delivery_id=' . $delivery_id);
@@ -767,7 +781,15 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
         $delivery_stock_result = $GLOBALS['db']->getAll($delivery_stock_sql);
         foreach ($delivery_stock_result as $value)
         {
-            if (($value['sums'] > $value['goods_number'] || $value['goods_number'] <= 0) && (($_CFG['use_storage'] == '1'  && $_CFG['stock_dec_time'] == SDT_SHIP) || ($_CFG['use_storage'] == '0' && $value['is_real'] == 0)))
+        	//根据仓库与产品编号查询库存  added by tiger.guo 20160105
+        	if($store_id){
+        		$goods_store = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('goods_store') . " WHERE store_id = '$store_id' AND goods_id = '$value[goods_id]'");
+        		if(!empty($goods_store)){
+        			$value['goods_number'] = intval($goods_store['goods_number']);
+        		}
+        	}
+        	
+        	if (($value['sums'] > $value['goods_number'] || $value['goods_number'] <= 0) && (($_CFG['use_storage'] == '1'  && $_CFG['stock_dec_time'] == SDT_SHIP) || ($_CFG['use_storage'] == '0' && $value['is_real'] == 0)))
             {
                 /* 操作失败 */
                 $links[] = array('text' => $_LANG['order_info'], 'href' => 'order.php?act=delivery_info&delivery_id=' . $delivery_id);
@@ -801,7 +823,7 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
     if ($_CFG['use_storage'] == '1' && $_CFG['stock_dec_time'] == SDT_SHIP)
     {
 
-        foreach ($delivery_stock_result as $value)
+    	foreach ($delivery_stock_result as $value)
         {
 
             /* 商品（实货）、超级礼包（实货） */
@@ -816,13 +838,28 @@ elseif ($_REQUEST['act'] == 'delivery_ship')
                                         SET product_number = product_number - " . $value['sums'] . "
                                         WHERE product_id = " . $value['product_id'];
                     $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+                    
+                    //修改多仓库库存 added by tiger.guo 20160105
+                    if($store_id){
+                    	$minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('products_store') . "
+                                        SET product_number = product_number - " . $value['sums'] . "
+                                        WHERE product_id = " . $value['product_id'] ." AND store_id = '$store_id'";
+                    	$GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+                    }
                 }
 
                 $minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . "
                                     SET goods_number = goods_number - " . $value['sums'] . "
                                     WHERE goods_id = " . $value['goods_id'];
-
                 $GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+                
+                //修改多仓库库存 added by tiger.guo 20160105
+                if($store_id){
+                	 $minus_stock_sql = "UPDATE " . $GLOBALS['ecs']->table('goods_store') . "
+                                    SET goods_number = goods_number - " . $value['sums'] . "
+                                    WHERE goods_id = " . $value['goods_id'] . " AND store_id = '$store_id'";
+                	$GLOBALS['db']->query($minus_stock_sql, 'SILENT');
+                }
             }
         }
     }

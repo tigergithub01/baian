@@ -10,7 +10,7 @@
 										<p><img src="../images/stars{$comment.rank}.gif" alt="{$comment.comment_rank}" /></p>
 										<p>{$comment.content}</p>
                                         
-										<p><em><img src="images/v1.png" alt=""> <!-- {if $comment.username} -->{$comment.username|escape:html}<!-- {else} -->{$lang.anonymous}<!-- {/if} --></em> <span>{$comment.add_time}</span></p>
+										<p><em><img src="images/v1.png" alt=""> <!-- {if $comment.username} -->{$comment.formatted_username|escape:html}<!-- {else} -->{$lang.anonymous}<!-- {/if} --></em> <span>{$comment.add_time}</span></p>
 										
 										
 										<p class="img">

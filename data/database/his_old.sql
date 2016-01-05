@@ -328,6 +328,38 @@ alter table ecs_order_back drop column audit_time;
 alter table ecs_order_back drop column audit_admin_user_id;
 alter table ecs_order_back drop column audit_desc;
 
+alter table ecs_user_rank add birthday_gift tinyint(1) unsigned comment '是否可赠送宝宝生日礼物' default 0;alter table ecs_user_rank add is_birth_gift tinyint(1) unsigned comment '是否可赠送宝宝生日礼物' default 0;
+
+alter table ecs_users add photo_url varchar(255) comment '照片';
+alter table ecs_users add baby_photo_url varchar(255) comment '宝宝照片';
+
+INSERT INTO `ecs_shop_config`
+(
+`parent_id`,
+`code`,
+`type`,
+`store_range`,
+`store_dir`,
+`value`,
+`sort_order`)
+VALUES
+(
+4,
+'cancel_order_hours',
+'text',
+'',
+'',
+'48',
+1);
+
+alter table ecs_category add give_integral int(11) comment '赠送消费积分数';
+alter table ecs_category add rank_integral int(11) comment '赠送等级积分数';
+alter table ecs_category add integral int(10) unsigned comment '积分购买金额';
+
+update ecs_category set give_integral = -1;
+update ecs_category set rank_integral = -1;
+update ecs_category set integral = 0;
+
 
 
 

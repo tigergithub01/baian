@@ -115,8 +115,6 @@ if($_GET['act']=='send'){
 		if(strtotime(read_file($mobile))>(time()-60)){
 			exit(json_encode(array('msg'=>'获取验证码太过频繁，一分钟之内只能获取一次。')));	
 		}
-	}else{
-		exit(json_encode(array('msg'=>'手机验证码发送失败。')));
 	}
 	
 	$post_data = "account=cf_baia&password=baia123&mobile=".$mobile."&content=".rawurlencode("您的验证码是：".$mobile_code."。如非本人操作，请勿理会！");

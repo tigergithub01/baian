@@ -939,7 +939,7 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
     	//系统自动取消订单，需要订单提交时间间隔24小时
     	$cancel_order_hours = empty($_CFG['cancel_order_hours'])?48:floatval($_CFG['cancel_order_hours']);
     	if((gmtime() - intval($order['add_time'])) <= $cancel_order_hours * 3600 ){
-    		$GLOBALS['err']->add("订单未付款超过'$cancel_order_hours'小时才能自动取消");
+    		$GLOBALS['err']->add("订单未付款超过".$cancel_order_hours."小时才能自动取消");
     		return false;
     	}
     }

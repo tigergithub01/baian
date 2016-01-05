@@ -1728,6 +1728,7 @@ function assign_comment($id, $type, $page = 1)
         $arr[$row['comment_id']]['id']       = $row['comment_id'];
         $arr[$row['comment_id']]['email']    = $row['email'];
         $arr[$row['comment_id']]['username'] = $row['user_name'];
+        $arr[$row['comment_id']]['formatted_username'] = empty($row['user_name'])?'':substr_cut($row['user_name']);
         $arr[$row['comment_id']]['content']  = str_replace('\r\n', '<br />', htmlspecialchars($row['content']));
         $arr[$row['comment_id']]['content']  = nl2br(str_replace('\n', '<br />', $arr[$row['comment_id']]['content']));
         $arr[$row['comment_id']]['rank']     = $row['comment_rank'];

@@ -620,7 +620,7 @@
 			<div class="list-row">
 				<div class="left">
 					<h2 class="tit2"><!-- <a class="r" href="">更多></a> --><strong>热门评论</strong></h2>
-					<div class="bor-box" style="height:273px">
+					<div class="bor-box" style="height:285px">
 						<ul class="ul-pic3">
 							<dd style="height:287px;">
 			  				
@@ -651,7 +651,7 @@
 				</div>
 				<div class="right">
 					<h2 class="tit2"><a class="r" href="/muying/">更多></a><strong>母婴知识</strong></h2>
-					<div class="bor-box" style="height:273px">
+					<div class="bor-box" style="height:285px">
 						<ul class="ul-txt1">
 							<!--{foreach from=$latest_blogs item=blog}-->
                             

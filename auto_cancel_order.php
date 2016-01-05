@@ -31,16 +31,17 @@ $pay_status_list = array(PS_UNPAYED);
 
 
 //查询24小时未支付订单,24小时内未支付的订单自动取消
+$cancel_order_hours = empty($_CFG['cancel_order_hours'])?48:floatval($_CFG['cancel_order_hours']);
 $sql = "SELECT order_id, order_sn FROM " .$GLOBALS['ecs']->table('order_info') .
 " WHERE order_status " . db_create_in($order_status_list).
 " AND shipping_status ". db_create_in($shipping_status_list) . 
 " AND pay_status " . db_create_in($pay_status_list) .
-" AND (" . gmtime() ." - add_time)  > 24*3600 ";
+" AND (" . gmtime() ." - add_time)  > ".$cancel_order_hours." * 3600 ";
 $rows = $GLOBALS['db']->getAll($sql);
 foreach ($rows as $key => $value) {
 	$order_id = $value['order_id'];
 	
-	if (cancel_order($order_id, 'system' ,1 ,'超过24小时未支付，系统自动取消订单'))
+	if (cancel_order($order_id, 'system' ,1 ,"超过".$cancel_order_hours."小时未支付，系统自动取消订单"))
     {
         //ecs_header("Location: user.php?act=order_list\n");
         echo "订单取消成功-'$order_id'\n";

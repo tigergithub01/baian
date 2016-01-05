@@ -619,15 +619,14 @@
 			<div class="h"></div>
 			<div class="list-row">
 				<div class="left">
-					<h2 class="tit2"><a class="r" href="">更多></a><strong>热门评论</strong></h2>
+					<h2 class="tit2"><!-- <a class="r" href="">更多></a> --><strong>热门评论</strong></h2>
 					<div class="bor-box" style="height:273px">
 						<ul class="ul-pic3">
 							<dd style="height:287px;">
 			  				
-			  				  <!--{foreach from=$rmm item=cat name=cat0}-->
 			  
                              
-                             <!--{foreach from=$cat item=mcomms name=comm}-->
+                             <!--{foreach from=$hot_comments item=mcomms name=comm}-->
                             
 			  						<li>
 			  							<div class="pic">
@@ -639,11 +638,10 @@
 			  								<p class="tt"><img class="l" src="images/ic2.png">{$mcomms.content|truncate:25:"...":true}<img class="r" src="images/ic3.png"></p>
 			  							</div>
 			  						</li>
-			  		<!--{/foreach}-->
+			  				<!--{/foreach}-->
 			  			
 
 
-  <!--{/foreach}-->
 
 			  			
 			  				

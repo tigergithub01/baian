@@ -1605,7 +1605,13 @@ function recalculate_price()
                      "WHERE goods_id = '" . $row['goods_id'] . "' AND session_id = '" . SESS_ID . "' AND rec_id = '" . $row['rec_id'] . "'";
 
         $GLOBALS['db']->query($goods_sql);
+        
+        //重新计算需要赠送的赠品
+        add_goods_gift_to_cart($row['goods_id']);
     }
+    
+    
+    
     
     /* 删除赠品，重新选择 */
     /* 屏蔽 20151228 by tiger.guo  */

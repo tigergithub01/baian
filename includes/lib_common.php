@@ -2941,4 +2941,79 @@ function cur_post($curlPost,$url){
 	return $return_str;
 }
 
+/**
+ * 根据商品中的买几送几计算赠品，优惠套装不参与赠送
+ */
+function add_goods_gift_to_cart($goods_id){
+	//先删除赠品，然后重新加入赠品
+	// 	$GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
+	// 			" WHERE session_id = '" . SESS_ID . "' AND is_gift = '$goods_id'");
+
+	$sql = "SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('cart') .
+	" WHERE goods_id = '$goods_id' AND session_id='" . SESS_ID . "' AND extension_code <> 'package_buy' AND rec_type = '".CART_GENERAL_GOODS."'";
+	$count = $GLOBALS['db']->getOne($sql);
+	if($count<=0){
+		//优惠套装不参与赠送
+		return;
+	}
+
+	//查询购物车中原品的数量
+	$goods_number = $GLOBALS['db']->getOne('SELECT goods_number FROM ' . $GLOBALS['ecs']->table('cart') .
+			" WHERE session_id = '" . SESS_ID . "' AND is_gift = 0 AND goods_id = '$goods_id' AND extension_code <> 'package_buy' AND rec_type = '".CART_GENERAL_GOODS."'");
+
+	//计算可以赠送的商品
+	$sql = "SELECT bga.buy_give_id, bga.goods_id, bga.buy_number_activity, bga.give_number_activity, bga.max_give_number, ".
+			" bga.is_double_give, bga.other_goods_id, gift.goods_name AS other_goods_name, " .
+			" gift.goods_thumb AS gift_goods_thumb, gift.goods_img AS gift_goods_img  FROM "
+					. $GLOBALS['ecs']->table('buy_give_activity') . " AS bga " .
+					" INNER JOIN  " . $GLOBALS['ecs']->table('goods') . " AS g ON (bga.goods_id = g.goods_id)" .
+					" LEFT JOIN  " . $GLOBALS['ecs']->table('goods') . " AS gift ON (bga.other_goods_id = gift.goods_id)" .
+					" WHERE bga.goods_id = '$goods_id'" .
+					" AND (g.is_buy_gift = 1 and g.gift_start_date <=".gmtime().' AND g.gift_end_date >='.gmtime().') '.
+					" ORDER BY bga.is_double_give,bga.buy_number_activity";
+	$buy_give_activity_list = $GLOBALS['db']->getAll($sql);
+	$act = null;
+	foreach ($buy_give_activity_list as $key => $row) {
+		$is_double_give = intval($row['is_double_give']);
+		if($is_double_give==0){
+			//先查找不按倍增赠送的
+			if($goods_number==$row['buy_number_activity']){
+				$act = $row;
+				break;
+			}
+		}else{
+			$act = $row;
+		}
+	}
+
+	//先删除赠品，后插入赠品
+	$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') . " WHERE session_id = '" .SESS_ID. "' AND is_gift = '$goods_id' ";
+	$GLOBALS['db']->query($sql);
+
+	if($act){
+		if (intval($act['is_double_give']==0)){
+			//非倍增
+			$gift_num = $act['give_number_activity'];
+		}else{
+			//倍增，考虑最大赠送数量
+			$gift_num = floor(($act['give_number_activity'] / $act['buy_number_activity']) * $goods_number);
+			$gift_num = (intval($act['max_give_number'])>0 && $gift_num >= intval($act['max_give_number']))?intval($act['max_give_number']): $gift_num ;
+		}
+
+		$gift_goods_id = empty($act['other_goods_id'])?$act['goods_id']:$act['other_goods_id'];
+
+		if($gift_num>0){
+			//插入赠品记录
+			$sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
+					"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
+					"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
+					"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'0',".
+					"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', 1 " .
+					"FROM " . $GLOBALS['ecs']->table('goods') .
+					" WHERE goods_id = '$gift_goods_id'";
+			$GLOBALS['db']->query($sql);
+		}
+	}
+}
+
 ?>

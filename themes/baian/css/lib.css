@@ -234,7 +234,7 @@ img{
 	-webkit-transition:.3s;
 	transition:.3s;
 }
-#float ul li .pop{position: absolute;right: 52px;top: 50%;width: 210px;
+#float ul li .pop{position: absolute;right: 52px;top: 50%;/* width: 210px; */
 	text-align: center;margin-top: -60px;display: none;
 	-o-transition:.3s;
 	-ms-transition:.3s;

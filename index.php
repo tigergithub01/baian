@@ -130,8 +130,9 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
         	$act_baobao = $GLOBALS['db']->getRow("select * from web_join_info where period_id = '".$cur_period['period_id']."' and status = 1 order by vote_num desc ");
         	//echo "<pre>";var_dump($act_baobao);echo "</pre>";
 	//调去栏目
+	
 	//热门评论start
-   $plan= get_childname(0); //读取一级栏目下的子栏目
+   /* $plan= get_childname(0); //读取一级栏目下的子栏目
 	$i=0;
 	foreach($plan as $value){
 		//var_dump($value['id']);
@@ -141,9 +142,12 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
 	$redate[$i]=$ax;
 	$i++;
 		}
-	$smarty->assign('rmm',$redate);
+	$smarty->assign('rmm',$redate); */
 	
+	$hot_comments = get_hot_comment(6);
+	$smarty->assign('hot_comments',$hot_comments);
 	//热门评论end
+	
 	//	var_dump($listz);
 	//$ax=get_ecs_category_ids(332);*/
   $F['1_img']=get_advlist('首页-分类ID332-左边图片', 2);
@@ -1204,16 +1208,18 @@ $pvnewcomments[] = array('id_value' => $row['id_value'],
 }
 return $pvnewcomments;
 }
-function get_my_comment( $ids, $count=1 )
+
+function get_hot_comment($count=1 )
 {
 		$arr = array( );
 		$sql = "SELECT c.*, g.goods_id, g.goods_thumb, g.goods_name FROM ".
 		$GLOBALS['ecs']->table( "comment" )." AS c  LEFT JOIN ".
-		$GLOBALS['ecs']->table( "goods" )." AS g ON c.id_value = g.goods_id WHERE g.cat_id in(".$ids.") and c.status=1 and g.is_on_sale=1 and g.is_delete=0 order by c.add_time desc limit ".$count;
+		$GLOBALS['ecs']->table( "goods" )." AS g ON c.id_value = g.goods_id WHERE c.status=1 and g.is_on_sale=1 and g.is_delete=0 order by c.add_time desc limit ".$count;
 		$res = $GLOBALS['db']->getAll( $sql );
 		foreach ( $res as $idx => $row )
 		{
 				$arr[$idx]['id_value'] = $row['id_value'];
+				$arr[$idx]['user_name'] = empty($row['user_name'])?'':substr_cut($row['user_name']);
 				$arr[$idx]['content'] = $row['content'];
 				$arr[$idx]['comment_rank'] = $row['comment_rank'];
 				$arr[$idx]['time'] = local_date( "m-d", $row['add_time'] );

@@ -878,13 +878,14 @@ function get_user_deposits($user_id, $num = 10, $start = 0)
  * @access  public
  * @param   int         $order_id       订单ID
  * @param   int         $user_id        用户ID
- *
+ * @param   int         $admin          系统管理员编号
+ * @param   string      $action_note    取消订单原因
  * @return void
  */
-function cancel_order($order_id, $user_id = 0)
+function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
 {
     /* 查询订单信息，检查状态 */
-    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status, add_time FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
     $order = $GLOBALS['db']->GetRow($sql);
 
     if (empty($order))
@@ -894,7 +895,7 @@ function cancel_order($order_id, $user_id = 0)
     }
 
     // 如果用户ID大于0，检查订单是否属于该用户
-    if ($user_id > 0 && $order['user_id'] != $user_id)
+    if ($user_id > 0 && $order['user_id'] != $user_id && $admin==0)
     {
         $GLOBALS['err'] ->add($GLOBALS['_LANG']['no_priv']);
 
@@ -933,13 +934,26 @@ function cancel_order($order_id, $user_id = 0)
 
         return false;
     }
+    
+    if($admin>0){
+    	//系统自动取消订单，需要订单提交时间间隔24小时
+    	if((gmtime() - intval($order['add_time'])) <= 24 * 3600 ){
+    		$GLOBALS['err']->add("订单未付款超过24小时才能自动取消");
+    		return false;
+    	}
+    }
 
     //将用户订单设置为取消
     $sql = "UPDATE ".$GLOBALS['ecs']->table('order_info') ." SET order_status = '".OS_CANCELED."' WHERE order_id = '$order_id'";
     if ($GLOBALS['db']->query($sql))
     {
         /* 记录log */
-        order_action($order['order_sn'], OS_CANCELED, $order['shipping_status'], PS_UNPAYED,$GLOBALS['_LANG']['buyer_cancel'],'buyer');
+    	if($admin>0){
+    		order_action($order['order_sn'], OS_CANCELED, $order['shipping_status'], PS_UNPAYED, $action_note, $user_id);
+    	}else{
+    		order_action($order['order_sn'], OS_CANCELED, $order['shipping_status'], PS_UNPAYED,$GLOBALS['_LANG']['buyer_cancel'],'buyer');
+    	}
+        
         /* 退货用户余额、积分、红包 */
         if ($order['user_id'] > 0 && $order['surplus'] > 0)
         {

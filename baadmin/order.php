@@ -4789,10 +4789,20 @@ function return_user_surplus_integral_bonus($order)
     {
         unuse_bonus($order['bonus_id']);
     }
+    
+    //多个红包退还
+    if (!empty($order['bonus_ids']))
+    {
+    	$bonus_list = explode(",", $order['bonus_ids']);
+    	foreach ($bonus_list as $bonus_id) {
+    		 unuse_bonus($bonus_id);
+    	}
+    }
 
     /* 修改订单 */
     $arr = array(
         'bonus_id'  => 0,
+    	'bonus_ids'  => '',
         'bonus'     => 0,
         'integral'  => 0,
         'integral_money'    => 0,

@@ -1682,6 +1682,30 @@ elseif ($_REQUEST['act'] == 'edit_goods_price')
 }
 
 /*------------------------------------------------------ */
+//-- 修改成本价
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'edit_purchase_price')
+{
+	check_authz_json('goods_manage');
+
+	$goods_id       = intval($_POST['id']);
+	$purchase_price    = floatval($_POST['val']);
+
+	if ($purchase_price < 0 || $purchase_price == 0 && $_POST['val'] != "$purchase_price")
+	{
+		make_json_error("成本价无效");
+	}
+	else
+	{
+		if ($exc->edit("purchase_price = '$purchase_price', last_update=" .gmtime(), $goods_id))
+		{
+			clear_cache_files();
+			make_json_result(number_format($purchase_price, 2, '.', ''));
+		}
+	}
+}
+
+/*------------------------------------------------------ */
 //-- 修改商品库存数量
 /*------------------------------------------------------ */
 elseif ($_REQUEST['act'] == 'edit_goods_number')

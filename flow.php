@@ -628,6 +628,11 @@ elseif ($_REQUEST['step'] == 'checkout')
         $smarty->assign('your_discount', sprintf($_LANG['your_discount'], $favour_name, price_format($discount['discount'])));
     }
 
+    //每次提交订单前应该清空上次填写的积分与红包信息
+    $order['integral'] = 0;
+    $order['bonus_id'] = 0;
+    $order['bonus_ids'] = "";
+    
     /*
      * 计算订单的费用
      */
@@ -820,13 +825,24 @@ elseif ($_REQUEST['step'] == 'checkout')
         {
             foreach ($user_bonus AS $key => $val)
             {
-                $user_bonus[$key]['bonus_money_formated'] = price_format($val['type_money'], false);
+            	//设置红包是否选中
+            	if (!empty($order['bonus_ids']))
+            	{
+            		$bonus_id_list = explode(",", $order['bonus_ids']);
+            		foreach ($bonus_id_list as $bonus_id) {
+            			if(intval($bonus_id) == intval($val['bonus_id'])){
+            				$user_bonus[$key]['is_checked'] = 1;
+            			}
+            		}
+            	}
+            	$user_bonus[$key]['bonus_money_formated'] = price_format($val['type_money'], false);
             }
             $smarty->assign('bonus_list', $user_bonus);
         }
 
         // 能使用红包
         $smarty->assign('allow_use_bonus', 1);
+        $smarty->assign('order_max_bonus', flow_available_bonus(1));  // 可使用红包总金额
     }
 
     /* 如果使用缺货处理，取得缺货处理列表 */
@@ -1511,6 +1527,86 @@ elseif ($_REQUEST['step'] == 'change_bonus')
     $json = new JSON();
     die($json->encode($result));
 }
+elseif ($_REQUEST['step'] == 'select_bonus')
+{
+	/*------------------------------------------------------ */
+	//-- 改变红包
+	/*------------------------------------------------------ */
+	include_once('includes/cls_json.php');
+	$result = array('error' => '', 'content' => '');
+	$json = new JSON();
+
+	/* 取得购物类型 */
+	$flow_type = isset($_SESSION['flow_type']) ? intval($_SESSION['flow_type']) : CART_GENERAL_GOODS;
+
+	/* 获得收货人信息 */
+	$consignee = get_consignee($_SESSION['user_id']);
+
+	/* 对商品信息赋值 */
+	$cart_goods = cart_goods($flow_type,null,1); // 取得商品列表，计算合计
+
+	if (empty($cart_goods) || !check_consignee_info($consignee, $flow_type))
+	{
+		$result['error'] = $_LANG['no_goods_in_cart'];
+	}
+	else
+	{
+		/* 取得购物流程设置 */
+		$smarty->assign('config', $_CFG);
+
+		/* 取得订单信息 */
+		$order = flow_order_info();
+		
+		$bonus_id_list = isset($_REQUEST['bonus'])?$_REQUEST['bonus']:array(); 
+		$bonus_ids = array();
+		
+		$total_bonus_amt = 0; //选择的红包总金额
+		foreach ($bonus_id_list as $bonus_id) {
+			$bonus = bonus_info(intval($bonus_id));
+			if ((!empty($bonus) && $bonus['user_id'] == $_SESSION['user_id']))
+			{
+				$bonus_ids[] = $bonus_id;
+				$total_bonus_amt  = $total_bonus_amt + floatval($bonus['type_money']);
+			}
+			else
+			{
+				$result['error'] = $_LANG['invalid_bonus'];
+				break;
+			}
+		}
+		
+		//设置选中的红包
+		if(empty($result['error']) && !empty($bonus_ids)){
+			$order['bonus_ids'] = implode(",", $bonus_ids);
+		}else{
+			$order['bonus_ids']="";
+			$total_bonus_amt = 0;
+		}
+		
+		$order_max_bonus =  flow_available_bonus(1);
+		if($total_bonus_amt > $order_max_bonus){
+			$result['error'] = 'notify';
+			$result['message'] = '温馨提示：您选择的红包总金额'.price_format($total_bonus_amt).'大于本单可使用红包总金额，红包只能使用一次，不找零哦！';
+		}
+		
+		
+
+		/* 计算订单的费用 */
+		$total = order_fee($order, $cart_goods, $consignee);
+		$smarty->assign('total', $total);
+
+		/* 团购标志 */
+		if ($flow_type == CART_GROUP_BUY_GOODS)
+		{
+			$smarty->assign('is_group_buy', 1);
+		}
+
+		$result['content'] = $smarty->fetch('library/order_total.lbi');
+	}
+
+	
+	die($json->encode($result));
+}
 elseif ($_REQUEST['step'] == 'change_needinv')
 {
     /*------------------------------------------------------ */
@@ -1703,6 +1799,8 @@ elseif ($_REQUEST['step'] == 'done')
     $_POST['point_id'] = isset($_POST['point_id']) ? intval($_POST['point_id']) : null;
 	
     //TODO:可以使用多个红包，bonus_id赋值待优化
+    $bonus_list = isset($_POST['bonus_list']) ? $_POST['bonus_list']: array();
+    
     //TODO:inv_type应该保存的是发票类型，如“普通发票”、“增值税发票”
     $order = array(
         'shipping_id'     => intval($_POST['shipping']),
@@ -1713,6 +1811,7 @@ elseif ($_REQUEST['step'] == 'done')
         'surplus'         => isset($_POST['surplus']) ? floatval($_POST['surplus']) : 0.00,
         'integral'        => isset($_POST['integral']) ? intval($_POST['integral']) : 0,
         'bonus_id'        => isset($_POST['bonus']) ? intval($_POST['bonus']) : 0,
+    	'bonus_ids'       => implode(",", $bonus_list),
         'need_inv'        => empty($_POST['need_inv']) ? 0 : 1,
         'inv_type'        => $_POST['inv_type'],
         'inv_payee'       => trim($_POST['inv_payee']),
@@ -1799,6 +1898,18 @@ elseif ($_REQUEST['step'] == 'done')
             $order['bonus_sn'] = $bonus_sn;
         }
     }
+    
+    //TODO：使用多个红包的时候，检查红包的合法性
+    if(!empty($bonus_list)){
+    	foreach ($bonus_list as $bonus_id) {
+	    	$bonus = bonus_info($bonus_id);
+	        if (empty($bonus) || $bonus['user_id'] != $user_id || $bonus['order_id'] > 0 || $bonus['min_goods_amount'] > cart_amount(true, $flow_type))
+	        {
+	        	$order['bonus_ids'] = "";
+	        	break;
+	        };
+    	}
+    }
 
     /* 订单中的商品 */
     $cart_goods = cart_goods($flow_type,null,1);
@@ -1852,6 +1963,7 @@ elseif ($_REQUEST['step'] == 'done')
     if ($temp_amout <= 0)
     {
         $order['bonus_id'] = 0;
+        $order['bonus_ids'] = "";
     }
 
     /* 配送方式 */
@@ -2035,6 +2147,15 @@ elseif ($_REQUEST['step'] == 'done')
     {
         use_bonus($order['bonus_id'], $new_order_id);
     }
+    
+    //同时使用多个红包的时候，更新红包使用情况
+    if(!empty($order['bonus_ids'])&& $temp_amout > 0){
+    	$bonus_list = explode(",", $order['bonus_ids']);
+    	foreach ($bonus_list as $bonus_id) {
+    		use_bonus($bonus_id, $new_order_id);
+    	}
+    }
+        
 
     /* 如果使用库存，且下订单时减库存，则减少库存 */
     if ($_CFG['use_storage'] == '1' && $_CFG['stock_dec_time'] == SDT_PLACE)
@@ -2775,6 +2896,29 @@ function flow_available_points($is_checked)
     $val = intval($GLOBALS['db']->getOne($sql));
 
     return integral_of_value($val);
+}
+
+/**
+ * 获得用户的可用红包金额
+ *
+ * @access  private
+ * @return  integral
+ */
+function flow_available_bonus($is_checked)
+{
+	$sql = "SELECT SUM(g.bonus * c.goods_number) ".
+			"FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " .
+			$GLOBALS['ecs']->table('goods') . " AS g, " .
+			$GLOBALS['ecs']->table('category') . " AS cat " .
+			"WHERE c.session_id = '" . SESS_ID . "' AND c.goods_id = g.goods_id AND cat.cat_id = g.cat_id "
+					." AND c.is_gift = 0 AND (g.bonus > 0) and c.is_checked = 1 " .
+					" AND c.rec_type = '" . CART_GENERAL_GOODS . "'";
+
+	if(isset($is_checked)){
+		$sql = $sql." AND c.is_checked = '$is_checked'";
+	}
+
+	return intval($GLOBALS['db']->getOne($sql));
 }
 
 /**

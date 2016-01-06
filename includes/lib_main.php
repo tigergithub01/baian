@@ -1583,13 +1583,13 @@ function recalculate_price()
 {
     /* 取得有可能改变价格的商品：除配件和赠品之外的商品 */
     $sql = 'SELECT c.rec_id, c.goods_id, c.goods_attr_id, g.promote_price, g.promote_start_date, c.goods_number,'.
-                "g.promote_end_date, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS member_price,c.product_id ".
-            'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
-            'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
-            "LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
+                "g.promote_end_date, IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS member_price, c.product_id, c.is_checked".
+            ' FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
+            ' LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
+            " LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
                     "ON mp.goods_id = g.goods_id AND mp.user_rank = '" . $_SESSION['user_rank'] . "' ".
-            "WHERE session_id = '" .SESS_ID. "' AND c.parent_id = 0 AND c.is_gift = 0 AND c.goods_id > 0 " .
-            "AND c.rec_type = '" . CART_GENERAL_GOODS . "' AND c.extension_code <> 'package_buy'";
+            " WHERE session_id = '" .SESS_ID. "' AND c.parent_id = 0 AND c.is_gift = 0 AND c.goods_id > 0 " .
+            " AND c.rec_type = '" . CART_GENERAL_GOODS . "' AND c.extension_code <> 'package_buy'";
 
             $res = $GLOBALS['db']->getAll($sql);
 
@@ -1607,7 +1607,7 @@ function recalculate_price()
         $GLOBALS['db']->query($goods_sql);
         
         //重新计算需要赠送的赠品
-        add_goods_gift_to_cart($row['goods_id']);
+        add_goods_gift_to_cart($row['goods_id'],$row['is_checked']);
     }
     
     

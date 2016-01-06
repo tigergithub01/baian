@@ -2944,7 +2944,7 @@ function cur_post($curlPost,$url){
 /**
  * 根据商品中的买几送几计算赠品，优惠套装不参与赠送
  */
-function add_goods_gift_to_cart($goods_id){
+function add_goods_gift_to_cart($goods_id,$is_checked = 1){
 	//先删除赠品，然后重新加入赠品
 	// 	$GLOBALS['db']->query('DELETE FROM ' . $GLOBALS['ecs']->table('cart') .
 	// 			" WHERE session_id = '" . SESS_ID . "' AND is_gift = '$goods_id'");
@@ -3008,7 +3008,7 @@ function add_goods_gift_to_cart($goods_id){
 					"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
 					"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
 					"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'0',".
-					"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', 1 " .
+					"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', '$is_checked' " .
 					"FROM " . $GLOBALS['ecs']->table('goods') .
 					" WHERE goods_id = '$gift_goods_id'";
 			$GLOBALS['db']->query($sql);

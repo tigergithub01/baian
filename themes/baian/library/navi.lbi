@@ -120,7 +120,7 @@
 										<!--{/if}-->
 										
 										<!--{if $smarty.foreach.cat0.index == 2}-->
-											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(334),0,28) item=brand name=brand}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(336),0,28) item=brand name=brand}-->
 											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
 											<!-- {/foreach} -->
 										<!--{/if}-->
@@ -132,7 +132,7 @@
 										<!--{/if}-->
 										
 										<!--{if $smarty.foreach.cat0.index == 4}-->
-											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(336),0,28) item=brand name=brand}-->
+											<!--{foreach from=array_slice(com_sale_goods_get_related_brands_by_cat_id(334),0,28) item=brand name=brand}-->
 											<li><a target="_blank" href="{$brand.brand_url}">{$brand.brand_name}</a></li>	
 											<!-- {/foreach} -->
 										<!--{/if}-->

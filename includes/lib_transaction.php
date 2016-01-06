@@ -437,7 +437,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     }  
     
     
-    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, o.pay_id, o.shipping_name, o.invoice_no, " .
+    $sql = "SELECT o.order_id, o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time, o.shipping_fee, o.pay_id, o.shipping_name, o.invoice_no, o.order_amount, " .
            "(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
            " FROM " .$GLOBALS['ecs']->table('order_info') ." AS o ".
            " WHERE $where ORDER BY o.add_time DESC";
@@ -448,9 +448,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
         
-    	$row['order_amount'] = $row['total_fee'];
     	$pay_online = get_order_pay_online($row);
-    	
     	
     	if ($row['order_status'] == OS_UNCONFIRMED)
         {
@@ -885,7 +883,7 @@ function get_user_deposits($user_id, $num = 10, $start = 0)
 function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
 {
     /* 查询订单信息，检查状态 */
-    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status, add_time FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status, add_time, bonus_ids FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
     $order = $GLOBALS['db']->GetRow($sql);
 
     if (empty($order))
@@ -970,6 +968,15 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
         {
             change_user_bonus($order['bonus_id'], $order['order_id'], false);
         }
+        
+        //多个红包退还
+        if ($order['user_id'] > 0 && !empty($order['bonus_ids']))
+        {
+	        $bonus_list = explode(",", $order['bonus_ids']);
+	    	foreach ($bonus_list as $bonus_id) {
+	    		change_user_bonus($bonus_id, $order['order_id'], false);
+	    	}
+        }        
 
         /* 如果使用库存，且下订单时减库存，则增加库存 */
         if ($GLOBALS['_CFG']['use_storage'] == '1' && $GLOBALS['_CFG']['stock_dec_time'] == SDT_PLACE)
@@ -980,6 +987,7 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
         /* 修改订单 */
         $arr = array(
             'bonus_id'  => 0,
+        	'bonus_ids' => '',	
             'bonus'     => 0,
             'integral'  => 0,
             'integral_money'    => 0,
@@ -2003,7 +2011,9 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
     $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date,u.used_time ".
            " FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
            $GLOBALS['ecs']->table('bonus_type'). " AS b".
-           " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'";
+           " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'" .
+           " ORDER BY b.use_end_date DESC, u.used_time";
+           		
     $res = $GLOBALS['db']->selectLimit($sql, $num, $start);
     $arr = array();
 

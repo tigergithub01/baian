@@ -685,6 +685,21 @@ function order_fee($order, $goods, $consignee)
         $bonus          = bonus_info($order['bonus_id']);
         $total['bonus'] = $bonus['type_money'];
     }
+    
+    /* 多红包使用  added by tiger.guo 20160106*/
+    if (!empty($order['bonus_ids']))
+    {
+    	$bonus_id_list = explode(",", $order['bonus_ids']);
+    	foreach ($bonus_id_list as $bonus_id) {
+    		$bonus          = bonus_info($bonus_id);
+    		$total['bonus'] += $bonus['type_money'];
+    	}
+    }
+    
+    //判断红包使用最大金额
+    $order_max_bonus =  flow_available_bonus(1);
+    $total['bonus'] = ($total['bonus'] > $order_max_bonus)? $order_max_bonus : $total['bonus'];
+    
     $total['bonus_formated'] = price_format($total['bonus'], false);
 
     /* 线下红包 */

@@ -89,10 +89,10 @@
 	            			</dd>
 	            			
 	                	</dl>
-	                	<dl>
+	                	<!-- <dl>
 	                		<dt>市场价：</dt>
 	                		<dd><em class="jia2">{$goods.market_price}</em></dd>
-	                	</dl>
+	                	</dl> -->
 	                	
 	                	
 	                	<!-- {if ($goods.bonus_money gt 0 || $goods.give_integral gt 0 || $goods.is_buy_gift eq 1)} -->

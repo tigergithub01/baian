@@ -83,7 +83,7 @@
 				           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
 				               <tr>
 				                   <td>
-				                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
+				                       <div class="goods_pic"><a href="{$goods.goods_url}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
 				                       <div class="goods_title">
 								            <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
 										     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>

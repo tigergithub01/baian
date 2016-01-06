@@ -890,7 +890,7 @@
 				<p>
 				<!-- 您有红包<span>￥10.00</span>，本次可用<span>￥{$order_max_bonus|default:0}</span>　 -->
 				<!-- {foreach from=$bonus_list item=bonus} -->
-                 <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥{$order_max_bonus|default:0}<span id="bonus_surplus">{$order_max_bonus|default:0}</span>
+                 <input type="checkbox" onclick="return selectBonus(this.value);" name="bonus_ids[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp; 以上商品允许使用红包总金额：￥<span id="bonus_surplus">{$order_max_bonus|default:0}</span><br/>
                	<!-- {/foreach} -->
                  
                  <br/>

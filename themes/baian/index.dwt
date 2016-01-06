@@ -578,10 +578,10 @@
 					<div class="bor-box bd" style="height:210px">
 						<ul class="ul-pic1">
 							 {foreach from=$may_like_goods item=item_goods}
-							<li><a href="{$item_goods.url}" title="{$item_goods.short_name}">
+							<li><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
 									<img src="{$item_goods.goods_thumb}" alt="">
 								</a>
-								<p style="height: 3em"><a href="{$item_goods.url}" title="{$item_goods.short_name}">{$item_goods.short_name|escape:html|truncate:20}</a></p>
+								<p style="height: 3em"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:20}</a></p>
 								<p style="text-align: center;"><b> 
 							<!-- {if $item_goods.promote_price neq 0} -->
 				           {$item_goods.formated_promote_price}
@@ -595,7 +595,7 @@
 					</div>
 				</div>
 				<div class="right">
-					<h2 class="tit2"><a class="r" href="article_cat-33.html">更多></a><strong>门店动态</strong></h2>
+					<h2 class="tit2"><a class="r" href="article_cat-33.html" target="_blank">更多></a><strong>门店动态</strong></h2>
 					<div class="bor-box" style="height:210px">
 						<ul class="ul-pic2">
                         <!--{foreach from=$class_articles_33 item=article}--> 
@@ -630,10 +630,10 @@
                             
 			  						<li>
 			  							<div class="pic">
-			  								<a href="{$mcomms.url}"><img  alt="{$mcomms.goods_name}"  src="{$mcomms.goods_thumb}" /></a>
+			  								<a href="{$mcomms.url}" target="_blank"><img  alt="{$mcomms.goods_name}"  src="{$mcomms.goods_thumb}" /></a>
 			  							</div>
 			  							<div class="txt">
-			  								<h4><a title="{$mcomms.goods_name}" target="_blank" rel="nofollow" href="{$mcomms.url}">{$mcomms.goods_name|truncate:8:"...":true}</a></h4>
+			  								<h4><a title="{$mcomms.goods_name}" target="_blank" rel="nofollow" href="{$mcomms.url}" target="_blank">{$mcomms.goods_name|truncate:8:"...":true}</a></h4>
 			  								<p>{if $mcomms.user_name eq ''}匿名用户 {else}{$mcomms.user_name}{/if}</p>
 			  								<p class="tt"><img class="l" src="images/ic2.png">{$mcomms.content|truncate:25:"...":true}<img class="r" src="images/ic3.png"></p>
 			  							</div>

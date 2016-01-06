@@ -446,9 +446,9 @@
                             <!--{foreach from=$category_related_random_goods item=category_related_random_goods_data}-->   
                              
 							
-          <li ><a href='{$category_related_random_goods_data.url}'><img src="{$category_related_random_goods_data.goods_thumb}" width="50" height="50"/></a>
+          <li ><a href='{$category_related_random_goods_data.url}' target="_blank"><img src="{$category_related_random_goods_data.goods_thumb}" width="50" height="50"/></a>
           <div class="txt">
-         <p><a href='{$category_related_random_goods_data.url}' title='{$category_related_random_goods_data.short_name}'>{$category_related_random_goods_data.short_name|escape:html|truncate:18}</a></p>
+         <p><a href='{$category_related_random_goods_data.url}' title='{$category_related_random_goods_data.short_name}' target="_blank">{$category_related_random_goods_data.short_name|escape:html|truncate:18}</a></p>
          <p><b class="red f14">
             <!-- {if $category_related_random_goods_data.promote_price neq 0} -->
            {$category_related_random_goods_data.formated_promote_price}
@@ -466,9 +466,9 @@
                             <!--{foreach from=$brand_related_random_goods item=brand_goods}-->   
                              
 							
-          <li ><a href='{$brand_goods.url}'><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
+          <li ><a href='{$brand_goods.url}' target="_blank"><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
           <div class="txt">
-         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}'>{$brand_goods.short_name|escape:html|truncate:18}</a></p>
+         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}' target="_blank">{$brand_goods.short_name|escape:html|truncate:18}</a></p>
          <p><b class="red f14">
             <!-- {if $brand_goods.promote_price neq 0} -->
            {$brand_goods.formated_promote_price}
@@ -486,9 +486,9 @@
                             <!--{foreach from=$price_grade_related_random_goods item=brand_goods}-->   
                              
 							
-          <li ><a href='{$brand_goods.url}'><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
+          <li ><a href='{$brand_goods.url}' target="_blank"><img src="{$brand_goods.goods_thumb}" width="50" height="50"/></a>
           <div class="txt">
-         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}'>{$brand_goods.short_name|escape:html|truncate:18}</a></p>
+         <p><a href='{$brand_goods.url}' title='{$brand_goods.short_name}' target="_blank">{$brand_goods.short_name|escape:html|truncate:18}</a></p>
          <p><b class="red f14">
             <!-- {if $brand_goods.promote_price neq 0} -->
            {$brand_goods.formated_promote_price}

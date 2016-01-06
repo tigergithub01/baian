@@ -1627,8 +1627,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="h15"></div>
 			<h3 class="c-tit3">结算信息</h3>
 			<div class="jsxx">
-				<p><!-- {if $order.integral > 0} 是否使用积分 -->{$lang.use_integral}：<em>{$order.integral}分</em><!-- {/if} 是否使用积分 -->
-				<!-- ，使用红包：<em>￥10.00</em> -->
+				<p>
+				<!-- {if $order.integral > 0} 是否使用积分 -->{$lang.use_integral}：<em>{$order.integral}分</em><!-- {/if} 是否使用积分 -->
+				<!-- {if $order.bonus > 0} 是否使用红包 -->{$lang.use_bonus}：<em>￥{$order.bonus}</em><!-- {/if} 是否使用红包 -->
 				</p>
 				<p class="tr he">商品总计：{$order.formated_goods_amount} + 运费：{$order.formated_shipping_fee} - 积分：{$order.formated_integral_money} - 红包： {$order.formated_bonus}</p>
 			</div>

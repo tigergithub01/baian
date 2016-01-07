@@ -2111,7 +2111,8 @@ function get_total_bonus()
             "AND t.send_type = '" . SEND_BY_GOODS . "' " .
             "AND t.send_start_date <= '$today' " .
             "AND t.send_end_date >= '$today' " .
-            "AND c.rec_type = '" . CART_GENERAL_GOODS . "'";
+            "AND c.rec_type = '" . CART_GENERAL_GOODS . "'" .
+    		" AND c.is_checked = 1";
     $goods_total = floatval($GLOBALS['db']->getOne($sql));
 
     /* 取得购物车中非赠品总金额 */
@@ -2119,7 +2120,8 @@ function get_total_bonus()
             "FROM " . $GLOBALS['ecs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' " .
             " AND is_gift = 0 " .
-            " AND rec_type = '" . CART_GENERAL_GOODS . "'";
+            " AND rec_type = '" . CART_GENERAL_GOODS . "'".
+    		" AND is_checked = 1";
     $amount = floatval($GLOBALS['db']->getOne($sql));
 
     /* 按订单发的红包 */

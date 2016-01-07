@@ -736,13 +736,15 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 	//待评价订单
 	$where .= order_query_sql('finished');
 	
-	//未申请退货
-	$status_list = array(OBS_AUDITING,OBS_AUDITED,OBS_SHIPPING,OBS_FINISHED);
-	$where .= " AND NOT EXISTS ("." SELECT ob.back_id FROM " . $GLOBALS['ecs']->table('order_back') . " AS ob WHERE o.order_id = ob.order_id AND ob.status  ".db_create_in($status_list).")";
+	
 	
 	if($commented==1){
 		$where .= " AND EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}elseif ($commented==0){
+		//未申请退货
+		$status_list = array(OBS_AUDITING,OBS_AUDITED,OBS_SHIPPING,OBS_FINISHED);
+		$where .= " AND NOT EXISTS ("." SELECT ob.back_id FROM " . $GLOBALS['ecs']->table('order_back') . " AS ob WHERE o.order_id = ob.order_id AND ob.status  ".db_create_in($status_list).")";
+		
 		$where .= " AND NOT EXISTS ("."SELECT c.comment_id FROM  ".$GLOBALS['ecs']->table('comment')." AS c WHERE c.comment_type=0 AND c.id_value = g.goods_id AND c.order_id = o.order_id".")";
 	}
 	

@@ -15,9 +15,9 @@
  * $Id: common.php 17217 2011-01-19 06:29:08Z liubo $
 */
 
-$_LANG['app_name'] = 'ECSHOP';
-$_LANG['cp_home'] = 'ECSHOP Management';
-$_LANG['copyright'] = ' &copy; 2005-2012 ECSHOP Copyright, <br> All Right Reserved.';
+$_LANG['app_name'] = 'BAIAN';
+$_LANG['cp_home'] = 'BAIAN Management';
+$_LANG['copyright'] = ' &copy; 2005-2012 BAIAN Copyright, <br> All Right Reserved.';
 $_LANG['query_info'] = 'Run %d queries, spend %s seconds';
 $_LANG['memory_info'] = ',memory occupied:%0.3f MB';
 $_LANG['gzip_enabled'] = ',Gzip enabled';

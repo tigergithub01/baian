@@ -484,6 +484,8 @@ elseif ($_REQUEST['act'] == 'main')
     $smarty->assign('ecs_lang',     $_CFG['lang']);
     $smarty->assign('ecs_charset',  strtoupper(EC_CHARSET));
     $smarty->assign('install_date', local_date($_CFG['date_format'], $_CFG['install_date']));
+    
+    
     $smarty->display('start.htm');
 }
 elseif ($_REQUEST['act'] == 'main_api')

@@ -121,7 +121,7 @@ $modules['13_backup']['02_db_manage']               = 'database.php?act=backup';
 $modules['13_backup']['03_db_optimize']             = 'database.php?act=optimize';
 $modules['13_backup']['04_sql_query']               = 'sql.php?act=main';
 //$modules['13_backup']['05_synchronous']             = 'integrate.php?act=sync';
-$modules['13_backup']['convert']                    = 'convert.php?act=main';
+//$modules['13_backup']['convert']                    = 'convert.php?act=main';
 
 
 //$modules['14_sms']['02_sms_my_info']                = 'sms.php?act=display_my_info';

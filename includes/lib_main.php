@@ -1181,13 +1181,15 @@ function visit_stats()
     {
         $domain = $path = '';
     }
+    
+    $request_uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
     $sql = 'INSERT INTO ' . $GLOBALS['ecs']->table('stats') . ' ( ' .
                 'ip_address, visit_times, browser, system, language, area, ' .
-                'referer_domain, referer_path, access_url, access_time' .
+                'referer_domain, referer_path, access_url, access_time, access_full_url' .
             ') VALUES (' .
                 "'$ip', '$visit_times', '$browser', '$os', '$lang', '$area', ".
-                "'" . addslashes($domain) ."', '" . addslashes($path) ."', '" . addslashes(PHP_SELF) ."', '" . $time . "')";
+                "'" . addslashes($domain) ."', '" . addslashes($path) ."', '" . addslashes(PHP_SELF) ."', '" . $time . "', '".$request_uri."')";
     $GLOBALS['db']->query($sql);
 }
 

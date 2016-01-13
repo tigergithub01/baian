@@ -1282,3 +1282,11 @@ function exchange_buy(goods_id){
 	//console.debug(url);
 	window.location.href= url;
 }
+
+/**
+ * 刷新验证码
+ * obj：jquery object
+ */
+function reload_captcha(obj){
+	obj.attr('src',"captcha.php?" + Math.random());
+}

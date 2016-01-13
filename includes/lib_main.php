@@ -1182,7 +1182,7 @@ function visit_stats()
         $domain = $path = '';
     }
     
-    $request_uri = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    $request_uri = (isset($_SERVER['HTTP_HOST'])?$_SERVER['HTTP_HOST']:'').(isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'');
 
     $sql = 'INSERT INTO ' . $GLOBALS['ecs']->table('stats') . ' ( ' .
                 'ip_address, visit_times, browser, system, language, area, ' .

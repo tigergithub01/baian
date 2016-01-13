@@ -28,7 +28,8 @@ if (!defined('IN_ECS'))
  */
 function dump_escape_string($str)
 {
-    return cls_mysql::escape_string($str);
+//     return cls_mysql::escape_string($str);
+	return (new cls_mysql())->escape_string($str);
 }
 
 /**

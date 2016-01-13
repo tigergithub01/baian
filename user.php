@@ -32,7 +32,11 @@ $smarty->assign("yhzc",getads(187,1));
 
 // 不需要登录的操作或自己验证是否登录（如ajax处理）的act
 $not_login_arr =
-array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer' , 'oath' , 'oath_login', 'other_login','send_verify_email','validate_email_code','act_get_password');
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 
+		'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail',
+		 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 
+		'check_answer' , 'oath' , 'oath_login', 'other_login','send_verify_email','validate_email_code','act_get_password',
+		'send_sms','check_sms');
 
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
@@ -203,7 +207,8 @@ elseif ($action == 'act_register')
         $sel_question = empty($_POST['sel_question']) ? '' : compile_str($_POST['sel_question']);
         $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';		
         $reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
-        
+        $mobile_code    = isset($_POST['mobile_code']) ? $_POST['mobile_code'] : null;
+        $email_code    = isset($_POST['email_code']) ? $_POST['email_code'] : null;
 
         $back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
 
@@ -250,9 +255,23 @@ elseif ($action == 'act_register')
         	//根据邮箱注册，更新邮箱验证标记is_validated=1
         	$reg_value = $email;
         	$other['is_validated']='1';
+        	
+        	//验证邮箱验证码
+        	include_once(ROOT_PATH .'includes/lib_sms.php');
+        	$valid_result = check_email($email, $email_code);
+        	if(!$valid_result['success']){
+        		show_message($valid_result['message'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+        	}
         }else{
         	//根据手机号码注册，更新手机号码验证标记is_validated_phone=1
         	$other['is_validated_phone']='1';
+        	
+        	//验证短信验证码
+        	include_once(ROOT_PATH .'includes/lib_sms.php');
+        	$valid_result = check_sms($other['mobile_phone'], $mobile_code);
+        	if(!$valid_result['success']){
+        		show_message($valid_result['message'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+        	}
         }
                 
         if (register($reg_value, $password, $email, $other) !== false)
@@ -955,16 +974,35 @@ elseif ($action == 'act_bind_mobile'){
 		show_message("手机验证码不能为空！");
 	}
 	
+	/* 验证码检查 */
+	if ((CAPTCHA_REGISTER) && gd_version() > 0)
+	{
+		if (empty($_POST['captcha']))
+		{
+			show_message($_LANG['invalid_captcha'], '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'error');
+		}
+	
+		// 检查验证码
+		include_once('includes/cls_captcha.php');
+	
+		$validator = new captcha();
+		if (!$validator->check_word($_POST['captcha']))
+		{
+			show_message($_LANG['invalid_captcha'], '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'error');
+		}
+	}
+	
+	
 	//验证手机验证码
-	$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/sms/sms.php?act=check");
+	$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/user.php?act=check_sms");
 // 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
 	if(empty($check_result)){
 		show_message("手机验证码输入不正确！");
 	}
 	
 	$result = json_decode($check_result);
-	if(($result->code)!=2){
-		show_message($result->msg);
+	if(($result->status)!=1){
+		show_message($result->message);
 	}	
 	
 	//判断手机号码是否已经被其它用户绑定
@@ -993,8 +1031,26 @@ elseif ($action == 'act_bind_email'){
 		show_message("邮箱验证码不能为空！");
 	}
 	
+	/* 验证码检查 */
+	if ((CAPTCHA_REGISTER) && gd_version() > 0)
+	{
+		if (empty($_POST['captcha']))
+		{
+			show_message($_LANG['invalid_captcha'], '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'error');
+		}
+	
+		// 检查验证码
+		include_once('includes/cls_captcha.php');
+	
+		$validator = new captcha();
+		if (!$validator->check_word($_POST['captcha']))
+		{
+			show_message($_LANG['invalid_captcha'], '手机邮箱绑定', 'user.php?act=bind_mobile_email', 'error');
+		}
+	}
+	
 	//验证邮箱验证码
-	$check_result =cur_post("email_code=".$email_code, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
+	$check_result =cur_post("email_code=".$email_code."&email=".$email, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
 	// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
 	if(empty($check_result)){
 		show_message("邮箱验证码输入不正确！");
@@ -1086,6 +1142,8 @@ elseif ($action == 'act_modify_pwd'){
 		$email_code    = isset($_POST['email_code']) ? trim($_POST['email_code']) : '';
 		$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
 		$reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
+		$mobile_code    = isset($_POST['mobile_code']) ? $_POST['mobile_code'] : null;
+		$email_code    = isset($_POST['email_code']) ? $_POST['email_code'] : null;
 	
 		$back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
 	
@@ -1106,11 +1164,11 @@ elseif ($action == 'act_modify_pwd'){
 		}
 	
 		/* 验证码检查 */
-		/* if ((CAPTCHA_REGISTER) && gd_version() > 0)
+		if ((CAPTCHA_REGISTER) && gd_version() > 0)
 		{
 			if (empty($_POST['captcha']))
 			{
-				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
+				show_message($_LANG['invalid_captcha'], '修改密码', 'user.php?act=modify_pwd', 'error');
 			}
 	
 			// 检查验证码 
@@ -1119,11 +1177,12 @@ elseif ($action == 'act_modify_pwd'){
 			$validator = new captcha();
 			if (!$validator->check_word($_POST['captcha']))
 			{
-				show_message($_LANG['invalid_captcha'], '找回密码', 'user.php?act=get_password', 'error');
+				show_message($_LANG['invalid_captcha'], '修改密码', 'user.php?act=modify_pwd', 'error');
 			}
-		} */
+		}
+		
 		if($reg_type==1){
-			$check_result =cur_post("email_code=".$email_code, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
+			$check_result =cur_post("email_code=".$email_code."&email=".$email, $_SERVER['HTTP_HOST']."/user.php?act=validate_email_code");
 			// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
 			if(empty($check_result)){
 				show_message("邮箱验证码输入不正确！", '修改密码', 'user.php?act=modify_pwd', 'error');
@@ -1136,15 +1195,15 @@ elseif ($action == 'act_modify_pwd'){
 			
 		}else{
 			//验证手机验证码
-			$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/sms/sms.php?act=check");
+			$check_result =cur_post("mobile=".$mobile_phone."&mobile_code=".$mobile_code, $_SERVER['HTTP_HOST']."/user.php?act=check_sms");
 			// 	$check_result=file_get_contents("sms/sms.php?act=check?mobile=".$mobile_phone."&mobile_code=".$mobile_code);
 			if(empty($check_result)){
 				show_message("手机验证码输入不正确！", '修改密码', 'user.php?act=modify_pwd', 'error');
 			}
 			
 			$result = json_decode($check_result);
-			if(($result->code)!=2){
-				show_message($result->msg, '修改密码', 'user.php?act=modify_pwd', 'error');
+			if(($result->status)!=1){
+				show_message($result->message, '修改密码', 'user.php?act=modify_pwd', 'error');
 			}
 		}		
 	
@@ -1210,6 +1269,8 @@ elseif ($action == 'act_get_password')
 		$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
 		$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
 		$reg_type    = isset($_POST['reg_type']) ? intval($_POST['reg_type']) : 0;
+		$mobile_code    = isset($_POST['mobile_code']) ? $_POST['mobile_code'] : null;
+		$email_code    = isset($_POST['email_code']) ? $_POST['email_code'] : null;
 	
 		$back_act = isset($_POST['back_act']) ? trim($_POST['back_act']) : '';
 	
@@ -1255,6 +1316,22 @@ elseif ($action == 'act_get_password')
 			}
 		}
 	
+		if($reg_type==1){
+			//验证邮箱验证码
+			include_once(ROOT_PATH .'includes/lib_sms.php');
+			$valid_result = check_email($email, $email_code);
+			if(!$valid_result['success']){
+				show_message($valid_result['message'], '找回密码', 'user.php?act=get_password', 'error');
+			}
+		}else{
+			//验证短信验证码
+			include_once(ROOT_PATH .'includes/lib_sms.php');
+			$valid_result = check_sms($mobile_phone, $mobile_code);
+			if(!$valid_result['success']){
+				show_message($valid_result['message'], '找回密码', 'user.php?act=get_password', 'error');
+			}
+		}
+		
 		//added by tiger.guo 20151012
 		/* $reg_value = $other['mobile_phone'];
 		if($reg_type==1){
@@ -3827,19 +3904,12 @@ elseif ($action == 'act_transform_ucenter_points')
 elseif ($action == 'clear_history')
 {
     setcookie('ECS[history]',   '', 1);
-}/*------------------------------------------------------ */
+}
+/*------------------------------------------------------ */
 //-- 发送验证码到用户指定邮箱，用来验证邮箱的真实性
 /*------------------------------------------------------ */
 elseif ($action == 'send_verify_email')
 {
-    /* 取得参数 */
-    $email          = trim($_POST['email']);
-    
-    if(empty($email)){
-    	lib_main_make_json_error('邮箱不能为空');
-    }
-    
-    $email_code  = user_random_code(4,1);
 
     /* 更新配置 */
     /* $_CFG['mail_service'] = intval($_POST['mail_service']);
@@ -3850,23 +3920,92 @@ elseif ($action == 'send_verify_email')
     $_CFG['smtp_mail']    = trim($_POST['reply_email']);
     $_CFG['mail_charset'] = trim($_POST['mail_charset']); */
     
-    if (send_mail('', $email, '验证码', "您的验证码是：".$email_code."。如非本人操作，请勿理会！", 0))
+    include_once(ROOT_PATH .'includes/lib_sms.php');
+    $email = isset($_POST['email'])?$_POST['email']:null;
+    
+    if(empty($email)){
+    	lib_main_make_json_error('邮箱地址不能为空！');
+    }
+    
+    $preg='/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i';//简单的方法
+    if(!preg_match($preg,$email)) {
+    	lib_main_make_json_error('邮箱地址格式不正确！');
+    }
+    
+    /* 图形验证码检查 */
+    if ((/* intval($_CFG['captcha']) &  */CAPTCHA_REGISTER) && gd_version() > 0)
     {
-    	$_SESSION['email_code']=$email_code;
-    	lib_main_make_json_result($_LANG['sendemail_success'] . $email);
+    	if (empty($_POST['captcha']))
+    	{
+    		lib_main_make_json_error("图形验证码不能为空");
+    	}
+    
+    	/* 检查验证码 */
+    	include_once('includes/cls_captcha.php');
+    
+    	$validator = new captcha();
+    	if (!$validator->check_word($_POST['captcha']))
+    	{
+    		lib_main_make_json_error("图形验证码输入不正确");
+    	}
+    }
+    
+    //每个号码1分钟内只能发1条
+    $email_record = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('email_code') . " WHERE email = '$email' order by sent_time desc LIMIT 1" );
+    if($email_record){
+    	if($email_record['sent_time'] + 1*60 > gmtime() ){
+    		lib_main_make_json_error("获取验证码太过频繁，请稍后再试。");
+    	}
+    }
+    
+    //每个号码每天只能发送4条短消息
+    $start_time = local_mktime(0,0,0,date('m'),date('d'),date('Y'));
+    $end_time = local_mktime(23,59,59,date('m'),date('d'),date('Y'));
+    $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('email_code') . " WHERE email = '$email' AND sent_time >= '$start_time' AND sent_time <= '$end_time'");
+    if($count>=4){
+    	lib_main_make_json_error("您获取验证码次数太多，请明天再试。");
+    }
+    
+    //发送邮件
+    $email_code = random(4,1);
+    $content = "您的验证码是：".$email_code."，有效时间5分钟。如非本人操作，请勿理会！";
+    $sent_time = gmtime();
+    $expiration_time = gmtime() + 5*60;
+    if (send_mail('', $email, '验证码', $content, 0))
+    {
+    	$sql = 'INSERT INTO '.$GLOBALS['ecs']->table('email_code').'(email , code_type, sent_time , expiration_time , verify_code , email_content) VALUES '.
+    			"('$email' , '' , '$sent_time' ,'$expiration_time' ,'$email_code' ,'$content')" ;
+    	if($GLOBALS['db']->query($sql)){
+    		lib_main_make_json_result($_LANG['sendemail_success'] . $email);
+    	}else{
+    		lib_main_make_json_error("邮件发送失败");
+    	}
     }
     else
     {
-        lib_main_make_json_error(join("\n", $err->_message));
+    	lib_main_make_json_error(join("\n", $err->_message));
     }
+    
 }elseif ($action == 'validate_email_code')
 {
-    $email_code  = trim($_POST['email_code']);
+	include_once(ROOT_PATH .'includes/lib_sms.php');
+	$email = isset($_POST['email'])?$_POST['email']:null;;
+	$email_code = isset($_POST['email_code'])?$_POST['email_code']:null;
+	
+	//验证邮箱
+	$result = check_email($email, $email_code);
+	if($result['success']){
+		lib_main_make_json_result("验证成功");
+	}else{
+		lib_main_make_json_error($result['message']);
+	}
+	
+    /* $email_code  = trim($_POST['email_code']);
     if($email_code==$_SESSION['email_code']){
     	lib_main_make_json_result('验证成功');
     }else{
     	lib_main_make_json_error('邮箱验证码输入错误，请重新输入！');
-    }
+    } */
 }elseif ($action == 'sign_day')
 {
 	include_once(ROOT_PATH .'includes/lib_clips.php');
@@ -4132,6 +4271,100 @@ elseif ($action == 'baby_gift_giving')
 		lib_main_make_json_result('索要生日礼物成功！');
 	}else{
 		lib_main_make_json_error('索要生日礼物失败！');
+	}
+	
+}
+/*发送短信验证码*/
+elseif ($action == 'send_sms')
+{
+	include_once(ROOT_PATH .'includes/lib_sms.php');
+	$mobile = isset($_POST['mobile'])?$_POST['mobile']:null;
+	
+	if(empty($mobile)){
+		lib_main_make_json_error('手机号码不能为空！');
+	}
+	
+	$preg='/^1[0-9]{10}$/';//简单的方法
+	if(!preg_match($preg,$mobile)) {
+		lib_main_make_json_error('手机号码格式不正确！');
+	 }	
+	 
+	 /* 图形验证码检查 */
+	 if ((/* intval($_CFG['captcha']) &  */CAPTCHA_REGISTER) && gd_version() > 0)
+	 {
+	 	if (empty($_POST['captcha']))
+	 	{
+	 		lib_main_make_json_error("图形验证码不能为空");
+	 	}
+	 
+	 	/* 检查验证码 */
+	 	include_once('includes/cls_captcha.php');
+	 
+	 	$validator = new captcha();
+	 	if (!$validator->check_word($_POST['captcha']))
+	 	{
+	 		lib_main_make_json_error("图形验证码输入不正确");
+	 	}
+	 }
+	 
+	 //每个号码1分钟内只能发1条
+	 $sms_code = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' order by sent_time desc LIMIT 1" );
+	 if($sms_code){
+	 	if($sms_code['sent_time'] + 1*60 > gmtime() ){
+	 		lib_main_make_json_error("获取验证码太过频繁，请稍后再试。");
+	 	}
+	 }
+	 
+	 //每个号码每天只能发送4条短消息
+	 $start_time = local_mktime(0,0,0,date('m'),date('d'),date('Y'));
+	 $end_time = local_mktime(23,59,59,date('m'),date('d'),date('Y'));
+	 $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND sent_time >= '$start_time' AND sent_time <= '$end_time'");
+	 if($count>=4){
+	 	lib_main_make_json_error("您获取验证码次数太多，请明天再试。");
+	 }	 
+	 
+	//发送短消息
+	$mobile_code = random(4,1);
+	$target = "http://121.199.16.178/webservice/sms.php?method=Submit";
+	$content = "您的验证码是：".$mobile_code."，有效时间5分钟。如非本人操作，请勿理会！";
+	
+	$post_data = "account=cf_baia&password=baia123&mobile=".$mobile."&content=".rawurlencode($content);
+	//密码可以使用明文密码或使用32位MD5加密
+
+	$get = Post($post_data, $target);
+
+	$gets =  xml_to_array($get);
+	
+	write_file($mobile,$get."\r\n".date("Y-m-d H:i:s"));
+	
+	$sent_time = gmtime();
+	$expiration_time = gmtime() + 5*60;
+
+	if($gets['SubmitResult']['code']==2){
+		$sql = 'INSERT INTO '.$GLOBALS['ecs']->table('sms_code').'(phone_number , code_type, sent_time , expiration_time , verify_code , sms_content) VALUES '.
+				"('$mobile' , '' , '$sent_time' ,'$expiration_time' ,'$mobile_code' ,'$content')" ;
+		if($GLOBALS['db']->query($sql)){
+			lib_main_make_json_result("手机验证码发送成功");
+		}else{
+			lib_main_make_json_error("手机验证码发送失败");
+		}
+	}else{
+		lib_main_make_json_error("手机验证码发送失败");
+	}
+}
+/*验证短信验证码*/
+elseif ($action == 'check_sms')
+{
+	include_once(ROOT_PATH .'includes/lib_sms.php');
+	$mobile = isset($_POST['mobile'])?$_POST['mobile']:null;;
+	$mobile_code = isset($_POST['mobile_code'])?$_POST['mobile_code']:null;	
+
+	//验证短信
+	$result = check_sms($mobile, $mobile_code);
+	if($result['success']){
+		lib_main_make_json_result("手机验证码验证成功");
+	}else{
+		lib_main_make_json_error($result['message']);
 	}
 	
 }

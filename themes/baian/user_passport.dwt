@@ -100,8 +100,8 @@
             var {$key} = "{$item}";
           {/foreach}
         </script>
-    <script type="text/javascript" src="sms/sms.js"></script>    
-	<script type="text/javascript" src="sms/email.js"></script>  
+    <script type="text/javascript" src="/js/sms.js"></script>    
+	<script type="text/javascript" src="/js/email.js"></script>  
 	<script language="javascriptt" type="text/javascript">
 		function AuthPasswd(string) {
 			if(string.length >=6) {
@@ -252,20 +252,20 @@
     				},
     			},
     			submitHandler:function(form){
-    				var mobile = document.getElementById('mobile_phone').value;
+    				/* var mobile = document.getElementById('mobile_phone').value;
     				if (mobile != '') {
     					var mobile_code = document.getElementById("mobile_code").value;
-    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
+    					var result = Ajax.call('user.php?act=check_sms', 'mobile=' + mobile
     							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
-    					if (result.code == 2) {
+    					if (result.status == 1) {
     						return true;
     					} else {
-    						alert(result.msg);
+    						alert(result.message);
     						return false;
     					}
     				}
-    				return true;
-    	            
+    				return true; */
+    				return validateMobileCode();
     	        }   
         	});	   
 			
@@ -305,7 +305,7 @@
     				email_code: {
     					required: "请输入邮箱验证码",
     				},
-    				captcha: {
+    				captcha_email: {
     					required: "请输入验证码",
     				},
     				email: {
@@ -360,15 +360,6 @@
                             <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required" minlength = "6" autocomplete="off"/>   <span class="clr"></span>
                     		<label id="conform_password_notice" style="color:#900;"></label></td>
                         </tr>
-				       	<tr id='row_verify_phone'> 
-				         <th>短信验证码：</th>
-				          <td colspan="2">		
-				          	<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;float: right;"class="inputBg" onclick="sendSms();"/>	
-				          	<span>
-				          		<input name="mobile_code" id="mobile_code" type="text" style="width:110px;"class="inputBg required"/>
-				          	</span>
-				          </td>
-				        </tr>
                  		<tr>
                             <th>验证码：</th>
                             <td>
@@ -378,6 +369,15 @@
                             <input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
 							</td>
                         </tr>
+                        <tr id='row_verify_phone'> 
+				         <th>短信验证码：</th>
+				          <td colspan="2">		
+				          	<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;float: right;"class="inputBg" onclick="sendSms();"/>	
+				          	<span>
+				          		<input name="mobile_code" id="mobile_code" type="text" style="width:110px;"class="inputBg required"/>
+				          	</span>
+				          </td>
+				        </tr>
                       <tr>
                             <td colspan="2">  
         						<div class="item" >
@@ -425,6 +425,15 @@
                             <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required" minlength = "6" autocomplete="off"/>   <span class="clr"></span>
                     		<label id="conform_password_notice" style="color:#900;"></label></td>
                         </tr>
+                        <tr>
+                            <th>验证码：</th>
+                            <td>
+               				 <div style="float: right;vertical-align: middle;">
+               					 <span class="ma"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
+							</div>
+                            <input type="text" id="captcha_email" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+							</td>
+                        </tr>
                         <tr id='row_verify_email'>
                      	<th>邮箱验证码：</th>
                         <td colspan="2">
@@ -433,15 +442,7 @@
                         </td>	
                         	
                          </tr>
-                 		<tr>
-                            <th>验证码：</th>
-                            <td>
-               				 <div style="float: right;vertical-align: middle;">
-               					 <span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
-							</div>
-                            <input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-							</td>
-                        </tr>
+                 		
                       <tr>
                             <td colspan="2">  
         						<div class="item" >
@@ -484,8 +485,8 @@
             var {$key} = "{$item}";
           {/foreach}
         </script>
-    <script type="text/javascript" src="sms/sms.js"></script>    
-	<script type="text/javascript" src="sms/email.js"></script>  
+    <script type="text/javascript" src="/js/sms.js"></script>    
+	<script type="text/javascript" src="/js/email.js"></script>  
 	<script language="javascriptt" type="text/javascript">
 		function AuthPasswd(string) {
 			if(string.length >=6) {
@@ -582,20 +583,7 @@
     				},
     			},
     			submitHandler:function(form){
-    				var mobile = document.getElementById('mobile_phone').value;
-    				 if (mobile != '') {
-    					var mobile_code = document.getElementById("mobile_code").value;
-    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
-    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
-    					if (result.code == 2) {
-    						return true;
-    					} else {
-    						alert(result.msg);
-    						return false;
-    					}
-    				} 
-    				return true;
-    	            
+    				return validateMobileCode();
     	        }   
         	});	   
 			
@@ -623,7 +611,7 @@
     				email_code: {
     					required: "请输入邮箱验证码",
     				},
-    				captcha: {
+    				captcha_email: {
     					required: "请输入验证码",
     				},
     				email: {
@@ -676,6 +664,15 @@
                             <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required"  onblur="check_conform_password(this.value);" autocomplete="off" minlength="6"/>   <span class="clr"></span>
                     		<label id="conform_password_notice" style="color:#900;"></label></td>
                         </tr>
+                        <tr>
+                            <th>验证码：</th>
+                            <td>
+               				 	<div style="float: right;">
+               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
+               				 	</div>
+                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+							</td>
+                        </tr>
 				       	<tr id='row_verify_phone'> 
 				         <th>短信验证码：</th>
 				          <td colspan="2">				        
@@ -683,15 +680,7 @@
 				          	<input name="mobile_code" id="mobile_code" type="text" style="width:110px;"class="inputBg required"/>
 				          </td>
 				        </tr>
-                 		<tr>
-                            <th>验证码：</th>
-                            <td>
-               				 	<div style="float: right;">
-               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
-               				 	</div>
-                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-							</td>
-                        </tr>
+                 		
                       <tr>
                             <td colspan="2">  
 						        
@@ -738,6 +727,15 @@
                             <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required"  onblur="check_conform_password(this.value);" autocomplete="off" minlength="6"/>   <span class="clr"></span>
                     		<label id="conform_password_notice" style="color:#900;"></label></td>
                         </tr>
+                        <tr>
+                            <th>验证码：</th>
+                            <td>
+               				 	<div style="float: right;">
+               				 	<span class="ma"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
+               				 	</div>
+                            	<input type="text" id="captcha_email" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+							</td>
+                        </tr>
                         <tr id='row_verify_email' style=''>
                      	<th>邮箱验证码：</th>
                         <td colspan="2">
@@ -746,15 +744,7 @@
                         </td>	
                         	
                          </tr>
-                 		<tr>
-                            <th>验证码：</th>
-                            <td>
-               				 	<div style="float: right;">
-               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
-               				 	</div>
-                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-							</td>
-                        </tr>
+                 		
                       <tr>
                             <td colspan="2">  
 						        

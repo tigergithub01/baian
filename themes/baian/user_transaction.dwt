@@ -288,8 +288,8 @@
      
       <!-- 手机邮箱绑定  start-->
        <!--{if $action eq 'bind_mobile_email'}-->
-        <script type="text/javascript" src="sms/sms.js"></script>    
-		<script type="text/javascript" src="sms/email.js"></script>  
+        <script type="text/javascript" src="/js/sms.js"></script>    
+		<script type="text/javascript" src="/js/email.js"></script>  
         <script type="text/javascript">
        	  $(function(){
 				//表单验证
@@ -304,19 +304,7 @@
 				
 				$("#formMsg_bind_mobile").validate({
 	    			submitHandler:function(form){
-	    				var mobile = document.getElementById('mobile_phone').value;
-	    				 if (mobile != '') {
-	    					var mobile_code = document.getElementById("mobile_code").value;
-	    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
-	    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
-	    					if (result.code == 2) {
-	    						return true;
-	    					} else {
-	    						alert(result.msg);
-	    						return false;
-	    					}
-	    				}
-	    				return true;
+	    				return validateMobileCode();
 	    	        }   
 	        	});
 				
@@ -365,6 +353,15 @@
 								</td>
 							</tr>
 							<tr>
+	                            <td class="title">验证码：</td>
+	                            <td>
+	                            	<input type="text" id="captcha" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+	               				 	<div style="float: left;margin-left: 10px;">
+	               				 		<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
+	               				 	</div>
+								</td>
+	                        </tr>
+							<tr>
 								<td class="title">短信验证码：</td>
 								<td>
 									<input name="mobile_code" id="mobile_code" type="text" size="30"
@@ -411,6 +408,15 @@
 						class="inputBg required email" />
 							</td>
 						</tr>
+						<tr>
+                            <td class="title">验证码</td>
+                            <td>
+                            	<input type="text" id="captcha_email" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+               				 	<div style="float: left;margin-left: 10px;">
+               				 		<span class="ma"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
+               				 	</div>
+							</td>
+                        </tr>
 						<tr>
 							<td class="title">邮箱验证码：</td>
 							<td>
@@ -563,8 +569,8 @@
      
      <!-- 修改密码  start-->
        <!--{if $action eq 'modify_pwd'}-->
-        <script type="text/javascript" src="sms/sms.js"></script>    
-		<script type="text/javascript" src="sms/email.js"></script>  
+        <script type="text/javascript" src="/js/sms.js"></script>    
+		<script type="text/javascript" src="/js/email.js"></script>  
         <script type="text/javascript">
        	  $(function(){
 				//表单验证
@@ -581,19 +587,7 @@
 				
 				$("#formMsg_by_mobile").validate({
 	    			submitHandler:function(form){
-	    				 var mobile = document.getElementById('mobile_phone').value;
-	    				 if (mobile != '') {
-	    					var mobile_code = document.getElementById("mobile_code").value;
-	    					var result = Ajax.call('sms/sms.php?act=check', 'mobile=' + mobile
-	    							+ '&mobile_code=' + mobile_code, null, 'POST', 'JSON', false);
-	    					if (result.code == 2) {
-	    						return true;
-	    					} else {
-	    						alert(result.msg);
-	    						return false;
-	    					}
-	    				} 
-	    				return true;
+	    				return validateMobileCode();
 	    	        }   
 	        	});
 				
@@ -641,6 +635,15 @@
 									<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
 								</td>
 							</tr>
+							<tr>
+	                            <td class="title">验证码</td>
+	                            <td>
+	                            	<input type="text" id="captcha" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+	               				 	<div style="float: left;margin-left: 10px;">
+	               				 		<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
+	               				 	</div>
+								</td>
+	                        </tr>
 							<tr>
 								<td class="title">短信验证码：</td>
 								<td>
@@ -696,6 +699,15 @@
 								<input name="email" id="email" type="hidden" value="{$profile.email}" /> 
 							</td>
 						</tr>
+						<tr>
+                            <td class="title">验证码</td>
+                            <td>
+                            	<input type="text" id="captcha_email" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+               				 	<div style="float: left;margin-left: 10px;">
+               				 		<span class="ma"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
+               				 	</div>
+							</td>
+                        </tr>
 						<tr>
 							<td class="title">邮箱验证码：</td>
 							<td>

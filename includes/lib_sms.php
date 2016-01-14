@@ -104,7 +104,7 @@ function check_sms($mobile,$mobile_code){
 		$result['message'] = "短信验证码不能为空";
 	}
 	
-	$sms_code = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND verify_code ='$mobile_code' order by sent_time desc LIMIT 1" );
+	$sms_code = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND verify_code ='$mobile_code' AND is_success = 1 order by sent_time desc LIMIT 1" );
 	if($sms_code){
 		if($sms_code['expiration_time'] < gmtime()){
 			$result['success'] = false;

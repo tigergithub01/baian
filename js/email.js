@@ -41,13 +41,13 @@ function validateEmailCode() {
 	return validate;
 }
 
-var iTime_email = 59;
+var iTime_email = 119;
 var Account_email;
 function RemainTime_email() {
 	document.getElementById('verify_mail').disabled = true;
 	var iSecond, sSecond = "", sTime = "";
 	if (iTime_email >= 0) {
-		iSecond = parseInt(iTime_email % 60);
+		iSecond = parseInt(iTime_email % 120);
 		if (iSecond >= 0) {
 			sSecond = iSecond + "秒";
 		}
@@ -55,7 +55,7 @@ function RemainTime_email() {
 		if (iTime_email == 0) {
 			clearTimeout(Account_email);
 			sTime = '获取邮箱验证码';
-			iTime_email = 59;
+			iTime_email = 119;
 			document.getElementById('verify_mail').disabled = false;
 		} else {
 			Account = setTimeout("RemainTime_email()", 1000);

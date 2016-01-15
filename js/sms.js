@@ -70,7 +70,7 @@ function validateMobileCode() {
 	}*/
 }
 
-var iTime = 120;
+var iTime = 119;
 var Account;
 function RemainTime() {
 	document.getElementById('zphone').disabled = true;

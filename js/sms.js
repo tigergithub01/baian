@@ -9,8 +9,15 @@ function sendSmsResponse(result) {
 	if (result.status == 1) {
 		RemainTime();
 		alert('手机验证码已经成功发送到您的手机');
-		//insert verify code into data into database;
+	}else if (result.status == -2) {
+		//发送失败
+		RemainTime();
+		if (result.message) {
+			alert(result.message);
+		}
+		reload_captcha($('#yzm_img'));
 	} else {
+		//验证失败
 		if (result.message) {
 			alert(result.message);
 		} else {
@@ -63,13 +70,13 @@ function validateMobileCode() {
 	}*/
 }
 
-var iTime = 59;
+var iTime = 120;
 var Account;
 function RemainTime() {
 	document.getElementById('zphone').disabled = true;
 	var iSecond, sSecond = "", sTime = "";
 	if (iTime >= 0) {
-		iSecond = parseInt(iTime % 60);
+		iSecond = parseInt(iTime % 120);
 		if (iSecond >= 0) {
 			sSecond = iSecond + "秒";
 		}
@@ -77,7 +84,7 @@ function RemainTime() {
 		if (iTime == 0) {
 			clearTimeout(Account);
 			sTime = '获取手机验证码';
-			iTime = 59;
+			iTime = 119;
 			document.getElementById('zphone').disabled = false;
 		} else {
 			Account = setTimeout("RemainTime()", 1000);

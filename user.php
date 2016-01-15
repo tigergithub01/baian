@@ -3950,19 +3950,19 @@ elseif ($action == 'send_verify_email')
     	}
     }
     
-    //每个号码1分钟内只能发1条
+    //每个号码2分钟内只能发1条邮件
     $email_record = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('email_code') . " WHERE email = '$email' order by sent_time desc LIMIT 1" );
     if($email_record){
-    	if($email_record['sent_time'] + 1*60 > gmtime() ){
+    	if($email_record['sent_time'] + 2*60 > gmtime() ){
     		lib_main_make_json_error("获取验证码太过频繁，请稍后再试。");
     	}
     }
     
-    //每个号码每天只能发送4条短消息
+    //每个邮箱每天只能发送5条邮件
     $start_time = local_mktime(0,0,0,date('m'),date('d'),date('Y'));
     $end_time = local_mktime(23,59,59,date('m'),date('d'),date('Y'));
     $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('email_code') . " WHERE email = '$email' AND sent_time >= '$start_time' AND sent_time <= '$end_time'");
-    if($count>=4){
+    if($count>=5){
     	lib_main_make_json_error("您获取验证码次数太多，请明天再试。");
     }
     
@@ -4278,7 +4278,12 @@ elseif ($action == 'baby_gift_giving')
 elseif ($action == 'send_sms')
 {
 	include_once(ROOT_PATH .'includes/lib_sms.php');
-	$mobile = isset($_POST['mobile'])?$_POST['mobile']:null;
+	$mobile = isset($_POST['mobile'])?$_POST['mobile']:null;	
+	
+	//限制访问ip与备案ip不符
+	if($_SERVER["SERVER_NAME"] != "www.123121.com"){
+		lib_main_make_json_error('非法访问！');
+	}
 	
 	if(empty($mobile)){
 		lib_main_make_json_error('手机号码不能为空！');
@@ -4307,49 +4312,73 @@ elseif ($action == 'send_sms')
 	 	}
 	 }
 	 
-	 //每个号码1分钟内只能发1条
+	 
+	 //每个号码2分钟内只能请求一次
 	 $sms_code = $GLOBALS['db']->getRow("SELECT * FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' order by sent_time desc LIMIT 1" );
 	 if($sms_code){
-	 	if($sms_code['sent_time'] + 1*60 > gmtime() ){
+	 	if($sms_code['sent_time'] + 2*60 > gmtime() ){
 	 		lib_main_make_json_error("获取验证码太过频繁，请稍后再试。");
 	 	}
 	 }
 	 
-	 //每个号码每天只能发送4条短消息
+	 
+	 //每个号码每天只能发送5条短消息
 	 $start_time = local_mktime(0,0,0,date('m'),date('d'),date('Y'));
 	 $end_time = local_mktime(23,59,59,date('m'),date('d'),date('Y'));
-	 $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND sent_time >= '$start_time' AND sent_time <= '$end_time'");
-	 if($count>=4){
+	 $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND sent_time >= '$start_time' AND sent_time <= '$end_time' AND is_success = 1");
+	 if($count>=5){
 	 	lib_main_make_json_error("您获取验证码次数太多，请明天再试。");
 	 }	 
+	 
+	 //每个号码每天只能发送10条请求，不管成功与否
+	 $count = $GLOBALS['db']->getOne("SELECT COUNT(1) FROM " . $GLOBALS['ecs']->table('sms_code') . " WHERE phone_number = '$mobile' AND sent_time >= '$start_time' AND sent_time <= '$end_time'");
+	 if($count>=10){
+	 	lib_main_make_json_error("您获取验证码次数太多，请明天再试。");
+	 }
 	 
 	//发送短消息
 	$mobile_code = random(4,1);
 	$target = "http://121.199.16.178/webservice/sms.php?method=Submit";
 	$content = "您的验证码是：".$mobile_code."，有效时间5分钟。如非本人操作，请勿理会！";
+	$sent_time = gmtime();
+	$expiration_time = gmtime() + 5*60;
+	write_file($mobile,$get."\r\n".date("Y-m-d H:i:s"));	
+	$sql = 'INSERT INTO '.$GLOBALS['ecs']->table('sms_code').'(phone_number , code_type, sent_time , expiration_time , verify_code , sms_content ,is_success , err_msg) VALUES '.
+			"('$mobile' , 0 , '$sent_time' ,'$expiration_time' ,'$mobile_code' ,'$content', '0', NULL)" ;
+	if($GLOBALS['db']->query($sql)){
+		$sms_id = $GLOBALS['db']->insert_id();
+	}else{
+		lib_main_make_json_error("手机验证码发送失败");
+	}	
 	
 	$post_data = "account=cf_baia&password=baia123&mobile=".$mobile."&content=".rawurlencode($content);
 	//密码可以使用明文密码或使用32位MD5加密
-
 	$get = Post($post_data, $target);
-
 	$gets =  xml_to_array($get);
 	
-	write_file($mobile,$get."\r\n".date("Y-m-d H:i:s"));
-	
-	$sent_time = gmtime();
-	$expiration_time = gmtime() + 5*60;
-
+	$is_success = 0;
+	$err_msg = '';
 	if($gets['SubmitResult']['code']==2){
-		$sql = 'INSERT INTO '.$GLOBALS['ecs']->table('sms_code').'(phone_number , code_type, sent_time , expiration_time , verify_code , sms_content) VALUES '.
+		/* $sql = 'INSERT INTO '.$GLOBALS['ecs']->table('sms_code').'(phone_number , code_type, sent_time , expiration_time , verify_code , sms_content) VALUES '.
 				"('$mobile' , '' , '$sent_time' ,'$expiration_time' ,'$mobile_code' ,'$content')" ;
 		if($GLOBALS['db']->query($sql)){
 			lib_main_make_json_result("手机验证码发送成功");
 		}else{
 			lib_main_make_json_error("手机验证码发送失败");
-		}
+		} */
+		$is_success = 1;
 	}else{
-		lib_main_make_json_error("手机验证码发送失败");
+		if(isset($gets['SubmitResult']['msg'])){
+			$err_msg = $gets['SubmitResult']['msg'];
+		}
+	}
+	
+	$sql = 'UPDATE '.$GLOBALS['ecs']->table('sms_code')." SET is_success = '$is_success',err_msg = '$err_msg' WHERE sms_id = '$sms_id'";
+	if($is_success==1 && $GLOBALS['db']->query($sql)){
+		lib_main_make_json_result("手机验证码发送成功");
+	}else{
+		lib_main_make_json_response(-2,"手机验证码发送失败");
+// 		lib_main_make_json_error("手机验证码发送失败");
 	}
 }
 /*验证短信验证码*/

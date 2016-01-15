@@ -16,6 +16,7 @@ function Post($curlPost,$url){
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curl, CURLOPT_NOBODY, true);
 	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_TIMEOUT, 30); //设定超时时间为30秒
 	curl_setopt($curl, CURLOPT_POSTFIELDS, $curlPost);
 	$return_str = curl_exec($curl);
 	curl_close($curl);

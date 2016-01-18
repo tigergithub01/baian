@@ -545,16 +545,23 @@
 								
 								<div class="ad">
 									  <!--{foreach from=$xqtop name=ban item=banner}-->
-										<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+										<!-- <a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a> -->
 									 <!--{/foreach}-->
+									 
+									 <!-- { if $relative_module && $relative_module.header_content} -->
+									 	{$relative_module.header_content}
+									 <!-- {/if} -->
 								</div>
 								
         							{$goods.goods_desc} 
 
 								<div class="ad">
 									  <!--{foreach from=$xqdibu name=ban item=banner}-->
-										<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+										<!-- <a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a> -->
 									  <!--{/foreach}-->
+									  <!-- { if $relative_module && $relative_module.header_content} -->
+									 	{$relative_module.footer_content}
+									 <!-- {/if} -->
 								</div>
 							</div>
 						</div>

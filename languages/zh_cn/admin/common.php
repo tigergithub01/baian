@@ -167,6 +167,7 @@ $_LANG['52_attribute_add'] = '编辑属性';
 $_LANG['53_suppliers_goods'] = '供货商商品管理';
 
 $_LANG['14_goods_export'] = '商品批量导出';
+$_LANG['54_relative_module'] = '版式关联列表';
 
 $_LANG['50_virtual_card_list'] = '虚拟商品列表';
 $_LANG['51_virtual_card_add'] = '添加虚拟商品';

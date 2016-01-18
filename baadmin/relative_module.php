@@ -81,7 +81,14 @@ if ($_REQUEST['act'] == 'add')
     /* 权限判断 */
 	admin_priv('relative_module');
   
+	include_once(ROOT_PATH . 'includes/fckeditor/fckeditor.php'); // 包含 html editor 类文件
+	
 	$module_info['is_show']=1;
+	
+	/* 创建 html editor */
+	create_html_editor('header_content', '');
+	create_html_editor('footer_content', '');
+	
 	$smarty->assign('module_info', $module_info);
     $smarty->assign('ur_here',     $_LANG['module_name']);
     $smarty->assign('action_link', array('text' => $_LANG['54_relative_module'], 'href' => 'relative_module.php?act=list'));
@@ -129,12 +136,22 @@ if ($_REQUEST['act'] == 'insert')
 //-- 编辑
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'edit')
-{
+{	
+	
     /* 权限判断 */
     admin_priv('relative_module');
+    
+    include_once(ROOT_PATH . 'includes/fckeditor/fckeditor.php'); // 包含 html editor 类文件
+    
     /* 取文章数据 */
     $sql = "SELECT * FROM " .$ecs->table('relative_module'). " WHERE module_id='$_REQUEST[id]'";
     $module_info = $db->GetRow($sql);
+    
+    /* 创建 html editor */
+    create_html_editor('header_content', $module_info['header_content']);
+    create_html_editor('footer_content', $module_info['footer_content'],'FCKeditor_footer');
+    
+    
     $smarty->assign('module_info',     $module_info);
     $smarty->assign('ur_here',     $_LANG['edit_store']);
     $smarty->assign('action_link', array('text' => $_LANG['54_relative_module'], 'href' => 'relative_module.php?act=list&' . list_link_postfix()));

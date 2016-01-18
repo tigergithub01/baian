@@ -308,7 +308,7 @@ function get_position_list()
  * @param   string  input_name  输入框名称
  * @param   string  input_value 输入框值
  */
-function create_html_editor($input_name, $input_value = '')
+function create_html_editor($input_name, $input_value = '',$FCKeditor_name = 'FCKeditor')
 {
     global $smarty;
 
@@ -319,7 +319,7 @@ function create_html_editor($input_name, $input_value = '')
     $editor->Height     = '320';
     $editor->Value      = $input_value;
     $FCKeditor = $editor->CreateHtml();
-    $smarty->assign('FCKeditor', $FCKeditor);
+    $smarty->assign($FCKeditor_name, $FCKeditor);
 }
 
 /**

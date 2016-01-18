@@ -329,6 +329,18 @@
           <tr>
             <td>{$FCKeditor}</td>
           </tr>
+          <tr>
+			     <td>
+				     <!--关联版式-->
+					 关联版式: <select name="relative_module" style="">
+					    <option value="0">{$lang.select_please}</option>
+					    {foreach name=relative_module from=$relative_module item=relative_module}
+					      <option {if ($relative_module.module_id eq $goods.relative_module)} selected="selected" {/if} value="{$relative_module.module_id}">{$relative_module.module_name}</option>
+					    {/foreach}
+					  </select>
+				  	<!--关联版式end-->
+			  	</td>
+		  	</tr>
         </table>
 
         <!-- 其他信息 -->

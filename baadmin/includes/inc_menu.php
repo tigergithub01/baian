@@ -34,7 +34,7 @@ $modules['02_cat_and_goods']['17_tag_manage']       = 'tag_manage.php?act=list';
 $modules['02_cat_and_goods']['52_virtual_card_change'] = 'virtual_card.php?act=change';
 $modules['02_cat_and_goods']['goods_auto']             = 'goods_auto.php?act=list';
 $modules['02_cat_and_goods']['goods_storeroom']             = 'goods_storeroom.php?act=list';   //代码增加   By www.ecshop120.com
-
+$modules['02_cat_and_goods']['54_relative_module']     = 'relative_module.php?act=list';
 
 $modules['03_promotion']['04_bonustype_list']       = 'bonus.php?act=list';
 $modules['03_promotion']['06_pack_list']            = 'pack.php?act=list';

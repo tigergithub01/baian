@@ -58,6 +58,16 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     $smarty->assign('suppliers_exists', $suppliers_exists);
     $smarty->assign('suppliers_list_name', $suppliers_list_name);
     unset($suppliers_list_name, $suppliers_exists);
+    
+    /*关联版式*/
+    $sql = 'SELECT module_name,module_id FROM ' .$GLOBALS['ecs']->table('relative_module');
+    $relative_module = $db->getAll($sql);
+    /*$relative_module = array();
+     foreach($relative_module as $key=>$val)
+     {
+     $relative_module[$val['module_id']] = $val['module_name'];
+    }*/
+    $smarty->assign('relative_module', $relative_module);
 
     /* 模板赋值 */
     $goods_ur = array('' => $_LANG['01_goods_list'], 'virtual_card'=>$_LANG['50_virtual_card_list']);
@@ -181,7 +191,8 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
         	'gift_end_date'   => local_date('Y-m-d', local_strtotime('+1 month')),
             'goods_weight'  => 0,
             'give_integral' => -1,
-            'rank_integral' => -1
+            'rank_integral' => -1,
+        	'relative_module' => 0	
         );
 
         if ($code != '')
@@ -252,7 +263,8 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             	'gift_end_date'   => local_date('Y-m-d', local_strtotime('+1 month')),
                 'goods_weight'  => 0,
                 'give_integral' => -1,
-                'rank_integral' => -1
+                'rank_integral' => -1,
+            	'relative_module' => 0	
             );
         }
 		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
@@ -467,6 +479,17 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
 
     /* 创建 html editor */
     create_html_editor('goods_desc', $goods['goods_desc']);
+    
+    /*关联版式 */
+    $sql = 'SELECT module_name,module_id FROM ' .$GLOBALS['ecs']->table('relative_module'). ' ';
+    $relative_module = $db->getAll($sql);
+    /*$relative_module = array();
+     foreach($relative_module as $key=>$val)
+     {
+     $relative_module[$val['module_id']] = $val['module_name'];
+    }*/
+    $smarty->assign('relative_module', $relative_module);
+    /* wzys关联版式 end*/
 
     /* 模板赋值 */
     $smarty->assign('code',    $code);
@@ -915,6 +938,10 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $is_buy_gift = isset($_POST['is_buy_gift']) ? intval($_POST['is_buy_gift']) : 0;
     $gift_start_date = ($is_buy_gift && !empty($_POST['gift_start_date'])) ? local_strtotime($_POST['gift_start_date']) : 0;
     $gift_end_date = ($is_buy_gift && !empty($_POST['gift_end_date'])) ? local_strtotime($_POST['gift_end_date']) : 0;
+    
+    //关联板式：
+    $relative_module = isset($_POST['relative_module']) ? intval($_POST['relative_module']) : 0;
+    
 
     /* 入库 */
     if ($is_insert)
@@ -926,14 +953,14 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,".
-                    "pinyin, bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price)" .
+                    "pinyin, bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', '$is_on_sale', '$is_alone_sale', $is_shipping, ".
                     " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt',".
-            		" '$pinyin', '$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price')";
+            		" '$pinyin', '$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module')";
         }
         else
         {
@@ -942,14 +969,14 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,".
-                    "pinyin,bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price)" .
+                    "pinyin,bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', 0, '$is_on_sale', '$is_alone_sale', $is_shipping, ".
                     " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt',".
-            		" '$pinyin','$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price')";
+            		" '$pinyin','$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module')";
         }
     }
     else
@@ -1022,6 +1049,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "is_buy_gift = '$is_buy_gift', " .
                 "gift_start_date = '$gift_start_date', " .
                 "gift_end_date = '$gift_end_date', " .
+                "relative_module = '$relative_module', " .
                 "goods_type = '$goods_type' " .
                 "WHERE goods_id = '$_REQUEST[goods_id]' LIMIT 1";
     }
@@ -1506,6 +1534,21 @@ elseif ($_REQUEST['act'] == 'batch')
             /* 记录日志 */
             admin_log('', 'batch_remove', 'goods');
         }
+        /* 关联版式 */
+        elseif ($_POST['type'] == 'relative_module')
+        {
+            /* 检查权限 */
+            admin_priv('goods_manage');
+            update_goods($goods_id, 'relative_module', $_POST['target_module_id']);
+        }
+        /* 取消关联版式 */
+		 elseif ($_POST['type'] == 'cancel_relative_module')
+        {
+            /* 检查权限 */
+            admin_priv('goods_manage');
+            update_goods($goods_id, 'relative_module', 0);
+        }
+		
     }
 
     /* 清除缓存 */

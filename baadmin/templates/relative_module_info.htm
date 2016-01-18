@@ -32,8 +32,8 @@ KindEditor.ready(function(K) {
 
 -->
 </script>
-       <textarea name="header_content" style="width:85%;height:300px;" id="header_content ">{$module_info.header_content}</textarea>
-
+       <!-- <textarea name="header_content" style="width:85%;height:300px;" id="header_content ">{$module_info.header_content}</textarea> -->
+		{$FCKeditor}
         
        </td>
        </tr>
@@ -52,7 +52,9 @@ KindEditor.ready(function(K) {
 
 -->
 </script>
-       <textarea name="footer_content" style="width:85%;height:300px;" id="footer_content ">{$module_info.footer_content}</textarea>
+		{$FCKeditor_footer}
+       
+      <!--  <textarea name="footer_content" style="width:85%;height:300px;" id="footer_content ">{$module_info.footer_content}</textarea> -->
 
     
        </td>

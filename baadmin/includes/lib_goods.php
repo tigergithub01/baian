@@ -976,60 +976,60 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         switch ($filter['intro_type'])
         {
             case 'is_best':
-                $where .= " AND is_best=1";
+                $where .= " AND g.is_best=1";
                 break;
             case 'is_hot':
-                $where .= ' AND is_hot=1';
+                $where .= ' AND g.is_hot=1';
                 break;
             case 'is_new':
-                $where .= ' AND is_new=1';
+                $where .= ' AND g.is_new=1';
                 break;
             case 'is_promote':
-                $where .= " AND is_promote = 1 AND promote_price > 0 AND promote_start_date <= '$today' AND promote_end_date >= '$today'";
+                $where .= " AND g.is_promote = 1 AND g.promote_price > 0 AND g.promote_start_date <= '$today' AND g.promote_end_date >= '$today'";
                 break;
             case 'all_type';
-                $where .= " AND (is_best=1 OR is_hot=1 OR is_new=1 OR (is_promote = 1 AND promote_price > 0 AND promote_start_date <= '" . $today . "' AND promote_end_date >= '" . $today . "'))";
+                $where .= " AND (g.is_best=1 OR g.is_hot=1 OR g.is_new=1 OR (g.is_promote = 1 AND g.promote_price > 0 AND g.promote_start_date <= '" . $today . "' AND g.promote_end_date >= '" . $today . "'))";
         }
 
         /* 库存警告 */
         if ($filter['stock_warning'])
         {
-            $where .= ' AND goods_number <= warn_number ';
+            $where .= ' AND g.goods_number <= warn_number ';
         }
 
         /* 品牌 */
         if ($filter['brand_id'])
         {
-            $where .= " AND brand_id='$filter[brand_id]'";
+            $where .= " AND g.brand_id='$filter[brand_id]'";
         }
 
         /* 扩展 */
         if ($filter['extension_code'])
         {
-            $where .= " AND extension_code='$filter[extension_code]'";
+            $where .= " AND g.extension_code='$filter[extension_code]'";
         }
 
         /* 关键字 */
         if (!empty($filter['keyword']))
         {
-            $where .= " AND (goods_sn LIKE '%" . mysql_like_quote($filter['keyword']) . "%' OR goods_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%')";
+            $where .= " AND (g.goods_sn LIKE '%" . mysql_like_quote($filter['keyword']) . "%' OR g.goods_name LIKE '%" . mysql_like_quote($filter['keyword']) . "%')";
         }
 
         if ($real_goods > -1)
         {
-            $where .= " AND is_real='$real_goods'";
+            $where .= " AND g.is_real='$real_goods'";
         }
 
         /* 上架 */
         if ($filter['is_on_sale'] !== '')
         {
-            $where .= " AND (is_on_sale = '" . $filter['is_on_sale'] . "')";
+            $where .= " AND (g.is_on_sale = '" . $filter['is_on_sale'] . "')";
         }
 
         /* 供货商 */
         if (!empty($filter['suppliers_id']))
         {
-            $where .= " AND (suppliers_id = '" . $filter['suppliers_id'] . "')";
+            $where .= " AND (g.suppliers_id = '" . $filter['suppliers_id'] . "')";
         }
 
         $where .= $conditions;
@@ -1041,11 +1041,20 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         /* 分页大小 */
         $filter = page_and_size($filter);
 
-        $sql = "SELECT goods_id, goods_name, goods_type, goods_sn, shop_price, is_on_sale,purchase_price, shop_price-purchase_price as profit, is_best, is_new, is_hot, sort_order, goods_number, integral, " .
+        /* $sql = "SELECT goods_id, goods_name, goods_type, goods_sn, shop_price, is_on_sale,purchase_price, shop_price-purchase_price as profit, is_best, is_new, is_hot, sort_order, goods_number, integral, " .
                     " (promote_price > 0 AND promote_start_date <= '$today' AND promote_end_date >= '$today') AS is_promote ".
                     " FROM " . $GLOBALS['ecs']->table('goods') . " AS g WHERE is_delete='$is_delete' $where" .
                     " ORDER BY $filter[sort_by] $filter[sort_order] ".
-                    " LIMIT " . $filter['start'] . ",$filter[page_size]";
+                    " LIMIT " . $filter['start'] . ",$filter[page_size]"; */
+        $sql = "SELECT g.goods_id, g.goods_name, g.goods_type, g.goods_sn, g.shop_price, g.is_on_sale,g.purchase_price,".
+          		" g.shop_price-purchase_price as profit, g.is_best, g.is_new, g.is_hot, g.sort_order, g.goods_number, g.integral, " .
+        		" (g.promote_price > 0 AND g.promote_start_date <= '$today' AND g.promote_end_date >= '$today') AS is_promote, ".
+        		" rmod.module_name" .
+        		" FROM " . $GLOBALS['ecs']->table('goods') . " AS g ".
+        		" LEFT JOIN " . $GLOBALS['ecs']->table('relative_module') . " AS rmod ON (g.relative_module = rmod.module_id) ".
+        		" WHERE g.is_delete='$is_delete' $where" .
+        		" ORDER BY $filter[sort_by] $filter[sort_order] ".
+        		" LIMIT " . $filter['start'] . ",$filter[page_size]";
 
         $filter['keyword'] = stripslashes($filter['keyword']);
         set_filter($filter, $sql, $param_str);

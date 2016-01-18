@@ -4339,7 +4339,7 @@ elseif ($action == 'send_sms')
 	//发送短消息
 	$mobile_code = random(4,1);
 	$target = "http://121.199.16.178/webservice/sms.php?method=Submit";
-	$content = "您的验证码是：".$mobile_code."，有效时间5分钟。如非本人操作，请勿理会！";
+	$content = "您的验证码是：".$mobile_code."。如非本人操作，请勿理会！";
 	$sent_time = gmtime();
 	$expiration_time = gmtime() + 5*60;
 	write_file($mobile,$get."\r\n".date("Y-m-d H:i:s"));	

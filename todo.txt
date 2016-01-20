@@ -1,10 +1,7 @@
-2015-09-29:
+﻿2015-09-29:
 &XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14434955201651
 ?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14434955201651
 `baianshop`.`ecs_sessions`
-
-
-
 
 exchange.php正式环境显示不成功。->ok
 
@@ -286,9 +283,209 @@ http://www.cnblogs.com/phphuaibei/archive/2011/12/16/2290574.html
 
 发货时扣减库存时，没有处理多仓库库存的问题。
 
+crontab -e
+
 0 * * * * /www/wdlinux/apache_php-5.4.26/bin/php /www/web/default/public_html/auto_cancel_order.php
+*/5 * * * * /www/wdlinux/mysql-5.5.44/bin/mysql_listen.sh
+
+优化碎片：
+select concat('optimize table ',table_name,';') 
+from  information_schema.tables where TABLE_TYPE = 'BASE TABLE' and table_schema = 'baianshop';
+
+
+茵克拉芙 2013夏装女装春款连衣裙碎花雪纺OL气 [ 美的 ] 
+
+深圳市百安妇幼用品有限公司
+
+mysql数据库备份：
+http://blog.csdn.net/catoop/article/details/8064817
+
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+
+mysql 维护：
+http://www.cnblogs.com/eoiioe/archive/2008/12/28/1363947.html
+
+ecshop去掉cloud:
+http://www.cnblogs.com/shangxia/p/3543194.html
+
+mysqldump -hlocalhost -uroot -p********** baianshop > baianshop_201601081716.sql
+mysqldump -hlocalhost -uroot -p********** baianshop > baianshop_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** andatabase > andatabase_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** baianmy14 > baianmy14_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** baianwx > baianwx_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** goodsback > goodsback_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** weixin > weixin_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** wordpress > wordpress_201601100912.sql
 
 
 
+
+linux查看文件大小：
+http://www.cnblogs.com/benio/archive/2010/10/13/1849946.html
+
+查看LINUX进程内存占用情况：
+http://www.cnblogs.com/gaojun/p/3406096.html
+
+Linux如何查询内存真实利用率
+http://blog.sina.com.cn/s/blog_64bb25ef0100oaiv.html
+
+ http://blog.sina.com.cn/s/blog_64bb25ef0100oaiv.html
+ 
+ 
+ mysql配置：
+http://blog.csdn.net/ixidof/article/details/5958904/
+/etc/my.cnf
+
+linux服务器wdcp升级mysql:
+http://www.jinshare.cn/2015/01/lmsq/
+
+vi /www/wdlinux/init.d/mysqld 
+编辑mysql配置文件，通过vi命令
+（按i进入编辑模式、按ESC退出编辑模式、输入:wq保存退出）新增加两行如下配置：
+
+basedir=/www/wdlinux/mysql-5.5.27
+datadir=/www/wdlinux/mysql-5.5.27/var
+或者以下两行代码也可以：
+
+basedir=/www/wdlinux/mysql
+datadir=/www/wdlinux/mysql/var
+
+
+mysql_upgrade:
+mysql_upgrade -u root -p
+
+mysqladmin -uroot -p********** processlist
+
+mysqladmin -uroot -p********** processlist;
+mysqladmin -uroot -p********** status;
+
+iZ94feeyo29Z
+
+160111 17:43:09 [Warning] IP address '202.105.96.26' could not be resolved: Name or service not known
+160111 19:32:22 [Warning] IP address '218.244.254.49' could not be resolved: Name or service not known
+160111 20:44:27 [Warning] IP address '121.40.158.56' could not be resolved: Name or service not known
+
+mysql日志：
+SHOW  GLOBAL VARIABLES LIKE '%log%';
+
+mysql@localhost.(none)>set global general_log=on;
+Query OK, 0 rows affected (0.02 sec)
+ 
+mysql@localhost.(none)>set global general_log=off;
+Query OK, 0 rows affected (0.00 sec)
+
+
+linux文件大小查看：
+du -h --max-depth=1 *
+http://www.cnblogs.com/benio/archive/2010/10/13/1849946.html
+
+
+linux下发送邮件：
+http://blog.chinaunix.net/uid-20465760-id-3046249.html
+
+短信处理逻辑：
+http://h.ihuyi.com/help.php?action=to_question&id=645&type_id=22
+
+https://help.aliyun.com/knowledge_detail/8164558.html?spm=5176.7618386.5.21.zJ388w
+
+https://help.aliyun.com/knowledge_detail/6709053.html?spm=5176.7618386.5.1.NPl2YP  
+
+Linux 禁ping和开启ping操作:
+http://blog.chinaunix.net/uid-23683795-id-3536391.html
+
+查看防火墙状态：
+service iptables status
+
+重启防火墙：
+service iptables restart
+
+[root@123121 ~]# vi /etc/sysconfig/iptables
+# iptables conf /etc/sysconfig/iptables
+# Created by http://www.wdlinux.cn
+# Last Updated 2010.06.01
+
+# Firewall configuration written by system-config-securitylevel
+# Manual customization of this file is not recommended.
+*filter
+:FORWARD ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:RH-Firewall-1-INPUT - [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -j RH-Firewall-1-INPUT
+-A FORWARD -j RH-Firewall-1-INPUT
+-A RH-Firewall-1-INPUT -i lo -j ACCEPT
+-A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT
+-A RH-Firewall-1-INPUT -p 50 -j ACCEPT
+-A RH-Firewall-1-INPUT -p 51 -j ACCEPT
+#-A RH-Firewall-1-INPUT -p udp -d 224.0.0.251 --dport 5353 -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 22 --state NEW -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 21 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 80 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 3306 -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 8080 -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 8080 --state NEW -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 20000:20500 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -j REJECT --reject-with icmp-host-prohibited
+COMMIT
+
+151.80.41.169
+
+#russia
+-A RH-Firewall-1-INPUT -p tcp -s 46.242.0.0/16 --dport 80   -j REJECT
+
+#north ameria
+-A RH-Firewall-1-INPUT -p tcp -s 192.243.0.0/16 --dport 80   -j REJECT
+
+#german
+-A RH-Firewall-1-INPUT -p tcp -s 213.239.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 46.4.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 144.76.0.0/16 --dport 80   -j REJECT
+
+#itali
+-A RH-Firewall-1-INPUT -p tcp -s 151.80.0.0/16 --dport 80   -j REJECT
+
+#urop
+-A RH-Firewall-1-INPUT -p tcp -s 136.243.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 5.39.0.0/16 --dport 80   -j REJECT
+
+#france
+-A RH-Firewall-1-INPUT -p tcp -s 195.154.0.0/16 --dport 80   -j REJECT
+
+#ameria
+-A RH-Firewall-1-INPUT -p tcp -s 23.251.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 157.55.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 204.152.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 207.46.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 208.80.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 40.77.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 54.244.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 69.30.0.0/16 --dport 80   -j REJECT
+
+#heland
+-A RH-Firewall-1-INPUT -p tcp -s 212.7.0.0/16 --dport 80   -j REJECT
+
+
+
+
+
+
+204.152.209.145
+
+backup_dir=/www/web/default/back/database
+dt=$(date +%Y%m%d%H:%M:%S)
+db=bcmedia
+mysqldump -hlocalhost -uroot -p********** baianshop > $backup_dir/baianshop_$dt
+
+
+www.123121.com/goods-1059.html
+www.123121.com/sales-promotion.html
+
+find  -type f -name "*.htaccess" | xargs grep "sales"
+
+
+http://blog.chacuo.net/147.html
+识别真假搜索引擎（搜索蜘蛛）方法
 
 

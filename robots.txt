@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /admin/
+Disallow: /baadmin/
 Disallow: /cert/
 Disallow: /data/
 Disallow: /includes/
@@ -21,6 +21,3 @@ Disallow: /region.php
 Disallow: /respond.php
 Disallow: /feed.php
 Disallow: /gallery.php
-
-User-agent: Sogou
-Disallow: /

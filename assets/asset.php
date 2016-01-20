@@ -57,7 +57,7 @@ abstract class asset
     {
         if(self::$home_page_html==null)
         {
-            $url = 'http://www.123121.com/sales-promotion.html';
+//             $url = 'http://www.123121.com/sales-promotion.html';
             self::$home_page_html = self::http($url);
         }
         return self::$home_page_html;
@@ -67,7 +67,7 @@ abstract class asset
     {
         if(self::$category_page_html==null)
         {
-            $url = 'http://www.123121.com/sales-promotion.html';
+//             $url = 'http://www.123121.com/sales-promotion.html';
             self::$category_page_html = self::http($url);
         }
         return self::$category_page_html;
@@ -78,7 +78,7 @@ abstract class asset
     {
         if(self::$goods_detail_page_html==null)
         {
-            $url = 'http://www.123121.com/goods-1059.html';
+//             $url = 'http://www.123121.com/goods-1059.html';
             self::$goods_detail_page_html = self::http($url);
         }
         return self::$goods_detail_page_html;
@@ -89,7 +89,7 @@ abstract class asset
         $handle = curl_init();
         curl_setopt( $handle, CURLOPT_URL, $url);
         curl_setopt( $handle, CURLOPT_COOKIE, 'ECS_ID='.$_COOKIE['ECS_ID'].'&_real_ip='.$_COOKIE['_real_ip']);
-        curl_setopt( $handle, CURLOPT_HEADER, false );	//²»·µ»ØÍ·ÐÅÏ¢
+        curl_setopt( $handle, CURLOPT_HEADER, false );	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Ï¢
         curl_setopt( $handle, CURLOPT_RETURNTRANSFER, 1);
         $reponse = curl_exec( $handle );
         curl_close( $handle );

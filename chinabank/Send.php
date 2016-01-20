@@ -19,12 +19,12 @@
 <body onLoad="javascript:document.E_FORM.submit()">
 <?php
 //****************************************
-	$v_mid = '22857636';								    // 1001是网银在线的测试商户号，商户要替换为自己的商户号。
+	$v_mid = '**********';								    // 1001是网银在线的测试商户号，商户要替换为自己的商户号。
 
 	$v_url = 'http://123121.com/chinabak/Receive.php';	// 商户自定义返回接收支付结果的页面。对应Receive.php示例。
 	                                                    //参照"网银在线支付B2C系统商户接口文档v4.1.doc"中2.3.3.1
 	
-	$key   = 'wei&wang#baian';								    // 参照"网银在线支付B2C系统商户接口文档v4.1.doc"中2.4.1进行设置。
+	$key   = '**********';								    // 参照"网银在线支付B2C系统商户接口文档v4.1.doc"中2.4.1进行设置。
 
 	$remark2 = '[url:=http://123121.com/chinabank/AutoReceive.php]'; //服务器异步通知的接收地址。对应AutoReceive.php示例。必须要有[url:=]格式。
 																//参照"网银在线支付B2C系统商户接口文档v4.1.doc"中2.3.3.2。

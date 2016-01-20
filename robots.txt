@@ -21,3 +21,6 @@ Disallow: /region.php
 Disallow: /respond.php
 Disallow: /feed.php
 Disallow: /gallery.php
+
+User-agent: Sogou
+Disallow: /

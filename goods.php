@@ -529,7 +529,12 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		
 		$smarty->assign('related_brands_by_cat_id',       com_sale_goods_get_related_brands_by_cat_id($goods['cat_id'])); //相关品牌;
 		
-		
+		//商品板式
+		if (!empty($goods['relative_module']))
+		{
+			$relative_module = $db->getRow("SELECT * FROM " .$ecs->table('relative_module'). " WHERE module_id='" . $goods['relative_module'] . "' AND is_show = 1 LIMIT 1");
+			$smarty->assign('relative_module', $relative_module);
+		}
 		
 		
         $smarty->assign('specification',       $properties['spe']);                              // 商品规格
@@ -544,6 +549,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
 		$smarty->assign("xqtop",getads(184,1));
 		$smarty->assign("xqdibu",getads(185,1));
+		
+		
 		$smarty->assign("xqzc",getads(186,1));
 		
         $img_desc_arr = array();

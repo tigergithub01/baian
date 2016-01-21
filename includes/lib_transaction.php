@@ -459,7 +459,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             /* 对配送状态的处理 */
             if ($row['shipping_status'] == SS_SHIPPED)
             {
-                @$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                @$row['handler'] = "<a class=\"btn_submit\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
                 if(!empty($row['invoice_no'])){
                 	@$row['handler'] .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
                 }

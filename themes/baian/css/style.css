@@ -493,6 +493,17 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
     /* height: 40px; */
 }
 
+.s-myorder a.btn_submit{
+	background: #f08300 none repeat scroll 0 0;
+	min-width: 80px;height: 30px;font-size: 16px;
+	cursor: pointer;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    /* height: 40px; */
+}
+
 .btn_submit{
 	background: #f08300 none repeat scroll 0 0;
 	cursor: pointer;

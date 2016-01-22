@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+        <link rel="stylesheet" href="/themes/baian/css/cui.css" />
+	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
+	<link rel="stylesheet" href="/themes/baian/css/style.css" />
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
+<div id="bd">
+        <div class="wp">
+        <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+            
+
+            <div class="s-side-col l">
+                 <!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
+                <div class="h"></div>
+
+               <!-- 看了还看 start -->
+     			<div class="h"></div>
+             	<!-- #BeginLibraryItem "/library/look_other_goods.lbi" --><!-- #EndLibraryItem -->   
+      			<!-- 看了还看 end -->
+      			
+                <div class="h"></div>
+
+                <div class="sadBox">
+                    <a href=""><img src="images/blank.gif" alt=""></a>
+                </div>
+            </div>
+
+            <div class="s-main-col r">
+                <div class="sbox">
+                    <h3 class="st2">热卖推荐</h3>
+                    <ul class="s-hotsale-list">
+                        
+                    </ul>
+                </div>
+                <div class="h"></div>
+
+                
+   <!-- #BeginLibraryItem "/library/exchange_hot.lbi" --><!-- #EndLibraryItem -->
+    <!-- #BeginLibraryItem "/library/exchange_list.lbi" --><!-- #EndLibraryItem -->
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+                
+                
+               
+                <div class="h20"></div>
+                <!-- 猜你喜欢 start -->
+				<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
+				 <!-- 猜你喜欢 end -->
+				 
+                <!-- {if $promotion_goods|@count neq 0} 限时抢购 start -->
+				<div class="h"></div>
+				<div class="i-rush r">
+				<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
+				</div>
+				<!-- {/if} 限时抢购 end -->
+				
+            </div>
+        </div>
+    </div>
+    <div class="h30"></div>
+    
+    
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

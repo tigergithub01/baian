@@ -1,0 +1,765 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php
+function get_brands1($cat = 0, $app = 'brand')
+{
+    $children = ($cat > 0) ? ' AND ' . get_children($cat) : '';
+
+    $sql = "SELECT b.brand_id, b.brand_name, b.brand_logo, b.brand_desc, COUNT(*) AS goods_num, IF(b.brand_logo > '', '1', '0') AS tag ".
+            "FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+                $GLOBALS['ecs']->table('goods') . " AS g ".
+            "WHERE g.brand_id = b.brand_id $children AND is_show = 1 " .
+            " AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+            "GROUP BY b.brand_id HAVING goods_num > 0 ORDER BY tag DESC, b.sort_order ASC LIMIT 48";
+    $row = $GLOBALS['db']->getAll($sql);
+
+    foreach ($row AS $key => $val)
+    {
+        $row[$key]['url'] = build_uri($app, array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
+        $row[$key]['brand_desc'] = htmlspecialchars($val['brand_desc'],ENT_QUOTES);
+    }
+
+    return $row;
+}
+//
+function get_promotion_info1($goods_id = '')
+{
+    $snatch = array();
+    $group = array();
+    $auction = array();
+    $package = array();
+    $favourable = array();
+
+    $gmtime = gmtime();
+    $sql = 'SELECT act_id, act_name, act_type, start_time, end_time FROM ' . $GLOBALS['ecs']->table('goods_activity') . " WHERE is_finished=0 AND start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND goods_id = '$goods_id'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+    foreach ($res as $data)
+    {
+        switch ($data['act_type'])
+        {
+            case GAT_SNATCH: //夺宝奇兵
+                $snatch[$data['act_id']]['act_name'] = $data['act_name'];
+                $snatch[$data['act_id']]['url'] = build_uri('snatch', array('sid' => $data['act_id']));
+                $snatch[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $snatch[$data['act_id']]['sort'] = $data['start_time'];
+                $snatch[$data['act_id']]['type'] = 'snatch';
+                break;
+
+            case GAT_GROUP_BUY: //团购
+                $group[$data['act_id']]['act_name'] = $data['act_name'];
+                $group[$data['act_id']]['url'] = build_uri('group_buy', array('gbid' => $data['act_id']));
+                $group[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $group[$data['act_id']]['sort'] = $data['start_time'];
+                $group[$data['act_id']]['type'] = 'group_buy';
+                break;
+
+            case GAT_AUCTION: //拍卖
+                $auction[$data['act_id']]['act_name'] = $data['act_name'];
+                $auction[$data['act_id']]['url'] = build_uri('auction', array('auid' => $data['act_id']));
+                $auction[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $auction[$data['act_id']]['sort'] = $data['start_time'];
+                $auction[$data['act_id']]['type'] = 'auction';
+                break;
+
+            case GAT_PACKAGE: //礼包
+                $package[$data['act_id']]['act_name'] = $data['act_name'];
+                $package[$data['act_id']]['url'] = 'package.php#' . $data['act_id'];
+                $package[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $package[$data['act_id']]['sort'] = $data['start_time'];
+                $package[$data['act_id']]['type'] = 'package';
+
+                break;
+        }
+    }
+
+    $user_rank = ',' . $_SESSION['user_rank'] . ',';
+    $favourable = array();
+    $sql = 'SELECT act_id, act_range, act_range_ext, act_name, start_time, end_time FROM ' . $GLOBALS['ecs']->table('favourable_activity') . " WHERE start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND CONCAT(',', user_rank, ',') LIKE '%" . $user_rank . "%'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+
+    if(empty($goods_id))
+    {
+        foreach ($res as $rows)
+        {
+            $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+            $favourable[$rows['act_id']]['url'] = 'activity.php';
+            $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+            $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+            $favourable[$rows['act_id']]['type'] = 'favourable';
+        }
+    }
+    else
+    {
+        $sql = "SELECT cat_id, brand_id FROM " . $GLOBALS['ecs']->table('goods') .
+           "WHERE goods_id = '$goods_id'";
+        $row = $GLOBALS['db']->getRow($sql);
+        $category_id = $row['cat_id'];
+        $brand_id = $row['brand_id'];
+
+        foreach ($res as $rows)
+        {
+            if ($rows['act_range'] == FAR_ALL)
+            {
+                $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                $favourable[$rows['act_id']]['url'] = 'activity.php';
+                $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                $favourable[$rows['act_id']]['type'] = 'favourable';
+            }
+            elseif ($rows['act_range'] == FAR_CATEGORY)
+            {
+                /* 找出分类id的子分类id */
+                $id_list = array();
+                $raw_id_list = explode(',', $rows['act_range_ext']);
+                foreach ($raw_id_list as $id)
+                {
+                    $id_list = array_merge($id_list, array_keys(cat_list($id, 0, false)));
+                }
+                $ids = join(',', array_unique($id_list));
+
+                if (strpos(',' . $ids . ',', ',' . $category_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_BRAND)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $brand_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_GOODS)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $goods_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+        }
+    }
+
+    $sort_time = array();
+    $arr = array_merge($snatch, $group, $auction, $package, $favourable);
+    foreach($arr as $key => $value)
+    {
+        $sort_time[] = $value['sort'];
+    }
+    array_multisort($sort_time, SORT_NUMERIC, SORT_DESC, $arr);
+
+    return $arr;
+}
+
+$this->assign('promotion_info1', get_promotion_info1());
+?>
+
+<div id="nv">
+		<div class="wp">
+			<div id="side-menu" class="l">
+				<div class="menu-btn">全部商品分类</div>
+				<ul class="menu-ul">
+                  <!--{foreach from=array_slice(get_categories_tree(0),0,7) item=cat name=cat0}-->
+					<li>
+						<h3 class="v1"><a href="{$cat.url}"><span class="sv{$smarty.foreach.cat0.iteration}">{$cat.name|escape:html}</span></a></h3>
+						<div class="subBox">
+							<div class="left-col">
+                             <!--{foreach from=$cat.cat_id item=child2 name=cat_cat_id2}-->
+       
+								<dl class="sub-dl">
+									<dt><a href="{$child2.url}" title="{$child2.name|escape:html}">{$child2.name|escape:html}</a></dt>
+									<dd>
+    <!--{foreach from=$child2.cat_id item=child3 name=cat_cat_id3}-->
+    
+										<span><a href="{$child3.url}">{$child3.name|escape:html}</a></span>
+                 <!--{/foreach}-->                     
+									</dd>
+								</dl>
+                               <!--{/foreach}-->
+                               <!--推荐图片--start-->
+							  <?php
+                    $GLOBALS['smarty']->assign('index_goods_11',get_advlist('导航栏商品分类一广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_12',get_advlist('导航栏商品分类一广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_21',get_advlist('导航栏商品分类二广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_22',get_advlist('导航栏商品分类二广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_31',get_advlist('导航栏商品分类三广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_32',get_advlist('导航栏商品分类三广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_41',get_advlist('导航栏商品分类四广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_42',get_advlist('导航栏商品分类四广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_51',get_advlist('导航栏商品分类五广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_52',get_advlist('导航栏商品分类五广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_61',get_advlist('导航栏商品分类六广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_62',get_advlist('导航栏商品分类六广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_71',get_advlist('导航栏商品分类七广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_72',get_advlist('导航栏商品分类七广告二', 1));
+                    ?><!--推荐图片end-->
+                    
+                 {if $smarty.foreach.cat0.index == 0}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_11 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_12 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                 {if $smarty.foreach.cat0.index == 1}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_21 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_22 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                    
+                      {if $smarty.foreach.cat0.index == 2}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_31 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_32 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 3}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_41 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_42 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 4}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_51 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_52 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                      {if $smarty.foreach.cat0.index == 5}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_61 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_62 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                    
+                      {if $smarty.foreach.cat0.index == 6}
+                 	<ol class="ad-ol">
+                    	{foreach from=$index_goods_71 item=ad}
+	                   <li>
+	                    {$ad.content}
+	                   </li>
+	                    {/foreach}
+	                    {foreach from=$index_goods_72 item=ad}
+	                 <li>
+	                    {$ad.content}
+	                 </li>
+	                    {/foreach}
+                  	</ol>
+                    {/if}
+                    
+                    
+                                
+<!--								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p4.jpg" width="225" height="150" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p4.jpg" alt=""></a></li>
+								</ol>  -->
+                                
+                                
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+										
+											  <!--{foreach from=get_brands1($GLOBALS['smarty']->_var['cat']['id']) item=bchilder}-->
+                        	<li><a href="{$bchilder.url}">{$bchilder.brand_name|escape:html}</a></li>
+                          <!--{/foreach}-->
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+                    
+                  <!--{/foreach}-->    
+			<!--		<li>
+						<h3 class="v1"><span class="sv2">宝宝食品</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">孕妈食品</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">孕妈用品</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p3.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p3.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="v1"><span class="sv3">宝宝用品</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">孕妈食品</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">孕妈用品</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p2.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p2.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="v1"><span class="sv4">婴童服饰</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">孕妈食品</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">孕妈用品</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p1.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p1.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="v1"><span class="sv5">童车童床</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">孕妈食品</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">孕妈用品</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p1.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p1.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="v1"><span class="sv6">图书玩具</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">图书玩具</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">图书玩具</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p3.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p3.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3 class="v1"><span class="sv7">家居百货</span></h3>
+						<div class="subBox">
+							<div class="left-col">
+								<dl class="sub-dl">
+									<dt><a href="">家居百货</a></dt>
+									<dd>
+										<span><a href="">妈妈奶粉</a></span>
+										<span><a href="">妈妈保健品</a></span>
+									</dd>
+								</dl>
+								<dl class="sub-dl">
+									<dt><a href="">家居百货</a></dt>
+									<dd>
+										<span><a href="">卫生巾</a></span>
+										<span><a href="">妈咪两用巾</a></span>
+										<span><a href="">护理垫</a></span>
+										<span><a href="">吸乳器</a></span>
+										<span><a href="">妈咪护理</a></span>
+										<span><a href="">防溢乳垫</a></span>
+										<span><a href="">妈妈洗护品</a></span>
+										<span><a href="">妈咪口腔护理</a></span>
+									</dd>
+								</dl>
+								<ol class="ad-ol">
+									<li><a href=""><img src="/themes/baian/default/images/p2.jpg" alt=""></a></li>
+									<li><a href=""><img src="/themes/baian/default/images/p2.jpg" alt=""></a></li>
+								</ol>
+							</div>
+							<div class="right-col">
+								<dl class="promote-dl">
+									<dt>推荐品牌</dt>
+									<dd>
+										<ol class="promote-ol">
+											<li><a href="">迈高</a></li>
+											<li><a href="">美赞臣</a></li>
+											<li><a href="">爱的营养大师</a></li>
+											<li><a href="">爱得利</a></li>
+											<li><a href="">贝亲</a></li>
+											<li><a href="">亨氏</a></li>
+											<li><a href="">十月天使</a></li>
+											<li><a href="">多美滋</a></li>
+											<li><a href="">惠氏</a></li>
+											<li><a href="">金怡神</a></li>
+											<li><a href="">雅培</a></li>
+											<li><a href="">雅士利</a></li>
+											<li><a href="">雀巢</a></li>
+											<li><a href="">优之元</a></li>
+											<li><a href="">百氏福</a></li>
+											<li><a href="">千金净雅</a></li>
+											<li><a href="">ABC</a></li>
+											<li><a href="">护舒宝</a></li>
+											<li><a href="">七度空间</a></li>
+											<li><a href="">茵茵</a></li>
+											<li><a href="">美洁</a></li>
+											<li><a href="">一片爽</a></li>
+											<li><a href="">亲亲我</a></li>
+											<li><a href="">小白熊爱护</a></li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</li>  -->
+				</ul>
+			</div>
+            
+            <ul class="nav-ul l">
+
+          <li class="fore1" id="nav-home" class="hover">
+            <a href="/">商城{$lang.home}</a>
+          </li>
+
+          <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+          <li    {if $nav.active eq 1} class="curr fore{$smarty.foreach.nav_middle_list.iteration}"  {else=""} class="fore{$smarty.foreach.nav_middle_list.iteration}"   onMouseOut="this.className='fore{$smarty.foreach.nav_middle_list.iteration}'" onMouseOver="this.className='fore{$smarty.foreach.nav_middle_list.iteration} hover'" {/if}>
+          <a href="{$nav.url}"
+
+            <!-- {if $nav.opennew eq 1} -->
+            target="_blank"
+            <!-- {/if} -->
+            >{$nav.name}
+          </a>
+          </li>
+          <!-- {/foreach} -->
+<li><a href="">积分商城</a></li>
+        </ul>
+          <!--  
+			<ul class="nav-ul l">
+				<li><a href="">商城首页</a></li>
+				<li><a href="">特惠抢购</a></li>
+				<li><a href="">积分商城</a></li>
+				<li><a href="">孕妈专区</a></li>
+				<li><a href="">婴童服饰</a></li>
+				<li><a href="">婴童玩具</a></li>
+				<li><a href="">童车童床</a></li>
+			</ul> -->
+			<a href="/baobao/index.php?ec_uid={$ecs_session.user_id}" class="i-camera r">传照片获奖品</a>
+		</div>
+	</div>

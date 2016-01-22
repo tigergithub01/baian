@@ -1,0 +1,116 @@
+/**
+ * This <div> element is wrapped by jCarousel around the list
+ * and has the classname "jcarousel-container".
+ */
+.jcarousel-container {
+    position: relative;
+}
+
+.jcarousel-clip {
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.jcarousel-list {
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.jcarousel-list li,
+.jcarousel-item {
+    float: left;
+    list-style: none;
+    /* We set the width/height explicitly. No width/height causes infinite loops. 
+    width: 75px;
+    height: 75px;
+	*/
+}
+
+/**
+ * The buttons are added dynamically by jCarousel before
+ * the <ul> list (inside the <div> described above) and
+ * have the classnames "jcarousel-next" and "jcarousel-prev".
+ */
+.jcarousel-next {
+    z-index: 3;
+    display: none;
+}
+
+.jcarousel-prev {
+    z-index: 3;
+    display: none;
+}
+
+/*jcarousel-skin-tango*/
+.jcarousel-skin-tango .jcarousel-container {
+	-moz-border-radius:10px;
+}
+
+.jcarousel-skin-tango .jcarousel-container-horizontal {
+	width: 400px;
+	height:62px;
+}
+
+.jcarousel-skin-tango .jcarousel-clip-horizontal {
+	margin: 0 auto;
+	position: relative;
+	width:363px;
+	height:62px;
+}
+
+
+.jcarousel-skin-tango .jcarousel-item {
+    width: 62px;
+    height: 62px;
+}
+
+.jcarousel-skin-tango .jcarousel-item-horizontal {
+	margin-right:0px;
+}
+
+.jcarousel-skin-tango .jcarousel-item-placeholder {
+    background: #fff;
+    color: #000;
+}
+
+/**
+ *  Horizontal Buttons
+ */
+
+.jcarousel-skin-tango .jcarousel-next-horizontal:hover {
+	opacity: 0.8;
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+	-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';
+}
+.jcarousel-skin-tango .jcarousel-next-horizontal:active {
+	/*background-position:-12px -126px;*/
+}
+.jcarousel-skin-tango .jcarousel-next-disabled-horizontal, .jcarousel-skin-tango .jcarousel-next-disabled-horizontal:hover, .jcarousel-skin-tango .jcarousel-next-disabled-horizontal:active {
+	/*cursor:default;
+	background-position:left -55px;*/
+}
+
+.jcarousel-skin-tango .jcarousel-next-horizontal,
+.jcarousel-skin-tango .jcarousel-prev-horizontal{
+	position:absolute;
+	top:22px;
+	width:12px;
+	height:20px;
+	cursor:pointer;
+}
+.jcarousel-skin-tango .jcarousel-next-horizontal{
+	right:4px;
+	background: url(../images/next2.png) no-repeat left top;
+}
+.jcarousel-skin-tango .jcarousel-prev-horizontal{
+	left: 4px;
+	background: url(../images/prev2.png) no-repeat left top;
+}

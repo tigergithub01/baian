@@ -1,0 +1,798 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="stylesheet" href="themes/baian/css/cui.css" />
+	<link rel="stylesheet" href="themes/baian/css/lib.css" />
+	<link rel="stylesheet" href="themes/baian/css/style.css" />
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+ <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
+  
+  <div id="bd">
+        <div class="wp">
+            <div class="s-cur"><!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --></div>
+
+            <div class="s-side-col l">
+                <div class="snavBox">
+                     <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
+                </div>
+            </div>
+
+            <div class="s-main-col r">
+              <div class="h"></div>
+ <div class="box_1">
+         
+
+            <!-- *用户中心默认显示页面 start-->
+            <!-- {if $action eq 'default'} -->
+            <script type="text/javascript" src="/themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	   		<link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	   		
+            <div class="s-userBox">
+                    <div class="avatar">
+                    	<!-- {if $info.photo_url && $info.photo_url neq '' } -->
+                    		<img src="{$info.photo_url}" alt=""/>
+                    	<!-- {else} -->
+                    		<img src="images/sp2.jpg" alt=""/>
+                    	<!-- {/if} -->
+                    	
+                    	
+                    <a class="orange" href="user.php?act=profile">【修改个人资料】</a></div>
+                    <div class="signBox" onclick="return sign_day();">
+                        <a href="javascript:void(0)"><img src="images/i-sign.png" alt=""></a>
+                        <p>每次签到可积累10个成长值哦！</p>
+                    </div>
+                    <div class="txt">
+                        <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}）</span></p>
+                        <p>会员等级：<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span> --><span class="vipBox"><b>v</b>{$rank_name}</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
+                        <p>当前级别：<span class="degreeBox" score="{$info.rank_points}" total="{$max_points}"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
+                        <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="user.php?act=transform_points">{$info.pay_points}</a>分</p>
+                    </div>
+                </div>
+                <div class="h"></div>
+
+                <div class="s-tit1"><a href="user.php?act=order_list" class="r">查看全部订单>></a><h3>我的订单</h3></div>
+                <div class="s-myorder">
+                	 <!--{foreach from=$orders item=order name=orders_foreach}-->
+				       <table class="s-order-table">
+				           <thead>
+				               <tr>
+				                   <th colspan="4">
+				                       <span class="order_num">订单号：<a href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$order.order_sn}</a></span>
+				                       <span class="order_time">下单时间：{$order.order_time}</span>
+				                        本次订单预计获得 <b class="orange">{$order.integral.custom_points}</b> 积分 <b class="orange">{$order.integral.rank_points}</b> 成长值
+				                   </th>
+				               </tr>
+				           </thead>
+				           <tbody>
+				           
+				            <!-- {if empty($order.goods_list)} -->
+				            	<tr>
+				               		<td colspan="4">
+				               			无商品信息
+				               		</td>
+				               </tr>	
+				            <!-- {else} -->
+				           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
+				               <tr>
+				                   <td>
+				                       <div class="goods_pic"><a href="{$goods.goods_url}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
+				                       <div class="goods_title">
+								            <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+										     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+										      		<div id="suit_{$goods.goods_id}" style="display:none">
+											          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+												    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+										                        <a href="{$package_goods_list.goods_url}" target="_blank">
+										                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
+										                        </a>
+										                        
+										                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+									                        </div>
+									                        
+											          	<!-- {/foreach} -->
+										     		 </div>
+										      <!-- { else } -->
+										      		{if $goods.is_momsuit eq 1}
+										      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+										      		{elseif $goods.is_momsuit eq 0}
+										      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+										      		{/if}
+									                <!-- {if $goods.parent_id > 0} -->
+									                <span style="color:#FF0000">（{$lang.accessories}）</span>
+									               <!-- {elseif $goods.is_gift} -->
+									                <span style="color:#FF0000">（{$lang.largess}）</span>
+									                <!-- {/if} -->
+									          <!-- {/if} -->
+									          
+							        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
+							              	
+							              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
+							                <!-- {if $goods.gift_goods_number gt 0}  -->
+							                <br />
+							                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+							                <!-- {/if} -->
+							               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
+				                       </div>
+				                       <div class="unit_price">{$goods.goods_price}</div>
+				                       <div class="goods_num">{$goods.goods_number}</div>
+				                   </td>
+				                   <!-- {if $smarty.foreach.goods_foreach.first } -->
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+				                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
+				                   </td>
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
+				                       <div class="order_state">{$order.composite_status_name}</div>
+				                       <a href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
+				                   </td>
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}"  style="width: 130px;">
+				                   	  {$order.handler}	
+				                   	   <!-- 	
+				                       <a href="" class="s-btn1">马上支付</a>
+				                       <a href="" class="a-btn">取消订单</a>
+				                        -->
+				                   </td>
+				                   <!-- {/if} -->
+				               </tr>
+				               <!--{/foreach}-->
+				               <!-- {/if} -->
+				               
+				           </tbody>
+				       </table>
+				       
+				       <!-- {foreachelse} -->
+				       	<p class="f14 tc grey">您买的东西太少了，这里都空空的，快去挑选合适的商品吧！</p>
+				       <!--{/foreach}-->
+                    
+                </div>
+                <!-- 用来显示物流明细信息 -->
+                <div id="shipping_detail_info"></div>
+                
+                <script type="text/javascript">
+                	<!-- 每日签到 -->
+	                function sign_day(){
+	                	$.ajax({     
+	                	    url:'user.php?act=sign_day',     
+	                	    type:'post',  
+	                	    dataType:'json', 
+	                	    data:{},     
+	                	    async :true, 
+	                	    error:function(){ 
+	                	    	
+	                	    },     
+	                	    success:function(data){ 
+	                		    if(data.status==1){
+	                		    	alert(data.message);
+	                		    }else{
+	                		    	alert(data.message);
+	                		    }
+	                	    }  
+	                	}); 
+	                	
+	                }
+                </script>
+         <!-- {/if} -->
+               <!-- #用户中心默认显示页面 end-->
+               
+               
+                <!-- *咨询&投诉 start-->
+         <!-- {if $action eq 'message_list'} -->
+         	<script type="text/javascript">
+            	$(function(){
+  					//表单验证
+  					$("form[name='formMsg']").validate();
+  					$("form[name='formMsg_complaint']").validate();
+  		        });
+            </script>
+         <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li class="now"><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
+          <div class="blank"></div>
+	       <div class="s-myorder">
+	       		<!-- 我要提问 start -->
+	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
+				     <div class="title">我要提问</div>
+			       	 <table class="s-order-table noborder datalist">
+						<tbody>
+							<tr>
+								<td class="title">标题：</td>
+								<td>
+									<input name="msg_title" type="text" size="30"
+							class="inputBg required" />
+								</td>
+							</tr>
+							<tr>
+								<td class="title">内容：</td>
+								<td>
+									<textarea name="msg_content" cols="50" rows="4"
+								wrap="virtual" class="B_blue required"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="act" value="act_add_message" /> 
+									<input type="hidden" name="msg_type" value="2" /> 
+									<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								</td>
+							</tr>
+						</tbody>
+					 </table>
+			  </form>
+			<!-- 我要提问 end -->
+			
+			<!-- 我要投诉 start -->
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_complaint">
+		         <div class="title">我要投诉</div>
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">标题：</td>
+							<td>
+								<input name="msg_title" type="text" size="30"
+						class="inputBg required" />
+							</td>
+						</tr>
+						<tr>
+							<td class="title">订单号：</td>
+							<td>
+								<input name="order_sn" type="text" size="30"
+						class="inputBg required" />
+							</td>
+						</tr>
+						<tr>
+							<td class="title">内容：</td>
+							<td>
+								<textarea name="msg_content" cols="50" rows="4"
+							wrap="virtual" class="B_blue required"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_add_message" /> 
+								<input type="hidden" name="msg_type" value="1" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
+						</tr>
+					</tbody>
+				 </table>
+		  </form>
+		  <!-- 咨询&投诉 end -->
+			
+		 </div>
+		 	
+         <!-- {/if} -->
+         <!--#我的留言 end-->
+         
+         
+         <!-- *建议有奖 start-->
+         <!-- {if $action eq 'my_advice'} -->
+         <script type="text/javascript">
+            	$(function(){
+  					//表单验证
+  					$("form[name='formMsg_advice']").validate();
+  		        });
+            </script>
+         <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li  class="now"><a href="/user.php?act=my_advice">建议有奖</a></li></div>
+          <div class="blank"></div>
+          <div class="s-myorder">
+         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_advice">
+		         <div class="title">建议有奖</div>
+		       	 <table class="s-order-table noborder datalist">
+					<tbody>
+						<tr>
+							<td class="title">标题：</td>
+							<td>
+								<input name="msg_title" type="text" size="30"
+						class="inputBg required" />
+							</td>
+						</tr>
+						<tr>
+							<td class="title">联系方式：</td>
+							<td>
+								<input name="contact_method" type="text" size="30"
+						class="inputBg required" />
+							</td>
+						</tr>
+						<tr>
+							<td class="title">内容：</td>
+							<td>
+								<textarea name="msg_content" cols="50" rows="4"
+							wrap="virtual" class="B_blue required"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="hidden" name="act" value="act_add_message" /> 
+								<input type="hidden" name="msg_type" value="6" /> 
+								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+							</td>
+						</tr>
+					</tbody>
+				 </table>
+		  </form>
+		 </div>
+         <!-- {/if} -->
+         <!--#我的留言 end-->
+         
+         
+         <!-- *我的评论 start-->
+          <!-- {if $action eq 'comment_list'} -->
+          <script type="text/javascript" src="themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+		  <link rel="stylesheet" type="text/css" href="themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+		  <script type="text/javascript">
+			  $(function(){
+				  //$('.fancybox').fancybox();
+				  <!--{foreach from=$goods_list item=goods name=orders_foreach}-->
+				  
+				  $("#formMsg_{$smarty.foreach.orders_foreach.index}").submit(function(){
+					  	console.debug($(this).serialize());
+					  	$.ajax({     
+					  		url:'user.php?act=act_add_comment',
+			        	    type:'post',  
+			        	    dataType:'json', 
+			        	    data:$("#formMsg_{$smarty.foreach.orders_foreach.index}").serialize(),     
+			        	    async :true, 
+			        	    error:function(){ 
+			        	    	//alert('更新出错！');
+			        	    },     
+			        	    success:function(data){ 
+			        	    	alert(data.message);
+				        		if(data.status==1){
+				        			$("#formMsg_{$smarty.foreach.orders_foreach.index}").parent().parent().toggleClass('show');
+				        		}
+			        	    	
+			        	    }  
+			        	});
+		    			return false;
+		        	});
+				  
+				  /* $("#formMsg_{$smarty.foreach.orders_foreach.index}").validate({
+		    			submitHandler:function(form){
+		    				$(form).ajaxSubmit({
+		    					type:"post",
+                                dataType:"json",
+                                url:'user.php?act=act_add_comment',
+						        success:function(data){
+						        	 	alert(data.message);
+						        		if(data.status==1){
+						        			$(form).parent().parent().toggleClass('show');
+						        		}
+	                            	}
+						        });
+		    				return false;
+		    	        }   
+		        	}); */
+				  <!--{/foreach} -->
+				  
+				  
+				$(".fileupload").wrap("<form class='fileupload_form' action='user.php?act=act_add_comment_pic' method='post' enctype='multipart/form-data'></form>");
+				$(".fileupload").change(function(){
+					//console.debug($(this).parent());
+					var id = $(this).attr('id');
+					$(this).parent().ajaxSubmit({
+						dataType:  'json',
+						beforeSend: function() {
+							//alert('4');
+			        		/* showimg.empty();
+							progress.show();
+			        		var percentVal = '0%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal);
+							btn.html("上传中..."); */
+			    		},
+			    		uploadProgress: function(event, position, total, percentComplete) {
+			    			//alert('5');
+			        		/* var percentVal = percentComplete + '%';
+			        		bar.width(percentVal);
+			        		percent.html(percentVal); */
+			    		},
+						success: function(data) {
+							//alert(data.message);
+							if(data.status==1){
+								$("#"+id+"_img").attr("src",data.content.image_url);
+								$("#"+id+"_img_url").val(data.content.image_url);
+							}else{
+								alert(data.message);
+							}
+							//alert('6');
+							/* files.html("<b>"+data.name+"("+data.size+"k)</b> <span class='delimg' rel='"+data.pic+"'>删除</span>");
+							var img = "http://localhost/upload/files/"+data.pic;
+							showimg.html("<img src='"+img+"'>");
+							btn.html("添加附件"); */
+						},
+						error:function(xhr){
+							alert("上传失败");
+							/* btn.html("上传失败");
+							bar.width('0')
+							files.html(xhr.responseText); */
+						}
+					});
+				});
+					  
+			  });
+		  
+		  </script>
+		  <style type="text/css">
+			.comment_detail{display: none}
+			.comment_detail.show{display: table-row;}
+			
+			</style>
+          <div class="hyzx"><li>客户服务</li><li class="now"><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
+          <div class="blank"></div>
+          
+          <div class="s-myorder">
+          	<div style="margin-bottom: 10px;">
+	          	<a href="user.php?act=comment_list&commented=0" class="tab_link <!-- {if ($commented eq 0)} -->selected<!-- {/if} -->">待评价</a>
+	          	<span>|</span>
+	          	<a href="user.php?act=comment_list&commented=1" class="tab_link <!-- {if ($commented eq 1)} -->selected<!-- {/if} -->">已评价</a>
+          	</div>
+       		<!--{foreach from=$goods_list item=goods name=orders_foreach}-->
+	       <table class="s-order-table">
+	           <thead>
+	               <tr>
+	                   <th colspan="2">
+	                       <span class="order_num">订单号：<a target="_blank" href="user.php?act=order_detail&order_id={$goods.order_id}" class="f6">{$goods.order_sn}</a></span>
+	                       <span class="order_time">下单时间：{$goods.order_time}</span>
+	                       <span>{$goods.total_fee}</span>（快递{$goods.shipping_fee}）
+	                   </th>
+	               </tr>
+	           </thead>
+	           <tbody>
+	           
+	               <tr>
+	                   <td>
+	                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
+	                       <div class="goods_title">
+	                       	<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+						     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+						      		<div id="suit_{$goods.goods_id}" style="display:none">
+							          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+								    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+						                        <a href="{$package_goods_list.goods_url}" target="_blank">
+						                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
+						                        </a>
+						                        
+						                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+					                        </div>
+					                        
+							          	<!-- {/foreach} -->
+						     		 </div>
+						      <!-- { else } -->
+						      		{if $goods.is_momsuit eq 1}
+						      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+						      		{elseif $goods.is_momsuit eq 0}
+						      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+						      		{/if}
+					                <!-- {if $goods.parent_id > 0} -->
+					                <span style="color:#FF0000">（{$lang.accessories}）</span>
+					               <!-- {elseif $goods.is_gift} -->
+					                <span style="color:#FF0000">（{$lang.largess}）</span>
+					                <!-- {/if} -->
+					          <!-- {/if} -->
+					          
+			        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
+			              	
+			              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
+			                <!-- {if $goods.gift_goods_number gt 0}  -->
+			                <br />
+			                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+			                <!-- {/if} -->
+			               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
+	                       
+	                       </div>
+	                       <div class="unit_price">{$goods.goods_price}</div>
+	                       <div class="goods_num">{$goods.goods_number}</div>
+	                   </td>
+	                   <td>
+	                       <a href="javascript:void(0)" onclick="$(this).parent().parent().siblings('.comment_detail').toggleClass('show');" class="s-btn1">点击评价</a>
+	                   </td>
+	                   
+	               </tr>
+	               <tr class="comment_detail">
+	               		<td colspan="2" style="background: #fcfffa none repeat scroll 0 0">
+	               			<form action="user.php" method="post" enctype="multipart/form-data" id="formMsg_{$smarty.foreach.orders_foreach.index}" name="formMsg">
+						       	 <table class="s-order-table noborder datalist" style="border: none;">
+									<tbody>
+										<tr>
+											<td class="title">评分<font color="#FF0000">*</font>：</td>
+											<td>
+												<input type="radio" name="comment_rank" value="1" class=""/>1分
+												<input type="radio" name="comment_rank" value="2"/>2分
+												<input type="radio" name="comment_rank" value="3"/>3分
+												<input type="radio" name="comment_rank" value="3"/>4分
+												<input type="radio" name="comment_rank" value="5" />5分
+											</td>
+										</tr>
+										<tr>
+											<td class="title">心得<font color="#FF0000">*</font>：</td>
+											<td>
+												<textarea name="content" id="content" cols="80" rows="4"
+											wrap="virtual" class="B_blue required" maxlength="500"></textarea>
+											</td>
+										</tr>
+										<tr>
+											<td class="title">晒单：</td>
+											<td>
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_0_btn">
+													<img id="fileupload_{$goods.rec_id}_0_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_0" class="fileupload" type="file" name="comment_img" />
+													<input id="fileupload_{$goods.rec_id}_0_img_url" type="hidden" name="img_url[0]"/>
+												</div>
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_1_btn">
+													<img id="fileupload_{$goods.rec_id}_1_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_1" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_1_img_url" type="hidden" name="img_url[1]"/>
+												</div>
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_2_btn">
+													<img id="fileupload_{$goods.rec_id}_2_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_2" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_2_img_url" type="hidden" name="img_url[2]"/>
+												</div>
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_3_btn">
+													<img id="fileupload_{$goods.rec_id}_3_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_3" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_3_img_url" type="hidden" name="img_url[3]"/>
+												</div>
+												<div class="upload_btn" id="fileupload_{$goods.rec_id}_4_btn">
+													<img id="fileupload_{$goods.rec_id}_4_img" src="themes/baian/images/photo_add.png" alt="" />
+													<input id="fileupload_{$goods.rec_id}_4" class="fileupload" type="file" name="comment_img"/>
+													<input id="fileupload_{$goods.rec_id}_4_img_url" type="hidden" name="img_url[4]"/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<input type="hidden" name="order_id" value="{$goods.order_id}" />
+												<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
+												<input type="hidden" name="act" value="act_add_comment" /> 
+												<input type="submit" value="发表评价" class="btn_submit" />
+											</td>
+										</tr>
+									</tbody>
+								 </table>
+						  </form>
+	                   </td>
+	               </tr>
+	               
+	           </tbody>
+	       </table>
+	       <!--{foreachelse}-->
+	       		<p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p>
+	       <!--{/foreach}-->
+       </div>
+        <div class="blank5"></div>
+       <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+          <!--{/if} -->
+   		<!--#我的评论 end-->
+    
+    
+    <!--#我的标签 start-->
+    <!--{if $action eq 'tag_list'} -->
+    <h5><span>{$lang.label_tag}</span></h5>
+    <div class="blank"></div>
+     <!-- {if $tags} -->
+    <!-- 标签云开始 {foreach from=$tags item=tag}-->
+    <a href="search.php?keywords={$tag.tag_words|escape:url}" class="f6">{$tag.tag_words|escape:html}</a> <a href="user.php?act=act_del_tag&amp;tag_words={$tag.tag_words|escape:url}" onclick="if (!confirm('{$lang.confirm_drop_tag}')) return false;" title="{$lang.drop}"><img src="images/drop.gif" alt="{$lang.drop}" /></a>&nbsp;&nbsp;
+    <!-- 标签云结束 {/foreach}-->
+    <!-- {else} -->
+    <span style="margin:2px 10px; font-size:14px; line-height:36px;">{$lang.no_tag}</span>
+    <!-- {/if} -->
+    <!--{/if} -->
+    <!--#我的标签 end-->
+    
+    
+    
+    <!-- *我的推荐 -->
+    <!-- {if $affiliate.on eq 1} -->
+     <!-- {if $action eq 'affiliate'} -->
+      <!-- {if !$goodsid || $goodsid eq 0} -->
+      <h5><span>{$lang.affiliate_detail}</span></h5>
+      <div class="blank"></div>
+     {$affiliate_intro}
+    <!-- {if $affiliate.config.separate_by eq 0} -->
+    <!-- 下线人数、分成 -->
+    <div class="blank"></div>
+    <h5><span><a name="myrecommend">{$lang.affiliate_member}</a></span></h5>
+    <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+    <tr align="center">
+      <td bgcolor="#ffffff">{$lang.affiliate_lever}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_num}</td>
+      <td bgcolor="#ffffff">{$lang.level_point}</td>
+      <td bgcolor="#ffffff">{$lang.level_money}</td>
+    </tr>
+    <!-- {foreach from=$affdb key=level item=val name=affdb} -->
+    <tr align="center">
+      <td bgcolor="#ffffff">{$level}</td>
+      <td bgcolor="#ffffff">{$val.num}</td>
+      <td bgcolor="#ffffff">{$val.point}</td>
+      <td bgcolor="#ffffff">{$val.money}</td>
+    </tr>
+    <!-- {/foreach} -->
+  </table>
+<!-- /下线人数、分成 -->
+<!-- {else} -->
+<!-- 介绍订单数、分成 -->
+<!-- /介绍订单数、分成 -->
+<!-- {/if} -->
+<!-- 我的推荐清单 -->
+<div class="blank"></div>
+<h5><span>分成规则</span></h5>
+<div class="blank"></div>
+<table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+    <tr align="center">
+      <td bgcolor="#ffffff">{$lang.order_number}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_money}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_point}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_mode}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_status}</td>
+    </tr>
+    <!-- {foreach from=$logdb item=val name=logdb} -->
+    <tr align="center">
+      <td bgcolor="#ffffff">{$val.order_sn}</td>
+      <td bgcolor="#ffffff">{$val.money}</td>
+      <td bgcolor="#ffffff">{$val.point}</td>
+      <td bgcolor="#ffffff"><!-- {if $val.separate_type == 1 || $val.separate_type === 0} -->{$lang.affiliate_type.$val.separate_type}<!-- {else} -->{$lang.affiliate_type.$affiliate_type}<!-- {/if} --></td>
+      <td bgcolor="#ffffff">{$lang.affiliate_stats[$val.is_separate]}</td>
+    </tr>
+    {foreachelse}
+<tr><td colspan="5" align="center" bgcolor="#ffffff">{$lang.no_records}</td>
+</tr>
+    <!-- {/foreach} -->
+    <!-- {if $logdb} -->
+    <tr>
+    <td colspan="5" bgcolor="#ffffff">
+ <form action="{$smarty.server.PHP_SELF}" method="get">
+  <div id="pager"> {$lang.pager_1}{$pager.record_count}{$lang.pager_2}{$lang.pager_3}{$pager.page_count}{$lang.pager_4} <span> <a href="{$pager.page_first}">{$lang.page_first}</a> <a href="{$pager.page_prev}">{$lang.page_prev}</a> <a href="{$pager.page_next}">{$lang.page_next}</a> <a href="{$pager.page_last}">{$lang.page_last}</a> </span>
+    <select name="page" id="page" onchange="selectPage(this)">
+    {html_options options=$pager.array selected=$pager.page}
+    </select>
+    <input type="hidden" name="act" value="affiliate" />
+  </div>
+</form>
+    </td>
+    </tr>
+    <!-- {/if} -->
+  </table>
+ <script type="text/javascript" language="JavaScript">
+<!--
+{literal}
+function selectPage(sel)
+{
+  sel.form.submit();
+}
+{/literal}
+//-->
+</script>
+<!-- /我的推荐清单 -->
+<div class="blank"></div>
+<h5><span>{$lang.affiliate_code}</span></h5>
+<div class="blank"></div>
+<table width="100%" border="0" cellpadding="5" class="s-order-table"  style="line-height:30px; font-size:14px;">
+<tr>
+<td width="30%" bgcolor="#ffffff"><a href="{$shopurl}?u={$userid}" target="_blank" class="f6">{$shopname}</a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}?u={$userid}&quot; target=&quot;_blank&quot;&gt;{$shopname}&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.recommend_webcode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><a href="{$shopurl}?u={$userid}" target="_blank" title="{$shopname}"  class="f6"><img src="{$shopurl}{$logosrc}" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}?u={$userid}&quot; target=&quot;_blank&quot; title=&quot;{$shopname}&quot;&gt;&lt;img src=&quot;{$shopurl}{$logosrc}&quot; /&gt;&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.recommend_webcode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><a href="{$shopurl}?u={$userid}" target="_blank" class="f6">{$shopname}</a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}?u={$userid}]{$shopname}[/url]" style="border:1px solid #ccc;" /> {$lang.recommend_bbscode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><a href="{$shopurl}?u={$userid}" target="_blank" title="{$shopname}" class="f6"><img src="{$shopurl}{$logosrc}" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}?u={$userid}][img]{$shopurl}{$logosrc}[/img][/url]" style="border:1px solid #ccc;" /> {$lang.recommend_bbscode}</td>
+</tr>
+</table>
+
+        <!-- {else} -->
+        <!-- 单个商品推荐 -->
+        <style type="text/css">
+        .types a{ text-decoration:none; color:#006bd0;}
+        </style>
+    <h5><span>{$lang.affiliate_code}</span></h5>
+    <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" >
+    <tr align="center">
+      <td bgcolor="#ffffff">{$lang.affiliate_view}</td>
+      <td bgcolor="#ffffff">{$lang.affiliate_code}</td>
+    </tr>
+    <!-- {foreach from=$types item=val name=types} -->
+    <tr align="center">
+      <td bgcolor="#ffffff" class="types"><script src="{$shopurl}affiliate.php?charset={$ecs_charset}&gid={$goodsid}&u={$userid}&type={$val}"></script></td>      <td bgcolor="#ffffff">javascript {$lang.affiliate_codetype}<br>
+        <textarea cols=30 rows=2 id="txt{$smarty.foreach.types.iteration}" style="border:1px solid #ccc;"><script src="{$shopurl}affiliate.php?charset={$ecs_charset}&gid={$goodsid}&u={$userid}&type={$val}"></script></textarea>[<a href="#" title="Copy To Clipboard" onClick="Javascript:copyToClipboard(document.getElementById('txt{$smarty.foreach.types.iteration}').value);alert('{$lang.copy_to_clipboard}');"  class="f6">{$lang.code_copy}</a>]
+<br>iframe {$lang.affiliate_codetype}<br><textarea cols=30 rows=2 id="txt{$smarty.foreach.types.iteration}_iframe"  style="border:1px solid #ccc;"><iframe width="250" height="270" src="{$shopurl}affiliate.php?charset={$ecs_charset}&gid={$goodsid}&u={$userid}&type={$val}&display_mode=iframe" frameborder="0" scrolling="no"></iframe></textarea>[<a href="#" title="Copy To Clipboard" onClick="Javascript:copyToClipboard(document.getElementById('txt{$smarty.foreach.types.iteration}_iframe').value);alert('{$lang.copy_to_clipboard}');" class="f6">{$lang.code_copy}</a>]
+<br />{$lang.bbs}UBB {$lang.affiliate_codetype}<br /><textarea cols=30 rows=2 id="txt{$smarty.foreach.types.iteration}_ubb"  style="border:1px solid #ccc;">{if $val != 5}[url={$shopurl}goods.php?id={$goodsid}&u={$userid}][img]{if $val < 3}{$goods.goods_thumb}{else}{$goods.goods_img}{/if}[/img][/url]{/if}
+
+[url={$shopurl}goods.php?id={$goodsid}&u={$userid}][b]{$goods.goods_name}[/b][/url]
+{if $val != 1 && $val != 3}[s]{$goods.market_price}[/s]{/if} [color=red]{$goods.shop_price}[/color]</textarea>[<a href="#" title="Copy To Clipboard" onClick="Javascript:copyToClipboard(document.getElementById('txt{$smarty.foreach.types.iteration}_ubb').value);alert('{$lang.copy_to_clipboard}');"  class="f6">{$lang.code_copy}</a>]
+{if $val == 5}<br />{$lang.im_code} {$lang.affiliate_codetype}<br /><textarea cols=30 rows=2 id="txt{$smarty.foreach.types.iteration}_txt"  style="border:1px solid #ccc;">{$lang.show_good_to_you} {$goods.goods_name}
+
+{$shopurl}goods.php?id={$goodsid}&u={$userid}</textarea>[<a href="#" title="Copy To Clipboard" onClick="Javascript:copyToClipboard(document.getElementById('txt{$smarty.foreach.types.iteration}_txt').value);alert('{$lang.copy_to_clipboard}');"  class="f6">{$lang.code_copy}</a>]{/if}</td>
+</tr>
+    <!-- {/foreach} -->
+  </table>
+<script language="Javascript">
+copyToClipboard = function(txt)
+{
+ if(window.clipboardData)
+ {
+    window.clipboardData.clearData();
+    window.clipboardData.setData("Text", txt);
+ }
+ else if(navigator.userAgent.indexOf("Opera") != -1)
+ {
+   //暂时无方法:-(
+ }
+ else if (window.netscape)
+ {
+  try
+  {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+  }
+  catch (e)
+  {
+    alert("{$lang.firefox_copy_alert}");
+    return false;
+  }
+  var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+  if (!clip)
+    return;
+  var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+  if (!trans)
+    return;
+  trans.addDataFlavor('text/unicode');
+  var str = new Object();
+  var len = new Object();
+  var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+  var copytext = txt;
+  str.data = copytext;
+  trans.setTransferData("text/unicode",str,copytext.length*2);
+  var clipid = Components.interfaces.nsIClipboard;
+  if (!clip)
+  return false;
+  clip.setData(trans,null,clipid.kGlobalClipboard);
+ }
+}
+                </script>
+            <!-- /单个商品推荐 -->
+            <!-- {/if} -->
+        <!-- {/if} -->
+
+    <!-- {/if} -->
+
+  	</div>
+                 <!-- 猜你喜欢 start -->
+			     <div class="h"></div>
+			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+			             
+			      <!-- 猜你喜欢 end -->
+			      
+          </div>
+        </div>
+    </div>
+
+ <div class="h30"></div>
+   
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+<script type="text/javascript">
+{foreach from=$lang.clips_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+
+
+	/* $(function(){
+		$('.signBox').click(function(){
+			alert('x');
+		}
+	} */
+</script>
+</html>

@@ -1,0 +1,73 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $promotion_goods} -->
+<script >
+var Tday = new Array();
+var daysms = 24 * 60 * 60 * 1000
+var hoursms = 60 * 60 * 1000
+var Secondms = 60 * 1000
+var microsecond = 1000
+var DifferHour = -1
+var DifferMinute = -1
+var DifferSecond = -1
+function clock(key)
+  {
+   var time = new Date()
+   var hour = time.getHours()
+   var minute = time.getMinutes()
+   var second = time.getSeconds()
+   var timevalue = ""+((hour > 12) ? hour-12:hour)
+   timevalue +=((minute < 10) ? ":0":":")+minute
+   timevalue +=((second < 10) ? ":0":":")+second
+   timevalue +=((hour >12 ) ? " PM":" AM")
+   var convertHour = DifferHour
+   var convertMinute = DifferMinute
+   var convertSecond = DifferSecond
+   var Diffms = Tday[key].getTime() - time.getTime()
+   DifferHour = Math.floor(Diffms / daysms)
+   Diffms -= DifferHour * daysms
+   DifferMinute = Math.floor(Diffms / hoursms)
+   Diffms -= DifferMinute * hoursms
+   DifferSecond = Math.floor(Diffms / Secondms)
+   Diffms -= DifferSecond * Secondms
+   var dSecs = Math.floor(Diffms / microsecond)
+  
+   if(convertHour != DifferHour) a="<font style='font-weight:bold;color:#CC0000; font-size:16px;'>"+DifferHour+"</font>天";
+   if(convertMinute != DifferMinute) b="<font style='font-weight:bold;color:#CC0000; font-size:16px;'>"+DifferMinute+"</font>时";
+   if(convertSecond != DifferSecond) c="<font style='font-weight:bold;color:#CC0000; font-size:16px;'>"+DifferSecond+"</font>分"
+     d="<font style='font-weight:bold;color:#CC0000; font-size:16px;'>"+dSecs+"</font>秒"
+     if (DifferHour>0) {a=a}
+     else {a=''}
+   document.getElementByIdx_x("leftTime"+key).innerHTML = a + b + c + d; //显示倒计时信息
+ 
+  }
+</script>
+<div id="sales" style="text-align:center; height:220px; position:relative;">
+<!--{foreach from=$promotion_goods key=key item=goods name=name}-->
+<!--{if $smarty.foreach.name.first}-->
+<font id="leftTime{$key}" style=" background:url(../images/pro.gif) left center no-repeat; height:25px; line-height:25px; display:block; width:160px;padding-left:20px; margin-bottom:5px;text-align:center; margin-left:70px;">{$lang.please_waiting}</font>
+<a href="{$goods.url}">
+ 
+<img src="{$goods.thumb}" style="border:none; margin-left:60px; margin-top:10px;"  alt="{$goods.name|escape:html}" width="165" height="165" /></a>    
+<div class="clear"></div>  
+        
+<a href="{$goods.url}"><img src="../images/button2.gif" style="border:none; margin:10px 40px 15px 0px; float:right; display:inline;"/></a> 
+<span style=" font-size:16px; font-weight:bold; float:left;display:inline;margin:5px 0px 0 40px; ">
+<a style="color:#F21C24" href="{$goods.url}">
+<!-- {if $goods.promote_price neq ""} -->
+{$goods.promote_price}
+<!-- {else}-->
+{$goods.shop_price}
+<!--{/if}-->
+<font style="text-decoration:line-through; color:#CCCCCC; font-size:12px;">{$goods.shop_price}</font></a> 
+</span>     
+<div class="clear"></div>      
+<script>
+Tday[{$key}] = new Date("{$goods.gmt_end_time}");  
+window.setInterval(function()    
+{clock({$key});}, 1000);    
+</script>
+<!--{/if}-->
+<!--{/foreach}-->
+<span style="position:absolute;display:block; width:68px; height:68px; background:url(../images/icon_a1.png) 0 -300px; left:0; top:0;"></span>
+</div>   
+<!-- {/if} -->

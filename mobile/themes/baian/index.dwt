@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="stylesheet" href="/themes/baian/css/cui.css" />
+	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
+	<link rel="stylesheet" href="/themes/baian/css/style.css" />
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+  <!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+<div id="banner">
+		<div class="fullSlide">
+			<div class="wp pr">
+				<a class="prev"></a>
+				<a class="next"></a>
+			</div>
+			<div class="bd">
+				<ul>
+                <!--{foreach  from=$flash name=myflash item=flash}-->
+<li style="background:{$flash.text}"><a href="{$flash.url}"><img style="background: black" src="{$flash.src}" alt=""></a></li>
+                    <!--{/foreach}-->
+				</ul>
+			</div>
+			<div class="hd">
+				<ul></ul>
+			</div>
+		</div>
+	</div>
+  <div class="h5"></div>
+  <div id="bd">
+		<div class="wp">
+			<div class="i-notice">
+				<span class="i-alert">最新公告：</span>
+				<span class="datetime" id="datetime">
+					<script type="text/javascript" src="js/Calendar_js.js"></script>
+				</span>
+				<div id="noticeScroll" class="txtScroll">
+					<div class="bd">
+						<ul> <!--{foreach from=$hotarticle item=article name=arc}-->
+                        	<li><a href="{$article.cat_url}" title="{$article.title}" rel="nofollow"><span>详情&gt;</span>Hi，你好！你可能感兴趣的品牌：{$article.description}</a></li>
+						 
+                           <!--{/foreach}-->
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="h"></div>
+
+			<div class="i-row">
+				<div class="i-brand l">
+					<div class="sec-tit">
+						<a target="_blank" href="brand.html" class="r">更多&gt;</a>
+						<h3 class="stt1">品牌专区</h3>
+					</div>
+					<div class="sec-con">
+						<ul class="brand-ul" >
+                        
+                          <!--品牌专区--start-->
+						<!-- {if $brand_list} -->
+<!-- {foreach from=$brand_list item=brand name="brand_foreach"} -->
+<!--{if $smarty.foreach.brand_foreach.index <=9}-->
+<li>
+<a href="{$brand.url}" title="{$brand.brand_name|escape:html} ({$brand.goods_num})"><img alt="{$brand.brand_name|escape:html} ({$brand.goods_num})" width="93" height="40" src="data/brandlogo/{$brand.brand_logo}" />
+</a></li>
+<!--{/if}-->
+<!-- {/foreach} -->
+<!-- {/if} -->  	
+       <!--品牌专区--end-->  
+							
+						</ul>
+					</div>
+				</div>
+				<div class="i-rush r">
+<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
+				</div>
+			</div>
+			<div class="h"></div>
+
+			<div class="i-row">
+				<div class="sec-tit">
+					<h3 class="stt3">精品聚惠</h3>
+				</div>
+				<div class="sec-con">
+					<div class="adBox">
+                     <!--{foreach from=$huiju name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->
+						
+					</div>
+				</div>
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow1 -->
+			<div class="i-flow tabBox" id="f1">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>1F</b> 孕妈专区</h3></div>
+					<ul class="s-tab-ul">
+                   <!–{foreach name=categories_child1 from=$categories1 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+
+  
+  
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=332" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+                        <!--{foreach from=$ym name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+                        
+                     
+							
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+                        <!--{foreach from=$cat_id344_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+
+
+
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id386_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+			   <!--{foreach from=$f1tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow2 -->
+			<div class="i-flow tabBox" id="f2">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>2F</b> 宝宝食品</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child2 from=$categories2 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=333" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+							  <!--{foreach from=$shipin name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+						 <!--{foreach from=$cat_id341_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id342_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f2tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow3 -->
+			<div class="i-flow tabBox" id="f3">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>3F</b> 宝宝用品</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child3 from=$categories3 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=336" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+							  <!--{foreach from=$yongpin name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id421_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id548_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f3tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow4 -->
+			<div class="i-flow tabBox" id="f4">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>4F</b> 婴童服饰</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child4 from=$categories4 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=335" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+							  <!--{foreach from=$fushi name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id355_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							 <!--{foreach from=$cat_id351_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f4tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow5 -->
+			<div class="i-flow tabBox" id="f5">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>5F</b> 童车童床</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child5 from=$categories5 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=334" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+
+							  <!--{foreach from=$tongchuang name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+							<!--{foreach from=$cat_id349_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							<!--{foreach from=$cat_id347_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f5tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow6 -->
+			<div class="i-flow tabBox" id="f6">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>6F</b> 图书玩具</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child6 from=$categories6 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=337" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+							  <!--{foreach from=$wanju name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+								<!--{foreach from=$cat_id357_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							<!--{foreach from=$cat_id570_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->	
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f6tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+
+			<!-- flow7 -->
+			<div class="i-flow tabBox" id="f7">
+				<a class="prev"></a>
+				<a class="next"></a>
+				<div class="sec-tit hd">
+					<div class="s-tit"><h3><b>7F</b> 家居百货</h3></div>
+					<ul class="s-tab-ul">
+						  <!–{foreach name=categories_child7 from=$categories7 item=cat}–>
+<li><span>{$cat.name|escape:html}</span></li>
+<!–{/foreach}–>
+					</ul>
+					<em class="line-slide"></em>
+					<a href="/category.php?id=339" class="red r">更多&gt;</a>
+				</div>
+				<div class="left-col slideBox">
+					<div class="slide-hd"><ul></ul></div>
+					<div class="slide-bd">
+						<ul>
+							  <!--{foreach from=$baihuo name=ban item=banner}-->
+<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+				<div class="sec-con bd">
+					<div class="tab-item">
+						<ul class="img-ul">
+								<!--{foreach from=$cat_id590_best_goods item=goods}-->
+                          <li>
+								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
+								<div class="title">
+									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
+									<strong class="price"><span> 
+    {$goods.shop_price}
+    </span></strong>
+								</div>
+							</li>
+                            
+<!-- { /foreach }-->
+						</ul>
+					</div>
+					<div class="tab-item">
+						<ul class="img-ul">
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="h"></div>
+			<div class="ad">
+				 <!--{foreach from=$f7tong name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->	
+			</div>
+			<div class="h20"></div>
+			
+			<div class="list-row">
+				<div class="left" id="huanBox">
+					<h2 class="tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
+					<div class="bor-box bd" style="height:210px">
+						<ul class="ul-pic1">
+							 {foreach from=$may_like_goods item=item_goods}
+							<li><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
+									<img src="{$item_goods.goods_thumb}" alt="">
+								</a>
+								<p style="height: 3em"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:20}</a></p>
+								<p style="text-align: center;"><b> 
+							<!-- {if $item_goods.promote_price neq 0} -->
+				           {$item_goods.formated_promote_price}
+				            <!-- {else}-->
+				          {$item_goods.shop_price}
+				            <!--{/if}-->
+				            </b></p>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+				<div class="right">
+					<h2 class="tit2"><a class="r" href="article_cat-33.html" target="_blank">更多></a><strong>门店动态</strong></h2>
+					<div class="bor-box" style="height:210px">
+						<ul class="ul-pic2">
+                        <!--{foreach from=$class_articles_33 item=article}--> 
+                        <li>
+                        	<div class="pic">
+									<a title="{$article.title|escape:html}"  target="_blank" href="{$article.url}"><img src="{$article.file_url}" alt=""></a>
+								</div>
+								<div class="txt">
+									<h4><a title="{$article_m.short_title}"  target="_blank" href="{$article.url}">{$article.short_title|truncate:15:true}</a></h4>
+									<p>{$article.short_title|truncate:28:true}...       <span class="r">{$article.short_time}</span></p>
+								</div>
+							</li>
+                            <!--{/foreach}-->
+								
+							  
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="h"></div>
+			<div class="list-row">
+				<div class="left">
+					<h2 class="tit2"><!-- <a class="r" href="">更多></a> --><strong>热门评论</strong></h2>
+					<div class="bor-box" style="height:285px">
+						<ul class="ul-pic3">
+							<dd style="height:287px;">
+			  				
+			  
+                             
+                             <!--{foreach from=$hot_comments item=mcomms name=comm}-->
+                            
+			  						<li>
+			  							<div class="pic">
+			  								<a href="{$mcomms.url}" target="_blank"><img  alt="{$mcomms.goods_name}"  src="{$mcomms.goods_thumb}" /></a>
+			  							</div>
+			  							<div class="txt">
+			  								<h4><a title="{$mcomms.goods_name}" target="_blank" rel="nofollow" href="{$mcomms.url}" target="_blank">{$mcomms.goods_name|truncate:8:"...":true}</a></h4>
+			  								<p>{if $mcomms.user_name eq ''}匿名用户 {else}{$mcomms.user_name}{/if}</p>
+			  								<p class="tt"><img class="l" src="images/ic2.png">{$mcomms.content|truncate:25:"...":true}<img class="r" src="images/ic3.png"></p>
+			  							</div>
+			  						</li>
+			  				<!--{/foreach}-->
+			  			
+
+
+
+			  			
+			  				
+			  			</dd>
+						</ul>
+					</div>
+				</div>
+				<div class="right">
+					<h2 class="tit2"><a class="r" href="/muying/">更多></a><strong>母婴知识</strong></h2>
+					<div class="bor-box" style="height:285px">
+						<ul class="ul-txt1">
+							<!--{foreach from=$latest_blogs item=blog}-->
+                            
+			  					<li><span class="r">{$blog.log_PostTime}</span><a href="{$blog.url}" title="{$blog.log_Title}">{$blog.log_Title|truncate:20}</a></li>
+			  					<!--{/foreach}-->
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="h5"></div>
+			
+			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
+			
+		</div>
+	</div>
+    <div class="h20"></div>
+   <!-- #BeginLibraryItem "/library/page_footeri.lbi" --><!-- #EndLibraryItem --> 
+</body>
+</html>

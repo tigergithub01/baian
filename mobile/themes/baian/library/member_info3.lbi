@@ -1,0 +1,52 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+              
+                                 {if $user_info}
+    <div class="loginBox l">
+					<div class="pop-btn"><a href="" class="i-user">我的百安</a></div>
+					<div class="pop-con">
+                    <span class="f1">
+                       {$user_info.username} {$lang.welcome_return}！</span>
+						<ul class="fore1 fl">
+            <li>
+              <a target="_blank" rel="nofollow" clstag="homepage|keycount|home2013|04b" href="user.php?act=order_list">
+                我的订单<span id="num-unfinishedorder"></span>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" rel="nofollow" clstag="homepage|keycount|home2013|04e" href="user.php?act=bonus">
+                我的红包<span id="num-ticket"></span>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" rel="nofollow" clstag="homepage|keycount|home2013|04i" href="user.php?act=collection_list">我的收藏</a>
+            </li>
+            <li>
+              <a target="_blank" rel="nofollow" clstag="homepage|keycount|home2013|04g" href="user.php?act=transform_points">我的积分</a>
+            </li>
+          </ul>
+                        
+					</div>
+				</div>                             
+                                 
+                                 
+
+
+{else}
+
+<div class="loginBox l">
+					<div class="pop-btn"><a href="" rel="nofollow" class="i-user">我的百安</a></div>
+					<div class="pop-con">
+						您好，请<a class="red" rel="nofollow" href="/user.php">登录</a>
+					</div>
+				</div>
+				
+
+{/if}
+<div class="cartBox l">
+					<div class="pop-btn"><a href="/user.php" rel="nofollow" class="i-cart">去购物车结算<b>{$cat_number}</b></a></div>
+				 {if !$user_info}	<div class="pop-con">
+						您好，请<a class="red" rel="nofollow" href="/user.php">登录</a>
+					</div>
+                    {/if}
+				</div>

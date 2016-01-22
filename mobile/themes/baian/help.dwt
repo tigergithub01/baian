@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+
+<link type="text/css" rel="stylesheet" href="themes/baian/images/misc/skin/helpcenter2012.css" />
+{insert_scripts files='common.js,transport1.js'}
+<script type="text/javascript">window.pageConfig = { compatible: true}; </script>
+
+<script language="javascript"> 
+<!--
+/*屏蔽所有的js错误*/
+function killerrors() { 
+return true; 
+} 
+window.onerror = killerrors; 
+//-->
+</script>
+</head>
+<body>
+
+<script type="text/javascript" src="themes/baian/images/misc/lib/js/e/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-2011.js"></script>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+  <div class="w main">
+      	<!--[if !ie]>Position 开始<![endif]-->
+		<div class="m breadcrumb breadcrumb2"><strong><a  href="help.php?id=9" >帮助中心</a> </strong>  &gt; {$article.title|escape:html} </div>
+		<!--[if !ie]>Position 结束<![endif]-->
+		<!--[if !ie]>left 开始<![endif]-->
+        <!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
+
+		
+		<!--[if !ie]>left 结束<![endif]-->
+		<!--[if !ie]>right 开始<![endif]-->
+		<div class="right" >
+				<!--[if !ie]>内容 开始<![endif]-->
+                          <h3 class="help_tit"><strong>{$article.title|escape:html}</strong></h3>
+                            <div class="help_box">
+                               <!-- {if $article.content } -->
+          {$article.content}
+         <!-- {/if} -->
+                            </div>
+                            <a class="h-1px" id="help160" name="help160"></a>
+                         
+                        
+                    				<!--[if !ie]>内容 结束<![endif]-->
+				<!--[if !ie]>help_tips 开始<![endif]-->
+				<!--[if !ie]>help_tips 结束<![endif]-->
+		</div>
+		<!--[if !ie]>right 结束<![endif]-->
+		<div class="clr"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    jQuery("#sortlist h4").bind("click",function() {
+        var element = $(this).parent();
+        if (element.hasClass("current")) {
+            element.removeClass("current");
+        } else {
+            element.addClass("current");
+        }
+    })
+</script>
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer2.lbi" --><!-- #EndLibraryItem -->
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<ul class="s-nav-list">
+<!--{foreach from=$categories item=cat name=no}-->
+				<li onclick="tab({$smarty.foreach.no.index})"  
+		
+		
+		<!-- {if $smarty.foreach.no.first} -->
+        <!-- {/if} --> >
+		
+		 		
+		<h3><a href="{$cat.url}" >{$cat.name|escape:html}</a></h3>
+		<dl>
+		<!--{foreach from=$cat.cat_id item=child}-->
+		 <dd><a class="over_2" href="{$child.url}">{$child.name|escape:html}</a>  </dd>
+		   
+		<!--{/foreach}-->
+		</dl>
+		 </li>
+	<!--{/foreach}--> 
+    
+    
+                   
+                </ul>
+                

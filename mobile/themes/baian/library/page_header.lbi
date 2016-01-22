@@ -1,0 +1,60 @@
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+<link href="/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/themes/baian/js/suggest.js"></script>
+<!-- <link href="/themes/baian/js/jquery-validation-1.14.0/demo/css/screen.css" rel="stylesheet" type="text/css" /> -->
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.js"></script>
+
+<div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div><script language="javascript">window.onerror = function(){return true;}; var process_request = "正在处理您的请求...";</script>
+  {insert_scripts files='common.js,transport1.js,utils.js'}
+<div id="top">
+		<div class="wp">
+			<div class="welcome l">  
+				{insert name='member_info'} 第三方登录：<a class="qq" href="/login"></a> <a class="zfb" href="/login/alipay"></a> <a class="wb" href="/login/xlweiboconnect"></a>
+			</div>
+            
+			<div class="topr r">
+				<a href="user.php?act=order_list">我的订单</a><!-- |<a href="http://m.com">手机百安</a> -->|<a href="http://weixin.123121.com">微信商城</a>|<a href="/baian/help.html">客户服务</a>|<span class="tel">全国客服：4008-048-648</span>
+			</div>
+		</div>
+	</div>
+ <div class="c"></div>
+ <div id="hd">
+		<div class="wp">
+			<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
+			<div class="searchBox">
+				<div class="soBox">
+               
+                    
+					<form id="searchForm" name="searchForm" method="get" action="/search.php" onSubmit="return checkSearchForm()">
+						<input name="keywords"  class="so-inp" type="text" id="keyword" value="{$search_keywords|escape}"  onkeyup="keyupdeal(event,this.value);" onkeydown="keydowndeal(event);" onclick="keyupdeal(event,this.value);" onblur="closediv();"  autocomplete="off"  >
+						<input class="so-sub" type="submit" value="搜索">
+					</form>
+				</div>
+				<div class="hotwords">
+					<span>热搜：</span>
+					
+					{foreach from=$searchkeywords item=val} <a href="search.php?keywords={$val|escape:url}" rel="nofollow">{$val}</a> {/foreach}
+					
+				</div>
+			</div>
+			<div class="hdr r">
+				<div class="loginBox l">
+					<div class="pop-btn"><a href="user.php" class="i-user" id="user-btn-1">我的百安</a></div>
+				</div>
+				<div class="cartBox l">
+					<div class="pop-btn"><a href="flow.php" class="i-cart">去购物车结算<b id="cart_goods_number">{$cart_goods_number}</b></a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <div class="c"></div>
+ 
+<script type="text/javascript">
+$(function(){
+	cart_goods_number();
+});
+ 
+</script> 
+ 

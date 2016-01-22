@@ -1,0 +1,148 @@
+<div id="fd">
+        <div class="f-top">
+            <div class="wrap">
+                <span class="i-hand">十年品牌  正品有保证</span>
+                <span class="i-clock">下单120分钟内快速响应</span>
+                <span class="i-truck">童车童床免费安装/送货上门（暂限深圳）</span>
+            </div>
+        </div>
+        <div class="f-help">
+            <div class="wrap">
+                 <!-- {foreach from=$helps item=help_cat name=no} -->
+                 <!--{if $smarty.foreach.no.iteration < 6}-->
+				<dl class="fm1">
+					<dt onClick="javascript:window.location.href='{$help_cat.cat_id}'">{$help_cat.cat_name}</dt>
+                     <!-- {foreach from=$help_cat.article item=item} -->  
+					<dd><a title="{$item.short_title}" rel="nofollow" target="_blank" href="{$item.url}">{$item.short_title}</a></dd>
+				   <!--{/foreach}-->
+				</dl>
+                <!--{/if}-->
+				    <!-- {/foreach} -->
+                <dl class="fm1">
+                    <dt>关注我们</dt>
+                    <dd><a class="i-sina" rel="nofollow" href="http://weibo.com/baian123121">新浪微博</a></dd>
+                    <dd><a class="i-tenx" rel="nofollow" href="http://t.qq.com/baianbaby">腾讯微博</a></dd>
+                </dl>
+                <div class="weix r">
+                    <img src="images/weix.jpg" alt="">
+                    <p>微信号：baby123121</p>
+                </div>
+            </div>
+        </div>
+        <div class="f-foot">
+            <div class="wrap">
+                <div class="fnav">
+                    <!-- {if $navigator_list.bottom} -->
+        <!-- {foreach name=nav_bottom_list from=$navigator_list.bottom item=nav} -->
+        <a href="{$nav.url}"{if $nav.opennew eq 1} target="_blank"{/if}{if $nav.url eq 'link.html'} {/if}>{$nav.name}</a>
+        <!-- {if !$smarty.foreach.nav_bottom_list.last} -->
+        |
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+        <!-- {/if} -->
+                </div>
+                <p>{$copyright}</p>
+                <img src="images/flink.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <div id="float">
+        <ul>
+            <li><a class="s1" href="flow.php"></a></li>
+            <li><a class="s2" href="user.php"></a></li>
+            <li><a class="s3" href="/dialog_1.htm" target="_blank"></a></li>
+            <li><a class="s4" href="">
+                <span class="pop">
+                    <img src="images/ma.jpg" alt="">
+                </span>
+            </a></li>
+            <li><a class="s5 goTop" href="javascript:void(0);"></a></li>
+        </ul>
+    </div>   
+     <div id="login-pop">
+		<a href="javascript:void(0);" class="close"></a>
+		<div class="hd-ad">
+			<a href=""><img src="images/ad4.jpg" alt=""></a>
+		</div>
+		<div class="h20"></div>
+		<div class="h20"></div><div class="h5"></div>
+		<div class="bd-form">
+			<form  name="formLogin" action="user.php" method="post" onSubmit="return userLogin()">
+				<p><input  name="username" type="text" class="inp" placeholder="手机号/邮箱/用户名"></p>
+				<div class="h20"></div><div class="h5"></div>
+				<p><input  name="password" type="password" class="inp" placeholder="请输入密码"></p>
+				<div class="h5"></div>
+				<p><a class="l foget" href="">忘记密码？</a> <a class="r log" href="">立即注册>></a></p>
+				<div class="h20"></div><div class="h5"></div>
+                 <input type="hidden" name="act" value="act_login" />
+            <input type="hidden" name="back_act" value="{$back_act}" />
+				<p><input type="submit" class="btn" value="登录"></p>
+				<div class="h20"></div>
+				<p style="font-size:14px;color:#9e9e9e;">用合作网站登录：　<a href="/login"><img src="images/qq.png" alt=""></a>　<a href="/login/alipay"><img src="images/zfb.png" alt=""></a>　<a href="/login/xlweiboconnect"><img src="images/wb.png" alt=""></a></p>
+				<div class="h5"></div>
+			</form>
+		</div>
+		<div class="h20"></div>
+		<div class="h"></div>
+		<div class="fd-ad" style="background:#f1cc02;height: 800px;">
+			<a href=""><img src="images/ad5.jpg" alt=""></a>
+		</div>
+	</div>
+    <div id="user-info"><a class="close" href="javascript:void(0);"></a><div style="border:1px solid #CCC; padding-top:50px; text-align:center; padding-bottom:50px;">您好，请<a class="red" rel="nofollow" href="/user.php">登录</a></div>
+</div>
+<div style="display:none">
+		<a class="close" href="javascript:void(0);"></a>
+		<div class="hd">
+			<div class="pic">
+				<img src="images/user.jpg" alt="">
+			</div>
+			<div class="txt">
+				<em>an199117</em>，欢迎您回来！
+				<p>会员等级：<span><img src="images/v1.png" alt=""></span></p>
+				<div class="h"></div>
+				<p><a class="qian" href="">一键签到</a></p>
+			</div>
+			<div class="c"></div>
+			<p><a class="l" href="">【修改个人资料】</a> <a class="r" href="">退出账号</a></p>
+		</div>
+		<div class="bd">
+			<ul class="title">
+				<li class="s1 on"><a href="">会员</a></li>
+				<li class="s2"><a href="">收藏</a></li>
+			</ul>
+			<div class="con con1">
+				<ul class="ul-dai">
+					<li class="s1">待付款<em>(0)</em></li>
+					<li class="s2">待收货<em>(0)</em></li>
+					<li class="s3">待评价<em>(0)</em></li>
+				</ul>
+				<div class="h20"></div><div class="h"></div>
+				<table>
+					<tr>
+						<td colspan="2" class="th">查看我的资产</td>
+					</tr>
+					<tr>
+						<td width="50">红包</td>
+						<td><em>￥10.00</em></td>
+					</tr>
+					<tr>
+						<td>积分</td>
+						<td><em>50分</em></td>
+					</tr>
+					<tr>
+						<td>成长值</td>
+						<td><em>150点</em></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="fd">
+			按下键盘上的 <b>D</b> 即可快速打开/关闭会员菜单
+		</div>
+	</div>
+    <!-- <script type="text/javascript" src="/themes/baian/js/jquery.js"></script> -->
+	<script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/lib.js"></script>
+    <script type="text/javascript" src="/themes/baian/js/jquery.jqzoom1.0.2.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery.jcarousel.js"></script>
+<script type="text/javascript" src="/themes/baian/js/goodd.js"></script>

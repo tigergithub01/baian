@@ -1,0 +1,62 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="i-flow">
+				<div class="sec-tit">
+					<div class="s-tit"><h3>F2 宝宝食品</h3></div>
+		<ul class="s-tab-ul TAB" id=".stab2">
+                
+         <!--{foreach from=$F2.pkname item=pk name=pn}-->
+            <li class=" <!--{if $smarty.foreach.pn.iteration <=1 }-->on 
+              <!--{/if}-->"><span><a href="category-{$pk.cat_id}-b0.html" title="">{$pk.cat_name}</a></span></li>
+          
+          <!--{/foreach}-->
+					</ul>
+					<a href="" class="red r">更多&gt;</a>
+				</div>
+				<div class="sec-con">
+                    <div class="left-col" id="slideBox2">
+						<div class="hd"><ul></ul></div>
+						<div class="bd">
+							<ul>
+							    <!--{foreach from=$Fimg.2_img item=pname name=pic}-->
+                     
+					 <li style="margin: 0; padding: 0;"><a rel="nofollow" href="{$pname.url}" target="_blank">
+                <img src="{$pname.image}" height="400" width="303">
+              </a></li>
+             
+                        <!--{/foreach}-->
+							</ul>
+						</div>
+					</div>
+                    
+                    
+					<div class="right-col">
+                    <!--{foreach from=$F2.content name=abc item=ab} -->
+              <div class="stab2 <!--{if $smarty.foreach.ab1.iteration <2 }-->dn 
+              <!--{/if}-->">
+							<ul class="img-ul">      
+    <!--{foreach from=$ab name=ab1 item=ab2} -->
+    <li>
+									<div class="pic"><a href="{$ab2.url}"><img src="{$ab2.thumb}"  /></a></div>
+									<div class="title">
+										<h3><a href="">{$ab2.short_name}</a></h3>
+										<strong class="price"><span>{$ab2.shop_price}</span></strong>
+									</div>
+								</li>
+                               
+<!--{/foreach}-->
+	</ul>
+						</div>
+
+<!--{/foreach}-->
+					</div>
+				</div>
+			</div>
+            
+   <div class="adBox">
+              <!--{foreach from=$Fimg.2_left item=pname name=pic}-->
+				<a href="{$pname.url}"><img src="{$pname.image}" width="600" height="100" alt=""></a><!--{/foreach}-->
+				   <!--{foreach from=$Fimg.2_right item=pname name=pic}-->
+				<a href="{$pname.url}"><img src="{$pname.image}"width="600" height="100"  alt=""></a><!--{/foreach}-->
+			</div>

@@ -1,0 +1,541 @@
+﻿2015-09-29:
+&XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14434955201651
+?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14434955201651
+`baianshop`.`ecs_sessions`
+
+exchange.php正式环境显示不成功。->ok
+
+
+2015-10-05:
+首页
+http://www.123121.com
+
+分类页
+http://www.123121.com/category-344-b0.html
+http://www.123121.com/category-333-b0-min0-max0-attr0-3-goods_id-DESC.html
+http://localhost:8086/category-344-b0.html
+http://localhost:8086/category-340-b0.html
+http://localhost:8086/category-340-b0-min0-max0-attr462,479.0.0.0.html
+http://localhost:8086/category-340-b43,74-min0-max0-attr479.0.0.0.html
+http://localhost:8086/category-340-b43,74-min0-max0-attr0.0.0.0.html
+http://localhost:8086/category-340-b0-min0-max0-attr0.0.0.0.html
+http://localhost:8086/category-340-b0-min0-max0-attr0.0.0.0-sgoods_id-oDESC-promote0-integral1-bonus0.html
+http://localhost:8086/category.php?id=340&brand=43&price_min=0&price_max=0&filter_attr=0.0.0.0&sort=0&order=0&filter_ext=1.1.1
+
+品牌页
+http://www.123121.com/brand-43-c0.html
+http://www.123121.com/brand-33-c0.html
+http://localhost:8086/brand-33-c0.html
+
+文章页
+http://localhost:8086/article_cat-33.html
+http://www.123121.com/article_cat-3.html
+
+购物车
+http://localhost:8086/flow.php?step=cart
+
+商品详情页：
+http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371
+http://localhost:8086/goods-2371.html
+http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
+http://www.123121.com/goods-22138.html
+
+商品分类页：
+http://localhost:8086/baadmin/category.php?act=edit&cat_id=377
+
+产品编辑：
+http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=15
+http://localhost:8086/baadmin/goods.php?act=product_edit&product_id=27
+
+
+http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/goods_img/32_G_1431744389845.jpg
+http://localhost:8088/admin/goods.php?act=show_image&img_url=images/201505/thumb_img/32_thumb_G_1431744389139.jpg
+
+用户注册:
+
+购物车：
+http://localhost:8086/flow.php
+
+订单提交：
+http://localhost:8086/flow.php?step=checkout
+
+优惠活动：
+http://localhost:8086/activity.php
+
+http://localhost:8086/user.php?act=add_booking&id=2371&spec=
+
+
+phpInfo:
+http://www.123121.com/baadmin/goods.php?act=phpinfo
+
+2015/10/05 20:39:30 [error] 10538#0: 
+*1920834 upstream prematurely closed connection while reading response header from upstream, 
+client: 58.250.180.213, 
+server: weixin.123121.com, 
+request: "GET /login/xlweiboconnect/callback.php?code=e00ceb7e462b61ff039769643e20f53c HTTP/1.1", 
+upstream: "http://127.0.0.1:88/login/xlweiboconnect/callback.php?code=e00ceb7e462b61ff039769643e20f53c", 
+host: "www.123121.com"
+
+新浪微博：
+http://open.weibo.com/
+
+小标题为空的时候显示0
+localhost:8086/goods-1068.html
+localhost:8086/goods-2078.html
+<!--{if isset($goods.goods_title) && (strlen($goods.goods_title) gt 0)}-->
+{if isset($goods.goods_title) && ($goods.goods_title|strlen gt 0)}
+
+http://www.123121.com/goods-1299.html
+缺货登记
+
+www_68ecshop_com
+
+http://help.jd.com/Vender/question-426.html
+
+
+Warning: Illegal string offset 'cat_name' in /www/web/default/public_html/baadmin/articlecat.php on line 24
+
+articlecat.php 241 247
+文章列表中增加:
+174 	免运费说明 	   
+173 	如何快速升级 	
+172 	会员等级说明
+
+分类页面中的筛选是什么意思？
+43375138@qq.com
+
+http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001220
+http://localhost:8086/article-126.html
+
+http://localhost:8086/user.php?act=register&XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14453217614701
+
+会员自动登录有问题，不能自动登录。
+取消不登录直接购买
+ob_clean(); //Clears the buffer 
+http://www.php.net/
+
+商品品牌与商品留言都可以上传图片。
+
+http://localhost:8086/baadmin/user_msg.php?act=phpinfo
+/* 管理员登录后可在任何页面使用 act=phpinfo 显示 phpinfo() 信息 */
+
+订单信息中添加订单备注 ->ok
+限时抢购价没有体现
+积分商城中商品展示时积分体现
+我的收藏的加入购物车要改为ajax形式
+添加到购物车时，如果有重复的商品应该增加数量，而不是添加重复商品。 ->ok，数量没有叠加，现解决方案为如果商品已经存在，则不处理。
+
+http://localhost:8088/admin/goods.php?act=product_list&goods_id=32
+
+1\选择属性的时候，需改改变商品图片、改变商品价格，显示有货\缺货情况
+2\加入购物车，缺货的时候，需要给出缺货提示。
+3\加入购物车时，有属性的商品，必选选择一个对应的属性。
+4\商品有属性选择时,将产品加入购物车，而不是商品。
+5\商品显示的链接需要进行改进，链接中应该包含产品信息。
+6\商品加入购物车，如果没有选择规格，则加默认的产品信息加入购物车中。
+7\产品库存分仓库管理，优化后台产品编辑。
+
+
+
+<!--{foreach from=$attr.attr_values item=attr_value}-->
+<li class="selected" style="width: auto;min-width: 70px;">
+	<b></b>
+	<a title="800ml袋装柔顺剂" href="javascript:void(0)" style="vertical-align: middle;">
+		<!-- <img alt="" src="images/sp6.jpg" style="display: block;float: left;"> -->
+		<i style="float: left;width: auto;background-color: white;color: black;font-size: 12px;font-style: normal;">{$attr_value}</i>
+	</a>
+</li>
+<!-- {/foreach} -->
+
+超值礼包购买：
+goods.dwt,package.dwt
+<a href="javascript:addPackageToCart({$package_goods.act_id})" style="background:transparent"><img src="images/bnt_buy_1.gif" alt="{$lang.add_to_cart}" /></a>
+
+配件购买：
+flow.dwt:
+<a href="javascript:fittings_to_flow({$fittings.goods_id},{$fittings.parent_id})"><img src="images/bnt_buy.gif" alt="{$lang.collect_to_flow}" /></a>
+
+商品购买：goods.dwt
+<a href="javascript:addToCart({$goods.goods_id})"><img src="images/bnt_cat.gif" /></a>
+
+购物车中ecs_cart.parent_id>0的情况：
+1、作为礼品赠送
+2、作为配件购买
+
+http://www.123121.com/goods-22004.html
+
+1\商品有多属性时，加入购物车缺货判断优化 ->ok
+2\用户登录时，重新计算购物车中商品的价格  ->ok
+3\多属性商品加入购物车时，显示所选择的商品对应的属性  ->ok
+4\从购物车中查看商品时，直接跳转到对应属性的商品。  ->ok
+5\购物车中改变商品数量时，商品价格根据商品对应属性进行修改。  ->ok
+6\提交订单的时候，选择属性后，库存检查  ->ok
+7\我的订单中订单明细显示属性  ->ok
+8\订单明细页面中显示属性  ->ok
+9\如果下单时扣减库存，则根据属性扣减库存->处理中
+
+
+
+http://www.123121.com/goods.php?id=22007
+http://www.123121.com/goods.php?id=22009
+
+系统中保存的时间戳都为格林威治时间。
+
+产品如果增加促销价与促销时间，所有的限时抢购页面都有影响，是否需要添加此功能，待确定？
+或者限时抢购只显示商品，不显示产品，这样是否可行？
+
+1\更多抢购
+2\购物车底部限时不全问题
+3\限时抢购倒计时，时间显示不正确问题。
+4\全部品牌页面
+5\全部分类页面
+
+
+1\类别页,品牌页、文章分类、文章详情页增加关键词语标签 ->ok
+2\商品搜索 ->ok
+3\导航菜单推荐品牌，广告图 ->ok
+4\搜索页面猜你喜欢,限时抢购 ->ok
+
+
+中文分词：
+https://github.com/hightman/scws
+
+广告图两边分别是30个像素   广告图之间是25个像素->ok
+导航菜单闪问题->0k
+正则表达式，已逗号分隔的数字：([0-9]+[,]?)+
+正则表达式在线测试：http://tool.oschina.net/regex
+正则文档：http://baike.baidu.com/link?url=BnOu6AW-8vQYlS4ZLQujuPyLTGqfb9wB4Q_UoDo17DNknJsbWkIZrS7X9VOTWGQJzH0uLDg0Izf-tzgZj_Z16a
+
+1\品牌页促销产品、可用积分、可用红包，价格排序功能。
+2\商品详情-相关分类
+
+1\促销产品根据买几送几进行排序。
+2\后台-商品管理-红包购买金额能正常保存。
+3\商品详情页去掉“立减XX”显示。
+4\优化货品列表页面
+5\增加货品编辑页面
+6\多属性商品，商品详情页默认显示默认的货品。
+7\无属性商品存在多仓库库存时，在详情页、购物车中能正常显示"有货、"无货"。
+8\货品促销价在详情页，购物车，订单确认页面正常显示。（注意：商品设置多属性后，商品限时抢购不再起作用；如果要设置限时抢购，需要单独在货品中设置。是否合理，请确认？）
+
+
+2015-12-03:
+1、正确显示头部"去购物车结算"的数量。
+
+
+
+http://blog.51yip.com/jsjquery/1484.html
+
+1\修复找回密码中的一个问题。  ->ok
+
+
+2、缺货登记（套装）有问题。 
+3、后台直接设置库存不成功问题。 ->ok
+
+2015/12/8:
+全部限时抢购需要根据产品来显示：
+
+163邮箱：baian123121@163.com   密码：weiwanglin329
+
+http://localhost:8086/baadmin/goods.php?act=ajax_query_goods&keyword=%E9%98%B3%E5%85%89%E5%AE%9D%E8%B4%9D0-3%E5%B2%81%E5%AE%9D%E5%AE%9D%E6%97%A9%E6%95%99%E5%8D%A12_%E5%84%BF%E7%AB%A5%E5%90%AF%E8%92%99%E6%97%A9%E6%95%99%E8%AE%A4%E7%9F%A5
+
+文章与文章分类中的买了还买先注释掉，以后加上。
+
+问题：
+后台设置成无效订单，前台依然可以显示。
+
+http://www.tuicool.com/articles/Bj2aQb
+http://www.oschina.net/project/tag/274/jquery-dialog
+
+http://localhost:8086/baadmin/order.php?act=info&order_id=916
+
+
+weiwang12312100
+
+
+"/usr/java/jdk1.6.0_45/jre/bin/java" -jar  "/bocommjava/libr/socket.jar" 8891 "/bocommjava/ini/B2CMerchant.xml" "/bocommjava/log/socket.log"
+
+"/usr/java/jdk1.6.0_45/jre/bin/java" -jar  "/bocommjava/libr/socket.jar" 8891 "/bocommjava/ini/B2CMerchant.xml" "/bocommjava/log/socket.log"&
+
+$_REQUEST['step'] == "cart"
+
+
+一步购物 ->ok
+flow.php内登陆与注册。
+积分商城 ->ok
+买几送几 
+
+http://www.thinkphp.cn/topic/10714.html
+
+订单提交出错点返回后，再重新提交时，提交按钮不能单击，可能是disabled属性生效了
+
+
+$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table('comment') . " where comment_type=0 and id_value ='$goods_id' and status=1");
+        $smarty->assign('review_count',       $count); 
+
+http://www.daixiaorui.com/read/72.html
+
+
+http://download.csdn.net/detail/q2326673/8495143
+
+php定时任务：
+http://www.cnblogs.com/phphuaibei/archive/2011/12/16/2290574.html
+
+发货时扣减库存时，没有处理多仓库库存的问题。
+
+crontab -e
+
+0 * * * * /www/wdlinux/apache_php-5.4.26/bin/php /www/web/default/public_html/auto_cancel_order.php
+*/5 * * * * /www/wdlinux/mysql-5.5.44/bin/mysql_listen.sh
+
+优化碎片：
+select concat('optimize table ',table_name,';') 
+from  information_schema.tables where TABLE_TYPE = 'BASE TABLE' and table_schema = 'baianshop';
+
+
+茵克拉芙 2013夏装女装春款连衣裙碎花雪纺OL气 [ 美的 ] 
+
+深圳市百安妇幼用品有限公司
+
+mysql数据库备份：
+http://blog.csdn.net/catoop/article/details/8064817
+
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+
+mysql 维护：
+http://www.cnblogs.com/eoiioe/archive/2008/12/28/1363947.html
+
+ecshop去掉cloud:
+http://www.cnblogs.com/shangxia/p/3543194.html
+
+mysqldump -hlocalhost -uroot -p********** baianshop > baianshop_201601081716.sql
+mysqldump -hlocalhost -uroot -p********** baianshop > baianshop_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** andatabase > andatabase_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** baianmy14 > baianmy14_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** baianwx > baianwx_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** goodsback > goodsback_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** weixin > weixin_201601100912.sql
+mysqldump -hlocalhost -uroot -p********** wordpress > wordpress_201601100912.sql
+
+
+
+
+linux查看文件大小：
+http://www.cnblogs.com/benio/archive/2010/10/13/1849946.html
+
+查看LINUX进程内存占用情况：
+http://www.cnblogs.com/gaojun/p/3406096.html
+
+Linux如何查询内存真实利用率
+http://blog.sina.com.cn/s/blog_64bb25ef0100oaiv.html
+
+ http://blog.sina.com.cn/s/blog_64bb25ef0100oaiv.html
+ 
+ 
+ mysql配置：
+http://blog.csdn.net/ixidof/article/details/5958904/
+/etc/my.cnf
+
+linux服务器wdcp升级mysql:
+http://www.jinshare.cn/2015/01/lmsq/
+
+vi /www/wdlinux/init.d/mysqld 
+编辑mysql配置文件，通过vi命令
+（按i进入编辑模式、按ESC退出编辑模式、输入:wq保存退出）新增加两行如下配置：
+
+basedir=/www/wdlinux/mysql-5.5.27
+datadir=/www/wdlinux/mysql-5.5.27/var
+或者以下两行代码也可以：
+
+basedir=/www/wdlinux/mysql
+datadir=/www/wdlinux/mysql/var
+
+
+mysql_upgrade:
+mysql_upgrade -u root -p
+
+mysqladmin -uroot -p********** processlist
+
+mysqladmin -uroot -p********** processlist;
+mysqladmin -uroot -p********** status;
+
+iZ94feeyo29Z
+
+160111 17:43:09 [Warning] IP address '202.105.96.26' could not be resolved: Name or service not known
+160111 19:32:22 [Warning] IP address '218.244.254.49' could not be resolved: Name or service not known
+160111 20:44:27 [Warning] IP address '121.40.158.56' could not be resolved: Name or service not known
+
+mysql日志：
+SHOW  GLOBAL VARIABLES LIKE '%log%';
+
+mysql@localhost.(none)>set global general_log=on;
+Query OK, 0 rows affected (0.02 sec)
+ 
+mysql@localhost.(none)>set global general_log=off;
+Query OK, 0 rows affected (0.00 sec)
+
+
+linux文件大小查看：
+du -h --max-depth=1 *
+http://www.cnblogs.com/benio/archive/2010/10/13/1849946.html
+
+
+linux下发送邮件：
+http://blog.chinaunix.net/uid-20465760-id-3046249.html
+
+短信处理逻辑：
+http://h.ihuyi.com/help.php?action=to_question&id=645&type_id=22
+
+https://help.aliyun.com/knowledge_detail/8164558.html?spm=5176.7618386.5.21.zJ388w
+
+https://help.aliyun.com/knowledge_detail/6709053.html?spm=5176.7618386.5.1.NPl2YP  
+
+Linux 禁ping和开启ping操作:
+http://blog.chinaunix.net/uid-23683795-id-3536391.html
+
+查看防火墙状态：
+service iptables status
+
+重启防火墙：
+service iptables restart
+
+[root@123121 ~]# vi /etc/sysconfig/iptables
+# iptables conf /etc/sysconfig/iptables
+# Created by http://www.wdlinux.cn
+# Last Updated 2010.06.01
+
+# Firewall configuration written by system-config-securitylevel
+# Manual customization of this file is not recommended.
+*filter
+:FORWARD ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:RH-Firewall-1-INPUT - [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -j RH-Firewall-1-INPUT
+-A FORWARD -j RH-Firewall-1-INPUT
+-A RH-Firewall-1-INPUT -i lo -j ACCEPT
+-A RH-Firewall-1-INPUT -p icmp --icmp-type any -j ACCEPT
+-A RH-Firewall-1-INPUT -p 50 -j ACCEPT
+-A RH-Firewall-1-INPUT -p 51 -j ACCEPT
+#-A RH-Firewall-1-INPUT -p udp -d 224.0.0.251 --dport 5353 -j ACCEPT
+-A RH-Firewall-1-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 22 --state NEW -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 21 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 80 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 3306 -j ACCEPT
+-A RH-Firewall-1-INPUT -p tcp -s 202.105.96.26 --dport 8080 -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 8080 --state NEW -j ACCEPT
+#-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 20000:20500 --state NEW -j ACCEPT
+-A RH-Firewall-1-INPUT -j REJECT --reject-with icmp-host-prohibited
+COMMIT
+
+151.80.41.169
+
+#russia
+-A RH-Firewall-1-INPUT -p tcp -s 46.242.0.0/16 --dport 80   -j REJECT
+
+#north ameria
+-A RH-Firewall-1-INPUT -p tcp -s 192.243.0.0/16 --dport 80   -j REJECT
+
+#german
+-A RH-Firewall-1-INPUT -p tcp -s 213.239.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 46.4.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 144.76.0.0/16 --dport 80   -j REJECT
+
+#itali
+-A RH-Firewall-1-INPUT -p tcp -s 151.80.0.0/16 --dport 80   -j REJECT
+
+#urop
+-A RH-Firewall-1-INPUT -p tcp -s 136.243.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 5.39.0.0/16 --dport 80   -j REJECT
+
+#france
+-A RH-Firewall-1-INPUT -p tcp -s 195.154.0.0/16 --dport 80   -j REJECT
+
+#ameria
+-A RH-Firewall-1-INPUT -p tcp -s 23.251.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 157.55.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 204.152.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 207.46.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 208.80.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 40.77.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 54.244.0.0/16 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 69.30.0.0/16 --dport 80   -j REJECT
+
+#heland
+-A RH-Firewall-1-INPUT -p tcp -s 212.7.0.0/16 --dport 80   -j REJECT
+
+
+
+
+
+
+204.152.209.145
+
+backup_dir=/www/web/default/back/database
+dt=$(date +%Y%m%d%H:%M:%S)
+db=bcmedia
+mysqldump -hlocalhost -uroot -p********** baianshop > $backup_dir/baianshop_$dt
+
+
+www.123121.com/goods-1059.html
+www.123121.com/sales-promotion.html
+
+find  -type f -name "*.htaccess" | xargs grep "sales"
+find  -type f -name "*" | xargs grep "sales-promotion.html"
+
+识别真假搜索引擎（搜索蜘蛛）方法:
+http://blog.chacuo.net/147.html
+
+linux命令:
+tail
+more
+less (G跳转到最后)
+G
+
+robots.txt:
+User-agent: *
+Disallow: /baadmin/
+Disallow: /cert/
+Disallow: /data/
+Disallow: /includes/
+Disallow: /install/
+Disallow: /languages/
+Disallow: /plugins/
+Disallow: /templates/
+Disallow: /themes/
+Disallow: /upgrade/
+Disallow: /api/
+Disallow: /js/
+Disallow: /affiche.php
+Disallow: /captcha.php
+Disallow: /comment.php
+Disallow: /cycle_image.php
+Disallow: /goods_script.php
+Disallow: /receive.php
+Disallow: /region.php
+Disallow: /respond.php
+Disallow: /feed.php
+Disallow: /gallery.php
+
+User-agent: Sogou
+Disallow: /
+
+
+
+120.24.216.32 - - [14/Aug/2015:18:40:03 +0800] "GET /sales-promotion.html HTTP/1.1" 200 15966 "-" "-"
+120.24.216.32 - - [14/Aug/2015:18:40:03 +0800] "GET /goods-1059.html HTTP/1.1" 200 53765 "-" "-"
+
+115.29.177.125 - - [14/Aug/2015:18:45:59 +0800] "GET /sales-promotion.html HTTP/1.1" 200 15966 "-" "-"
+115.29.177.125 - - [14/Aug/2015:18:46:00 +0800] "GET /goods-1059.html HTTP/1.1" 200 53765 "-" "-"
+
+120.24.216.32 - - [15/Aug/2015:02:11:36 +0800] "GET /muying/post/meizanchen-1165.html HTTP/1.1" 
+200 21408 "-" "Mozilla/5.0 (Linux;Apache;PHP5.2.17p1;mysql;curl) Z-BlogPHP/1.3 Wonce Build 140614"
+
+www.123121.com/category.php?id=332
+
+2016/01/21 15:20:49 [warn] 1639#0: *500879 a client request body is buffered to a temporary file /www/wdlinux/nginx-1.0.15/client_body_temp/0000005782, client: 113.91.148.167, server: weixin.123121.com, request: "POST /baadmin/upload2012.php HTTP/1.1", host: "www.123121.com"
+2016/01/21 15:21:48 [warn] 1639#0: *500904 an upstream response is buffered to a temporary file /www/wdlinux/nginx-1.0.15/proxy_temp/3/78/0000005783 while reading upstream, client: 203.208.60.11, server: weixin.123121.com, request: "GET /images/201601/source_img/22169_G_1452808868722.jpg HTTP/1.1", upstream: "http://127.0.0.1:88/images/201601/source_img/22169_G_1452808868722.jpg", host: "www.123121.com"
+
+

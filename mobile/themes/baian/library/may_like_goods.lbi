@@ -1,0 +1,22 @@
+<div id="huanBox">
+                    <h2 class="tit2 c-tit2"><a class="huan r next" href="javascript:void(0);">换一批</a><strong>猜你喜欢</strong></h2>
+                    <div class="bor-box bd">
+                        <ul class="ul-pic1 ul-pic1-b">
+							 {foreach from=$may_like_goods item=item_goods}
+			<li><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
+									<img src="{$item_goods.goods_thumb}" alt="">
+								</a>
+								<p style="height: 3em"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:23}</a></p>
+								<p style="text-align: center;"><b> 
+							<!-- {if $item_goods.promote_price neq 0} -->
+           {$item_goods.formated_promote_price}
+            <!-- {else}-->
+          {$item_goods.shop_price}
+            <!--{/if}-->
+            </b></p>
+			</li>
+			{/foreach}
+						</ul>
+                        <div class="h15"></div>
+                    </div>
+                </div>

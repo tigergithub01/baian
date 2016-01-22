@@ -1,0 +1,7 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php
+$GLOBALS['smarty']->assign('cat_recommend_type',get_cat_recommend_type(332));
+
+?>
+
+ {$goods_cat.id2}F  {$goods_cat.name}

@@ -1,0 +1,39 @@
+<div id="fd">
+		<div class="f-foot">
+			<div class="wp2">
+				<div class="fnav">
+					 <!-- {if $navigator_list.bottom} -->
+        <!-- {foreach name=nav_bottom_list from=$navigator_list.bottom item=nav} -->
+        <a href="{$nav.url}"{if $nav.opennew eq 1} target="_blank"{/if}{if $nav.url eq 'link.html'} {/if}>{$nav.name}</a>
+        <!-- {if !$smarty.foreach.nav_bottom_list.last} -->
+        |
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+        <!-- {/if} -->
+				</div>
+				<p>{$copyright}</p>
+				<img src="images/flink.jpg" alt="">
+			</div>
+		</div>
+	</div>
+    <div id="float">
+        <ul>
+            <li><a class="s1" href=""></a></li>
+            <li><a class="s2" href=""></a></li>
+            <li><a class="s3" href=""></a></li>
+            <li><a class="s4" href="">
+                <span class="pop">
+                    <img src="images/ma.jpg" alt="">
+                </span>
+            </a></li>
+            <li><a class="s5 goTop" href="javascript:void(0);"></a></li>
+        </ul>
+    </div>
+     <!-- <script type="text/javascript" src="/themes/baian/js/jquery.js"></script> -->
+    <script type="text/javascript" src="/themes/baian/js/jquery.SuperSlide.js"></script>
+    <script type="text/javascript" src="/themes/baian/js/lib.js"></script>
+
+    <script>
+        jQuery("#huanBox").slide({mainCell:".bd ul",autoPlay:false,effect:"left",vis:5,scroll:5,autoPage:true,trigger:"click"});
+        jQuery("#rushScroll").slide({mainCell:".bd ul",autoPlay:true,effect:"left",vis:5,scroll:5,autoPage:true,trigger:"click"});
+    </script>

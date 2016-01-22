@@ -1,0 +1,13 @@
+<div id="top">
+		<div class="wp">
+			<div class="welcome l">
+				{insert name='member_info'} 第三方登录：<a class="qq" href="/login"></a> <a class="zfb" href="/login/alipay"></a> <a class="wb" href="/login/xlweiboconnect"></a>
+			</div>
+			<div class="topr r">
+				<a href="user.php?act=order_list">我的订单</a>|<a href="http://m.com">手机百安</a>|<a href="http://weixin.123121.com">微信商城</a>|<a href="/baian/help.html">客户服务</a>|<span class="tel">全国客服：4008-048-648</span>
+			</div>
+		</div>
+	</div>
+  <div class="c"></div>
+ 
+ 

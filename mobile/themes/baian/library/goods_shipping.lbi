@@ -1,0 +1,12 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{insert_scripts files='transport.js,utils.js'}
+<div id="ECS1">
+<table>
+{if $list}
+<tr><td>名称</td><td>运费</td></tr>
+{foreach from = $list item = item}
+<tr><td>{$item.shipping_name}</td><td>{$item.format_shipping_fee}</td></tr>
+{/foreach}
+{/if}
+</table>
+</div>

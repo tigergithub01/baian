@@ -1,0 +1,20 @@
+<div class="sbox">
+                    <h3 class="st1">看了还看</h3>
+                    <ul class="s-img-list">
+                    	<!--{foreach from=$may_like_goods item=item_goods}-->   
+                        <li>
+                            <div class="pic"><a title="{$item_goods.short_name}" href="{$item_goods.url}" target="_blank">
+                            	<img alt="" src="{$item_goods.goods_thumb}"></a>
+                            </div>
+                            <h3><a title="{$item_goods.short_name}" href="{$item_goods.url}" target="_blank">{$item_goods.short_name}</a></h3>
+                            <div class="price">
+	                            <!-- {if $item_goods.promote_price neq 0} -->
+					           {$item_goods.formated_promote_price}
+					            <!-- {else}-->
+					          {$item_goods.shop_price}
+					            <!--{/if}-->
+				            </div>
+                        </li>
+                        <!--{/foreach}-->
+                    </ul>
+                </div>

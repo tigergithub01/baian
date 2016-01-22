@@ -1,0 +1,66 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<div class="buydiv">
+  <div id="my360buy">
+    <dl class="">
+      <dt class="ld">
+        <s></s>
+        <a href="user.php" clstag="homepage|keycount|home2012|04a">我的百安</a>
+        <b></b>
+      </dt>
+      <dd style="width:150px;text-align:center;">
+        <div class="prompt">
+          <span class="fl">
+            <!--{if $user_info}-->
+            {$user_info.username} {$lang.welcome_return}！
+            <!--{else}-->
+            您好，请{$user_info}<a style="color:red;" href="/user.php" clstag="homepage|keycount|home2013|04a">登录</a>
+            <!--{/if}-->
+          </span>
+          <span class="fr"></span>
+        </div>
+        <!--{if $user_info}-->
+        <div class="uclist">
+          <ul class="fore1 fl">
+            <li>
+              <a target="_blank" clstag="homepage|keycount|home2013|04b" href="user.php?act=order_list">
+                我的订单<span id="num-unfinishedorder"></span>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" clstag="homepage|keycount|home2013|04e" href="user.php?act=bonus">
+                我的红包<span id="num-ticket"></span>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" clstag="homepage|keycount|home2013|04i" href="user.php?act=collection_list">我的收藏</a>
+            </li>
+            <li>
+              <a target="_blank" clstag="homepage|keycount|home2013|04g" href="user.php?act=transform_points">我的积分</a>
+            </li>
+          </ul>
+        </div>
+        <!--{/if}-->
+      </dd>
+    </dl>
+  </div>
+  <div id="settleup">
+    <!--<dl class="">-->
+      <dt class="ld">
+        <s></s>
+        <span class="shopping">
+          <span id="shopping-amount">{$cat_number}</span>
+        </span>
+        <a href="flow.php" id="settleup-url">去购物车结算</a>
+        <b></b>
+      </dt>
+      <!--<dd>
+        <div class="prompt">
+          <div class="nogoods">
+            <b></b>购物车中还没有商品，赶紧选购吧！
+          </div>
+        </div>
+      </dd>-->
+    <!--</dl>-->
+  </div>
+</div>

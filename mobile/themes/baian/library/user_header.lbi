@@ -1,0 +1,590 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div data-sign="header-start" style="display:none;"></div>
+<script src="/js/transport1.js"></script>
+<script language="javascript">window.onerror = function(){return true;}; var process_request = "正在处理您的请求...";</script>
+<?php
+function get_brands1($cat = 0, $app = 'brand')
+{
+    $children = ($cat > 0) ? ' AND ' . get_children($cat) : '';
+
+    $sql = "SELECT b.brand_id, b.brand_name, b.brand_logo, b.brand_desc, COUNT(*) AS goods_num, IF(b.brand_logo > '', '1', '0') AS tag ".
+            "FROM " . $GLOBALS['ecs']->table('brand') . "AS b, ".
+                $GLOBALS['ecs']->table('goods') . " AS g ".
+            "WHERE g.brand_id = b.brand_id $children AND is_show = 1 " .
+            " AND g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ".
+            "GROUP BY b.brand_id HAVING goods_num > 0 ORDER BY tag DESC, b.sort_order ASC LIMIT 48";
+    $row = $GLOBALS['db']->getAll($sql);
+
+    foreach ($row AS $key => $val)
+    {
+        $row[$key]['url'] = build_uri($app, array('cid' => $cat, 'bid' => $val['brand_id']), $val['brand_name']);
+        $row[$key]['brand_desc'] = htmlspecialchars($val['brand_desc'],ENT_QUOTES);
+    }
+
+    return $row;
+}
+//
+function get_promotion_info1($goods_id = '')
+{
+    $snatch = array();
+    $group = array();
+    $auction = array();
+    $package = array();
+    $favourable = array();
+
+    $gmtime = gmtime();
+    $sql = 'SELECT act_id, act_name, act_type, start_time, end_time FROM ' . $GLOBALS['ecs']->table('goods_activity') . " WHERE is_finished=0 AND start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND goods_id = '$goods_id'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+    foreach ($res as $data)
+    {
+        switch ($data['act_type'])
+        {
+            case GAT_SNATCH: //夺宝奇兵
+                $snatch[$data['act_id']]['act_name'] = $data['act_name'];
+                $snatch[$data['act_id']]['url'] = build_uri('snatch', array('sid' => $data['act_id']));
+                $snatch[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $snatch[$data['act_id']]['sort'] = $data['start_time'];
+                $snatch[$data['act_id']]['type'] = 'snatch';
+                break;
+
+            case GAT_GROUP_BUY: //团购
+                $group[$data['act_id']]['act_name'] = $data['act_name'];
+                $group[$data['act_id']]['url'] = build_uri('group_buy', array('gbid' => $data['act_id']));
+                $group[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $group[$data['act_id']]['sort'] = $data['start_time'];
+                $group[$data['act_id']]['type'] = 'group_buy';
+                break;
+
+            case GAT_AUCTION: //拍卖
+                $auction[$data['act_id']]['act_name'] = $data['act_name'];
+                $auction[$data['act_id']]['url'] = build_uri('auction', array('auid' => $data['act_id']));
+                $auction[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $auction[$data['act_id']]['sort'] = $data['start_time'];
+                $auction[$data['act_id']]['type'] = 'auction';
+                break;
+
+            case GAT_PACKAGE: //礼包
+                $package[$data['act_id']]['act_name'] = $data['act_name'];
+                $package[$data['act_id']]['url'] = 'package.php#' . $data['act_id'];
+                $package[$data['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $data['start_time']), local_date('Y-m-d', $data['end_time']));
+                $package[$data['act_id']]['sort'] = $data['start_time'];
+                $package[$data['act_id']]['type'] = 'package';
+
+                break;
+        }
+    }
+
+    $user_rank = ',' . $_SESSION['user_rank'] . ',';
+    $favourable = array();
+    $sql = 'SELECT act_id, act_range, act_range_ext, act_name, start_time, end_time FROM ' . $GLOBALS['ecs']->table('favourable_activity') . " WHERE start_time <= '$gmtime' AND end_time >= '$gmtime'";
+    if(!empty($goods_id))
+    {
+        $sql .= " AND CONCAT(',', user_rank, ',') LIKE '%" . $user_rank . "%'";
+    }
+    $res = $GLOBALS['db']->getAll($sql);
+
+    if(empty($goods_id))
+    {
+        foreach ($res as $rows)
+        {
+            $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+            $favourable[$rows['act_id']]['url'] = 'activity.php';
+            $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+            $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+            $favourable[$rows['act_id']]['type'] = 'favourable';
+        }
+    }
+    else
+    {
+        $sql = "SELECT cat_id, brand_id FROM " . $GLOBALS['ecs']->table('goods') .
+           "WHERE goods_id = '$goods_id'";
+        $row = $GLOBALS['db']->getRow($sql);
+        $category_id = $row['cat_id'];
+        $brand_id = $row['brand_id'];
+
+        foreach ($res as $rows)
+        {
+            if ($rows['act_range'] == FAR_ALL)
+            {
+                $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                $favourable[$rows['act_id']]['url'] = 'activity.php';
+                $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                $favourable[$rows['act_id']]['type'] = 'favourable';
+            }
+            elseif ($rows['act_range'] == FAR_CATEGORY)
+            {
+                /* 找出分类id的子分类id */
+                $id_list = array();
+                $raw_id_list = explode(',', $rows['act_range_ext']);
+                foreach ($raw_id_list as $id)
+                {
+                    $id_list = array_merge($id_list, array_keys(cat_list($id, 0, false)));
+                }
+                $ids = join(',', array_unique($id_list));
+
+                if (strpos(',' . $ids . ',', ',' . $category_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_BRAND)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $brand_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+            elseif ($rows['act_range'] == FAR_GOODS)
+            {
+                if (strpos(',' . $rows['act_range_ext'] . ',', ',' . $goods_id . ',') !== false)
+                {
+                    $favourable[$rows['act_id']]['act_name'] = $rows['act_name'];
+                    $favourable[$rows['act_id']]['url'] = 'activity.php';
+                    $favourable[$rows['act_id']]['time'] = sprintf($GLOBALS['_LANG']['promotion_time'], local_date('Y-m-d', $rows['start_time']), local_date('Y-m-d', $rows['end_time']));
+                    $favourable[$rows['act_id']]['sort'] = $rows['start_time'];
+                    $favourable[$rows['act_id']]['type'] = 'favourable';
+                }
+            }
+        }
+    }
+
+    $sort_time = array();
+    $arr = array_merge($snatch, $group, $auction, $package, $favourable);
+    foreach($arr as $key => $value)
+    {
+        $sort_time[] = $value['sort'];
+    }
+    array_multisort($sort_time, SORT_NUMERIC, SORT_DESC, $arr);
+
+    return $arr;
+}
+$this->assign('promotion_info1', get_promotion_info1());
+?>
+<link rel="stylesheet" type="text/css" href="/themes/baian/images/misc/lib/skin/2012/base.css" media="all" />
+<link rel="stylesheet" type="text/css" href="/themes/baian/css/adv.css" />
+<link rel="stylesheet" type="text/css" href="/themes/baian/css/global.header.css" />
+
+  <div id="shortcut">
+    <div class="w">
+      <ul class="fl lh">
+        <li class="fore1 ld">
+          {insert_scripts files='utils.js,common.min.js?0705'} <font id="ECS_MEMBERZONE"> {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </font>
+        </li>
+      </ul>
+      <ul class="fr lh">
+        <li class="fore6 menu menu2">
+          <dl>
+            <dt class="ld" style="width:100px;">
+              <a href="#" target="_blank">
+                下载手机客户端
+              </a>
+            </dt>
+            <dd class="hideMenu" style="width:250px;">
+              <div>
+              	<div style="float:left;">
+              		<img alt="" src="/themes/baian/images/download_app.png">
+              	</div>
+                <div style="padding-left:7px;float:left;font-size:16px;color:rgb(253,100,27);">
+                	&nbsp;&nbsp;百安客户端
+                	<a style="width:97px;height:29px;padding-top:15px;display:block;" href="/download/Android.apk"><img src="/themes/baian/images/app_android.jpg"></a>
+                	<a style="width:97px;height:29px;padding-top:15px;display:block;" href="/download/iPhone.ipa"><img src="/themes/baian/images/app_apple.jpg"></a>
+                </div>
+              </div>
+            </dd>
+          </dl>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore1 ld loginbar">
+          <a href="user.php?act=order_list" target="_blank">我的订单</a>
+        </li>
+        <li class="fore1 ld loginbar">|</li>
+        <li class="fore6 menu"   id="JS_hide_topNav_menu_3"  onmouseover="showMenu(this,'topNav',3);" onmouseout="hideMenu(this,'topNav',3);">
+          <dl>
+            <dt class="ld">
+              <a href="#" target="_blank">
+                客户服务<b></b>
+              </a>
+            </dt>
+            <dd class="hideMenu">
+              <div>
+                <a href="/baian/help.html" target="_blank">帮助中心</a>
+              </div>
+              <div>
+                <a href="help-114.html" target="_blank" rel="nofollow">售后服务</a>
+              </div>
+              <div>
+                <a href="dialog_1.htm" target="_blank" rel="nofollow">在线客服</a>
+              </div>
+              <div>
+                <a href="message.php" target="_blank" rel="nofollow">投诉中心</a>
+              </div>
+              <div>
+                <a href="service.html" target="_blank">客服邮箱</a>
+              </div>
+            </dd>
+          </dl>
+        </li>
+
+
+        <li class="fore6 menu menu2" onmouseover="" onmouseout="">
+          <dl>
+            <dt class="ld">
+              <span id="wxxl"></span>
+              <a href="#" target="_blank">
+                微信商城
+              </a>
+            </dt>
+            <dd class="hideMenus">
+              <div>
+                <img alt="" src="/themes/baian/images/ba_bottomerweima.jpg">
+              </div>
+            </dd>
+          </dl>
+        </li>
+        
+        
+        
+        <li class="fore1 ld loginbar" style="width: 25px;">
+          <b id="wbxl"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="http://weibo.com/baian123121" target="_blank">加关注</a>
+        </li>
+        <li class="fore1 ld loginbar" style="width: 22px;">
+          <b id="wbtx"></b>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left: 0px;">
+          <a href="http://t.qq.com/baianbaby" target="_blank">加关注</a>
+        </li>
+        <li class="fore1 ld loginbar" style="padding-left:4px;">
+        	全国客服：4008-048-648
+        </li>
+      </ul>
+      <span class="clr"></span>
+    </div>
+  </div>
+
+
+  <div id="o-header">
+    <div class="w" id="header">
+      <div style="height:88px; float:left;">
+        <div id="logo" class="ld">
+          <a href="/" hidefocus="true" title="百安母婴商城是超低价正品母婴用品网购商城随时随地下单，儿童玩具,婴儿车,奶粉,儿童服装,纸尿裤等送货上门货到付款">
+            <img src="/themes/baian/images/ba_logo.png" width="396" height="48" alt="百安母婴商城是超低价正品母婴用品网购商城随时随地下单，儿童玩具,婴儿车,奶粉,儿童服装,纸尿裤等送货上门货到付款" />
+          </a>
+        </div>
+        <div id="zcjj" style="margin-left:55px;">
+        <?php
+		     $GLOBALS['smarty']->assign('ad_zc',get_advlist('顶部专场', 1));
+	      ?>
+        <!--{foreach from=$ad_zc item=image_zc name=zca}-->
+        <a href="/{$image_zc.url}" title="{$image_zc.name}" target="_blank">
+          <img src="/{$image_zc.image}" width="200" height="88" />
+        </a>
+        <!--{/foreach}-->
+      </div>
+      </div>
+
+            {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} {* ECSHOP 提醒您：根据用户id来调用member_info2.lbi显示不同的界面  *}{insert name='member_info2'}
+      
+      
+      <div id="myxyd" style="height:88px; width:241px; float:right">
+        <?php
+		       $GLOBALS['smarty']->assign('article_rexian',get_my_articles_two(29, 1));
+		      ?>
+        <!-- {foreach from=$article_rexian item=rexian name=ren} -->
+        {$rexian.content}
+        <!-- {/foreach} -->
+      </div>
+    </div>
+
+		<div id="Js_tool">
+			<ul>
+				<li><a href="/flow.php" class="t_1">购物车</a></li>
+				<li><a href="/user.php" class="t_2">购物车</a></li>
+				<li><a href="/catalog.php" class="t_3">购物车</a></li>
+				<li><a href="/dialog_1.htm" target="_blank" class="t_4">购物车</a></li>
+				<li><a href="tencent://message/?uin=2658790390" class="t_5">购物车</a></li>
+				<li>
+					<div id="weixin" style="position:fixed;bottom:160px;right:51px;z-index:200000;display:none;"><img alt="" src="/themes/baian/images/ba_bottomerweima.jpg"></div>
+					<a href="" class="t_6" onmouseover="document.getElementById('weixin').style.display='block';" onmouseout="document.getElementById('weixin').style.display='none';">购物车</a>
+				</li>
+				<li><a target="_blank" href="/baobao/index.php?ec_uid={$ecs_session.user_id}" class="t_7">购物车</a></li>
+				<li id="backtop" style="display:none;"><a href="javascript:goTop();" class="t_8">购物车</a></li>
+			</ul>
+		</div>
+    <div class="menus">
+
+      <div class="w">
+        <div id="nav">
+          <div id="categorys" style="background-image: url('/themes/baian/images/ba_fljx.png');
+                        background-position: 143px 18px; background-repeat: no-repeat; background-color: #41080A;">
+            <div id="categorys" style="background-image: none;" onmouseover="showMc()" onmouseout="hideMc()">
+              <div class="mt ld" style="background-image: none;">
+                <h2>
+                  <a href="catalog.html">
+                    全部商品分类<b style="background-image: none;"></b>
+                  </a>
+                </h2>
+              </div>
+              <div class="mc">
+                <!--{foreach from=array_slice(get_categories_tree(0),0,7) item=cat name=cat0}-->
+                <div {if $smarty.foreach.cat0.first}style='border-top:none;'{/if}
+                class="item fore{$smarty.foreach.categories.iteration}"
+                onMouseOver="this.className='item fore{$smarty.foreach.categories.iteration} hover'"
+                onmouseout="this.className='item fore{$smarty.foreach.categories.iteration}'"
+                id="allser{$smarty.foreach.cat0.iteration}" >
+                <span {if $smarty.foreach.cat0.iteration mod 2 eq 0}style='background-color:#FFFCD6;'{/if}>
+                <h3 style="text-align:left;"  id="allserh{$smarty.foreach.cat0.iteration}">
+                  <a href="{$cat.url}" style="text-decoration:none;font-weight:bold;">{$cat.name|escape:html}</a>
+                </h3>
+                <s {if $smarty.foreach.cat0.iteration mod 2 eq 0}class='s2'{else}class='s1'{/if}></s>
+                <h4>
+                <!--{foreach from=$cat.cat_id item=child2 name=cat_cat_id2}-->
+                <!--{if $smarty.foreach.cat_cat_id2.iteration < 9}-->
+                <!--{if $smarty.foreach.cat_cat_id2.iteration eq 1 or $smarty.foreach.cat_cat_id2.iteration eq 3}-->
+                
+                  <!-- {/if} -->
+                  <a href="{$child2.url}" style="text-decoration:none">{$child2.name|escape:html}</a>
+                  <!--{if $smarty.foreach.cat_cat_id2.iteration eq 2 or $smarty.foreach.cat_cat_id2.last or $smarty.foreach.cat_cat_id2.iteration eq 4}-->
+
+                  <!-- {/if} -->
+                  <!-- {/if} -->
+                  <!--{/foreach}-->
+                </h4>
+                </span>
+                <div class="i-mc" style="top:3px;">
+                  <div class="close" onclick="$(this).parent().parent().removeClass('hover')"></div>
+                  <div class="subitem">
+                    <!--{foreach from=$cat.cat_id item=child name=cat_cat_id}-->
+                    <dl class="fore{$smarty.foreach.cat_cat_id.iteration}">
+                      <dt>
+                        <a href="{$child.url}" style="text-decoration:none">{$child.name|escape:html}</a>
+                      </dt>
+                      <dd>
+                        <!--{foreach from=$child.cat_id item=childer}-->
+                        <em>
+                          <a href="{$childer.url}" style="text-decoration:none">{$childer.name|escape:html}</a>
+                        </em>
+                        <!--{/foreach}-->
+                      </dd>
+                    </dl>
+                    <!--{/foreach}-->
+                    <?php
+                    $GLOBALS['smarty']->assign('index_goods_11',get_advlist('导航栏商品分类一广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_12',get_advlist('导航栏商品分类一广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_21',get_advlist('导航栏商品分类二广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_22',get_advlist('导航栏商品分类二广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_31',get_advlist('导航栏商品分类三广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_32',get_advlist('导航栏商品分类三广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_41',get_advlist('导航栏商品分类四广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_42',get_advlist('导航栏商品分类四广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_51',get_advlist('导航栏商品分类五广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_52',get_advlist('导航栏商品分类五广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_61',get_advlist('导航栏商品分类六广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_62',get_advlist('导航栏商品分类六广告二', 1));
+                    $GLOBALS['smarty']->assign('index_goods_71',get_advlist('导航栏商品分类七广告一', 1));
+                    $GLOBALS['smarty']->assign('index_goods_72',get_advlist('导航栏商品分类七广告二', 1));
+                    ?>
+                    {if $smarty.foreach.cat0.index == 0}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_11 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_12 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 1}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_21 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_22 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 2}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_31 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_32 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 3}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_41 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_42 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 4}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_51 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_52 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 5}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_61 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_62 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+                    {if $smarty.foreach.cat0.index == 6}
+                    <div style="width:500px;position: relative;left:10px;top:40px;">
+                    	{foreach from=$index_goods_71 item=ad}
+	                    <div style="float:left;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+	                    {foreach from=$index_goods_72 item=ad}
+	                    <div style="float:left;margin-left:21px;width:220px;">
+	                    {$ad.content}
+	                    </div>
+	                    {/foreach}
+                    </div>
+                    {/if}
+
+                  </div>
+                  <div class="fr">
+                    <?php
+	                   $cat_info = get_cat_info_ex($GLOBALS['smarty']->_var['cat']['id']);
+
+	                  $GLOBALS['smarty']->assign('index_image',get_advlist('导航菜单-'.$cat_info['cat_id'].'-右侧-促销专题', 5));
+	                    ?>
+                    <!-- {if $index_image} -->
+                    <dl class="categorys-promotions">
+                      <dt>促销活动</dt>
+                      <dd>
+                        <ul>
+                          {foreach from=$index_image item=ad name=index_image}
+                          <li>
+                            <a target="_blank" href="{$ad.url}">
+                              <img src="{$ad.image}">
+                            </a>
+                          </li>
+                          {/foreach}
+                        </ul>
+                      </dd>
+                    </dl>
+                    <!-- {/if} -->
+                    <dl class="categorys-brands">
+                      <dt>推荐品牌</dt>
+                      <dd>
+                        <ul>
+                          <!--{foreach from=get_brands1($GLOBALS['smarty']->_var['cat']['id']) item=bchilder}-->
+                          <li style="float:left;width:97px;">
+                            <a target="_blank" href="{$bchilder.url}">{$bchilder.brand_name|escape:html}</a>
+                          </li>
+                          <!--{/foreach}-->
+                        </ul>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+              <!--{/foreach}-->
+            </div>
+          </div>
+          <div id="treasure">
+          </div>
+        </div>
+        <div id="treasure">
+        </div>
+        <ul id="navitems">
+
+          <li class="fore1" id="nav-home" class="hover">
+            <a href="/">商城{$lang.home}</a>
+          </li>
+
+          <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+          <li    {if $nav.active eq 1} class="curr fore{$smarty.foreach.nav_middle_list.iteration}"  {else} class="fore{$smarty.foreach.nav_middle_list.iteration}"   onMouseOut="this.className='fore{$smarty.foreach.nav_middle_list.iteration}'" onMouseOver="this.className='fore{$smarty.foreach.nav_middle_list.iteration} hover'" {/if}>
+          <a href="/{$nav.url}"
+
+            <!-- {if $nav.opennew eq 1} -->
+            target="_blank"
+            <!-- {/if} -->
+            >{$nav.name}
+          </a>
+          </li>
+          <!-- {/foreach} -->
+
+        </ul>
+        <div id="klcc">
+          <a title="传宝宝照片有奖品" target="_blank" href="/baobao/index.php?ec_uid={$ecs_session.user_id}">
+            <img alt="传宝宝照片有奖品" src="/themes/baian/images/ba_topzp.png" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+<div class="blank10"></div>
+<script type="text/javascript" src="/themes/baian/images/misc/lib/js/e/lib-v1.js"></script>
+<div id="header_end" style="display:none;"></div>
+
+<script type="text/javascript" src="/themes/baian/js/jquery-1.32pack.js"></script>
+
+
+<script type="text/javascript" src="/themes/baian/images/misc/lib/js/2012/base-v1.js"></script>
+<script type="text/javascript" src="/themes/baian/images/misc/lib/js/e/lib-v1.js"></script>
+<!--<script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/lib-v1.js"></script>-->
+
+<script type="text/javascript" src="/themes/baian/js/global.header.js"></script> 
+ 
+<div id="header_end" style="display:none;"></div>
+
+<div data-sign="header-end" style="display:none;"></div>

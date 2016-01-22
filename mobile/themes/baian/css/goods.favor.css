@@ -1,0 +1,14 @@
+
+#cnxh{width: 988px;margin: 0 auto;overflow: hidden;}
+#cnxh .tit1{height: 33px;line-height: 33px;padding: 0 20px;margin-bottom: 10px;
+	background: url(/themes/baian/images/tit1-bg.jpg) repeat-x left top;}
+#cnxh .hide{visibility: hidden;}
+#cnxh .t1{height: 33px;width: 86px;display: inline-block;background: url(/themes/baian/images/t1.jpg) no-repeat left top;}
+#cnxh .pro-ul1{overflow: hidden;width: 1000px;font-size: 12px;font-family:"微软雅黑","Microsoft Yahei";}
+#cnxh .pro-ul1 li{width: 238px;height: 236px;float: left;overflow: hidden;border: 2px solid #fff;
+	text-align: center;margin-bottom: 10px;margin-right: 6px;}
+#cnxh .pro-ul1 li:hover{border: 2px solid #fabe00;}
+#cnxh .pro-ul1 li .pic{height: 160px;}
+#cnxh .pro-ul1 li .pic img{height: 160px;width: 160px;}
+#cnxh .pro-ul1 li .title{color: #515151;padding: 5px 10px;height: 36px;line-height: 18px;}
+#cnxh .pro-ul1 li .price{color: #c80000;}

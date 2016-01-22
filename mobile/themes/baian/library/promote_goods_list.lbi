@@ -1,0 +1,65 @@
+<script type="text/javascript">
+
+ 	 //var timestamp = Date.parse(new Date())/1000;
+	 //var promote_end_date =Math.round(new Date("{$goods.gmt_end_time}")/1000);
+	 //var remain_seconds_key =  promote_end_date - Date.parse(new Date())/1000;
+	 //将时间减去1秒，计算天、时、分、秒 
+	 var goods_gmt_end_time = new Array();
+	 var goods_remain_seconds = new Array();
+	 var goods_interValObj = new Array();
+	 function goods_setRemainTime(key) { 
+	 	  if (goods_remain_seconds[key] > 0) { 
+	 		   goods_remain_seconds[key] = goods_remain_seconds[key] - 1; 
+		 	   var second = Math.floor(goods_remain_seconds[key] % 60);             // 计算秒     
+		 	   var minite = Math.floor((goods_remain_seconds[key] / 60) % 60);      //计算分 
+		 	   var hour = Math.floor((goods_remain_seconds[key] / 3600) % 24);      //计算小时 
+		 	   var day = Math.floor((goods_remain_seconds[key] / 3600) / 24);        //计算天 
+	 	   	  //$("#leftTime"+key).html(hour + ":" + minite + ":" + second ); 
+		 	  $("#leftTime").html(hour + ":" + minite + ":" + second ); 
+	 	  } else {
+	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
+	 	  	 	window.clearInterval(goods_interValObj[key]); 
+	 	   		//这里可以添加倒计时时间为0后需要执行的事件 
+	 	  } 
+	 } 
+	 
+</script>
+
+                <div class="h"></div> <ul class="s-filter-pro">
+                 <!--{foreach from=$goods_list key=key item=goods name=name}-->
+    <!-- {if $goods.id} -->
+    
+    <!--{if $smarty.foreach.name.first}-->
+    
+    <script type="text/javascript">
+	    goods_gmt_end_time[{$key}] = Math.round(new Date("{$goods.gmt_end_time}")/1000);
+	    goods_remain_seconds[{$key}] =  goods_gmt_end_time[{$key}] - Date.parse(new Date())/1000;
+	    goods_interValObj[{$key}] = window.setInterval(function(){
+	    		goods_setRemainTime({$key});
+	    	}, 1000);
+    </script>
+    
+    <!--{/if}-->
+    
+    <li>
+                      <div class="pic"><a href="{$goods.url}" title="{$goods.name}" target="_blank"><img src="{$goods.thumb}" alt=""></a></div>
+                        <div class="txt">
+                            <h3 style="height: 1.5em"><a href="{$goods.url}" title="{$goods.name}" target="_blank">{$goods.name|escape:html|truncate:13}</a></h3>
+                            <div class="price"><span>抢购价<b><!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></b></span><s style="color: #575757;font-size: 12px;float: right;">{$goods.shop_price}</s></div>
+                            <!-- <span class="orange r">条评价</span> -->
+                        </div>
+                        <div class="btnBox">
+                            <a href="javascript:addToCart({$goods.id})">立即购买</a>
+                            <a href="javascript:addToCart({$goods.id})">加入购物车</a>
+                            <a href="javascript:collect({$goods.id});">收藏</a>
+                        </div>
+                        
+    </li>
+    
+     <!--{/if}-->
+    <!--{/foreach}-->
+    </ul>
+               
+                <div class="h"></div>
+
+                

@@ -1,0 +1,53 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<div id="top">
+		<div class="wp">
+			<div class="welcome l">
+       
+           {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} <font id="ECS_MEMBERZONE"> {* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </font>
+            </div>
+			<div class="topr r">
+				<a href="">下载手机客户端</a>|<a href="user.php?act=order_list" target="_blank">我的订单</a>|<a href="">客户服务</a>
+				<span class="weixBox">
+					<a href="" class="i-weix">微信商城</a>
+					<div class="pop-con" style="z-index:9;">
+						<a href="" class="i-weix">微信商城</a>
+						<img src="/themes/baian/default/images/weix.jpg" alt="">
+					</div>
+				</span>
+				<span class="tel">全国客服：4008-048-648</span>
+			</div>
+		</div>
+	</div>
+	<div class="c"></div>
+
+	<div id="hd">
+		<div class="wp">
+			 <a href="/" hidefocus="true" title="百安母婴商城是超低价正品母婴用品网购商城随时随地下单，儿童玩具,婴儿车,奶粉,儿童服装,纸尿裤等送货上门货到付款">
+          <img src="themes/baian/images/ba_logo.png" width="396" height="48" alt="百安母婴商城是超低价正品母婴用品网购商城随时随地下单，儿童玩具,婴儿车,奶粉,儿童服装,纸尿裤等送货上门货到付款" /></a>
+            
+            
+			<div class="searchBox">
+				<div class="soBox">
+				<!--	<form action="">
+						<input class="so-inp" type="text" value="纸尿裤1元一片" onfocus="if(this.value='纸尿裤1元一片'){this.value='';}" onblur="if(!this.value){this.value=this.defaultValue;}">
+						<input class="so-sub" type="submit" value="搜索">
+					</form> -->
+                    
+                    	<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+						<input name="keywords" type="text" id="keyword" onClick="this.select();" value="{if $search_keywords}{$search_keywords|escape}{else}请输入关键词{/if}" class="text" style="width:330px;" onfocus="if(this.value=='请输入关键词') this.value='';" onkeyup="STip(this.value);" autocomplete="off"/>
+						<input type="submit" class="so-sub"  value="搜索">
+                    </form>
+				</div>
+				<div class="hotwords">
+					<span>热搜：</span>
+					 {foreach from=$searchkeywords item=val} <a href="search.php?keywords={$val|escape:url}">{$val}</a> {/foreach}
+				</div>
+			</div>
+            
+			<div class="hdr r">
+			  {insert_scripts files='transport1.js,utils.js,common.min.js?0705'} <font id="ECS_MEMBERZONE"> {* ECSHOP 提醒您：根据用户id来调用member_info3.lbi显示不同的界面  *}{insert name='member_info3'}
+  
+			</div>
+		</div>
+	</div>

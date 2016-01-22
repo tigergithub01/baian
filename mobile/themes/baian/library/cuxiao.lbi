@@ -1,0 +1,83 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $promotion_goods} -->
+<script >
+var Tday = new Array();
+var daysms = 24 * 60 * 60 * 1000
+var hoursms = 60 * 60 * 1000
+var Secondms = 60 * 1000
+var microsecond = 1000
+var DifferHour = -1
+var DifferMinute = -1
+var DifferSecond = -1
+function clock(key)
+  {
+   var time = new Date()
+   var hour = time.getHours()
+   var minute = time.getMinutes()
+   var second = time.getSeconds()
+   var timevalue = ""+((hour > 12) ? hour-12:hour)
+   timevalue +=((minute < 10) ? ":0":":")+minute
+   timevalue +=((second < 10) ? ":0":":")+second
+   timevalue +=((hour >12 ) ? " PM":" AM")
+   var convertHour = DifferHour
+   var convertMinute = DifferMinute
+   var convertSecond = DifferSecond
+   var Diffms = Tday[key].getTime() - time.getTime()
+   DifferHour = Math.floor(Diffms / daysms)
+   Diffms -= DifferHour * daysms
+   DifferMinute = Math.floor(Diffms / hoursms)
+   Diffms -= DifferMinute * hoursms
+   DifferSecond = Math.floor(Diffms / Secondms)
+   Diffms -= DifferSecond * Secondms
+   var dSecs = Math.floor(Diffms / microsecond)
+   
+   if(convertHour != DifferHour) a="<font>"+DifferHour+"</font>";
+   if(convertMinute != DifferMinute) b="<font>"+DifferMinute+"</font>:";
+   if(convertSecond != DifferSecond) c="<font>"+DifferSecond+"</font>:"
+     d="<font>"+dSecs+"</font>"
+     if (DifferHour>0) {a=a} 
+     else {a=''}
+   document.getElementById("leftTime"+key).innerHTML = b + c + d; //显示倒计时信息
+  
+  }
+</script>
+
+<!--{foreach from=$promotion_goods key=key item=goods name=name}-->
+<!--{if $smarty.foreach.name.first}-->
+<div class="sec-tit">
+						<a href="" class="r">更多抢购&gt;</a>
+						<h3 class="stt1">限时抢购<span class="datetime"><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
+					</div>	<script>
+Tday[{$key}] = new Date("{$goods.gmt_end_time}");   
+window.setInterval(function()     
+{clock({$key});}, 1000);     
+</script><!--{/if}-->
+<!--{/foreach}-->
+					<div class="sec-con">
+						<div id="rushScroll" class="rushScroll">
+							<a class="prev"></a>
+							<a class="next"></a>
+							<div class="bd" style="margin-left:10px;">
+								<ul class="img-ul">
+                                 <!--{foreach from=$promotion_goods key=key item=goods name="promotion_foreach"}-->
+ {if $smarty.foreach.promotion_foreach.index <= 20}
+ 
+									<li>
+										<div class="pic"><a href="{$goods.url}" title="{$goods.goods_name|escape:html|truncate:13}" ><img src="{$goods.thumb}"  /></a></div>
+										<div class="title">
+											<h3><a href="{$goods_url}"  title="{$goods_name|escape:html|truncate:13}">{$goods.name|escape:html|truncate:13}</a></h3>
+											<div class="price"><span>抢购价<b><!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></b></span><s>{$goods.shop_price}</s></div>
+										</div>
+									</li> 			
+                    
+ {/if}
+<!--{/foreach}-->
+								</ul>
+							</div>
+						</div>
+					</div>
+                   
+                         
+
+
+<!-- {/if} -->

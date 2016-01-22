@@ -1,0 +1,163 @@
+
+
+<script>
+
+var goodslist=[]
+
+var time_id=[]
+
+</script>
+
+
+
+<div class="sec-tit"  id="TimeCounter_{$smarty.foreach.lstgood.index}" >
+						<a href="" class="r">更多抢购&gt;</a>
+						<h3 class="stt1">每天限时抢购<span class="datetime">{$lang.please_waiting}</span></h3>
+					</div>
+
+
+<!--{foreach from=$cats_promote_goods item=promotion_goods name=lstgood}-->
+
+<script type="text/javascript">
+
+goodslist[goodslist.length] = {$promotion_goods.gmt_end_time};
+
+time_id[time_id.length]="TimeCounter_{$smarty.foreach.lstgood.index}"
+
+</script>
+
+	
+
+<div class="sec-con">
+						<div id="rushScroll" class="rushScroll">
+							<a class="prev"></a>
+							<a class="next"></a>
+							<div class="bd">
+								<ul class="img-ul">
+                                 <!-- {foreach name=index_goods from=$ad_qianggou item=goods}-->
+									<li>
+										<div class="pic"><a href="{$goods.goods_url}" title="{$goods.goods_name|escape:html}" ><img src="{$goods.goods_thumb}" alt="{$goods.goods_name|escape:html}" /></a></div>
+										<div class="title">
+											<h3><a href="{$goods.goods_url}"  title="{$goods.goods_name|escape:html}">{$goods.goods_name|truncate:15}</a></h3>
+											<div class="price"><span>抢购价<b>{$goods.promote_price}</b></span><s>{$goods.shop_price}</s></div>
+										</div>
+									</li>
+				  	<!--{/foreach}-->  			
+                    
+									
+								</ul>
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+<SCRIPT type="text/javascript">
+
+<!--
+
+
+
+
+
+function show_date_time_0()
+
+{
+
+setTimeout("show_date_time_0()", 1000);
+
+
+
+for (var i=0,j=goodslist.length;i<j;i++)
+
+{
+
+today=new Date();
+
+
+
+timeold=goodslist*1000 - today.getTime();
+
+
+
+
+
+sectimeold=timeold/1000;
+
+secondsold=Math.floor(sectimeold);
+
+
+
+msPerDay=24*60*60*1000;
+
+e_daysold=timeold/msPerDay;
+
+daysold=Math.round(e_daysold);
+
+
+
+e_hrsold=(e_daysold-daysold)*24;
+
+hrsold=Math.floor(e_hrsold);
+
+
+
+e_minsold=(e_hrsold-hrsold)*60;
+
+minsold=Math.floor((e_hrsold-hrsold)*60);
+
+
+
+seconds=Math.floor((e_minsold-minsold)*60);
+
+
+
+if (daysold<0) {
+
+document.getElementById(time_id).innerHTML="逾期,倒计时已经失效";
+
+}
+
+else {
+
+if (daysold<10) {daysold="0"+daysold}
+
+if (daysold<100) {daysold="0"+daysold}
+
+if (hrsold<10 && hrsold >1) {hrsold="0"+hrsold}
+
+if (hrsold<1) {hrsold="00"}
+
+if (minsold<10) {minsold="0"+minsold}
+
+if (seconds<10) {seconds="0"+seconds}
+
+if (daysold<3) {
+
+document.getElementById(time_id).innerHTML="<strong>"+daysold+"</strong>"+"天"+"<strong>"+hrsold+"</strong>"+"小时"+"<strong>"+minsold+"</strong>"+"分"+"<strong>"+seconds+"</strong>"+"秒";
+
+}
+
+else {
+
+document.getElementById(time_id).innerHTML="<strong>"+daysold+"</strong>"+"天"+"<strong>"+hrsold+"</strong>"+"小时"+"<strong>"+minsold+"</strong>"+"分"+"<strong>"+seconds+"</strong>"+"秒";
+
+}
+
+}
+
+}
+
+
+
+}
+
+
+
+
+
+setTimeout("show_date_time_0()", 100);
+
+//-->

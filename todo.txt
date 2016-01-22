@@ -483,9 +483,59 @@ www.123121.com/goods-1059.html
 www.123121.com/sales-promotion.html
 
 find  -type f -name "*.htaccess" | xargs grep "sales"
+find  -type f -name "*" | xargs grep "sales-promotion.html"
 
-
+识别真假搜索引擎（搜索蜘蛛）方法:
 http://blog.chacuo.net/147.html
-识别真假搜索引擎（搜索蜘蛛）方法
+
+linux命令:
+tail
+more
+less (G跳转到最后)
+G
+
+robots.txt:
+User-agent: *
+Disallow: /baadmin/
+Disallow: /cert/
+Disallow: /data/
+Disallow: /includes/
+Disallow: /install/
+Disallow: /languages/
+Disallow: /plugins/
+Disallow: /templates/
+Disallow: /themes/
+Disallow: /upgrade/
+Disallow: /api/
+Disallow: /js/
+Disallow: /affiche.php
+Disallow: /captcha.php
+Disallow: /comment.php
+Disallow: /cycle_image.php
+Disallow: /goods_script.php
+Disallow: /receive.php
+Disallow: /region.php
+Disallow: /respond.php
+Disallow: /feed.php
+Disallow: /gallery.php
+
+User-agent: Sogou
+Disallow: /
+
+
+
+120.24.216.32 - - [14/Aug/2015:18:40:03 +0800] "GET /sales-promotion.html HTTP/1.1" 200 15966 "-" "-"
+120.24.216.32 - - [14/Aug/2015:18:40:03 +0800] "GET /goods-1059.html HTTP/1.1" 200 53765 "-" "-"
+
+115.29.177.125 - - [14/Aug/2015:18:45:59 +0800] "GET /sales-promotion.html HTTP/1.1" 200 15966 "-" "-"
+115.29.177.125 - - [14/Aug/2015:18:46:00 +0800] "GET /goods-1059.html HTTP/1.1" 200 53765 "-" "-"
+
+120.24.216.32 - - [15/Aug/2015:02:11:36 +0800] "GET /muying/post/meizanchen-1165.html HTTP/1.1" 
+200 21408 "-" "Mozilla/5.0 (Linux;Apache;PHP5.2.17p1;mysql;curl) Z-BlogPHP/1.3 Wonce Build 140614"
+
+www.123121.com/category.php?id=332
+
+2016/01/21 15:20:49 [warn] 1639#0: *500879 a client request body is buffered to a temporary file /www/wdlinux/nginx-1.0.15/client_body_temp/0000005782, client: 113.91.148.167, server: weixin.123121.com, request: "POST /baadmin/upload2012.php HTTP/1.1", host: "www.123121.com"
+2016/01/21 15:21:48 [warn] 1639#0: *500904 an upstream response is buffered to a temporary file /www/wdlinux/nginx-1.0.15/proxy_temp/3/78/0000005783 while reading upstream, client: 203.208.60.11, server: weixin.123121.com, request: "GET /images/201601/source_img/22169_G_1452808868722.jpg HTTP/1.1", upstream: "http://127.0.0.1:88/images/201601/source_img/22169_G_1452808868722.jpg", host: "www.123121.com"
 
 

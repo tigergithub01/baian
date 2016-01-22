@@ -3028,4 +3028,48 @@ function substr_cut($user_name){
 	return $strlen == 2 ? $firstStr . str_repeat('*', mb_strlen($user_name, 'utf-8') - 1) : $firstStr . str_repeat("*", $strlen - 2) . $lastStr;
 }
 
+
+/**
+ * 注册送红包
+ * @param int $user_id
+ * @param int $bonus_type_id
+ * @return boolean
+ */
+function send_register_bonus($user_id, $bonus_type_id=0)
+{
+	if($bonus_type_id==0){
+		$day    = getdate();
+		$today  = local_mktime(0, 0, 0, $day['mon'], $day['mday'], $day['year']);
+		$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('bonus_type') . " WHERE send_type = '" . SEND_BY_REGISTER . "' AND send_start_date <= '$today' AND send_end_date >= '$today' LIMIT 1";
+		$bonus_type = $GLOBALS['db']->getRow($sql);
+	}
+	if(empty($bonus_type))
+	{
+		return false;
+	}
+
+	/* 向会员红包表录入数据 */
+	$sql = "INSERT INTO " . $GLOBALS['ecs']->table('user_bonus') .
+	"(bonus_type_id, bonus_sn, user_id, used_time, order_id, emailed) " .
+	"VALUES ('$bonus_type[type_id]', 0, '$user_id', 0, 0, " .BONUS_MAIL_SUCCEED. ")";
+	$GLOBALS['db']->query($sql);
+
+	$tpl = get_mail_template('send_bonus');
+	if(! $tpl) return false;
+	$today = local_date($_CFG['date_format']);
+	
+	$user_info = $GLOBALS['db']->getRow("select user_name, email from " . $GLOBALS['ecs']->table('users') . "where user_id ='$user_id' " );
+	/* 发送邮件通知 */
+	$GLOBALS['smarty']->assign('user_name',    $user_info['user_name']);
+	$GLOBALS['smarty']->assign('shop_name',    $GLOBALS['_CFG']['shop_name']);
+	$GLOBALS['smarty']->assign('send_date',    $today);
+	$GLOBALS['smarty']->assign('sent_date',    $today);
+	$GLOBALS['smarty']->assign('count',        1);
+	$GLOBALS['smarty']->assign('money',        price_format($bonus_type['type_money']));
+
+	$content = $GLOBALS['smarty']->fetch('str:' . $tpl['template_content']);
+
+	send_mail($user_info['user_name'], $user_info['email'], '注册送红包', $content, $tpl['is_html']);
+}
+
 ?>

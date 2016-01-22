@@ -122,6 +122,7 @@ define('SEND_BY_USER',              0); // 按用户发放
 define('SEND_BY_GOODS',             1); // 按商品发放
 define('SEND_BY_ORDER',             2); // 按订单发放
 define('SEND_BY_PRINT',             3); // 线下发放
+define('SEND_BY_REGISTER',          4); // 注册送红包
 
 /* 广告的类型 */
 define('IMG_AD',                    0); // 图片广告

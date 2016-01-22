@@ -110,6 +110,9 @@ function register($username, $password, $email, $other = array())
         {
             log_account_change($_SESSION['user_id'], 0, 0, $GLOBALS['_CFG']['register_points'], $GLOBALS['_CFG']['register_points'], $GLOBALS['_LANG']['register_points']);
         }
+        
+        /* 注册送红包 */
+        send_register_bonus($_SESSION['user_id']);
 
         /*推荐处理*/
         $affiliate  = unserialize($GLOBALS['_CFG']['affiliate']);

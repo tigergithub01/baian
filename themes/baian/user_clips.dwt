@@ -132,7 +132,7 @@
 				                       <div class="order_state">{$order.composite_status_name}</div>
 				                       <a href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
 				                   </td>
-				                   <td rowspan="{$smarty.foreach.goods_foreach.total}"  style="width: 100px;">
+				                   <td rowspan="{$smarty.foreach.goods_foreach.total}"  style="width: 130px;">
 				                   	  {$order.handler}	
 				                   	   <!-- 	
 				                       <a href="" class="s-btn1">马上支付</a>

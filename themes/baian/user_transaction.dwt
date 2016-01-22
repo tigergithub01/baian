@@ -767,9 +767,9 @@
 	                          <th>
 	                             	 申请理由
 	                          </th>
-	                          <th>
+	                          <!-- <th>
 	                             	审核状态
-	                          </th>
+	                          </th> -->
 	                           <th>
 	                             	发货单号
 	                          </th>
@@ -796,18 +796,19 @@
 	                          <td>
 	                              {$order_back.reason}
 	                          </td>
-	                          <td>
+	                          <!-- <td>
 	                          	  {$order_back.status_name}
-	                          </td>
+	                          </td> -->
 	                           <td>
 	                          	  {$order_back.invoice_no}
 	                          </td>
-	                          <td>
+	                          <td style="text-align: center;">
+	                          		<div class="order_state" style="width: 50px;">{$order_back.status_name}</div>
 						            {if $order_back.status == 0}
-							        	<a href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="f6">撤销</a> 
+							        	<a  href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn">撤销</a> 
 							        {/if}
 							        {if $order_back.status == 1}
-							        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="f6">去发货</a> 
+							        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="a-btn">去发货</a> 
 							        {/if}
 	                          </td>
 	                      </tr>
@@ -1493,7 +1494,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	                       <div class="order_state">{$order.composite_status_name}</div>
 	                       <a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
 	                   </td>
-	                   <td rowspan="{$smarty.foreach.goods_foreach.total}" style="width: 100px;">
+	                   <td rowspan="{$smarty.foreach.goods_foreach.total}" style="width: 130px;">
 	                   	  {$order.handler}
 	                   	   <!-- 	
 	                       <a href="" class="s-btn1">马上支付</a>

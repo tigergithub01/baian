@@ -572,7 +572,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 }
 
 
-.s-btn1{display: block;width: 120px;height: 30px;text-align: center;line-height: 30px;background: #f08300;color: #fff;font-size: 14px;}
+.s-btn1{display: block;width: 120px;height: 30px;text-align: center;line-height: 30px;background: #f08300;color: #fff;font-size: 14px;border: 0 none;}
 .s-btn1:hover{color: #fff;background: #de7900;}
 
 /*******************************

@@ -163,7 +163,7 @@ class UPOP
 		*/
 		
 
-		$button = "<input type='submit' class='btn_submit' value='" . $GLOBALS['_LANG']['upop_button'] . "' />";
+		$button = "<input type='submit' class='s-btn1' value='" . $GLOBALS['_LANG']['upop_button'] . "' />";
 		$pay_service = new quickpay_service($param, quickpay_conf::FRONT_PAY);
 		$html = $pay_service->create_html($button);
 

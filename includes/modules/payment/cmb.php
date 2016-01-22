@@ -120,7 +120,7 @@ class cmb
         $def_url .= "<input type='hidden' name='MerchantUrl' value='".$data_return_url."'>\n";
        $def_url .= "<input type='hidden' name='Date' value='".$today."'>\n";
         $def_url .= "<input type='hidden' name='BranchID' value='".$data_branchid."'>\n";
-        $def_url .= "<input class='btn_submit' type='submit' value='" . $GLOBALS['_LANG']['pay_button'] . "'>";
+        $def_url .= "<input class='s-btn1' type='submit' value='" . $GLOBALS['_LANG']['pay_button'] . "'>";
         $def_url .= "</form>\n";
 
         return $def_url;

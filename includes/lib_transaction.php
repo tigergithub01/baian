@@ -459,7 +459,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             /* 对配送状态的处理 */
             if ($row['shipping_status'] == SS_SHIPPED)
             {
-                @$row['handler'] = "<a class=\"btn_submit\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                @$row['handler'] = "<a class=\"s-btn1\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
                 if(!empty($row['invoice_no'])){
                 	@$row['handler'] .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
                 }
@@ -468,7 +468,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
             {
 //                 @$row['handler'] = '<span style="color:red">'.$GLOBALS['_LANG']['ss_received'] .'</span>';
             	if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
-            		$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
+            		$row['handler'] = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
             	}
             	//申请退货
             	if(!is_order_backed($row['order_id'])){
@@ -500,7 +500,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
         	}else if(in_array($row['shipping_status'], array(SS_SHIPPED, SS_RECEIVED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
         		//去评价
         		if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
-        			$row['handler'] = "<a class=\"a-btn\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
+        			$row['handler'] = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
         		}
         		//申请退货
         		if(!is_order_backed($row['order_id'])){

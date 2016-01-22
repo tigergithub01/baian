@@ -309,7 +309,7 @@ class bankcomm
  
 <input type = "hidden" name = "issBankNo" value = "' . $param ['issBankNo'] . '">//开源代码phpfensi.com 
  
-<input type="submit" value=" " class="pay_button" /> 
+<input type="submit" value=" " class="s-btn1" /> 
  
 </form>';
 		

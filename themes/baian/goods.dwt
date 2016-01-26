@@ -121,6 +121,9 @@
 													<!-- {if ($buy_act_pkg.other_goods_id)} -->赠品
 													<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" style="width: 30px;height: 30px" /></a>
 													<!-- {else} -->原品<!-- {/if} -->
+													<!--{if not ($smarty.foreach.buy_act_pkg.last)}-->
+														+
+													<!-- {/if} -->
 												<!-- {/foreach} -->
 												
 											<!-- {else} -->

@@ -112,9 +112,25 @@
 	                			<span class="l" style="float: inherit;"><i>商品促销</i> 
 	                				<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
 										<span style="<!--{if ($smarty.foreach.buy_act.index neq 0)}-->margin-left: 20px;<!--{/if}-->">
-											<span>买{$buy_act.buy_number_activity}送{$buy_act.give_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品</span>
-											<a style="" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 30px;height: 30px" /></a><!-- {else} -->原品<!-- {/if} -->
-										</span>
+											
+											<!--{if $buy_act.package} -->
+												<span>
+													买{$buy_act.buy_number_activity}送{$buy_act.give_number_activity}送
+												</span>
+												<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} -->
+													<!-- {if ($buy_act_pkg.other_goods_id)} -->赠品
+													<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" style="width: 30px;height: 30px" /></a>
+													<!-- {else} -->原品<!-- {/if} -->
+												<!-- {/foreach} -->
+												
+											<!-- {else} -->
+												<span>
+													买{$buy_act.buy_number_activity}送{$buy_act.give_number_activity}送
+													<!-- {if ($buy_act.other_goods_id)} -->赠品
+													<a style="" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 30px;height: 30px" /></a>
+													<!-- {else} -->原品<!-- {/if} -->
+												</span>
+											<!-- {/if} -->											
 									<!-- {/foreach} -->
 	                			</span> 
 	                			</p>

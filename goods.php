@@ -256,7 +256,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'cart_goods_number')
 	lib_main_make_json_result('',['cart_goods_number'=>$cart_goods_number]);
 }
 
-//clear_cache_files('goods');
+// clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */

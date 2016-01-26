@@ -2616,7 +2616,26 @@ function get_buy_give_activity_list($goods_id){
 	$buy_give_activity_list = $GLOBALS['db']->getAll($sql);
 	foreach ($buy_give_activity_list as $key => $row) {
 		$buy_give_activity_list[$key]['gift_goods_url']          = build_uri('goods', array('gid'=>$row['other_goods_id']), $row['other_goods_name']);
+		
+		
+		//赠送组合商品
+		$sql = "SELECT pkg.package_id, pkg.buy_give_id, pkg.give_number_activity, pkg.other_goods_id ,g.goods_name AS other_goods_name, " .
+			" g.goods_thumb AS gift_goods_thumb, g.goods_img AS gift_goods_img  FROM "
+				. $GLOBALS['ecs']->table('buy_give_package') . " AS pkg " .
+				" LEFT JOIN  " . $GLOBALS['ecs']->table('goods') . " AS g  ON (pkg.other_goods_id = g.goods_id)" .
+				" WHERE pkg.buy_give_id = '".$row['buy_give_id']."'" .
+				" ORDER BY pkg.other_goods_id";
+		$buy_give_package_list = $GLOBALS['db']->getAll($sql);
+		foreach ($buy_give_package_list as $i => $v) {
+			$buy_give_package_list[$i]['gift_goods_url']          = build_uri('goods', array('gid'=>$v['other_goods_id']), $v['other_goods_name']);
+		}
+		
+		$buy_give_activity_list[$key]['package'] = $buy_give_package_list;
+		
 	}
+	
+	
+	
 	return $buy_give_activity_list;
 }
 

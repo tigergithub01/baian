@@ -3003,15 +3003,42 @@ function add_goods_gift_to_cart($goods_id,$is_checked = 1){
 		$gift_goods_id = empty($act['other_goods_id'])?$act['goods_id']:$act['other_goods_id'];
 
 		if($gift_num>0){
-			//插入赠品记录
-			$sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
-					"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
-					"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
-					"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'0',".
-					"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', '$is_checked' " .
-					"FROM " . $GLOBALS['ecs']->table('goods') .
-					" WHERE goods_id = '$gift_goods_id'";
-			$GLOBALS['db']->query($sql);
+			
+			//插入组合赠品
+			$sql = "SELECT pkg.package_id, pkg.buy_give_id, pkg.give_number_activity, pkg.other_goods_id ,g.goods_name AS other_goods_name, " .
+					" g.goods_thumb AS gift_goods_thumb, g.goods_img AS gift_goods_img  FROM "
+					. $GLOBALS['ecs']->table('buy_give_package') . " AS pkg " .
+					" LEFT JOIN  " . $GLOBALS['ecs']->table('goods') . " AS g  ON (pkg.other_goods_id = g.goods_id)" .
+					" WHERE pkg.buy_give_id = '".$act['buy_give_id']."'" .
+					" ORDER BY pkg.other_goods_id";
+			$buy_give_package_list = $GLOBALS['db']->getAll($sql);
+			if(!empty($buy_give_package_list)){
+				foreach ($buy_give_package_list as $i => $v) {
+					//插入组合赠品记录
+					$gift_num = $gift_num * $v['give_number_activity'];
+					$gift_goods_id = empty($v['other_goods_id'])?$act['goods_id']:$v['other_goods_id'];
+					
+					$sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
+							"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
+							"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
+							"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'0',".
+							"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', '$is_checked' " .
+							"FROM " . $GLOBALS['ecs']->table('goods') .
+							" WHERE goods_id = '$gift_goods_id'";
+					$GLOBALS['db']->query($sql);
+				}
+				
+			}else{
+				//插入赠品记录
+				$sql = "INSERT INTO " . $GLOBALS['ecs']->table('cart') . " (" .
+						"user_id, session_id, goods_id, goods_sn, goods_name, market_price, goods_price, ".
+						"goods_number, is_real, extension_code, parent_id, is_gift, rec_type, is_checked ) ".
+						"SELECT '$_SESSION[user_id]', '" . SESS_ID . "', goods_id, goods_sn, goods_name, market_price,'0',".
+						"'$gift_num', is_real, extension_code, 0, '$goods_id', '" . CART_GENERAL_GOODS . "', '$is_checked' " .
+						"FROM " . $GLOBALS['ecs']->table('goods') .
+						" WHERE goods_id = '$gift_goods_id'";
+				$GLOBALS['db']->query($sql);
+			}
 		}
 	}
 }

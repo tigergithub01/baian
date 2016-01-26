@@ -19,7 +19,7 @@
 		});
 		
 		initSelectdGiftGoods();
-		init_clear_other_goods();
+		//init_clear_other_goods();
 	});
 	
 	function change_buy_gift(is_buy_gift){
@@ -40,8 +40,8 @@
 	
 	function init_clear_other_goods(){
 		$(".clear_other_goods_btn").click(function(){
-			$other_goods_id = $(this).siblings("input[name='other_goods_id[]']");
-			$other_goods_name = $(this).siblings("input[name='other_goods_name[]']");
+			$other_goods_id = $(this).siblings("input[name$=\"[other_goods_id]\"]");
+			$other_goods_name = $(this).siblings("input[name$=\"[other_goods_name]\"]");
 			$other_goods_id.val('');
 			$other_goods_name.val('');
 		});
@@ -66,7 +66,7 @@
 				return format(item);
 			}
 		}).result(function(e, item) {
-			$other_goods_id = $(e.target).siblings("input[name='other_goods_id[]']");
+			$other_goods_id = $(e.target).siblings("input[name*=\"[other_goods_id]\"]");
 			//console.debug($(e.target).siblings("input[name='other_goods_id[]']"));
 			$other_goods_id.val(item.goods_id);
 			//$("#gift_goods_id").val(item.goods_id);
@@ -437,7 +437,7 @@
               <input name="gift_start_date" type="text" id="gift_start_date" size="24" value='{$goods.gift_start_date}' /><input name="selbtn_gift_start" type="button" id="selbtn_gift_start" onclick="return showCalendar('gift_start_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn_gift_start');" value="{$lang.btn_select}" class="button"/> - <input name="gift_end_date" type="text" id="gift_end_date" size="24" value='{$goods.gift_end_date}' /><input name="selbtn_gift_end" type="button" id="selbtn_gift_end" onclick="return showCalendar('gift_end_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn_gift_end');" value="{$lang.btn_select}" class="button"/>
             </td>
           </tr>
-          <!--仓库库存 start-->
+          <!--买几送几 start-->
           <tr id="row_buy_give">
             <td colspan="2" style="text-align: center;">
 	            <fieldset style="border:1px solid #DDEEF2">
@@ -451,21 +451,52 @@
 	                     {else}
 	                       <a href="javascript:;" onclick="remove_bg_activity(this)">[-]</a>
 	                     {/if}
-	                     	买满  <input type="text" name="buy_number_activity[]" size="8" value="{$bg_activity.buy_number_activity}"/>
-	                     	赠送 <input type="text" name="give_number_activity[]" size="8" value="{$bg_activity.give_number_activity}"/>
-	                     	<input type="checkbox" {if $bg_activity.is_double_give eq '1'}checked="checked"{/if} name="is_double_give[]" value="1"/>是否倍增? 
-	                     	最大赠送数量，为-1表示不限 <input type="text" name="max_give_number[]" size="8" value="{$bg_activity.max_give_number}"/>
+	                     	买满  <input type="text" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][buy_number_activity]" size="8" value="{$bg_activity.buy_number_activity}"/>
+	                     	赠送 <input type="text" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][give_number_activity]" size="8" value="{$bg_activity.give_number_activity}"/>
+	                     	<input type="checkbox" {if $bg_activity.is_double_give eq '1'}checked="checked"{/if} name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][is_double_give]" value="1"/>是否倍增? 
+	                     	最大赠送数量，为-1表示不限 <input type="text" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][max_give_number]" size="8" value="{$bg_activity.max_give_number}"/>
 	                     	赠送其它商品,为空赠送原品  
-	                     	<input type="text"   name="other_goods_name[]" size="50" class="selectdGiftGoods" value="{$bg_activity.other_goods_name}"/>
-	                     	<input type="hidden" name="other_goods_id[]" value="{$bg_activity.other_goods_id}"/>
-	                     	<input type="button" class="clear_other_goods_btn" value="清空赠送其它商品"/>
+	                     	<input type="text"   name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][other_goods_name]" size="50" class="selectdGiftGoods" value="{$bg_activity.other_goods_name}"/>
+	                     	<input type="hidden" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][other_goods_id]" value="{$bg_activity.other_goods_id}"/>
+	                     	<!-- <input type="button" class="clear_other_goods_btn" value="清空赠送其它商品"/> -->
+	                     	                     	
+	                     	
+	                     	<fieldset style="border:1px solid #DDEEF2;margin-left: 50px;">
+	                     		<legend style="background:#FFF">组合商品:</legend>
+	                     		<table>
+	                     			<tr>
+	                     				<td style="text-align: left;">
+	                     					<input type="button" class="add_gift_goods_package_btn" onclick="add_bg_activity_pkg(this,{$smarty.foreach.bg_activity.index})" value="赠送组合商品[+]"/>
+	                     				</td>
+	                     			</tr>
+	                     			{foreach from=$bg_activity.package item=bg_activity_pkg name=bg_activity_pkg}
+	                     			<tr>
+	                     				<td>
+	                     					<a href="javascript:;" onclick="remove_bg_activity_pkg(this)">[-]</a>
+	                     					赠送<input type="text" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][package_gift][give_number_activity][]" size="8" value="{$bg_activity_pkg.give_number_activity}"/>
+	                     					赠送其它商品,为空赠送原品  <input type="text"   name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][package_gift][other_goods_name][]" size="50" class="selectdGiftGoods" value="{$bg_activity_pkg.other_goods_name}"/>
+	                     					<input type="hidden" name="buy_give_activity_list[{$smarty.foreach.bg_activity.index}][package_gift][other_goods_id][]" value="{$bg_activity_pkg.other_goods_id}"/>
+	                     				</td>
+	                     			</tr>
+	                     			{/foreach}
+	                     		</table>
+	                     	</fieldset>
+	                     	
 	                  </td>
 	                </tr>
 	                {/foreach}
 	              </table>
 	              </fieldset>
+	              
+	              <div style="display: none;" id="package_template">
+     					<a href="javascript:;" onclick="remove_bg_activity_pkg(this)">[-]</a>
+     					赠送<input type="text" name="buy_give_activity_list_tpl[0][package_gift][give_number_activity][]" size="8" value="1"/>
+     					赠送其它商品,为空赠送原品  <input type="text"   name="buy_give_activity_list_tpl[0][package_gift][other_goods_name][]" size="50" class="selectdGiftGoods" value=""/>
+     					<input type="hidden" name="buy_give_activity_list_tpl[0][package_gift][other_goods_id][]" value=""/>
+      				</div>
+	              
           </tr>
-          <!--仓库库存 end -->
+          <!--买几送几 end -->
           
            <!--设置某个商品在在某些地区可以包邮，某些地区不能-->
           <tr>
@@ -973,13 +1004,21 @@
           validator.required('gift_end_date', "买几送几促销结束日期不能为空");
           validator.islt('gift_start_date', 'gift_end_date', "买几送几促销开始日期不能大于结束日期");
           
-          if($("#tbody_buy_give input[name='is_double_give[]'][type=checkbox]").length > 0 && 
-        		  $("#tbody_buy_give input[name='is_double_give[]'][type=checkbox]:checked").length != 1 ){
+          if($("#tbody_buy_give input[name$='[is_double_give]'][type=checkbox]").length > 0 && 
+        		  $("#tbody_buy_give input[name$='[is_double_give]'][type=checkbox]:checked").length != 1 ){
         	  alert('买几送几请设置一个倍增规则!');
         	  return false;
           } 
       }
-
+      
+      //TODO:买几送几商品名称情况后，自动将隐藏的商品编号清空。
+      $.each($("input[name*=\"[other_goods_name]\"]"),function(i,v){
+    	  //console.debug($(v).val());
+    	  if($(v).val()==''){
+    		  $(v).siblings("input[name*=\"[other_goods_id]\"]").val('');
+    	  }
+      });
+      
       return validator.passed();
   }
 
@@ -1640,11 +1679,12 @@
   /**
    * 新增买赠活动
    */
+  var bg_activity_index = {$buy_give_activity_list_count};
   function add_bg_activity(obj)
   {
     var src      = obj.parentNode.parentNode;
     var tbl      = document.getElementById('tbody_buy_give');
-
+	
     /*
     var validator  = new Validator('theForm');
     checkVolumeData("0",validator);
@@ -1654,22 +1694,38 @@
     }
     */
 
+    //buy_give_activity_list[0]
+    
+    
+    
     var row  = tbl.insertRow(tbl.rows.length);
     var cell = row.insertCell(-1);
-    cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
-
-    var buy_number_activity = document.getElementsByName("buy_number_activity[]");
+    
+    //inserted index
+    bg_activity_index = bg_activity_index + 1;
+    
+    //cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
+	//cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(buy_give_activity_list)(.*)(\[)(\+)/i, "$1remove_bg_activity$3buy_give_activity_listxx$5$6-");
+	var str = src.cells[0].innerHTML;
+	str = str.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
+	str = str.replace(/buy_give_activity_list\[0\]/g, "buy_give_activity_list["+bg_activity_index+"]");
+	str = str.replace(/add_bg_activity_pkg\(this,0\)/g, "add_bg_activity_pkg(this,"+bg_activity_index+")");
+	cell.innerHTML = str;
+	
+    /*
+	var buy_number_activity = document.getElementsByName("buy_give_activity_list["+index+"][buy_number_activity]");
     var give_number_activity  = document.getElementsByName("give_number_activity[]");
     var max_give_number  = document.getElementsByName("max_give_number[]");
     var is_double_give  = document.getElementsByName("is_double_give[]");
+    */
 
-    buy_number_activity[buy_number_activity.length-1].value = "0";
-    give_number_activity[give_number_activity.length-1].value = "0";
-    max_give_number[max_give_number.length-1].value = "-1";
-    $(is_double_give[is_double_give.length-1]).attr('checked',false);
+    document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][buy_number_activity]").value = "0";
+    document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][give_number_activity]").value = "0";
+    document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][max_give_number]").value = "-1";
+    $("input[name='buy_give_activity_list["+bg_activity_index+"][is_double_give]']").attr('checked',false);
     
     initSelectdGiftGoods();
-    init_clear_other_goods();
+    //init_clear_other_goods();
   }
   
   /**
@@ -1680,6 +1736,69 @@
     var row = rowindex(obj.parentNode.parentNode);
     var tbl = document.getElementById('tbody_buy_give');
 
+    tbl.deleteRow(row);
+  }
+  
+  /**
+   * 新增买赠活动-组合商品
+   */
+  function add_bg_activity_pkg(obj,index)
+  {
+    //var src      = obj.parentNode.parentNode;
+    var tbl      = obj.parentNode.parentNode.parentNode;
+	
+    /*
+    var validator  = new Validator('theForm');
+    checkVolumeData("0",validator);
+    if (!validator.passed())
+    {
+      return false;
+    }
+    */
+
+    //buy_give_activity_list[0]
+    
+    
+    
+    var row  = tbl.insertRow(tbl.rows.length);
+    var cell = row.insertCell(-1);
+    
+    var str = $("#package_template").html();
+	str = str.replace(/buy_give_activity_list_tpl\[0\]/g, "buy_give_activity_list["+index+"]");
+    cell.innerHTML = str;
+    //cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
+	//cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(add_bg_activity)(.*)(buy_give_activity_list)(.*)(\[)(\+)/i, "$1remove_bg_activity$3buy_give_activity_listxx$5$6-");
+	/*
+	var str = src.cells[0].innerHTML;
+	str = str.replace(/(.*)(add_bg_activity)(.*)(\[)(\+)/i, "$1remove_bg_activity$3$4-");
+	str = str.replace(/buy_give_activity_list\[0\]/g, "buy_give_activity_list["+bg_activity_index+"]");
+	cell.innerHTML = str;
+	*/
+    /*
+	var buy_number_activity = document.getElementsByName("buy_give_activity_list["+index+"][buy_number_activity]");
+    var give_number_activity  = document.getElementsByName("give_number_activity[]");
+    var max_give_number  = document.getElementsByName("max_give_number[]");
+    var is_double_give  = document.getElementsByName("is_double_give[]");
+    */
+
+    //document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][buy_number_activity]").value = "0";
+    //document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][give_number_activity]").value = "0";
+    //document.getElementsByName("buy_give_activity_list["+bg_activity_index+"][max_give_number]").value = "-1";
+    //$("input[name='buy_give_activity_list["+bg_activity_index+"][is_double_give]']").attr('checked',false);
+    
+    initSelectdGiftGoods();
+    //init_clear_other_goods();
+  }
+  
+  /**
+   * 删除买赠活动-组合商品
+   */
+  function remove_bg_activity_pkg(obj)
+  {
+    var row = rowindex(obj.parentNode.parentNode);
+    //var tbl = document.getElementById('tbody_buy_give_pkg');
+	var tbl = obj.parentNode.parentNode.parentNode;
+	
     tbl.deleteRow(row);
   }
   

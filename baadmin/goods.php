@@ -471,8 +471,19 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
      " WHERE bga.goods_id = '".$_REQUEST[goods_id]."' ORDER BY bga.is_double_give,bga.buy_number_activity ";
     $buy_give_activity_list = $db->getAll($sql);
     if(empty($buy_give_activity_list)){
-    	$buy_give_activity_list = array('0'=>array('buy_number_activity'=>0,'give_number_activity'=>0,'max_give_number'=>-1,'is_double_give'=>0,'is_other_goods'=>0)); //为空时插入一条初始记录
+    	$buy_give_activity_list = array('0'=>array('buy_number_activity'=>0,'give_number_activity'=>0,'max_give_number'=>-1,'is_double_give'=>0)); //为空时插入一条初始记录
+    }else{
+    	foreach ($buy_give_activity_list as $key => $value) {
+    		$sql = "SELECT pkg.package_id, pkg.buy_give_id, pkg.give_number_activity, pkg.other_goods_id ,g.goods_name AS other_goods_name FROM "
+    			. $ecs->table('buy_give_package') . " AS pkg " .
+    			" LEFT JOIN  " . $ecs->table('goods') . " AS g  ON (pkg.other_goods_id = g.goods_id)" .
+    			" WHERE pkg.buy_give_id = '".$value['buy_give_id']."'";
+    		$buy_give_package_list = $db->getAll($sql);
+    		$buy_give_activity_list[$key]['package'] = $buy_give_package_list;
+    	}
     }
+    
+    
 
     /* 拆分商品名称样式 */
     $goods_name_style = explode('+', empty($goods['goods_name_style']) ? '+' : $goods['goods_name_style']);
@@ -544,6 +555,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     
     //买几送几活动
     $smarty->assign('buy_give_activity_list', $buy_give_activity_list);
+    $smarty->assign('buy_give_activity_list_count', empty($buy_give_activity_list)?0:count($buy_give_activity_list));
     
     /* 显示商品信息页面 */
     assign_query_info();
@@ -1346,16 +1358,59 @@ else
     
     
     /*买几送几 start*/
-    $buy_number_activitys = isset($_POST['buy_number_activity'])?$_POST['buy_number_activity']:null;
+    /* $buy_number_activitys = isset($_POST['buy_number_activity'])?$_POST['buy_number_activity']:null;
     $give_number_activitys = isset($_POST['give_number_activity'])?$_POST['give_number_activity']:null;
     $max_give_numbers = isset($_POST['max_give_number'])?$_POST['max_give_number']:null;
     $is_double_gives = isset($_POST['is_double_give'])?$_POST['is_double_give']:null;
-    $other_goods_ids = isset($_POST['other_goods_id'])?$_POST['other_goods_id']:null;
+    $other_goods_ids = isset($_POST['other_goods_id'])?$_POST['other_goods_id']:null; */
+    $buy_give_activity_list = isset($_POST['buy_give_activity_list'])?$_POST['buy_give_activity_list']:null;
+    
+//     var_dump($buy_give_activity_list);
+//     exit;
+    $sql = "DELETE FROM ". $GLOBALS['ecs']->table('buy_give_package') ." WHERE buy_give_id IN ( SELECT buy_give_id FROM ". $GLOBALS['ecs']->table('buy_give_activity')." WHERE goods_id = '".$goods_id."')";
+    $GLOBALS['db']->query($sql);
     
     $sql = "DELETE FROM ". $GLOBALS['ecs']->table('buy_give_activity') ." WHERE goods_id = '".$goods_id."'";
     $GLOBALS['db']->query($sql);
     
-    if($buy_number_activitys){
+    if($buy_give_activity_list){
+    	foreach ($buy_give_activity_list as $key => $value) {
+    		$buy_number_activity  = $value['buy_number_activity'];
+    		if(empty($buy_number_activity)){
+    			continue;
+    		}
+    		$give_number_activity  = empty($value['give_number_activity'])?0:intval($value['give_number_activity']);
+    		$is_double_give  = empty($value['is_double_give'])?0:intval($value['is_double_give']);
+    		$other_goods_id  = empty($value['other_goods_id'])?null:intval($value['other_goods_id']);
+    		$max_give_number  = empty($value['max_give_number'])?-1:intval($value['max_give_number']);
+    
+    
+    		$sql = "INSERT INTO " . $GLOBALS['ecs']->table('buy_give_activity') . " (goods_id, buy_number_activity, give_number_activity, max_give_number,is_double_give,other_goods_id) " .
+    				"VALUES ('$goods_id', '$buy_number_activity', '$give_number_activity', '$max_give_number', '$is_double_give', '$other_goods_id')";
+    		$db->query($sql);
+    		
+    		//写入组合赠送
+    		if(isset($buy_give_activity_list[$key]['package_gift'])){
+	    		$give_number_activitys = $buy_give_activity_list[$key]['package_gift']['give_number_activity'];
+	    		
+	    		$other_goods_ids = $buy_give_activity_list[$key]['package_gift']['other_goods_id'];
+	    		$inserted_buy_give_id = $GLOBALS['db']->insert_id();
+	    		foreach ($give_number_activitys as $i => $v) {
+	    			$give_number_activity_pkg  = empty($v)?0:intval($v);
+	    			if(empty($give_number_activity_pkg)){
+	    				continue;
+	    			}
+	    			$other_goods_id_pkg  = empty($other_goods_ids[$i])?null:intval($other_goods_ids[$i]);
+	    			
+	    			$sql = "INSERT INTO " . $GLOBALS['ecs']->table('buy_give_package') . " (buy_give_id, give_number_activity, other_goods_id) " .
+	    					"VALUES ('$inserted_buy_give_id', '$give_number_activity_pkg', '$other_goods_id_pkg')";
+	    			$db->query($sql);
+	    		}
+    		}
+    	}
+    }
+    
+    /* if($buy_number_activitys){
     	foreach ($buy_number_activitys as $key => $value) {
     		$buy_number_activity  = empty($value)?0:intval($value);
     		if(empty($buy_number_activity)){
@@ -1371,7 +1426,8 @@ else
     				"VALUES ('$goods_id', '$buy_number_activity', '$give_number_activity', '$max_give_number', '$is_double_give', '$other_goods_id')";
     		$db->query($sql);
     	}
-    }
+    } */
+    
     /*买几送几 end*/
 
     /* 记录上一次选择的分类和品牌 */

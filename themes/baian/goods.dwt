@@ -108,18 +108,18 @@
 	                			<!-- {/if} -->
 	                			
 	                			<!-- {if ($goods.is_buy_gift eq 1)} -->
-	                			<div>
+	                			<div style="display: block;">
 	                			<span class="l" style="float: inherit;"><i>商品促销</i></span> 
-	                			<div style="display: inline-block;">
+	                			<div style="display: inline;">
 	                				<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
-										<span style="float: inherit;padding: 0px;<!--{if ($smarty.foreach.buy_act.index neq 0)}-->margin-left: 20px;<!--{/if}-->">
+										<span style="display:table-row;float: inherit;padding-bottom: 3px;<!--{if ($smarty.foreach.buy_act.index neq 0)}-->margin-left: 20px;<!--{/if}-->">
 											<!--{if $buy_act.package} -->
-												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" style="width: 30px;height: 30px" /></a><!-- {else} -->原品<!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b>+</b><!-- {/if} -->
+												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
 												<!-- {/foreach} -->
 												
 											<!-- {else} -->
 												<span>
-													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 30px;height: 30px" /></a><!-- {else} -->原品<!-- {/if} -->×{$buy_act.give_number_activity}
+													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {/if} -->×{$buy_act.give_number_activity}
 												</span>
 											<!-- {/if} -->
 											</span> 

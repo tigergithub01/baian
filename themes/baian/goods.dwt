@@ -109,8 +109,8 @@
 	                			
 	                			<!-- {if ($goods.is_buy_gift eq 1)} -->
 	                			<div style="display: block;">
-	                			<span class="l" style="float: inherit;"><i>商品促销</i></span> 
-	                			<div style="display: inline;">
+	                			<span class="l" style="display: inline; float: left;"><i>商品促销</i></span> 
+	                			<div style="display: inline-block;margin-left:5px;">
 	                				<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
 										<span style="display:table-row;float: inherit;padding-bottom: 3px;<!--{if ($smarty.foreach.buy_act.index neq 0)}-->margin-left: 20px;<!--{/if}-->">
 											<!--{if $buy_act.package} -->

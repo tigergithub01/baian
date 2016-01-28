@@ -30,7 +30,7 @@
 <!--{if $smarty.foreach.name.first}-->
 <div class="w-box">
 			<div class="tit">
-				<a href="promotion.html" class="r">更多抢购&gt;</a>
+				<a href="promote.html" class="r">更多抢购&gt;</a>
 				<h3 class="st1">每天限时抢购<span><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
 			</div>
 <script>

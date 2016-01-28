@@ -98,6 +98,7 @@ if ($act == 'cat_rec')
 /* 缓存编号 */
 $cache_id = sprintf('%X', crc32($_SESSION['user_rank'] . '-' . $_CFG['lang']));
 
+clear_all_files();
 if (!$smarty->is_cached('index.dwt', $cache_id))
 {
     assign_template();
@@ -110,14 +111,7 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     /* meta information */
     $smarty->assign('keywords',        htmlspecialchars($_CFG['shop_keywords']));
     $smarty->assign('description',     htmlspecialchars($_CFG['shop_desc']));
-    $smarty->assign('flash_theme',     $_CFG['flash_theme']);  // Flash轮播图片模板
-	
- $smarty->assign('wap_index_ad',get_wap_advlist('wap首页幻灯广告', 5));  //wap首页幻灯广告位
-
-	 
-
-
-	
+		
     /* 首页主广告设置 */
     $smarty->assign('index_ad',     $_CFG['index_ad']);
     if ($_CFG['index_ad'] == 'cus')
@@ -126,45 +120,32 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
         $ad = $db->getRow($sql, true);
         $smarty->assign('ad', $ad);
     }
-
-    /* links */
-    $links = index_get_links();
-    $smarty->assign('img_links',       $links['img']);
-    $smarty->assign('txt_links',       $links['txt']);
-    $smarty->assign('data_dir',        DATA_DIR);       // 数据目录
-	
- 
-$smarty->assign("flash",get_flash_xml());
-$smarty->assign('flash_count',count(get_flash_xml()));
-
-
-
-
-    /* 首页推荐分类 */
-    $cat_recommend_res = $db->getAll("SELECT c.cat_id, c.cat_name, cr.recommend_type FROM " . $ecs->table("cat_recommend") . " AS cr INNER JOIN " . $ecs->table("category") . " AS c ON cr.cat_id=c.cat_id");
-    if (!empty($cat_recommend_res))
-    {
-        $cat_rec_array = array();
-        foreach($cat_recommend_res as $cat_recommend_data)
-        {
-            $cat_rec[$cat_recommend_data['recommend_type']][] = array('cat_id' => $cat_recommend_data['cat_id'], 'cat_name' => $cat_recommend_data['cat_name']);
-        }
-        $smarty->assign('cat_rec', $cat_rec);
-    }
-
-    /* 页面中的动态内容 */
-    assign_dynamic('index');
+    
+    /* 首页主广告设置 */
+    $smarty->assign("flash",get_flash_xml());
+    $smarty->assign('flash_count',count(get_flash_xml()));
+    
+    /* 精品汇聚 */
+    $smarty->assign("huiju",getads(166,2));
     
     //猜你喜欢    
     $may_like_goods = com_sale_get_may_like_goods();
     $smarty->assign('may_like_goods',$may_like_goods);
     
+    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品
     
-    //底部导航 2015-10-03
+    /* 门店动态 */
+    $smarty->assign('class_articles_33', index_get_class_articles(33,3)); // 分类调用文章
+    
+    
+    /* 页面中的动态内容 */
+    assign_dynamic('index');
+    
+    /* //底部导航 2015-10-03
     include_once ('includes/extend/cls_article.php');
     $cls_article = new cls_article();
     $nav_bottom_article = $cls_article->get_article(154);
-    $smarty->assign('nav_bottom',$nav_bottom_article);
+    $smarty->assign('nav_bottom',$nav_bottom_article); */
     
 }
 

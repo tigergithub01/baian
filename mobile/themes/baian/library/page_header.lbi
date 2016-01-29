@@ -1,17 +1,20 @@
 <script type="text/javascript">
 var process_request = "{$lang.process_request}";
 </script>
-<link href="/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/themes/baian/js/suggest.js"></script>
-<!-- <link href="/themes/baian/js/jquery-validation-1.14.0/demo/css/screen.css" rel="stylesheet" type="text/css" /> -->
-<!-- <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.js"></script> -->
+<link href="/mobile/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/mobile/themes/baian/js/suggest.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+
+<script type="text/javascript" src="/js/utils.js"></script>
+<script type="text/javascript" src="/mobile//themes/baian/js/jquery-validation/lib/jquery.js"></script> 
 
 
 <header id="hd">
 	<a href="" class="logo"><img src="images/logo.png" alt=""></a>
+	<div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div>
 	<div class="soBox">
-		<form action="">
-			<input type="text" placeholder="纸尿裤1元1片">
+		<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+			<input type="text" name="keywords" placeholder="{$search_keywords|escape}" onkeyup="keyupdeal(event,this.value);" onkeydown="keydowndeal(event);" onclick="keyupdeal(event,this.value);" onblur="closediv();"  autocomplete="off" >
 			<input type="submit" value="搜索">
 		</form>
 	</div>

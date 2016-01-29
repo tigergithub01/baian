@@ -9,23 +9,38 @@
 	<link rel="stylesheet" href="/mobile/themes/baian/css/mui.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/swipeslide.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/style.css" />
+	<link rel="stylesheet" href="/mobile/themes/baian/css/touchslider.css" />
 	<script type="text/javascript" src="/mobile/themes/baian/js/meta.js"></script>
-	<script  type="text/javascript" src="/mobile/themes/baian/js/zepto.js"></script>
+	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
 </head>
 <body>
-	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
- 	
-  
 	
-
-	 <!-- 轮换大图 -->
-	<div id="banner">
-		<ul>
-			<!--{foreach  from=$flash name=myflash item=flash}-->
-			<li style="background:{$flash.text}"><a href="{$flash.url}"><img src="/{$flash.src}" /></a></li>
-			 <!--{/foreach}-->
-		</ul>
+	<!-- 轮播主广告图 -->
+	<div class="touchslider">
+		<div class="touchslider-viewport">
+			<div style="width:10000px">
+			<!--{foreach from=$flash name=myflash item=flash}-->
+			<ul class="touchslider-item">
+				<li style="background:{$flash.text}"><a href="{$flash.url}"><img src="/{$flash.src}"/></a></li>
+			</ul>
+			<!--{/foreach}-->
+		</div>
+		</div>
+		
+		<div class="touchslider-nav">
+		<!--{foreach  from=$flash name=myflash item=flash}-->
+			<!--{if $smarty.foreach.myflash.first}-->
+			<a class="touchslider-nav-item touchslider-nav-item-current"></a>
+			<!-- {else} -->
+			<a class="touchslider-nav-item"></a>
+			<!-- {/if} -->
+		<!--{/foreach}-->
+		</div>
 	</div>
+	<div class="h"></div>
+
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
 	<!-- 主页面 -->
 	<section id="main">
@@ -64,6 +79,32 @@
 
 		</div>
 		<div class="h"></div>
+		
+		<!-- 猜你喜欢 -->
+		<div class="w-box" style="background-color: transparent;">
+			<div class="tit">
+				<h3 class="st1">猜你喜欢</h3>
+			</div>
+
+			<ul class="ul_may_like_goods">
+				<!--{foreach from=$may_like_goods name=ban item=item_goods}-->
+				<li style=""><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
+					<img src="/{$item_goods.goods_thumb}" alt="">
+				</a>
+				<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:23}</a></p>
+				<p class="price">
+				<!-- {if $item_goods.promote_price neq 0} -->
+	           		{$item_goods.formated_promote_price}
+	            <!-- {else}-->
+	          		{$item_goods.shop_price}
+	            <!--{/if}-->
+	            </p>
+				<!--{/foreach}-->	
+			</ul>
+			<div class="h"></div>
+
+		</div>
+		<div class="h"></div>
 
 		<!-- 门店动态 -->
 		<div class="w-box">
@@ -88,21 +129,20 @@
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
-	<script src="themes/baian/js/swipeslide.js" type="text/javascript"></script>
+	<script src="/mobile/themes/baian/js/jquery.touchslider.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	  $(document).ready(function() {
-	    $('#banner').swipeSlide({autoPlay:true,speed:300});
+	    $('.touchslider').touchSlider({mouseTouch: true,autoplay:true,duration:350});
 	  });
 	</script>
 
-	<script type="text/javascript" src="themes/baian/js/TouchSlide.js"></script>
+	
 	<script type="text/javascript">
 		TouchSlide({ 
 			slideCell:"#flash-sale",
 			titCell:".hd ul" // titCell 为导航元素包裹层
 		});
 	</script>
-	
 	
 </body>
 </html>

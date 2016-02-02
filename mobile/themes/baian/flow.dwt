@@ -15,27 +15,11 @@
 
 <!-- #购物车界面start -->
   <!-- {if $step eq "cart"} -->
-  
-	<div id="hd">
-		<div class="wp2">
-			<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
-			<div class="hdr r">
-				<ul class="ul-step">
-					<li class="on">1.我的购物车 ></li>
-					<li>2.确认订单信息 ></li>
-					<li>3.提交订单 ></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-  
+	
+	
   <div class="c"></div>
 	<div id="bd">
 		<div class="wp2">
-			<div class="c-tit1">
-				<a class="r" href="/flow.php?step=cart">< 返回继续购物</a>
-				<strong>全部商品</strong>
-			</div>	
 			
 			  {* 包含脚本文件 *}
 			  {insert_scripts files='showdiv.js'}
@@ -65,21 +49,14 @@
 			  </script>
   
   
-  		<div id=show-cart>
-		  	<div class="cart-frame">
-			<div class="tl"></div>
-			<div class="tr"></div>
-			</div>
-		</div>
 		
 		<div id="ECS_CART_GOODS">
 		<!-- #BeginLibraryItem "/library/cart_goods.lbi" --><!-- #EndLibraryItem --> 
 		</div>
 	
-	<!-- 猜你喜欢 start -->
-	<div class="h"></div>
-	<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
-	<!-- 猜你喜欢 end -->
+		<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+		
             <script type="text/javascript">
             $(function(){
             	

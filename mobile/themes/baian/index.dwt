@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>{$page_title}</title>
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<link rel="stylesheet" href="/mobile/themes/baian/css/mui.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/swipeslide.css" />
-	<link rel="stylesheet" href="/mobile/themes/baian/css/style.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/touchslider.css" />
-	<script type="text/javascript" src="/mobile/themes/baian/js/meta.js"></script>
 	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
 </head>
 <body>
@@ -85,22 +82,48 @@
 			<div class="tit">
 				<h3 class="st1">猜你喜欢</h3>
 			</div>
-
+				
+			<!--{foreach from=$may_like_goods  item=item_goods name=item_goods_foreach}-->
+			<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
 			<ul class="ul_may_like_goods">
-				<!--{foreach from=$may_like_goods name=ban item=item_goods}-->
-				<li style=""><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
-					<img src="/{$item_goods.goods_thumb}" alt="">
-				</a>
-				<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:23}</a></p>
-				<p class="price">
-				<!-- {if $item_goods.promote_price neq 0} -->
-	           		{$item_goods.formated_promote_price}
-	            <!-- {else}-->
-	          		{$item_goods.shop_price}
-	            <!--{/if}-->
-	            </p>
-				<!--{/foreach}-->	
+			<!-- {/if} -->	
+			
+				<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
+					<li style="">
+					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
+						<img src="/{$item_goods.goods_thumb}" alt="">
+					</a>
+					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:17}</a></p>
+					<p class="price">
+					<!-- {if $item_goods.promote_price neq 0} -->
+		           		{$item_goods.formated_promote_price}
+		            <!-- {else}-->
+		          		{$item_goods.shop_price}
+		            <!--{/if}-->
+		            </p>
+		            </li>
+		        <!-- {/if} -->
+				
+				<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1} -->	
+					<li style="">
+					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
+						<img src="/{$item_goods.goods_thumb}" alt="">
+					</a>
+					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:17}</a></p>
+					<p class="price">
+					<!-- {if $item_goods.promote_price neq 0} -->
+		           		{$item_goods.formated_promote_price}
+		            <!-- {else}-->
+		          		{$item_goods.shop_price}
+		            <!--{/if}-->
+		            </p>
+		            </li>
+		        <!-- {/if} -->
+		    
+		    <!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1 or $smarty.foreach.item_goods_foreach.last} -->    
 			</ul>
+			<!-- {/if} -->
+			<!--{/foreach}-->	
 			<div class="h"></div>
 
 		</div>
@@ -143,6 +166,8 @@
 			titCell:".hd ul" // titCell 为导航元素包裹层
 		});
 	</script>
+	
+	<script type="text/javascript" src="/js/transport1.js"></script>
 	
 </body>
 </html>

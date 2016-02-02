@@ -1,24 +1,26 @@
 <!-- 底部主导航 -->
-	<div class="h100"></div>
+<div class="h100"></div>
 <nav class="ul-fmenu">
-		<li><a href="">
-			<span class="ico"><img src="images/f-i1.png" alt=""></span>
-			<h3>首页</h3>
+	<ul>
+		<li><a href="/mobile/index.html"> <span class="ico"><img
+					src="images/f-i1.png" alt=""></span>
+				<h3>首页</h3>
 		</a></li>
-		<li><a href="">
-			<span class="ico"><img src="images/f-i2.png" alt=""></span>
-			<h3>分类</h3>
+		<li><a href="/mobile/category.html"> <span class="ico"><img
+					src="images/f-i2.png" alt=""></span>
+				<h3>分类</h3>
 		</a></li>
-		<li><a href="">
-			<span class="ico"><img src="images/f-i3.png" alt=""></span>
-			<h3>客服</h3>
+		<li><a href="/dialog_1.htm"> <span class="ico"><img
+					src="images/f-i3.png" alt=""></span>
+				<h3>客服</h3>
 		</a></li>
-		<li><a href="">
-			<span class="ico"><img src="images/f-i4.png" alt=""></span>
-			<h3>购物车</h3>
+		<li><a href="/mobile/flow.php?step=cart"> <span class="ico"><img
+					src="images/f-i4.png" alt=""></span>
+				<h3>购物车</h3>
 		</a></li>
-		<li><a href="">
-			<span class="ico"><img src="images/f-i5.png" alt=""></span>
-			<h3>我的百安</h3>
+		<li><a href="/mobile/user.php"> <span class="ico"><img
+					src="images/f-i5.png" alt=""></span>
+				<h3>我的百安</h3>
 		</a></li>
-	</nav>
+	</ul>
+</nav>

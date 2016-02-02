@@ -1,91 +1,57 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="{$keywords}" />
-<meta name="Description" content="{$description}" />
-<!-- TemplateBeginEditable name="doctitle" -->
-<title>{$page_title}</title>
-<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
- <link rel="stylesheet" href="/themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="/themes/baian/css/style.css" />
-	
-	<style>
-	.s-flow-t span a{display: inline;}
-	.s-flow-c dt a{display: inline;}
-	</style>
-	
-	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 </head>
 <body>
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-     <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
-     <div class="h30"></div>
-    <div id="bd">
-        <div class="wp">
-            <ul class="s-tab-tit1">
-                <li class="on"><a  href="category.html">全部商品分类</a></li>
-                <li ><a href="brand.html">全部品牌</a></li>
-            </ul>
-            
-			  <ul class="s-guide-nav">
-			  <!--{foreach from=$categories item=cat name=categories}-->
-				  <!-- {if $smarty.foreach.categories.iteration < 12} -->
-			     <li id="goods{$smarty.foreach.categories.iteration}" ><a href="{$cat.url}">{$cat.name|escape:html}</a></li>
-				  <!-- {/if} -->	
-				  <!--{/foreach}-->	 
-			      
-			  </ul>
+	
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
-	 
-	  
-			<div class="spaddBox">
-				<!--{foreach from=$categories item=cat name=categories}-->
-				<!--{if ($smarty.foreach.categories.index) % 2 == 0}-->
-                <div class="s-half-col l">
-                <!--{else}-->
-                <div class="s-half-col r">
-                <!--{/if}-->
-                    <h3 id="flow1" class="s-flow-t"><span><a href="{$cat.url}">{$cat.name|escape:html}</a></span></h3>
-                    <dl class="s-flow-c">
-                    	<!--{foreach from=$cat.cat_id item=cat_1}-->
-                        <dt><a href="{$cat_1.url}">{$cat_1.name|escape:html}</a></dt>
-                        <dd>
-                        	<!--{foreach from=$cat_1.cat_id item=cat_2}-->
-                            <a href="{$cat_2.url}">{$cat_2.name|escape:html}</a>
-                            <!--{/foreach}-->	 
-                        </dd>
-                        <!--{/foreach}-->	 
-                    </dl>
-                </div>
-                
-                <!--{if ($smarty.foreach.categories.index+1) % 2 == 0 && $smarty.foreach.categories.index > 0}-->
-                <div class="c"></div>
-                <!--{/if}-->
-                
-				<!--{/foreach}-->	 
-				
+	<!-- 主页面 -->
+	<section id="main">
 
+		<header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>商品分类</h2>
+		</header>
+		
+		<dl class="dl-guide-nav">
+			<!--{foreach from=$categories item=cat name=categories}-->
+			<dt>{$cat.name|escape:html}</dt>
+			<dd>
+				<!--{foreach from=$cat.cat_id item=cat_1}-->
+				<h3 class="st3"><a href="{$cat_1.url}">{$cat_1.name|escape:html}</a></h3>
+				<ul class="ul-goods-class">
+					<!--{foreach from=$cat_1.cat_id item=cat_2}-->
+					<li><a href="{$cat_2.url}">{$cat_2.name|escape:html}</a></li>
+					<!--{/foreach}-->
+				</ul>
+				<!--{/foreach}-->
+			</dd>
+			<!--{/foreach}-->
+		</dl>
+	</section>
 
-            </div>                
-                
+	<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
-                
+	<script>
+	$(document).ready(function($) {
+		$('.dl-guide-nav dt').click(function() {
+			$(this).siblings('dt').removeClass('ok');
+			$('.dl-guide-nav dd').hide();
+			$(this).toggleClass('ok');
+			if( $(this).hasClass('ok') ){
+				$(this).next('dd').show();
+			}
+		});
+	});
+	</script>
 
-
-            </div>
-            
-       <div class="h30"></div> 
-       
-      
-       
-    </div>
-    
-     
-  </div>
-  
-
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 </html>

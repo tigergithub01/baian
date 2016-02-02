@@ -1,20 +1,14 @@
 <!-- {if $pictures}-->
-<div class="clearfix"> <span class="scrleft" onmouseover="moveLeft()" onmousedown="clickLeft()" onmouseup="moveLeft()" onmouseout="scrollStop()"></span>
-  <div class="gallery">
-    <div id="demo">
-      <div id="demo1" style="float:left">
-        <ul id="goods_gallery">
-          <!-- {foreach from=$pictures item=picture}-->
-          <li>
-            <div><A href="{$picture.img_url}" rev={$picture.img_url} rel=goodsPic><img src="{$picture.img_url}" alt="{$goods.goods_name}" /></a></div>
-          </li>
-          <!--{/foreach}-->
-        </ul>
-      </div>
-      <div id="demo2" style="display:inline; overflow:visible;"></div>
-    </div>
-  </div>
-  <span  class="scrright"  onmouseover="moveRight()" onmousedown="clickRight()" onmouseup="moveRight()" onmouseout="scrollStop()" class="spanR"></span>
-  <script type="text/javascript" src="/themes/baian/js/goods.goods_gallery.js"></script>
+<div id="focus" class="focus">
+	<div class="hd">
+		<ul></ul>
+	</div>
+	<div class="bd">
+		<ul>
+			 <!-- {foreach from=$pictures item=picture}-->
+			<li><a href="#"><img src="/{$picture.img_url}" /></a></li>
+			<!--{/foreach}-->
+		</ul>
+	</div>
 </div>
 <!-- {/if}-->

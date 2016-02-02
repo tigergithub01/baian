@@ -1,30 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{$page_title}</title>
-<meta name="Description" content="{$description}" />
-<meta name="Keywords" content="{$keywords}" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<link rel="shortcut icon" href="favicon.ico" />
-<link rel="icon" href="animated_favicon.gif" type="image/gif" />
-<link rel="stylesheet" href="/themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="/themes/baian/css/style.css" />
-
-{* 包含脚本文件 *}
-{insert_scripts files='common.js,shopping_flow.js,transport1.js'}
-
-<script type="text/javascript" src="themes/baian/images/misc/lib/js/e/jquery-1.2.6.pack.js"></script>
-<script type="text/javascript" src="themes/baian/js/scrollpic.js"></script>
-<link rel="stylesheet" type="text/css" href="themes/baian/css/shop.css" media="all" />
-<style>
-	.float3{margin-left:495px !important;}
-	</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<script type="text/javascript" src="/js/shopping_flow.js"></script>
 </head>
 <body>
-<script type="text/javascript" src="themes/baian/js/jqm1.7.js"></script>
-<!-- #BeginLibraryItem "/library/page_headers.lbi" --><!-- #EndLibraryItem -->
+<!-- <script type="text/javascript" src="themes/baian/js/jqm1.7.js"></script> -->
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
 <!-- #购物车界面start -->
   <!-- {if $step eq "cart"} -->
@@ -1701,8 +1688,8 @@
          
          
         <!-- {if $step eq "login"} -->
-		
-        {insert_scripts files='utils.js,user.js'}
+		<script type="text/javascript" src="/js/utils.js"></script>
+		<script type="text/javascript" src="/js/user.js"></script>
         <script type="text/javascript">
         {foreach from=$lang.flow_login_register item=item key=key}
           var {$key} = "{$item}";
@@ -1786,67 +1773,49 @@
         	
         </script>
         <!-- 开始用户登录注册界面 -->
-         <div id="hd">
-		<div class="wp2">
-			<a href="" class="logo l"><img src="images/logo.jpg" alt=""></a>
-			<div class="hdr r">
-				<ul class="ul-step">
-					<li >1.我的购物车 ></li>
-					<li class="on">2.确认订单信息 ></li>
-					<li>3.提交订单 ></li>
-				</ul>
+        
+        <section id="main">
+
+			<header id="head">
+				<a href="" class="back-btn"></a>
+				<h2>登录</h2>
+			</header>
+	
+			<div class="login-reg-Box">
+				<form name="loginForm" id="loginForm" action="flow.php?step=login" method="post">
+					<dl class="dl-login-reg">
+						<dd>
+							<input  name="username" id="username" type="text" placeholder="手机号/邮箱" class="" />
+						</dd>
+						<dd>
+							<input name="password" type="password" placeholder="密码"/>
+						</dd>
+						<!-- <dd>
+							<input type="email" placeholder="验证码" style="width: 360px;">
+							<span class="test-string"><img src="images/ma.jpg" alt=""><a href="">换一张</a></span>
+						</dd> -->
+						<dd>
+							<input type="checkbox" name="remember" checked="checked" style="display: none;"/>
+							<input name="act" type="hidden" value="signin" />
+							<input type="submit" value="登录">
+						</dd>
+					</dl>
+					
+					<div class="login-help">
+						<a href="/mobile/user.php?act=get_password" class="r">找回密码</a>
+						<a href="/mobile/user.php?act=register">快速注册</a>
+					</div>
+	
+					<h3 class="st2">用合作网站登录：</h3>
+					<ul class="ul-login-way">
+						<li><a href="/login">QQ</a></li>
+						<li><a href="/login/xlweiboconnect">微博</a></li>
+						<li><a href="/login/alipay">支付宝</a></li>
+					</ul>
+				</form>
 			</div>
-		</div>
-	</div>
-  <div class="c"></div>
-  <div class="h50"></div>
-        <div id="bd">
-        <div class="login-wrap">
-            <ul class="s-login-tab">
-                <li><a href="user.php?act=login">用户注册</a></li>
-                <li class="on"><a href="flow.php?step=login">用户登录</a></li>
-            </ul>
-            <div class="loginBox2">
-                <div class="login-r r">
-                    <a href=""><img src="images/bg-login.jpg" alt=""></a>
-                </div>
-                 <form action="flow.php?step=login" method="post" name="loginForm" id="loginForm" onsubmit="">
-                    <table>
-                        <tr>
-                            <th>账户名：</th>
-                            <td><input type="text" name="username" id="username" placeholder="手机号/邮箱"></td>
-                        </tr>
-                        <tr>
-                            <th>密码：</th>
-                            <td>
-                                <input type="password" name="password">
-                                <p><a href="/user.php?act=get_password" class="r">忘记密码？</a><label for=""><input type="checkbox" name="remember">自动登录</label></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <input type="submit" name="login" value="登 录">
-                                <div class="loginWay">
-                                    用合作网站登录：
-                                    <p>
-                                        <a href="/login"><img src="images/qq2.png" alt=""></a>
-                                        <a href="/login/xlweiboconnect"><img src="images/wb2.png" alt=""></a>
-                                        <a href="/login/alipay"><img src="images/zfb2.png" alt=""></a>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    <div style="padding-left: 16px;float: left;margin-top: 5px;">
-                        <!-- {if $anonymous_buy eq 1} 是否允许未登录用户购物 -->
-                        <!-- <input type="button" style="width:119px;border-right: 1px solid #ddd;" class="bnt_blue_2" value="不登录，直接购买" onclick="location.href='flow.php?step=checkout&amp;direct_shopping=1'" /> -->
-                        <!-- {/if} -->
-                        <input name="act" type="hidden" value="signin" />
-                      	</div>
-                </form>
-            </div>
-        </div>
-    </div>
+		</section>
+	
       <form action="flow.php?step=login" method="post" name="formUser" id="registerForm" onsubmit="return checkSignupForm(this)" style="display:none;">
                <table width="98%" border="0" cellpadding="8" cellspacing="0" bgcolor="#ffffff" class="table">
                   <tr>
@@ -1884,11 +1853,6 @@
                   </tr>
                 </table>
               </form>
-              {if $need_rechoose_gift}
-          <tr>
-            <td colspan="2" align="center" style="border-top:1px #ccc solid; padding:5px; color:red;">{$lang.gift_remainder}</td>
-          </tr>
-          {/if}
            <!-- 结束用户登录注册界面 -->
         <!-- {/if} -->
     
@@ -1914,9 +1878,14 @@ window.onerror = killerrors;
 <script type="text/javascript">pageConfig.FN_InitContrast();</script>
 
 
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.validate.js"></script>
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
+<script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
+<script type="text/javascript" src="/js/transport1.js"></script>
+
 <!-- <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script> -->
 </div>
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 <script type="text/javascript">
 var process_request = "{$lang.process_request}";

@@ -1,64 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="{$keywords}" />
-<meta name="Description" content="{$description}" />
-<!-- TemplateBeginEditable name="doctitle" -->
-<title>{$page_title}</title>
-<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
- <link rel="stylesheet" href="/themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="/themes/baian/css/style.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 </head>
 <body>
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-     <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
-     <div class="h30"></div>
-    <div id="bd">
-        <div class="wp">
-            <ul class="s-tab-tit1">
-                <li><a href="category.html">全部商品分类</a></li>
-                <li class="on"><a href="brand.html">全部品牌</a></li>
-            </ul>
-  <ul class="s-guide-nav">
-  <!--{foreach from=$categories item=cat name=categories}-->
-	  <!-- {if $smarty.foreach.categories.iteration < 12} -->
-     <li id="goods{$smarty.foreach.categories.iteration}" ><a href="#flow{$smarty.foreach.categories.iteration}">{$cat.cat_name|escape:html}</a></li>
-	  <!-- {/if} -->	
-	  <!--{/foreach}-->	 
-      
-            </ul>
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
-	  <!--{foreach from=$categories item=cat name=categories}-->
-	  <!-- {if $smarty.foreach.categories.iteration < 12} -->
-      <div class="brandslist tabcon" id="con_goods_{$smarty.foreach.categories.iteration}">
-	  <!-- {if $cat.brands} -->
-       <h3 class="s-flow-tit" id="flow{$smarty.foreach.categories.iteration}"><em>{$smarty.foreach.categories.iteration}F</em>{$cat.cat_name|escape:html}</h3>
-      <div class="s-flow-con">
-		<ul class="s-brand-list">
-		<!--{foreach from=$cat.brands item=brand_cat name=get_cat_brands}-->
-          <li><a target="_blank" href="{$brand_cat.url}"><img alt="{$brand_cat.brand_name}" src="data/brandlogo/{$brand_cat.brand_logo}"/><h3>{$brand_cat.brand_name}</h3></a>
-          </li>
-         <!--{/foreach}--> 
-        </ul>
-         </div>
-        <!-- {else} -->
-		<div style="padding:20px; width:150px; margin:0px auto; font-size:14px; font-weight:bold ">当前分类无品牌!</div>
+	<!-- 主页面 -->
+	<section id="main">
+
+		<header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>商品品牌</h2>
+		</header>
 		
-		<!-- {/if} -->
-      </div>
-      <!-- {/if} -->	
-       <!--{/foreach}-->
-       
-      
-       
-    </div>
-    <div class="h30"></div> 
-     
-  </div>
-  
+		<dl class="dl-guide-nav">
+			<!--{foreach from=$categories item=cat name=categories}-->
+			<dt>{$cat.cat_name|escape:html}</dt>
+			<dd>
+				<ul class="ul-brand">
+					<!--{foreach from=$cat.brands item=brand_cat name=get_cat_brands}-->
+					<li>
+						<a href="{$brand_cat.url}">
+							<img src="/data/brandlogo/{$brand_cat.brand_logo}" alt="{$brand_cat.brand_name}"><span>{$brand_cat.brand_name}</span>
+						</a>
+					</li>
+					<!--{/foreach}--> 
+				</ul>
+			</dd>
+			<!--{/foreach}--> 
+		</dl>
+			
+	</section>
+	
+	<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+	<script>
+	$(document).ready(function($) {
+		$('.dl-guide-nav dt').click(function() {
+			$(this).siblings('dt').removeClass('ok');
+			$('.dl-guide-nav dd').hide();
+			$(this).toggleClass('ok');
+			if( $(this).hasClass('ok') ){
+				$(this).next('dd').show();
+			}
+		});
+	});
+	</script>
+
 </body>
 </html>

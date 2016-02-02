@@ -1,159 +1,108 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="{$keywords}" />
-<meta name="Description" content="{$description}" />
-<!-- TemplateBeginEditable name="doctitle" -->
-<title>{$page_title}</title>
-<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
-<link rel="stylesheet" href="themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="themes/baian/css/style.css" />
-</head>
+	<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
 <body>
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
- <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
-  
-  <div id="bd">
-        <div class="wp">
-            <div class="s-cur"><!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --></div>
-
-            <div class="s-side-col l">
-                <div class="snavBox">
-                     <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
-                </div>
-            </div>
-
-            <div class="s-main-col r">
-              <div class="h"></div>
- <div class="box_1">
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+  		
          
 
             <!-- *用户中心默认显示页面 start-->
             <!-- {if $action eq 'default'} -->
-            <script type="text/javascript" src="/themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
-	   		<link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
-	   		
-            <div class="s-userBox">
-                    <div class="avatar">
-                    	<!-- {if $info.photo_url && $info.photo_url neq '' } -->
-                    		<img src="{$info.photo_url}" alt=""/>
-                    	<!-- {else} -->
-                    		<img src="images/sp2.jpg" alt=""/>
-                    	<!-- {/if} -->
-                    	
-                    	
-                    <a class="orange" href="user.php?act=profile">【修改个人资料】</a></div>
-                    <div class="signBox" onclick="return sign_day();">
-                        <a href="javascript:void(0)"><img src="images/i-sign.png" alt=""></a>
-                        <p>每次签到可积累10个成长值哦！</p>
-                    </div>
-                    <div class="txt">
-                        <p>亲爱的<span class="username">{$info.username}</span>欢迎您，<span class="grey">（上次登陆：{$info.last_time}）</span></p>
-                        <p>会员等级：<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span> --><span class="vipBox"><b>v</b>{$rank_name}</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
-                        <p>当前级别：<span class="degreeBox" score="{$info.rank_points}" total="{$max_points}"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
-                        <p>可用红包：<a class="orange tdu" href="user.php?act=bonus">{$info.bonus}</a>个　　可用积分：<a class="orange tdu" href="user.php?act=transform_points">{$info.pay_points}</a>分</p>
-                    </div>
-                </div>
-                <div class="h"></div>
+            
+            <style>
+	body{background: #fff;}
+	</style>
+            
+            <section id="main">
 
-                <div class="s-tit1"><a href="user.php?act=order_list" class="r">查看全部订单>></a><h3>我的订单</h3></div>
-                <div class="s-myorder">
-                	 <!--{foreach from=$orders item=order name=orders_foreach}-->
-				       <table class="s-order-table">
-				           <thead>
-				               <tr>
-				                   <th colspan="4">
-				                       <span class="order_num">订单号：<a href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$order.order_sn}</a></span>
-				                       <span class="order_time">下单时间：{$order.order_time}</span>
-				                        本次订单预计获得 <b class="orange">{$order.integral.custom_points}</b> 积分 <b class="orange">{$order.integral.rank_points}</b> 成长值
-				                   </th>
-				               </tr>
-				           </thead>
-				           <tbody>
-				           
-				            <!-- {if empty($order.goods_list)} -->
-				            	<tr>
-				               		<td colspan="4">
-				               			无商品信息
-				               		</td>
-				               </tr>	
-				            <!-- {else} -->
-				           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
-				               <tr>
-				                   <td>
-				                       <div class="goods_pic"><a href="{$goods.goods_url}" target="_blank"><img src="{$goods.goods_thumb}" alt=""></a></div>
-				                       <div class="goods_title">
-								            <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
-										     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
-										      		<div id="suit_{$goods.goods_id}" style="display:none">
-											          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-												    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
-										                        <a href="{$package_goods_list.goods_url}" target="_blank">
-										                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
-										                        </a>
-										                        
-										                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
-									                        </div>
-									                        
-											          	<!-- {/foreach} -->
-										     		 </div>
-										      <!-- { else } -->
-										      		{if $goods.is_momsuit eq 1}
-										      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-										      		{elseif $goods.is_momsuit eq 0}
-										      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
-										      		{/if}
-									                <!-- {if $goods.parent_id > 0} -->
-									                <span style="color:#FF0000">（{$lang.accessories}）</span>
-									               <!-- {elseif $goods.is_gift} -->
-									                <span style="color:#FF0000">（{$lang.largess}）</span>
-									                <!-- {/if} -->
-									          <!-- {/if} -->
-									          
-							        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
-							              	
-							              	<!--add by wanggz商品买满多少件送一件的优惠活动-->
-							                <!-- {if $goods.gift_goods_number gt 0}  -->
-							                <br />
-							                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
-							                <!-- {/if} -->
-							               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
-				                       </div>
-				                       <div class="unit_price">{$goods.goods_price}</div>
-				                       <div class="goods_num">{$goods.goods_number}</div>
-				                   </td>
-				                   <!-- {if $smarty.foreach.goods_foreach.first } -->
-				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
-				                       <div class="total_money"><span>{$order.total_fee}</span>（快递{$order.shipping_fee}）</div>
-				                   </td>
-				                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
-				                       <div class="order_state">{$order.composite_status_name}</div>
-				                       <a href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
-				                   </td>
-				                   <td rowspan="{$smarty.foreach.goods_foreach.total}"  style="width: 130px;">
-				                   	  {$order.handler}	
-				                   	   <!-- 	
-				                       <a href="" class="s-btn1">马上支付</a>
-				                       <a href="" class="a-btn">取消订单</a>
-				                        -->
-				                   </td>
-				                   <!-- {/if} -->
-				               </tr>
-				               <!--{/foreach}-->
-				               <!-- {/if} -->
-				               
-				           </tbody>
-				       </table>
-				       
-				       <!-- {foreachelse} -->
-				       	<p class="f14 tc grey">您买的东西太少了，这里都空空的，快去挑选合适的商品吧！</p>
-				       <!--{/foreach}-->
-                    
-                </div>
-                <!-- 用来显示物流明细信息 -->
-                <div id="shipping_detail_info"></div>
+				<header id="head">
+					<a href="" class="back-btn"></a>
+					<h2>用户中心</h2>
+				</header>
+		
+				<div class="userBox">
+					<div class="avatarBox">
+						<div class="avatar">
+							<a href="">
+							<!-- {if $info.photo_url && $info.photo_url neq '' } -->
+                    			<img src="/{$info.photo_url}" alt=""/>
+	                    	<!-- {else} -->
+	                    		<img src="images/avatar.png" alt=""/>
+	                    	<!-- {/if} --></a>
+							<em class="level">V<b>{$rank_name}</b></em>
+						</div>
+						<h3 class="name">{$info.username}</h3>
+						<a href="javascript:void(0)" class="btn1" onclick="return sign_day();">一键签到</a>
+						<span class="orange">签到一次可积累10个成长值哦！</span>
+					</div>
+					<div class="h20"></div>
+		
+					<ul class="ul-user-tool">
+						<li><a href="user.php?act=order_list&status=100">
+							<span class="ico"><img src="images/i-pay.png" alt=""></span>
+							<h3>待支付</h3>
+						</a></li>
+						<li><a href="user.php?act=order_list&status=101">
+							<span class="ico"><img src="images/i-car.png" alt=""></span>
+							<h3>待收货</h3>
+						</a></li>
+						<li><a href="user.php?act=order_list&status=102">
+							<span class="ico"><img src="images/i-edit.png" alt=""></span>
+							<h3>待评价</h3>
+						</a></li>
+						<li><a href="user.php?act=collection_list">
+							<span class="ico"><img src="images/i-star.png" alt=""></span>
+							<h3>收藏夹</h3>
+						</a></li>
+					</ul>
+					<div class="h20"></div>
+		
+					<ul class="ul-user-nav">
+						<li><a href="user.php?act=order_list">
+							<span class="ico"><img src="images/u-i1.png" alt=""></span>
+							<h3>我的订单</h3>
+						</a></li>
+						<li><a href="user.php?act=bonus">
+							<span class="ico"><img src="images/u-i2.png" alt=""></span>
+							<h3>我的红包</h3>
+						</a></li>
+						<li><a href="user.php?act=transform_points">
+							<span class="ico"><img src="images/u-i3.png" alt=""></span>
+							<h3>我的积分</h3>
+						</a></li>
+						<li><a href="user.php?act=user_level">
+							<span class="ico"><img src="images/u-i4.png" alt=""></span>
+							<h3>我的等级</h3>
+						</a></li>
+						<li><a href="user.php?act=bonus">
+							<span class="ico"><img src="images/u-i5.png" alt=""></span>
+							<h3>客户服务</h3>
+						</a></li>
+						<li><a href="user.php?act=profile">
+							<span class="ico"><img src="images/u-i6.png" alt=""></span>
+							<h3>会员资料</h3>
+						</a></li>
+						<li><a href="user.php?act=address_list">
+							<span class="ico"><img src="images/u-i7.png" alt=""></span>
+							<h3>地址管理</h3>
+						</a></li>
+						<li><a href="user.php?act=modify_pwd">
+							<span class="ico"><img src="images/u-i8.png" alt=""></span>
+							<h3>修改密码</h3>
+						</a></li>
+					</ul>
+		
+					<a href="user.php?act=logout" class="btn2">注销</a>
+		
+				</div>
+			</section>
+			
                 
                 <script type="text/javascript">
                 	<!-- 每日签到 -->
@@ -768,31 +717,17 @@ copyToClipboard = function(txt)
 
     <!-- {/if} -->
 
-  	</div>
-                 <!-- 猜你喜欢 start -->
-			     <div class="h"></div>
-			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
-			             
-			      <!-- 猜你喜欢 end -->
-			      
-          </div>
-        </div>
-    </div>
 
  <div class="h30"></div>
    
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+   <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.validate.js"></script>
+    <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
 </body>
 <script type="text/javascript">
 {foreach from=$lang.clips_js item=item key=key}
 var {$key} = "{$item}";
 {/foreach}
-
-
-	/* $(function(){
-		$('.signBox').click(function(){
-			alert('x');
-		}
-	} */
 </script>
 </html>

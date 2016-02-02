@@ -14,7 +14,7 @@ var process_request = "{$lang.process_request}";
 
 
 <header id="hd">
-	<a href="" class="logo"><img src="images/logo.png" alt=""></a>
+	<a href="/mobile/index.html" class="logo"><img src="images/logo.png" alt=""></a>
 	<div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div>
 	<div class="soBox">
 		<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">

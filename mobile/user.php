@@ -1702,7 +1702,7 @@ elseif ($action == 'cancel_order')
 /*------------------------------------------------------ */
 //-- 删除订单
 /*------------------------------------------------------ */
-elseif ($_REQUEST['act'] == 'remove_order')
+elseif ($action == 'remove_order')
 {
 	include_once(ROOT_PATH . 'includes/lib_transaction.php');
 	include_once(ROOT_PATH . 'includes/lib_order.php');

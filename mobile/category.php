@@ -109,17 +109,19 @@ if($is_ajax==1){
 	exit;
 }
 
+$is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0; 
+
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
 
-// clear_all_files('category');
 
 /* 页面的缓存ID */
 $cache_id = sprintf('%X', crc32($cat_id . '-' . $display . '-' . $sort  .'-' . $order  .'-' . $page . '-' . $size . '-' . $_SESSION['user_rank'] . '-' .
     $_CFG['lang'] .'-'. $brand. '-' . $price_max . '-' .$price_min . '-' . $filter_attr_str . '-' . $filter_ext_str));
-
-if (!$smarty->is_cached('category.dwt', $cache_id))
+// if (!$smarty->is_cached('category.dwt', $cache_id))
+//ajax加载数据的时候不使用缓存
+if (1)
 {
     /* 如果页面没有被缓存则重新获取页面的内容 */
 
@@ -591,7 +593,25 @@ if (!$smarty->is_cached('category.dwt', $cache_id))
     $smarty->assign('nav_bottom',$nav_bottom_article);
 }
 
-$smarty->display('category.dwt', $cache_id);
+
+if($is_ajax_fetch==1){
+	include_once('includes/cls_json.php');
+	$json = new JSON;
+	$result = array('error' => '', 'content' => '');
+	$result['content'] = $smarty->fetch('library/goods_list.lbi');
+	$result['filter'] = array('category' => $cat_id, 'brand' => $brand, 
+			'price_min'=>$price_min, "price_max"=>$price_max,
+			"filter_attr" =>$filter_attr_str,"filter_ext" =>$filter_ext_str,
+			"page" => $page, "size" =>$size,"sort"=>$sort,"order"=>$order,
+			"record_count" => $count,
+			"page_count"=>($count = $count > 0 ? intval(ceil($count / $size)) : 1)
+	);
+	die($json->encode($result));
+}else{
+	$smarty->display('category.dwt');
+// 	$smarty->display('category.dwt', $cache_id);
+}
+
 
 /*------------------------------------------------------ */
 //-- PRIVATE FUNCTION

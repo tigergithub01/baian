@@ -12,6 +12,9 @@ var process_request = "{$lang.process_request}";
 <script type="text/javascript" src="/js/utils.js"></script>
 <script type="text/javascript" src="/mobile/themes/baian/js/jquery-validation/lib/jquery.js"></script> 
 
+<!-- <link href="/mobile/themes/baian/css/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" /> -->
+<!-- <script type="text/javascript" src="/mobile/themes/baian/js/jquery.mobile-1.4.5.min.js"></script> -->
+
 
 <header id="hd">
 	<a href="/mobile/index.html" class="logo"><img src="images/logo.png" alt=""></a>

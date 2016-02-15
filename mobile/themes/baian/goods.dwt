@@ -337,9 +337,10 @@
 	TouchSlide( { slideCell:"#tabBox2",
 
 		endFun:function(i){ //高度自适应
-			var bd = document.getElementById("tabBox2-bd");
-			bd.parentNode.style.height = bd.children[i].children[0].offsetHeight+40+"px";
-			if(i>0)bd.parentNode.style.transition="200ms";//添加动画效果
+			 //var bd = document.getElementById("tabBox2-bd");
+		   //console.debug(bd.children[i]);
+			//bd.parentNode.style.height = bd.children[i].offsetHeight+40+"px";
+			//if(i>0)bd.parentNode.style.transition="200ms";//添加动画效果 
 		}
 
 	} );

@@ -4,9 +4,9 @@ var process_request = "{$lang.process_request}";
 
 <link rel="stylesheet" href="/mobile/themes/baian/css/mui.css" />
 <link rel="stylesheet" href="/mobile/themes/baian/css/style.css" />
-<link href="/mobile/themes/baian/css/suggest.css" rel="stylesheet" type="text/css" />
+<link href="/mobile/themes/baian/css/suggest1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/mobile/themes/baian/js/meta.js"></script>
-<script type="text/javascript" src="/mobile/themes/baian/js/suggest.js"></script>
+<script type="text/javascript" src="/mobile/themes/baian/js/suggest1.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 
 <script type="text/javascript" src="/js/utils.js"></script>

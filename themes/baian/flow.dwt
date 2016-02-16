@@ -1701,8 +1701,8 @@
          
          
         <!-- {if $step eq "login"} -->
-		
-        {insert_scripts files='utils.js,user.js'}
+		<script type="text/javascript" src="/js/utils.js"></script>
+		<script type="text/javascript" src="/js/user.js"></script>
         <script type="text/javascript">
         {foreach from=$lang.flow_login_register item=item key=key}
           var {$key} = "{$item}";

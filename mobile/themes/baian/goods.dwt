@@ -276,6 +276,7 @@
 
 					<!-- 详情 -->
 					<div class="con">
+						<div>
 						<div class="ad">
 							  <!--{foreach from=$xqtop name=ban item=banner}-->
 								<!-- <a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a> -->
@@ -296,6 +297,7 @@
 							 	{$relative_module.footer_content}
 							 <!-- {/if} -->
 						</div>
+						</div>
 					</div>
 
 					<!-- 评价 -->
@@ -305,12 +307,16 @@
 					
 					<!-- 售后保障 -->
 					<div class="con">
+						<div>
 						<p>{$article1.content}</p>
+						</div>
 					</div>
 
 					<!-- 常见问题 -->
 					<div class="con">
+						<div>
 						<p>{$article.content}</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -322,7 +328,7 @@
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
-	<script type="text/javascript" src="js/TouchSlide.js"></script>
+	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
 	<script type="text/javascript">
 		TouchSlide({ 
 			slideCell:"#focus",
@@ -335,12 +341,11 @@
 
 	<script type="text/javascript">
 	TouchSlide( { slideCell:"#tabBox2",
-
-		endFun:function(i){ //高度自适应
-			 //var bd = document.getElementById("tabBox2-bd");
-		   //console.debug(bd.children[i]);
-			//bd.parentNode.style.height = bd.children[i].offsetHeight+40+"px";
-			//if(i>0)bd.parentNode.style.transition="200ms";//添加动画效果 
+		startFun:function( i,c,s ){ console.debug(s) },
+		endFun :function(i){ //高度自适应			
+			var bd = document.getElementById("tabBox2-bd");
+			bd.parentNode.style.height = bd.children[i].children[0].offsetHeight+40+"px";
+			if(i>0)bd.parentNode.style.transition="200ms";//添加动画效果
 		}
 
 	} );

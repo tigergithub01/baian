@@ -154,9 +154,10 @@ else
 function get_article_info($article_id)
 {
     /* 获得文章的信息 */
-    $sql = "SELECT a.*, IFNULL(AVG(r.comment_rank), 0) AS comment_rank ".
-            "FROM " .$GLOBALS['ecs']->table('article'). " AS a ".
-            "LEFT JOIN " .$GLOBALS['ecs']->table('comment'). " AS r ON r.id_value = a.article_id AND comment_type = 1 ".
+    $sql = "SELECT a.*, IFNULL(AVG(r.comment_rank), 0) AS comment_rank, at.cat_name AS cat_name".
+            " FROM " .$GLOBALS['ecs']->table('article'). " AS a ".
+            "LEFT JOIN " .$GLOBALS['ecs']->table('comment'). " AS r ON (r.id_value = a.article_id AND r.comment_type = 1) ".
+            "LEFT JOIN " .$GLOBALS['ecs']->table('article_cat'). " AS at ON (a.cat_id = at.cat_id) ".
             "WHERE a.is_open = 1 AND a.article_id = '$article_id' GROUP BY a.article_id";
     $row = $GLOBALS['db']->getRow($sql);
 

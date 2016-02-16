@@ -1,4 +1,4 @@
-﻿﻿
+﻿
 /*初始化*/
 body{color: #555;font-size: 24px;line-height: 1.5;width: 640px;margin: 0 auto;background: #efefef;}
 a{color: #555;}
@@ -31,7 +31,7 @@ h3{font-size: 1em;}
 #hd .logo{margin-right: 5px;}
 .logo img{display: inline-block;vertical-align: middle;max-height: 55px;}
 
-.soBox{height: 55px;width: 460px;display: inline-block;vertical-align: middle;overflow: hidden;position: relative;background: #fff;}
+.soBox{height: 55px;width: 390px;display: inline-block;vertical-align: middle;overflow: hidden;position: relative;background: #fff;}
 .soBox input{border: 0;outline: 0;height: 55px;}
 .soBox input[type='text']{color: #b5b5b6;width: 100%;line-height: 55px \9;
 	background: url(../images/i-so.png) no-repeat 15px center;
@@ -214,7 +214,7 @@ h3{font-size: 1em;}
 .tabBox .hd{}
 .tabBox .hd ul{overflow: hidden;font-size: 0.83em;border-bottom: 1px solid #ddd;}
 .tabBox .hd ul li{float: left;height: 60px;line-height: 60px;text-align: center;}
-.tabBox .hd ul li a{display: inline-block;line-height: 40px;vertical-align: middle;width: 90px;border-right: 1px solid #ddd;}
+.tabBox .hd ul li a{display: inline-block;line-height: 40px;vertical-align: middle;width: 105px;border-right: 1px solid #ddd;}
 .tabBox .hd ul li:last-child a{border-right: 0;}
 .tabBox .hd ul li.on{border-bottom: 2px solid #f08300;}
 .tabBox .hd ul li.on a{ color:#f08300;}

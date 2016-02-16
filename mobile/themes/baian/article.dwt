@@ -1,118 +1,59 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>{$page_title}</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="{$keywords}">
-        <meta name="keywords" content="{$description}">
-        <link rel="stylesheet" href="/themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="/themes/baian/css/style.css" />
-    </head>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>文章详情</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+</head>
 <body>
+	
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
-  
-  <div id="bd">
-        <div class="wp">
-            <div class="s-cur">   <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --></div>
+	<!-- 主页面 -->
+	<section id="main">
 
-            <div class="s-side-col l">
-                
-                   
+		<header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>{$article.cat_name|escape:html}</h2>
+		</header>
 
-                    <!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
+		<div class="chapter">
+			<h1>{$article.title|escape:html}</h1>
+			<div class="info">
+		        <span class="publisher">{$article.author|escape:html}</span>
+				<span class="datetime">{$article.add_time}</span>
+			</div>
+			<div class="content">
+				<p>
+				 <!-- {if $article.content } -->
+		          {$article.content}
+		         <!-- {/if} -->
+         		</p>
+			</div>
+			<div class="foot">
+					{if $prev_article}
+		            <p>{$lang.prev_article}：<a href="{$prev_article.url}">{$prev_article.title}</a></p>
+		          {/if}
+		          
+		           <!-- 下一篇文章 -->
+				  {if $next_article}
+		             <p> {$lang.next_article}：<a href="{$next_article.url}">{$next_article.title}</a></p>
+		          {/if}
+		         
+		          
+          
+				<!-- <p>上一篇：<a href="">我国场外市场首家类金融挂牌企业</a></p>
+				<p>下一篇：<a href="">上海股权委托交易中心成功挂牌</a></p> -->
+			</div>
+		</div>
 
-                
-                <div class="h"></div>
+	</section>
 
-                <!-- <div class="sbox">
-                    <h3 class="st1">买了还买</h3>
-                    <ul class="s-img-list">
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                        <li>
-                            <div class="pic"><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉"><img src="images/sp4.jpg" alt=""></a></div>
-                            <h3><a href="" title="雅培金装喜康力幼儿配方奶粉3段900g幼儿奶粉">雅培金装喜康力幼儿配方奶粉3段9...</a></h3>
-                            <div class="price">￥1000.00</div>
-                        </li>
-                    </ul>
-                </div> -->
-                <div class="h"></div>
-
-                <div class="sadBox">
-                    <a href=""><img src="images/blank.gif" alt=""></a>
-                </div>
-            </div>
-
-            <div class="s-main-col r">
-                <div class="sbox">
-                    <div class="chapter">
-                        <h1>{$article.title|escape:html}</h1>
-                        <div class="info">
-                            <span class="editor">{$article.author|escape:html}</span>
-                            <span class="datetime">{$article.add_time}</span>
-                        </div>
-                        <div class="content">
-                            <p>  <!-- {if $article.content } -->
-          {$article.content}
-         <!-- {/if} --></p>
-                        </div>
-                        <div class="shareBox r">
-                            <div class="bdsharebuttonbox"><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_more" data-cmd="more"></a></div>
-                        </div>
-                        <div class="foot">
-                         <!-- 上一篇文章 -->
-          {if $next_article}
-             <p> {$lang.next_article}:<a href="{$next_article.url}" class="f6">{$next_article.title}</a></p>
-          {/if}
-          <!-- 下一篇文章 -->
-          {if $prev_article}
-            <p>{$lang.prev_article}:<a href="{$prev_article.url}" class="f6">{$prev_article.title}</a></p>
-          {/if}
-                           
-                        </div>
-                    </div>
-                </div>
-                <div class="h20"></div>
-                <!-- 猜你喜欢 start -->
-				<!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->
-				 <!-- 猜你喜欢 end -->
-
-            </div>
-            
-            <!-- 关键词语标签 start -->
-            <div class="h30"></div>
-			<!-- #BeginLibraryItem "/library/nav_bottom.lbi" --><!-- #EndLibraryItem -->
-            <!-- 关键词语标签 end -->
-            
-        </div>
-        
-            
-    </div>
-    
-       <div class="h30"></div>
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+	<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
 </body>
 </html>

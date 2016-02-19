@@ -511,12 +511,12 @@
 			if(t.checked==true)
 			{
 		        document.getElementById('showRegion').style.display = '';
-		        $("#reduce_ship_amt").attr('disabled',true);
+		        //$("#reduce_ship_amt").attr('disabled',true);
 			}
 			else
 			{
 				document.getElementById('showRegion').style.display = 'none';
-				$("#reduce_ship_amt").attr('disabled',false);
+				//$("#reduce_ship_amt").attr('disabled',false);
 			}
 		}
 		  </script>
@@ -565,7 +565,7 @@
           <!-- added by tiger.guo 20151010 -->
           <tr>
             <td class="label">可减运费金额：</td>
-            <td><input type="text" id="reduce_ship_amt" name="reduce_ship_amt" value="{$goods.reduce_ship_amt}" size="40" {if $goods.is_shipping eq 1}disabled="disabled"{/if}  /></td>
+            <td><input type="text" id="reduce_ship_amt" name="reduce_ship_amt" value="{$goods.reduce_ship_amt}" size="40"   /></td>
           </tr>
           <tr>
             <td class="label">{$lang.lab_keywords}</td>

@@ -1073,6 +1073,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
                     $GLOBALS['ecs']->table('goods') . ' AS g ' .
                     "WHERE r.region_id " . db_create_in($region_id_list) ." and r.goods_id=g.goods_id and g.goods_id = pg.goods_id AND g.is_shipping = 1 AND pg.package_id = '"  . $val['goods_id'] . "'";
 			$goods_ids = $GLOBALS['db']->getCol($sql);
+			
 			$where =" and pg.goods_id " . db_create_in($goods_ids) ."";
 	        $where = str_replace('IN','NOT IN',$where);
 			
@@ -1085,7 +1086,11 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
             if ($shipping_count > 0)
             {
                 // 循环计算每个超值礼包商品的重量和数量，注意一个礼包中可能包换若干个同一商品
+            	//可减运费金额 added by tiger.guo 20151226
+            	//可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
+            	
                 $sql = 'SELECT SUM(g.goods_weight * pg.goods_number) AS weight, ' .
+                  	   'SUM(g.reduce_ship_amt * pg.goods_number) AS reduce_ship_amt, '.	
                     'SUM(pg.goods_number) AS number FROM ' .
                     $GLOBALS['ecs']->table('package_goods') . ' AS pg, ' .
                     $GLOBALS['ecs']->table('goods') . ' AS g ' .
@@ -1095,6 +1100,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
                 $package_row['weight'] += floatval($goods_row['weight']) * $val['goods_number'];
                 $package_row['amount'] += floatval($val['goods_price']) * $val['goods_number'];
                 $package_row['number'] += intval($goods_row['number']) * $val['goods_number'];
+                $package_row['reduce_ship_amt'] += floatval($goods_row['reduce_ship_amt']) * $val['goods_number'];
             }
             else
             {
@@ -1106,12 +1112,13 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
         $packages_row['free_shipping'] = $free_shipping_count == count($row) ? 1 : 0;
         
         //可减运费金额 added by tiger.guo 20151226
-        $sql = 'SELECT SUM(g.reduce_ship_amt * pg.goods_number) AS reduce_ship_amt ' .
+        //可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
+        /* $sql = 'SELECT SUM(g.reduce_ship_amt * pg.goods_number) AS reduce_ship_amt ' .
         		$GLOBALS['ecs']->table('package_goods') . ' AS pg, ' .
         		$GLOBALS['ecs']->table('goods') . ' AS g ' .
         		"WHERE g.goods_id = pg.goods_id AND pg.package_id = '"  . $val['goods_id'] . "'";
         $goods_row = $GLOBALS['db']->getRow($sql);
-        $package_row['reduce_ship_amt'] += floatval($goods_row['reduce_ship_amt']) * $val['goods_number'];
+        $package_row['reduce_ship_amt'] += floatval($goods_row['reduce_ship_amt']) * $val['goods_number']; */
     }
 
     /* 获得购物车中非超值礼包商品的总重量 */
@@ -1123,16 +1130,18 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
             " AND c.session_id = '" . SESS_ID . "' AND c.rec_type = '$type' " .
             " AND g.is_shipping = 1 AND c.is_checked = 1 AND c.goods_id = r.goods_id ".
             " AND c.goods_id = g.goods_id AND c.extension_code != 'package_buy' ";
-    $goods_ids =  $GLOBALS['db']->getCol($sql);
-	
+    $goods_ids =  $GLOBALS['db']->getCol($sql);	
 
 	$where =" and c.goods_id " . db_create_in($goods_ids) ."";
 	$where = str_replace('IN','NOT IN',$where);
 	
 
+	//可减运费金额 added by tiger.guo 20151226
+	//可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
     $sql    = 'SELECT SUM(g.goods_weight * c.goods_number) AS weight, ' .
                     'SUM(c.goods_price * c.goods_number) AS amount, ' .
-                    'SUM(c.goods_number) AS number '.
+                    'SUM(c.goods_number) AS number, '.
+                    'SUM(g.reduce_ship_amt * c.goods_number) AS reduce_ship_amt '.
                 'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
                 'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
                 "WHERE c.session_id = '" . SESS_ID . "' " .
@@ -1143,17 +1152,19 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
     $packages_row['weight'] = floatval($row['weight']) + $package_row['weight'];
     $packages_row['amount'] = floatval($row['amount']) + $package_row['amount'];
     $packages_row['number'] = intval($row['number']) + $package_row['number'];
+    $packages_row['reduce_ship_amt'] = floatval($row['reduce_ship_amt']) + $package_row['reduce_ship_amt'];
     /* 格式化重量 */
     $packages_row['formated_weight'] = formated_weight($packages_row['weight']);
     
-    //可减运费金额 added by tiger.guo 20151226
-    $sql    = 'SELECT SUM(g.reduce_ship_amt * c.goods_number) AS reduce_ship_amt ' .
+    
+    
+    /* $sql    = 'SELECT SUM(g.reduce_ship_amt * c.goods_number) AS reduce_ship_amt ' .
     		'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
     		'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
     		"WHERE c.session_id = '" . SESS_ID . "' " .
-    		"AND c.is_checked = 1 AND c.rec_type = '$type' AND c.extension_code != 'package_buy'";
+    		"AND c.is_checked = 1 AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
     $row = $GLOBALS['db']->getRow($sql);
-    $packages_row['reduce_ship_amt'] = floatval($row['reduce_ship_amt']) + $package_row['reduce_ship_amt'];
+    $packages_row['reduce_ship_amt'] = floatval($row['reduce_ship_amt']) + $package_row['reduce_ship_amt']; */
 
     return $packages_row;
 }

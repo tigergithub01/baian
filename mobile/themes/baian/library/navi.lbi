@@ -24,3 +24,7 @@
 		</a></li>
 	</ul>
 </nav>
+
+
+<!-- 返回顶部 -->
+	<a href="javascript:void(0);" class="topBtn"><img src="images/ico-top.png" alt=""></a>

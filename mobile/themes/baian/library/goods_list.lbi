@@ -2,7 +2,7 @@
 <ul class="ul-pro-list">
 <!--{foreach from=$goods_list item=goods}-->
 	<li>
-		<div class="pic"><a href="{$goods.url}"><img src="/{$goods.goods_thumb}" alt=""></a></div>
+		<div class="pic"><a href="{$goods.url}"><img class="lazy"  src="/{$goods.goods_thumb}" alt=""></a></div>
 		<div class="txt">
 			<h3 class="title"><a href="{$goods.url}">{$goods.goods_name}</a></h3>
 			<span class="price"><!--{if $goods.promote_price neq "" } -->{$goods.promote_price}<!--{else}-->{$goods.shop_price}<!--{/if}--></span>

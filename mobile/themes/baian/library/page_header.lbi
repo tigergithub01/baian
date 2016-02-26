@@ -5,12 +5,17 @@ var process_request = "{$lang.process_request}";
 <link rel="stylesheet" href="/mobile/themes/baian/css/mui.css" />
 <link rel="stylesheet" href="/mobile/themes/baian/css/style.css" />
 <link href="/mobile/themes/baian/css/suggest1.css" rel="stylesheet" type="text/css" />
+<!-- <link href="/mobile/themes/baian/css/jNotify.jquery.css" rel="stylesheet" type="text/css" /> -->
+
 <script type="text/javascript" src="/mobile/themes/baian/js/meta.js"></script>
 <script type="text/javascript" src="/mobile/themes/baian/js/suggest1.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 
 <script type="text/javascript" src="/js/utils.js"></script>
 <script type="text/javascript" src="/mobile/themes/baian/js/jquery-validation/lib/jquery.js"></script> 
+<!-- <script type="text/javascript" src="/mobile/themes/baian/js/jNotify.jquery.js"></script> -->
+
+<script type="text/javascript" src="/mobile/themes/baian/js/lib.js"></script>
 
 <!-- <link href="/mobile/themes/baian/css/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" /> -->
 <!-- <script type="text/javascript" src="/mobile/themes/baian/js/jquery.mobile-1.4.5.min.js"></script> -->
@@ -19,13 +24,51 @@ var process_request = "{$lang.process_request}";
 <header id="hd">
 	<a href="/mobile/index.html" class="logo"><img src="images/logo.png" alt=""></a>
 	<div id="search_suggest" style="display:none;top:200px;left:757px;" onmouseover='javascript:_over();' onmouseout='javascript:_out();'></div>
-	<div class="soBox" style="width: 460px;">
-		<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+	<div class="soBox">
+		
 			<input type="text" name="keywords" placeholder="{$search_keywords|escape}" onkeyup="keyupdeal(event,this.value);" onkeydown="keydowndeal(event);" onclick="keyupdeal(event,this.value);" onblur="closediv();"  autocomplete="off" >
 			<input type="submit" value="搜索">
-		</form>
+		
 	</div>
 	<!-- <a href="" class="set-btn">安装<br>APP</a> -->
 </header>
+
+<!-- 搜索弹窗 -->
+	<div id="box-so" class="box-so">
+		<div class="top">
+			<a href="javascript:void(0);" class="a-close"></a>
+			<div class="so">
+				<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
+				<input type="text" name="keywords" placeholder="{$search_keywords|escape}" class="inp1">
+				<input type="submit" value="" class="btn">
+				</form>
+			</div>
+		</div>
+		<div class="con bb">
+			<h3>热搜</h3>
+			<ul class="ul-so1">
+				<li><a href="">剃须刀</a></li>
+				<li><a href="">口罩</a></li>
+				<li><a href="">路由器</a></li>
+				<li><a href="">充电宝</a></li>
+				<li><a href="">牙膏</a></li>
+				<li><a href="">零食</a></li>
+			</ul>
+			<a href="" class="a-reload"></a>
+		</div>
+		<div class="con">
+			<h3 class="s1">历史</h3>
+			<ul class="ul-so2">
+				<li><a href="">剃须刀</a></li>
+				<li><a href="">口罩</a></li>
+				<li><a href="">路由器</a></li>
+				<li><a href="">充电宝</a></li>
+				<li><a href="">牙膏</a></li>
+				<li><a href="">零食</a></li>
+			</ul>
+		</div>
+		<!-- <a href="" class="so-btn">清空历史搜索</a> -->
+	</div>
+	
  
  

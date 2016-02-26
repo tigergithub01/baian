@@ -247,6 +247,15 @@
     					required: "请接受用户协议",
     				},
     			},
+    			errorPlacement : function(error, element) { 
+    				console.debug(element);
+    				if(element.attr("id")=='captcha'){
+    					console.debug(error);
+    					error.appendTo(element.parent()); 
+    				}else{
+    					error.appendTo(element.parent()); 
+    				}
+    			},
     			submitHandler:function(form){
     				/* var mobile = document.getElementById('mobile_phone').value;
     				if (mobile != '') {
@@ -347,7 +356,7 @@
 						<input name="mobile_code" placeholder="短信验证码" id="mobile_code" type="text" style="width:255px;"class="inputBg required"/>
 						<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
 					</dd>
-					<dd>
+					<dd style="display: none;">
 						<input name="agreement" type="checkbox" value="1" class="checkbox required" checked="checked" />
 						{$lang.agreement}
 					</dd>

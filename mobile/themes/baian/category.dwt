@@ -6,6 +6,7 @@
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
 
 </head>
 <body>
@@ -145,6 +146,9 @@
         		slideOn();
         	}
         });
+        
+        //图片延迟加载
+        $("img.lazy").lazyload({effect: "fadeIn"});
     });
 	
 	
@@ -278,7 +282,10 @@
     	});
 	}
 	
+	
+	
 	</script>
 	
+	<script src="/mobile/themes/baian/js/jquery.lazyload.js?v=1.9.1"></script>
 </body>
 </html>

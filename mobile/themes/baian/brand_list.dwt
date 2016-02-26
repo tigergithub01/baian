@@ -15,7 +15,7 @@
 	<section id="main">
 
 		<header id="head">
-			<a href="" class="back-btn"></a>
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>商品品牌</h2>
 		</header>
 		
@@ -40,19 +40,7 @@
 	
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
-
-	<script>
-	$(document).ready(function($) {
-		$('.dl-guide-nav dt').click(function() {
-			$(this).siblings('dt').removeClass('ok');
-			$('.dl-guide-nav dd').hide();
-			$(this).toggleClass('ok');
-			if( $(this).hasClass('ok') ){
-				$(this).next('dd').show();
-			}
-		});
-	});
-	</script>
+	
 
 </body>
 </html>

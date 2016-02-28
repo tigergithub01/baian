@@ -351,7 +351,7 @@
 						<input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required" minlength = "6" autocomplete="off"/>
 					</dd>
 					<dd>
-                        <input type="text" placeholder="验证码" id="captcha" style="width: 360px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+                        <input type="text" placeholder="验证码" id="captcha" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
               			<span class="test-string"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
 					</dd>
 					<dd>

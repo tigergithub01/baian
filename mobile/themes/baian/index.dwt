@@ -80,7 +80,7 @@
 			<h3>最新公告</h3>
 			<div class="slider variable-width">
 				<!--{foreach from=$hotarticle item=article name=arc}-->
-	          	<div class="txt"><a href="{$article.cat_url}" title="{$article.title}" rel="nofollow"><p>{$article.description}</p></a></div>
+	          	<div class="txt"><a href="{$article.cat_url}" title="{$article.title}" rel="nofollow"><p>{$article.description|escape:html|truncate:20}</p></a></div>
 	          	<!--{/foreach}-->
 	        </div>
 		</div>

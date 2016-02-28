@@ -24,15 +24,15 @@ h3{font-size: 1em;}
 ********************************/
 .h100{height: 100px;overflow: hidden;clear: both;}
 
-#main{/* padding-top: 85px; */}
+#main{padding-top: 85px;}
 /*******************************
 	-------[=头部]-------
 ********************************/
 #hd{padding: 15px;height: 55px;line-height: 55px; background: #efefef;
-	width: 100%;/* position: fixed; */top: 0;left: 0;z-index: 99;
+	width: 100%;position: fixed;top: 0;/* left: 0; */z-index: 99;
 }
 #hd .logo{margin-right: 5px;}
-.m-hd{padding: 15px;height: 55px;line-height: 55px;background: #efefef;}
+.m-hd{padding: 15px;height: 55px;line-height: 55px;background: #efefef;width: 100%;position: absolute;}
 .logo img{display: inline-block;vertical-align: middle;max-height: 55px;}
 
 .soBox{height: 55px;width: 469px;display: inline-block;vertical-align: middle;overflow: hidden;position: relative;background: #fff;
@@ -80,7 +80,7 @@ h3{font-size: 1em;}
 .tit{padding: 5px 15px;line-height: 50px;overflow: hidden;color: #ea5504;}
 .tit a{color: #ea5504;}
 
-.st1{font-size: 1.25em;}
+.st1{font-size: 1.0em;}
 .st1 span{font-size: 0.8em;margin-left: 5px;}
 
 .st2{font-size: 0.83em;line-height: 2;}
@@ -102,7 +102,7 @@ h3{font-size: 1em;}
 .ul-main-nav{overflow: hidden;margin-top: 25px;}
 .ul-main-nav li {width: 25%; text-align: center; float: left;margin-bottom: 20px;}
 .ul-main-nav li img{width: 66px;height: 66px;}
-.ul-main-nav li h3{}
+.ul-main-nav li h3{font-size: 0.8em}
 
 /*每天限时抢购-滚动图片*/
 .picScroll{text-align:center;position: relative;z-index: 9;}
@@ -144,8 +144,8 @@ h3{font-size: 1em;}
 .ul_may_like_goods{background-color: transparent;display: inline-block;margin-bottom: 10px;}
 .ul_may_like_goods li{margin-bottom: 10px;width:49%; float:left;margin: 0 1% 0 0;background-color: white;}
 .ul_may_like_goods li img{display: block;width: 320px;height: 320px;}
-.ul_may_like_goods .goods_name{height: 3em;font-size: 1em;margin: 0px 10px 0px 10px;}
-.ul_may_like_goods .price{text-align: left;color: #f00;font-size: 1.11em;margin: 0px 10px 0px 10px;}
+.ul_may_like_goods .goods_name{height: 3em;font-size: 0.8em;margin: 0px 10px 0px 10px;}
+.ul_may_like_goods .price{text-align: left;color: #f00;font-size: 0.8em;margin: 0px 10px 0px 10px;}
 
 /*******************************
 	-------[=注册]-------
@@ -165,7 +165,7 @@ h3{font-size: 1em;}
 .dl-login-reg input[type='submit']{color: #fff;background: #e60012;}
 .dl-login-reg input[type='submit']:hover{background: #cc0111;}
 
-.get-test-ma{display: inline-block;float: right;width: 270px;text-align: center;border: 1px solid #ddd;background: #fff;}
+.get-test-ma{display: inline-block;/* float: right; */width: 270px;text-align: center;border: 1px solid #ddd;background: #fff;}
 .test-string{display: inline-block;}
 .test-string img{display: inline-block;vertical-align: middle;width: 85px;height: 35px;margin-right: 10px;}
 

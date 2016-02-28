@@ -6,6 +6,8 @@
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
 </head>
 <body>
 	<!-- 搜索导航 -->
@@ -13,11 +15,13 @@
 
 	<!-- 主页面 -->
 	<section id="main">
-
+		
 		<header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>商品品牌</h2>
 		</header>
+	
+		
 		
 		<dl class="dl-guide-nav">
 			<!--{foreach from=$categories item=cat name=categories}-->

@@ -6,6 +6,8 @@
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
 </head>
 <body>
 	
@@ -40,18 +42,6 @@
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
-	<script>
-	$(document).ready(function($) {
-		$('.dl-guide-nav dt').click(function() {
-			$(this).siblings('dt').removeClass('ok');
-			$('.dl-guide-nav dd').hide();
-			$(this).toggleClass('ok');
-			if( $(this).hasClass('ok') ){
-				$(this).next('dd').show();
-			}
-		});
-	});
-	</script>
 
 </body>
 </html>

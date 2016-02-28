@@ -136,6 +136,8 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     /* 门店动态 */
     $smarty->assign('class_articles_33', index_get_class_articles(33,3)); // 分类调用文章
     
+    //热点文章
+    $smarty->assign('hotarticle',get_article_new(array(19),'art_id'));    
     
     /* 页面中的动态内容 */
     assign_dynamic('index');

@@ -9,11 +9,18 @@
 	<link rel="stylesheet" href="/mobile/themes/baian/css/swipeslide.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/touchslider.css" />
 	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
+	<link rel="stylesheet" href="/mobile/themes/baian/css/slick.css">
+	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
 </head>
 <body>
 	
+	
+	
+	
 	<!-- 轮播主广告图 -->
-	<div class="touchslider">
+	<div class="touchslider" style="z-index: 100;position: relative;">
 		<div class="touchslider-viewport">
 			<div style="width:10000px">
 			<!--{foreach from=$flash name=myflash item=flash}-->
@@ -35,9 +42,21 @@
 		</div>
 	</div>
 	<div class="h"></div>
-
+	
+	
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+	
+	<header class="m-hd">
+		<a href="" class="logo"><img src="images/logo.png" alt=""></a>
+		<div class="soBox">
+			<form action="">
+				<input type="text" placeholder="纸尿裤1元1片">
+				<input type="submit" value="搜索">
+			</form>
+		</div>
+	</header>
+	
 	
 	
 
@@ -57,7 +76,15 @@
 				<li><a href="brand.html"><img src="images/g-i8.png" alt=""><h3>商品品牌</h3></a></li>
 			</ul>
 		</div>
-		<div class="h"></div>
+		<div class="m-notice">
+			<h3>最新公告</h3>
+			<div class="slider variable-width">
+				<!--{foreach from=$hotarticle item=article name=arc}-->
+	          	<div class="txt"><a href="{$article.cat_url}" title="{$article.title}" rel="nofollow"><p>{$article.description}</p></a></div>
+	          	<!--{/foreach}-->
+	        </div>
+		</div>
+		<div class="h20"></div>
 
 		<!-- 每天限时抢购 -->
 		<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->
@@ -79,11 +106,17 @@
 		</div>
 		<div class="h"></div>
 		
+		
+		
+		
 		<!-- 猜你喜欢 -->
+		
+		<h3 class="lz-tit1"><span>猜你喜欢</span></h3>
+		
 		<div class="w-box" style="background-color: transparent;">
-			<div class="tit">
+			<!-- <div class="tit">
 				<h3 class="st1">猜你喜欢</h3>
-			</div>
+			</div> -->
 				
 			<!--{foreach from=$may_like_goods  item=item_goods name=item_goods_foreach}-->
 			<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
@@ -95,7 +128,7 @@
 					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
 						<img src="/{$item_goods.goods_thumb}" alt="">
 					</a>
-					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:17}</a></p>
+					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:30}</a></p>
 					<p class="price">
 					<!-- {if $item_goods.promote_price neq 0} -->
 		           		{$item_goods.formated_promote_price}
@@ -111,7 +144,7 @@
 					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
 						<img src="/{$item_goods.goods_thumb}" alt="">
 					</a>
-					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:17}</a></p>
+					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:30}</a></p>
 					<p class="price">
 					<!-- {if $item_goods.promote_price neq 0} -->
 		           		{$item_goods.formated_promote_price}
@@ -155,9 +188,38 @@
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
 	<script src="/mobile/themes/baian/js/jquery.touchslider.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/mobile/themes/baian/js/slick.min.js"></script>
 	<script type="text/javascript">
 	  $(document).ready(function() {
 	    $('.touchslider').touchSlider({mouseTouch: true,autoplay:true,duration:350});
+	    
+	    $("#hd").hide();
+	    
+	    $(window).scroll(function(){
+		    /* console.debug($(window).scrollTop());
+		    console.debug("top:"+$(".m-hd").offset().top);
+		    console.debug("hd top:"+$("#hd").offset().top); */
+		    if($(window).scrollTop()>=$(".m-hd").offset().top){
+		    	$(".m-hd").css("visibility",'hidden');
+		    	$("#hd").show();
+		    }else{
+		    	$(".m-hd").css("visibility",'visible');
+		    	$("#hd").hide();
+		    }
+		    
+		    
+		});
+	    
+	    $('.variable-width').slick({
+			dots:true,
+			arrows:false,
+			autoplay:true,
+			slidesToShow: 1,
+			autoplaySpeed: 3000,
+			pauseOnHover:false,
+			lazyLoad: 'ondemand'
+		});
+	    
 	  });
 	</script>
 
@@ -168,6 +230,8 @@
 			titCell:".hd ul" // titCell 为导航元素包裹层
 		});
 	</script>
+	
+	
 	
 	<script type="text/javascript" src="/js/transport1.js"></script>
 	

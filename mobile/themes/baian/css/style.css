@@ -1,6 +1,6 @@
 ﻿
 /*初始化*/
-body{color: #555;font-size: 24px;line-height: 1.5;width: 640px;margin: 0 auto;background: #efefef;overflow-x: hidden;}
+body{color: #555;font-size: 24px;line-height: 1.5;width: 640px;margin: 0 auto;background: #efefef;}
 a{color: #555;}
 a:hover{color: #f00;}
 img{max-width: 100%;}
@@ -504,6 +504,9 @@ input.btn4{border: 0;}
 ********************************/
 
 /*启动页面*/
+.startup_section{width: 100%;height: 100%;position: fixed;left: 0px;bottom: 0px;z-index: 200;display: none;transition:all 0.3s ease 0s;
+}
+
 .m-atart{width: 100%;height: 100%;
 	background-position: center center;
 	background-repeat: no-repeat;

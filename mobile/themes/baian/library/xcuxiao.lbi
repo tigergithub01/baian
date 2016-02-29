@@ -32,7 +32,7 @@
 <div class="w-box">
 			<div class="tit-lz">
 				<a href="promote.html" class="r">更多抢购&gt;</a>
-				<h3 class="st1">每天限时抢购<span><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
+				<h3 class="st1">限时抢购<span><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
 			</div>
 <script>
 /* Tday[{$key}] = new Date("{$goods.gmt_end_time}");   

@@ -49,7 +49,7 @@
 		<a href="" class="logo"><img src="images/logo.png" alt=""></a>
 		<div class="soBox">
 			<form action="">
-				<input type="text" placeholder="纸尿裤1元1片">
+				<input type="text" placeholder="{$search_keywords|escape}">
 				<input type="submit" value="搜索">
 			</form>
 		</div>
@@ -257,8 +257,9 @@
 	  
 	</script>
 	
-	<script type="text/javascript" src="/js/transport1.js"></script>	
 	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 	
 	
 </body>

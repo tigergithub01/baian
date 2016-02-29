@@ -57,5 +57,8 @@
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
+	
 </body>
 </html>

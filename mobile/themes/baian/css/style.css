@@ -767,8 +767,9 @@ input.btn4{border: 0;}
 	border-radius: 40px;font-size: 24px;margin: 0 12px 10px 0;float: left;
 }
 .ul-so2{overflow: hidden;}
-.ul-so2 li{height: 60px;border-bottom: 1px solid #b9b9b9;overflow: hidden;}
-.ul-so2 li a{line-height: 60px;display: block;font-size: 24px;}
+.ul-so2 li{min-height: 60px;border-bottom: 1px solid #b9b9b9;overflow: hidden;}
+.ul-so2 li a{line-height: 60px;/* display: block; */font-size: 24px;}
+.ul-so2 span {margin-left:2px; line-height: 60px;;font-size: 18px;color: red;}
 
 .so-btn{height: 65px;width: 440px;display: block;margin: 30px auto;border-radius: 10px;
 	text-align: center;line-height: 65px;font-size: 28px;border: 1px solid #b9b9b9;

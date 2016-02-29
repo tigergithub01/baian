@@ -16,21 +16,24 @@ function ajax_keyword(V)
 function search_response(result)
 {
 	var res = result.parseJSON();
+	console.debug(res.content);
+	$("#search_suggest").show();
 	var ele = document.getElementById("search_suggest");
 	if(res.content!="")
 	{
 		ele.innerHTML = res.content;
-		$$("search_suggest").style.display="block";
+		//$$("search_suggest").style.display="block";
 	}
 	else
 	{
-			closediv();return;
+			closediv();
+			return;
 	}
 }
 
 function keyupdeal(e,V)
 {
-	initdiv();
+	//initdiv();
 	if(temp_str==V)return;
 	if(V==""){temp_str="";closediv();return;}
 	var keyc;
@@ -124,5 +127,5 @@ function _out()
 	AddEvent($$('keyword'), 'blur', closediv);
 }
 window.onresize = function(){
-    initdiv();   
+    //initdiv();   
 }

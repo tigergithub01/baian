@@ -66,7 +66,7 @@ h3{font-size: 1em;}
 ********************************/
 #fd{font-size: 0.67em;text-align: center;padding: 10px 15px 20px;}
 
-.ul-fmenu{position: fixed;width: 100%;height: 100px;left: 0;bottom: 0;z-index: 150;
+.ul-fmenu{position: fixed;width: 100%;height: 100px;left: 0;bottom: 0;z-index: 999;
 	background: #fff;border-top: 1px solid #ddd;}
 .ul-fmenu li{float: left;width: 20%;text-align: center;padding: 5px 0;}
 .ul-fmenu .ico{display: inline-block;height: 50px;line-height: 50px;}
@@ -504,7 +504,7 @@ input.btn4{border: 0;}
 ********************************/
 
 /*启动页面*/
-.startup_section{width: 100%;height: 100%;position: fixed;left: 0px;bottom: 0px;z-index: 200;display: none;transition:all 0.3s ease 0s;
+.startup_section{width: 100%;height: 100%;position: fixed;left: 0px;bottom: 0px;z-index: 1000;display: none;transition:all 0.3s ease 0s;
 }
 
 .m-atart{width: 100%;height: 100%;

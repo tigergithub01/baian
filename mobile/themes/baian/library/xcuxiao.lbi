@@ -16,7 +16,8 @@
 		 	   var hour = Math.floor((goods_remain_seconds[key] / 3600) % 24);      //计算小时 
 		 	   var day = Math.floor((goods_remain_seconds[key] / 3600) / 24);        //计算天 
 	 	 		//console.debug($("#leftTime"+key));
-	 	   		$("#leftTime"+key).html(hour + ":" + minite + ":" + second ); 
+	 	   		//$("#leftTime"+key).html(hour + ":" + minite + ":" + second ); 
+	 	       $("#leftTime"+key).html("<em>"+hour+"</em>" + ":" +"<em>"+ minite+"</em>" + ":" +"<em>"+ second+"</em>" ); 
 	 	  } else {
 	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
 	 	  	 	window.clearInterval(goods_interValObj[key]); 
@@ -29,7 +30,7 @@
 <!--{foreach from=$promotion_goods key=key item=goods name=name}-->
 <!--{if $smarty.foreach.name.first}-->
 <div class="w-box">
-			<div class="tit">
+			<div class="tit-lz">
 				<a href="promote.html" class="r">更多抢购&gt;</a>
 				<h3 class="st1">每天限时抢购<span><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
 			</div>

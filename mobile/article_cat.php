@@ -77,7 +77,7 @@ if (!$smarty->is_cached('article_cat.dwt', $cache_id))
     $smarty->assign('promotion_info', get_promotion_info());
 
     /* Meta */
-    $meta = $db->getRow("SELECT keywords, cat_desc FROM " . $ecs->table('article_cat') . " WHERE cat_id = '$cat_id'");
+    $meta = $db->getRow("SELECT keywords, cat_desc, cat_name FROM " . $ecs->table('article_cat') . " WHERE cat_id = '$cat_id'");
 
     if ($meta === false || empty($meta))
     {
@@ -88,6 +88,7 @@ if (!$smarty->is_cached('article_cat.dwt', $cache_id))
 
     $smarty->assign('keywords',    htmlspecialchars($meta['keywords']));
     $smarty->assign('description', htmlspecialchars($meta['cat_desc']));
+    $smarty->assign('cat_name', htmlspecialchars($meta['cat_name']));
 
     /* 获得文章总数 */
     $size   = isset($_CFG['article_page_size']) && intval($_CFG['article_page_size']) > 0 ? intval($_CFG['article_page_size']) : 20;

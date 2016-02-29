@@ -32,7 +32,8 @@ h3{font-size: 1em;}
 	width: 100%;position: fixed;top: 0;/* left: 0; */z-index: 99;
 }
 #hd .logo{margin-right: 5px;}
-.m-hd{padding: 15px;height: 55px;line-height: 55px;background: #efefef;width: 100%;position: absolute;}
+.m-hd{padding: 15px;height: 55px;line-height: 55px;background: #efefef;width: 100%;position: absolute;z-index: 99;}
+/* .m-hd .soBox{width: 410px;} */
 .logo img{display: inline-block;vertical-align: middle;max-height: 55px;}
 
 .soBox{height: 55px;width: 469px;display: inline-block;vertical-align: middle;overflow: hidden;position: relative;background: #fff;

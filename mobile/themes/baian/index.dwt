@@ -215,12 +215,17 @@
 		    /* console.debug($(window).scrollTop());
 		    console.debug("top:"+$(".m-hd").offset().top);
 		    console.debug("hd top:"+$("#hd").offset().top); */
-		    if($(window).scrollTop()>=$(".m-hd").offset().top){
-		    	$(".m-hd").css("visibility",'hidden');
-		    	$("#hd").show();
+		    
+		    var y = $(".touchslider").offset().top + $(".touchslider").height();
+		    if($(window).scrollTop()>= y){
+		    //if($(window).scrollTop()>=$(".m-hd").offset().top){
+		    	//$(".m-hd").css("visibility",'hidden');
+		    	$(".m-hd").css({"position":'fixed',"top":"0"});
+		    	
+		    	//$("#hd").show();
 		    }else{
-		    	$(".m-hd").css("visibility",'visible');
-		    	$("#hd").hide();
+		    	$(".m-hd").css({"position":'absolute',"top":y+10});
+		    	//$("#hd").hide();
 		    }
 		});
 	    

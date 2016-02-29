@@ -99,12 +99,14 @@ if ($keywords != "") {
 		if ($count > 0) {
 // 			var_dump($count);
 // 			var_dump($sql);
-			$result ['content'] = $result ['content'] . "<li onmouseout='javascript:suggestOut(this);' onmouseover='javascript:suggestOver(this);' onclick='javascript:form_submit(this);'><span class='suggest-key'>" . $row ['keyword'] . "</span><span class='suggest-result'>" . $count . "个商品</span></li>";
+// 			$result ['content'] = $result ['content'] . "<li onmouseout='javascript:suggestOut(this);' onmouseover='javascript:suggestOver(this);' onclick='javascript:form_submit(this);'><span class='suggest-key'>" . $row ['keyword'] . "</span><span class='suggest-result'>" . $count . "个商品</span></li>";
+			$result ['content'] = $result ['content'] . "<li><a href=\"search.php?keywords=$row[keyword]\">".$row ['keyword']."</a>"."<span>".$count."个商品</span>"."</li>";
+// 			$result ['content'] = $result ['content'] . "<li onmouseout='javascript:suggestOut(this);' onmouseover='javascript:suggestOver(this);' onclick='javascript:form_submit(this);'><span class='suggest-key'>" . $row ['keyword'] . "</span><span class='suggest-result'>" . $count . "个商品</span></li>";
 		}
 	}
 	
 	if ($result ['content'] != "")
-		$result ['content'] = "<ol>" . $result ['content'] . "</ol>";
+		$result ['content'] = "<ul class='ul-so2'>" . $result ['content'] . "</ul>";
 }
 die ( $json->encode ( $result ) );
 ?>

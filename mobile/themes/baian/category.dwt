@@ -288,5 +288,8 @@
 	</script>
 	
 	<script src="/mobile/themes/baian/js/jquery.lazyload.js?v=1.9.1"></script>
+	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 </html>

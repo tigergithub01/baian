@@ -751,7 +751,8 @@
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
-<script type="text/javascript" src="/js/transport1.js"></script>
+<!-- 公用样式与脚本 -->
+<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 	
 </body>
 

@@ -1861,7 +1861,6 @@ window.onerror = killerrors;
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
-<script type="text/javascript" src="/js/transport1.js"></script>
 
 <!-- <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script> -->
 </div>
@@ -1877,6 +1876,8 @@ var btn_buy = "{$lang.btn_buy}";
 var is_cancel = "{$lang.is_cancel}";
 var select_spe = "{$lang.select_spe}";
 </script>
+<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </html>
 
 

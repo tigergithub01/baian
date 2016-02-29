@@ -731,4 +731,6 @@ copyToClipboard = function(txt)
 var {$key} = "{$item}";
 {/foreach}
 </script>
+<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </html>

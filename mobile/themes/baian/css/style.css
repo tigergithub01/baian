@@ -138,7 +138,7 @@ h3{font-size: 1em;}
 	background: url(../images/i-back.png) no-repeat center center;
 }
 #head .a-cla{position: absolute;width: 60px;font-size: 24px;
-	right: 20px;top: 50%;margin-top: -36px;
+	right: 20px;top: 50%;margin-top: -36px;color: #ea5504;
 }
 
 header.head{line-height: 3;text-align: center;background: #fff;border-bottom: 1px solid #ddd;position: relative;}

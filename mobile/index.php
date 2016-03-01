@@ -93,7 +93,7 @@ if ($act == 'cat_rec')
 }
 
 
-//每天第一次访问网站的时候，直接进入启动页面
+//第一次访问网站的时候，直接进入启动页面
 if($_COOKIE['startup_show']==null){
 	$position = assign_ur_here();
 	$smarty->assign('page_title',      $position['title']);    // 页面标题

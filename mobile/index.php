@@ -92,6 +92,15 @@ if ($act == 'cat_rec')
     die($json->encode($result));
 }
 
+
+//每天第一次访问网站的时候，直接进入启动页面
+if($_COOKIE['startup_show']==null){
+	$position = assign_ur_here();
+	$smarty->assign('page_title',      $position['title']);    // 页面标题
+	$smarty->display('startup.dwt');
+	exit;
+}
+
 /*------------------------------------------------------ */
 //-- 判断是否存在缓存，如果存在则调用缓存，反之读取相应内容
 /*------------------------------------------------------ */

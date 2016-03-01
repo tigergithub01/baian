@@ -77,6 +77,21 @@ $(document).ready(function($) {
 	});
 	
 	
+	
+	
 
 
 });
+
+/**
+ * 打开指定DIV
+ * @param __element
+ */
+function nav_div(__element){
+	__element.addClass('open');
+	e.stopPropagation();
+}
+
+function close_div(__element){
+	__element.removeClass('open');
+}

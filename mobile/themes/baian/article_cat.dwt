@@ -18,9 +18,9 @@
 	<section id="main">
 		
 		<header id="head">
-			<a href="" class="back-btn"></a>
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>{$cat_name}</h2>
-			<a href="文章分类.html" class="a-cla">分类</a>
+			<a href="javascript:void(0)" onclick="nav_div($('#left_help'))" class="a-cla">分类</a>
 		</header>
 
 		<ul class="ul-news-list">
@@ -31,6 +31,8 @@
 			</li>
 			 <!-- {/foreach} -->
 		</ul>
+		
+		<!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
 
 	</section>
 
@@ -39,6 +41,8 @@
 	
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
+	
+	
 	
 </body>
 </html>

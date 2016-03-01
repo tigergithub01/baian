@@ -1290,6 +1290,7 @@ function clear_tpl_files($is_cache = true, $ext = '')
     if ($is_cache)
     {
         $cache_dir = ROOT_PATH . $tmp_dir . '/caches/';
+        $cache_dir = ROOT_PATH . $tmp_dir . '/caches_mobile/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/query_caches/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/static_caches/';
         for($i = 0; $i < 16; $i++)
@@ -1300,6 +1301,7 @@ function clear_tpl_files($is_cache = true, $ext = '')
     }
     else
     {
+        $dirs[] = ROOT_PATH . $tmp_dir . '/compiled_mobile/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/compiled/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/compiled/admin/';
     }

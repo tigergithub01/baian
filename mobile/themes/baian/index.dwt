@@ -53,10 +53,7 @@
 				<input type="submit" value="搜索">
 			</form>
 		</div>
-	</header>
-	
-	
-	
+	</header>	
 
 	<!-- 主页面 -->
 	<section id="main">
@@ -209,7 +206,6 @@
 	    	show_startup_page();
 	    }
 	    
-	    
 	    //滚动时，自动显示搜索框
 	    $(window).scroll(function(){
 		    /* console.debug($(window).scrollTop());
@@ -257,7 +253,7 @@
 		    	//$(".startup_broad").css("right","0");
 		    	$(".startup_section").animate({"width":"0"});
 		    	$.cookie('startup_show', '1'); //启动页是否已经显示
-			}, 2000)
+			}, 2000);
 	  }
 	  
 	</script>

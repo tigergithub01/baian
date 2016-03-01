@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>{$page_title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.cookie.js"></script>
+	<style>
+		html,body{height: 100%;}
+	</style>
+</head>
+<body>
+	
+	<div class="m-atart" style="background-image: url(images/pic-atart.png);"></div>
+	
+	<script type="text/javascript">
+	
+	  $(function(){
+		  window.setTimeout(function(){
+		    	//$(".startup_broad").hide();
+		    	//$(".startup_broad").css("right","0");
+		    	$(".startup_section").animate({"width":"0"});
+		    	$.cookie('startup_show', '1'); //启动页是否已经显示
+		    	window.location.href="index.html";
+			}, 2000);		  
+	  });
+	</script>
+</body>
+</html>

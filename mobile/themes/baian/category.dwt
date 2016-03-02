@@ -23,23 +23,19 @@
 		</header>
 
 		<div class="w-box">
-		    <div id="tabBox1" class="tabBox">
+		    <div id="tabBox1" class="tabBox tabBox-lz">
 				<div class="hd">
 					<ul>
 						<li class="on"><a href="javascript:void(0)">默认</a></li>
 						<li><a href="javascript:void(0)">销量</a></li>
 						<li><a href="javascript:void(0)">价格</a></li>
-						<li><a href="javascript:void(0)">促销</a></li>
-						<li><a href="javascript:void(0)">积分</a></li>
-						<li><a href="javascript:void(0)">红包</a></li>
 						<li id="filter_tab"><a href="javascript:void(0)">筛选</a></li>
 					</ul>
 				</div>
 				<div class="bd" id="tabBox1-bd">
 					<div id="goods_list" class="con">
 						<!-- #BeginLibraryItem "/library/goods_list.lbi" --><!-- #EndLibraryItem -->
-						
-						
+						<p class="txt-load">正在加载中……</p>
 					</div>
 				</div>
 			</div>
@@ -63,7 +59,7 @@
 		<div class="h"></div>
 	</section>
 	
-	<section id="sect_filter"  style="float: left;position: absolute;top: 0;right: 0;width:0;height: 100%;z-index: 2000;display: inline;overflow: hidden;">
+	<!-- <section id="sect_filter"  style="float: left;position: absolute;top: 0;right: 0;width:0;height: 100%;z-index: 2000;display: inline;overflow: hidden;">
 		<header id="head">
 		<a href="javascript:void(0)" class="back-btn" onclick="slideOff()"></a>
 			<h2 >过滤条件</h2>
@@ -71,7 +67,84 @@
 		<div class="w-box" style="height: 100%;">
 			XXXX
 		</div>
-	</section>
+	</section> -->
+	
+	
+	<!-- 商品筛选 -->
+	<div class="m-pop m-screen" id="sect_filter" style="width: 540px;">
+		<div class="top">
+			<h1>筛选</h1>
+			<a href="javascript:void(0)" onclick="close_div($('#sect_filter'))">返回</a>
+		</div>
+		<ul class="ul-goods-class ul-goods-class1">
+			<li><a href="">爱的营养大师</a></li>
+			<li><a href="">美赞臣</a></li>
+			<li><a href="">惠氏</a></li>
+		</ul>
+		<dl class="dl-guide-nav">
+			<dt>品牌</dt>
+			<dd>
+				<ul class="ul-goods-class">
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+				</ul>
+			</dd>
+			<dt>价格</dt>
+			<dd>
+				<ul class="ul-goods-class">
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+				</ul>
+			</dd>
+			<dt>段位</dt>
+			<dd>
+				<ul class="ul-goods-class">
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+				</ul>
+			</dd>
+			<dt>规格</dt>
+			<dd>
+				<ul class="ul-goods-class">
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+					<li><a href="">爱的营养大师</a></li>
+					<li><a href="">美赞臣</a></li>
+					<li><a href="">惠氏</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<div class="bot">
+			<a href="" class="a2">确定</a>
+			<a href="" class="a1">清楚</a>
+			<span>共<em>1000</em>件商品</span>
+		</div>
+	</div>
 	
 	
 
@@ -133,44 +206,76 @@
 
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
                 //alert("滚动条已经到达底部为" + $(document).scrollTop());
-                
             	more_goods_list();
             }
         });
         
         //slideOn();
         
-        $(".tabBox .hd ul li").click(function(){
+        //切换tab页面
+        $(".tabBox .hd ul li").click(function(e){
         	$(".tabBox .hd ul li").removeClass("on");
         	$(this).addClass("on");
         	if($(this).prop("id")=='filter_tab'){
-        		slideOn();
+        		//slideOn();
+        		nav_div($('#sect_filter'),true);
+        		e.stopPropagation();
         	}
-        });
+        }); 
+        
         
         //图片延迟加载
         $("img.lazy").lazyload({effect: "fadeIn"});
+        
+        //点击其他区域时过滤窗口隐藏
+        $('body,html').on('click','.fixme',function(){
+        	close_div($('#sect_filter'));
+    	});
+        
+        //防止点击过滤窗口的时候
+        $('#sect_filter').click(function(e) {
+    		e.stopPropagation();
+    	});
     });
 	
 	
 	function more_goods_list(){
 		var category = $("#category").val();
     	var brand = $("#brand").val();
-    	var price_min = $("#price_min").val();
-    	var price_max = $("#price_max").val();
+    	var price_min = parseInt($("#price_min").val());
+    	var price_max = parseInt($("#price_max").val());
     	var filter_attr = $("#filter_attr").val();
     	var filter_ext = $("#filter_ext").val();
     	var sort = $("#sort").val();
     	var order = $("#order").val();
-    	var page = $("#page").val();
-    	var size = $("#size").val();
-    	var record_count = $("#record_count").val();
-    	var page_count = $("#page_count").val();
+    	var page = parseInt($("#page").val());
+    	var size = parseInt($("#size").val());
+    	var record_count = parseInt($("#record_count").val());
+    	var page_count = parseInt($("#page_count").val());    	
     	
     	if(page>=page_count){
     		//已经到达最后一页
+    		//$().toastmessage('showNoticeToast', '已经到达最后一页');
+    		$().toastmessage('showToast', {
+	             text     : '已经到达最后一页',
+	             stayTime : 2000,
+	             sticky   : false,
+	             position : 'middle-center',
+	             type     : 'notice',
+	             closeText: '',
+	             close    : function () {}
+	        });
     		return;
     	}
+    	
+    	//正在加载中
+    	if($(".txt-load").hasClass("on")){
+    		return;
+    	}    	
+    	
+    	//增加正在加载中的标识
+    	$(".txt-load").addClass("on");    	
+    	
     	page = parseInt(page)+1;
     	
     	var filter_con = {"category":category, "brand":brand, 
@@ -258,6 +363,7 @@
     	    async :true, 
     	    error:function(){ 
     	    	//alert('更新出错！');
+    	    	$(".txt-load").removeClass("on");
     	    },     
     	    success:function(data){ 
     	    	//console.debug(data);
@@ -279,6 +385,7 @@
     	        	$("#record_count").val(filter_con.record_count);
     	        	$("#page_count").val(filter_con.page_count);
     	    	}
+    	    	$(".txt-load").removeClass("on");
     	    }  
     	});
 	}
@@ -291,5 +398,7 @@
 	
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
+	
+	
 </body>
 </html>

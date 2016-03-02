@@ -4,7 +4,7 @@
 });*/
 
 $(document).ready(function($) {
-	// 筛选
+	/*// 筛选
 	$('#a-screnn').click(function(e) {
 		$('body').addClass('fixme').append('<div class="overlay"></div>');
 		$('.m-screen').addClass('open');
@@ -18,7 +18,7 @@ $(document).ready(function($) {
 		$('.m-screen').removeClass('open');
 		$('body').removeClass('fixme');
 		$('.overlay').remove();
-	});
+	});*/
 
 	// 搜索
 	$('.soBox').click(function(e) {
@@ -87,11 +87,15 @@ $(document).ready(function($) {
  * 打开指定DIV
  * @param __element
  */
-function nav_div(__element){
+function nav_div(__element,overlay){
+	if(overlay!=null && overlay){
+		$('body').addClass('fixme').append('<div class="overlay"></div>');
+	}
 	__element.addClass('open');
-	e.stopPropagation();
+	//e.stopPropagation();
 }
 
 function close_div(__element){
 	__element.removeClass('open');
+	$('.overlay').remove();
 }

@@ -2280,7 +2280,7 @@ function com_sale_get_may_like_goods($goods_id,$cat_id,$brand_id,$article_id=nul
 			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
 			'LEFT JOIN ' . $GLOBALS['ecs']->table('member_price') . ' AS mp ' .
 			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-			"WHERE $where ORDER BY rand() limit 10";
+			"WHERE $where ORDER BY rand() limit 20";
 	$res = $GLOBALS['db']->query($sql);
 	$arr = array();//www.zuimoban.com
 	while ($row = $GLOBALS['db']->fetchRow($res))

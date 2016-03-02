@@ -724,7 +724,7 @@ input.btn4{border: 0;}
 
 
 
-.m-pop{width: 100%;height: 100%;position: absolute;top: 0;background-color: #fff;/* left: -100%; */z-index: 1002;right: -100%;
+.m-pop{width: 100%;height: 100%;position: fixed;top: 0;background-color: #fff;/* left: -100%; */z-index: 1002;right: -100%;
 		transition: .3s;
 		-ms-transition: .3s;
 		-moz-transition: .3s;

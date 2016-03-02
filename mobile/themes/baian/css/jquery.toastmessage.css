@@ -21,7 +21,8 @@
 	padding-left: 6px;
 	padding-right: 6px;
 	font-family: lucida Grande;
-	font-size: 14px;
+	/* font-size: 14px; */
+	font-size: 1em;
 	border: 2px solid #999;
 	display: block;
 	position: relative;
@@ -128,10 +129,13 @@
 
 .toast-position-middle-center {
     position: fixed;
-    left: 50%;
-    margin-left: -140px;
+    left: 0;
+    margin-left: 0px;
     margin-top: -40px;
     top: 50%;
+    height: 50px;
+    width: 100%;
+    text-align: center;
 }
 
 .toast-position-middle-right {

@@ -32,9 +32,11 @@
 			 <!-- {/foreach} -->
 		</ul>
 		
-		<!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
+		
 
 	</section>
+	
+	<!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
 
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->

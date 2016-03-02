@@ -20,6 +20,7 @@
 		<header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>{$article.cat_name|escape:html}</h2>
+			<a href="javascript:void(0)" onclick="nav_div($('#left_help'))" class="a-cla">分类</a>
 		</header>
 
 		<div class="chapter">
@@ -54,6 +55,8 @@
 
 	</section>
 
+	<!-- #BeginLibraryItem "/library/left_help.lbi" --><!-- #EndLibraryItem -->
+	
 	<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 	

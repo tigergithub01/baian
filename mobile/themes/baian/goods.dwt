@@ -258,22 +258,15 @@
 		    <div id="tabBox2" class="tabBox">
 				<div class="hd">
 					<ul>
-						<li><a href="javascript:void(0)">介绍</a></li>
 						<li><a href="javascript:void(0)">详情</a></li>
+						<li><a href="javascript:void(0)">介绍</a></li>
 						<li><a href="javascript:void(0)">评价</a></li>
 						<li><a href="javascript:void(0)">售后保障</a></li>
 						<li><a href="javascript:void(0)">常见问题</a></li>
 					</ul>
 				</div>
 				<div class="bd" id="tabBox2-bd">
-					<!-- 介绍 -->
-					<div class="con">
-						<p>商品名称：{$goods.goods_style_name} <br>
-						品牌：<a href="{$goods.goods_brand_url}" >{$goods.goods_brand}</a><br>
-						商品编号：{$goods.goods_sn} <br>
-						上架时间：{$goods.add_time} <br>
-						商品毛重：{$goods.goods_weight}</p>
-					</div>
+					
 
 					<!-- 详情 -->
 					<div class="con">
@@ -299,6 +292,15 @@
 							 <!-- {/if} -->
 						</div>
 						</div>
+					</div>
+					
+					<!-- 介绍 -->
+					<div class="con">
+						<p>商品名称：{$goods.goods_style_name} <br>
+						品牌：<a href="{$goods.goods_brand_url}" >{$goods.goods_brand}</a><br>
+						商品编号：{$goods.goods_sn} <br>
+						上架时间：{$goods.add_time} <br>
+						商品毛重：{$goods.goods_weight}</p>
 					</div>
 
 					<!-- 评价 -->

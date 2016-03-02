@@ -6,14 +6,15 @@
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
 	<link rel="stylesheet" href="/mobile/themes/baian/css/swipeslide.css" />
 	<link rel="stylesheet" href="/mobile/themes/baian/css/touchslider.css" />
 	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
-	
+	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.SuperSlide.2.1.1.js"></script>
 	<link rel="stylesheet" href="/mobile/themes/baian/css/slick.css">
 	
-	<!-- 公用样式与脚本 -->
-	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	
 </head>
 <body>
 	
@@ -74,11 +75,17 @@
 		<div class="m-notice">
 			<h3>最新公告</h3>
 			<span class="msg"></span>
-			<div class="slider variable-width">
-				<!--{foreach from=$hotarticle item=article name=arc}-->
-	          	<div class="txt"><a href="{$article.cat_url}" title="{$article.title}" rel="nofollow"><p>{$article.description}</p></a></div>
-	          	<!--{/foreach}-->
-	        </div>
+			<div class="txtMarquee-left">
+				<div class="bd">
+					<ul class="infoList">
+						<!--{foreach from=$hotarticle item=article name=arc}-->
+						<li><a href="{$article.cat_url}" title="{$article.title}">{$article.title|escape:html}</a></li>
+						<!--{/foreach}-->
+					</ul>	
+				</div>
+			</div>
+			
+			
 		</div>
 		<div class="h20"></div>
 
@@ -226,7 +233,8 @@
 		});
 	    
 	    //公告栏
-	    $('.variable-width').slick({
+	    $(".txtMarquee-left").slide({mainCell:".bd ul",autoPlay:true,effect:"leftMarquee",interTime:15,trigger:"click"});
+	    /* $('.variable-width').slick({
 			dots:true,
 			arrows:false,
 			autoplay:true,
@@ -234,7 +242,7 @@
 			autoplaySpeed: 3000,
 			pauseOnHover:false,
 			lazyLoad: 'ondemand'
-		});
+		}); */
 	    
 	  });
 	  

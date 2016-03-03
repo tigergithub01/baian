@@ -241,7 +241,7 @@ if (1)
 		$selected_price_grade="";        
         foreach ($price_grade as $key=>$val)
         {
-            $temp_key = $key + 1;
+            $temp_key = $key + 0;
             $price_grade[$temp_key]['goods_num'] = $val['goods_num'];
             $price_grade[$temp_key]['start'] = $row['min'] + round($dx * $val['sn']);
             $price_grade[$temp_key]['end'] = $row['min'] + round($dx * ($val['sn'] + 1));
@@ -261,20 +261,22 @@ if (1)
             }
         }
 
-        $price_grade[0]['start'] = 0;
+        /**手机版中不需要全部**/
+        /* $price_grade[0]['start'] = 0;
         $price_grade[0]['end'] = 0;
         $price_grade[0]['price_range'] = $_LANG['all_attribute'];
         $price_grade[0]['url'] = build_uri('category', array('cid'=>$cat_id, 'bid'=>$brand, 'price_min'=>0, 'price_max'=> 0, 'filter_attr'=>$filter_attr_str,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name']);
-        $price_grade[0]['selected'] = empty($price_max) ? 1 : 0;
+        $price_grade[0]['selected'] = empty($price_max) ? 1 : 0; */
 		
-        //TODO:如果选择了价格等级 ，则过滤列表中不显示价格等级
+        /**手机版中显示所有价格区间***/
+        /* //TODO:如果选择了价格等级 ，则过滤列表中不显示价格等级
         if($price_max>0 && !empty($selected_price_grade)){
         	//已选品牌标签
         	$selected_filter_arr[]=["name"=>"价格：".$selected_price_grade,
         			"url"=>build_uri('category', array('cid' => $cat_id, 'bid' => $brand, 'price_min'=>0, 'price_max'=> 0, 'filter_attr'=>$filter_attr_str,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name'])];
         	
         	$price_grade = array();
-        }
+        } */
         
         $smarty->assign('price_grade',     $price_grade);
 
@@ -294,7 +296,7 @@ if (1)
 
     foreach ($brands AS $key => $val)
     {
-        $temp_key = $key + 1;
+        $temp_key = $key + 0;
         $brands[$temp_key]['brand_id'] = $val['brand_id'];
         $brands[$temp_key]['brand_name'] = $val['brand_name'];
         $brands[$temp_key]['url'] = build_uri('category', array('cid' => $cat_id, 'bid' => $val['brand_id'], 'price_min'=>$price_min, 'price_max'=> $price_max, 'filter_attr'=>$filter_attr_str,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name']);
@@ -302,7 +304,7 @@ if (1)
         /* 判断品牌是否被选中 */
         
 //         if ($brand == $brands[$key]['brand_id'])
-		if(in_array($brands[$key]['brand_id'], explode(",", $brand)))
+		if(in_array($brands[$temp_key]['brand_id'], explode(",", $brand)))
         {
             $brands[$temp_key]['selected'] = 1;
         }
@@ -312,12 +314,13 @@ if (1)
         }
     }
 
-    $brands[0]['brand_name'] = $_LANG['all_attribute'];
+    /***手机版中不需要显示全部*/
+    /* $brands[0]['brand_name'] = $_LANG['all_attribute'];
     $brands[0]['url'] = build_uri('category', array('cid' => $cat_id, 'bid' => 0, 'price_min'=>$price_min, 'price_max'=> $price_max, 'filter_attr'=>$filter_attr_str,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name']);
-    $brands[0]['selected'] = empty($brand) ? 1 : 0;
+    $brands[0]['selected'] = empty($brand) ? 1 : 0; */
     
-    
-	if(!empty($brand)){
+    /***手机版选择中显示选中状态**/
+	/* if(!empty($brand)){
 		//选择品牌后，页面中不显示品牌筛选条件
 		$brands = array();
 		
@@ -325,7 +328,7 @@ if (1)
 		$selected_filter_arr[]=["name"=>"品牌：".$brand_name,
 				"url"=>build_uri('category', array('cid' => $cat_id, 'bid' => 0, 'price_min'=>$price_min, 'price_max'=> $price_max, 'filter_attr'=>$filter_attr_str,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name'])];
 		
-	}
+	} */
 	
     $smarty->assign('brands', $brands);
 
@@ -359,16 +362,17 @@ if (1)
                     $temp_arrt_url_arr[$i] = !empty($filter_attr[$i]) ? $filter_attr[$i] : 0;
                 }
 
-                $temp_arrt_url_arr[$key] = 0;                           //“全部”的信息生成
+                /**手机版中不需要显示全部*/
+                /* $temp_arrt_url_arr[$key] = 0;                           //“全部”的信息生成
                 $temp_arrt_url = implode('.', $temp_arrt_url_arr);
                 $all_attr_list[$key]['attr_list'][0]['attr_value'] = $_LANG['all_attribute'];
                 $all_attr_list_url = build_uri('category', array('cid'=>$cat_id, 'bid'=>$brand, 'price_min'=>$price_min, 'price_max'=>$price_max, 'filter_attr'=>$temp_arrt_url,'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), $cat['cat_name']);
                 $all_attr_list[$key]['attr_list'][0]['url'] = $all_attr_list_url;
-                $all_attr_list[$key]['attr_list'][0]['selected'] = empty($filter_attr[$key]) ? 1 : 0;
+                $all_attr_list[$key]['attr_list'][0]['selected'] = empty($filter_attr[$key]) ? 1 : 0; */
 
                 foreach ($attr_list as $k => $v)
                 {
-                    $temp_key = $k + 1;
+                    $temp_key = $k + 0;
                     $temp_arrt_url_arr[$key] = $v['goods_id'];       //为url中代表当前筛选属性的位置变量赋值,并生成以‘.’分隔的筛选属性字符串
                     $temp_arrt_url = implode('.', $temp_arrt_url_arr);
 					
@@ -389,12 +393,13 @@ if (1)
                     }
                 }
                 
-                //被选中的标签
+                /***手机版选择中显示选中状态**/
+                /* //被选中的标签
                 if($all_attr_list[$key]['selected']==1){
                 	$selected_filter_arr[]=["name"=> $all_attr_list[$key]['filter_attr_name'].":".$all_attr_list[$key]['selected_attr_value'],
                 			"url"=>$all_attr_list_url];
                 	$all_attr_list[$key] = array();
-                }
+                } */
             }
         }
         

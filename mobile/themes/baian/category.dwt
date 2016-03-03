@@ -26,9 +26,9 @@
 		    <div id="tabBox1" class="tabBox tabBox-lz">
 				<div class="hd">
 					<ul>
-						<li class="on"><a href="javascript:void(0)">默认</a></li>
-						<li><a href="javascript:void(0)">销量</a></li>
-						<li><a href="javascript:void(0)">价格</a></li>
+						<li class="<!-- {if $pager.sort eq 'goods_id'} -->on<!-- {/if} -->"><a href="{$default_sort_url}" >默认</a></li>
+						<li class=""><a href="">销量</a></li>
+						<li class="<!-- {if $pager.sort eq 'shop_price'} -->on<!-- {/if} -->"><a href="{$price_sort_url}">价格</a></li>
 						<li id="filter_tab"><a href="javascript:void(0)">筛选</a></li>
 					</ul>
 				</div>
@@ -55,6 +55,9 @@
 		  <input type="hidden" id="size" name="size" value="{$pager.size}" /> 
 		  <input type="hidden" id="record_count" name="record_count" value="{$pager.record_count}" />
 		  <input type="hidden" id="page_count" name="page_count" value="{$pager.page_count}" /> 
+		  <input type="hidden" id="promote_flag" name="promote_flag" value="{$promote_flag}" />
+		  <input type="hidden" id="integral_flag" name="integral_flag" value="{$integral_flag}" /> 
+		  <input type="hidden" id="bonus_flag" name="bonus_flag" value="{$bonus_flag}" />
 		  
 		<div class="h"></div>
 	</section>
@@ -77,15 +80,15 @@
 			<a href="javascript:void(0)" onclick="close_div($('#sect_filter'))">返回</a>
 		</div>
 		<ul class="ul-goods-class ul-goods-class1">
-			<li><label class="checkbox" ><input id="promote" type="checkbox"><span>促销商品</span></label></li>
-			<li><label class="checkbox" ><input id="integral" type="checkbox"><span>可用积分</span></label></li>
-			<li><label class="checkbox"><input id="bonus" type="checkbox"><span>可用红包</span></label></li>
+			<li><label class="checkbox  <!-- {if $promote_flag eq 1} -->checked"<!-- {/if} -->"><input id="promote" type="checkbox" <!-- {if $promote_flag eq 1} -->checked="checked"<!-- {/if} -->><span>促销商品</span></label></li>
+			<li><label class="checkbox <!-- {if $integral_flag eq 1} -->checked"<!-- {/if} -->" ><input id="integral" type="checkbox" <!-- {if $integral_flag eq 1} -->checked="checked"<!-- {/if} -->><span>可用积分</span></label></li>
+			<li><label class="checkbox <!-- {if $bonus_flag eq 1} -->checked"<!-- {/if} -->"><input id="bonus" type="checkbox" <!-- {if $bonus_flag eq 1} -->checked="checked"<!-- {/if} -->><span>可用红包</span></label></li>
 		</ul>
 		<dl class="dl-guide-nav">
 			<!--{if $brands.1}-->
 			<dt>品牌</dt>
 			<dd>
-				<ul class="ul-goods-class">
+				<ul class="ul-goods-class brand">
 					<!--{foreach from=$brands item=brand}-->
 						<li><label class="checkbox <!-- {if $brand.selected} -->checked<!-- {/if} -->"><input id="cart-cuxiao2" type="checkbox" value="{$brand.brand_id}" <!-- {if $brand.selected} -->checked="checked"<!-- {/if} --> ><span>{$brand.brand_name}</span></label></li>
 		            <!--{/foreach}--> 
@@ -96,9 +99,9 @@
 			<!--{if $price_grade.1}-->
 			<dt>价格</dt>
 			<dd>
-				<ul class="ul-goods-class">
+				<ul class="ul-goods-class grade">
 					<!--{foreach from=$price_grade item=grade}-->
-						<li><label class="checkbox"><input id="cart-cuxiao2" type="checkbox"><span>{$grade.price_range}</span></label></li>
+						<li><label class="checkbox grade_item <!-- {if $grade.selected} -->checked<!-- {/if} -->"><input id="cart-cuxiao2" min_grade="{$grade.start}" max_grade="{$grade.end}" type="checkbox" <!-- {if $grade.selected} -->checked="checked"<!-- {/if} -->><span>{$grade.price_range}</span></label></li>
 			        <!--{/foreach}-->
 				</ul>
 			</dd>
@@ -108,9 +111,9 @@
 	  			<!-- {if $filter_attr|@count neq 0 } -->
 	  		<dt>{$filter_attr.filter_attr_name|escape:html}</dt>
 			<dd>
-				<ul class="ul-goods-class">
+				<ul class="ul-goods-class filter_attr attr_{$smarty.foreach.filter_attr.index}" attr_index ="{$smarty.foreach.filter_attr.index}">
 					 <!--{foreach from=$filter_attr.attr_list item=attr}-->
-					  <li><label class="checkbox"><input id="cart-cuxiao2" type="checkbox"><span>{$attr.attr_value}</span></label></li>	
+					  <li><label class="checkbox <!-- {if $attr.selected} -->checked<!-- {/if} -->"><input id="cart-cuxiao2" type="checkbox" value="{$attr.goods_attr_id}" <!-- {if $attr.selected} -->checked="checked"<!-- {/if} -->><span>{$attr.attr_value}</span></label></li>	
 			        <!--{/foreach}-->
 				</ul>
 			</dd>				
@@ -119,9 +122,9 @@
 			
 		</dl>
 		<div class="bot">
-			<a href="" class="a2">确定</a>
-			<a href="" class="a1">清除</a>
-			<span>共<em>1000</em>件商品</span>
+			<a href="javascript:void(0)" class="a2" onclick="muti_sel()">确定</a>
+			<a href="javascript:void(0)" class="a1" onclick="clear_con()">清除</a>
+			<span>共<em>{$pager.record_count}</em>件商品</span>
 		</div>
 	</div>
 	
@@ -216,17 +219,23 @@
     		e.stopPropagation();
     	});
         
-        //可用积分、可用红包、促销商品选项
+        //可用积分、可用红包、促销商品、品牌等复选框
+        //grade
         $('.m-screen .checkbox input').change(function(){
 			var _this = $(this).parents('.checkbox');
-
-		    if( _this.hasClass('checked') ){
+			
+			if( _this.hasClass('checked') ){
 			    _this.removeClass('checked');
 		    }else{
+		    	//价格特殊处理，只能单选
+		    	if( _this.hasClass('grade_item') ){
+		    		$(".grade_item input[type='checkbox']").prop('checked',false);
+			    	$(".grade_item").removeClass('checked');		    	
+			    	$(this).prop('checked',true);
+		    	}
 			    _this.addClass('checked');
 		    }
-
-		})
+		});
     });	
 	
 	function more_goods_list(){
@@ -376,6 +385,125 @@
     	    }  
     	});
 	}
+	
+	
+	/**
+		选择过滤条件
+	*/
+	function muti_sel(){
+    	var category = $("#category").val();
+    	var brand = $("#brand").val();
+    	var price_min = $("#price_min").val();
+    	var price_max = $("#price_max").val();
+    	var filter_attr = $("#filter_attr").val();
+    	var sort = $("#sort").val();
+    	var order = $("#order").val();
+    	var filter_ext = $("#filter_ext").val();
+    	
+    	//if(type=='brand'){
+    	//品牌选择	
+   		var $checkedlist = $(".brand input[type='checkbox']:checked");
+  		brand = "";
+  		$checkedlist.each(function(index,v){
+      		brand += $(v).val();
+      		if(index<($checkedlist.length-1)){
+      			brand += ",";
+      		}	
+  	    });	
+    		
+    	//价格选择，价格选择是单选
+   		var $checkedlist = $(".grade input[type='checkbox']:checked");
+   		price_min = 0;
+   		price_max = 0;
+  		$checkedlist.each(function(index,v){
+			price_min = $(v).attr("min_grade");
+			price_max = $(v).attr("max_grade");	
+			return false;
+ 	   });	
+   		
+    	
+   		//属性选择
+   		var $filter_attr_list = $(".filter_attr");
+   		filter_attr=='0';
+   		$filter_attr_list.each(function(index,v){
+			//循环处理所有的属性分类
+			var attr_index = $(v).attr('attr_index');
+			var $checkedlist = $(".attr_"+attr_index+" input[type='checkbox']:checked");
+			checked_attr="";
+			$checkedlist.each(function(index,v){
+				checked_attr += $(this).val();
+				if(index<($checkedlist.length-1)){
+					checked_attr += ",";
+				}	
+	        });
+			
+			//先根据长度格式化为0.0.0.0格式
+			var filter_attr_count = '{$filter_attr_count}';
+			filter_attr_count = (filter_attr_count=='')?0:parseInt(filter_attr_count);
+			if(filter_attr=='0' && filter_attr_count > 0){
+				filter_attr = "";
+				for(var i=0;i<filter_attr_count;i++){
+	    			filter_attr +=('0');
+	    			if(i<(filter_attr_count-1)){
+	    				filter_attr += ".";
+	    			}
+	    		}
+			}
+			
+			
+			//再重新赋值
+			var filter_attr_array = filter_attr.split('.');
+			filter_attr="";
+			for(var i=0;i<filter_attr_array.length;i++){
+				if(attr_index==i){
+					filter_attr +=(checked_attr);
+				}else{
+					filter_attr +=(filter_attr_array[i]);
+				}
+				if(i<(filter_attr_count-1)){
+					filter_attr += ".";
+				}
+			}
+        });	
+   		//console.debug(filter_attr);
+   		
+   		//积分，促销，红包过滤情况
+   		var promote_flag = $("#promote").prop("checked")?1:0;
+   		var integral_flag = $("#integral").prop("checked")?1:0;
+   		var bonus_flag = $("#bonus").prop("checked")?1:0;
+   		filter_ext= promote_flag+"."+integral_flag+"."+bonus_flag;
+   		
+   		//获取链接地址
+    	$.ajax({     
+    	    url:'category.php',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'is_ajax':'1','id':category,'brand':brand,'price_min':price_min,'price_max':price_max,
+    	    	'filter_attr':filter_attr,'sort':sort,'order':order,'filter_ext':filter_ext},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    		    if(data.status==1){
+    		    	var build_uri = data.content;
+    		    	window.location.href = build_uri;
+    		    }else{
+    		    	
+    		    }
+    	    }  
+    	}); 
+    	
+    	
+    }
+    	
+    /*
+    	清除选择条件
+    */	
+    function clear_con(){
+    	$('.m-screen .checkbox input').prop('checked',false);
+    	$('.m-screen .checkbox').removeClass('checked');
+    }
 	
 	
 	

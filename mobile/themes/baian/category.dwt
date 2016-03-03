@@ -27,7 +27,7 @@
 				<div class="hd">
 					<ul>
 						<li class="<!-- {if $pager.sort eq 'goods_id'} -->on<!-- {/if} -->"><a href="{$default_sort_url}" >默认</a></li>
-						<li class=""><a href="">销量</a></li>
+						<li class=""><a href="{$default_sort_url}">销量</a></li>
 						<li class="<!-- {if $pager.sort eq 'shop_price'} -->on<!-- {/if} -->"><a href="{$price_sort_url}">价格</a></li>
 						<li id="filter_tab"><a href="javascript:void(0)">筛选</a></li>
 					</ul>

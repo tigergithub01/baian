@@ -97,5 +97,6 @@ function nav_div(__element,overlay){
 
 function close_div(__element){
 	__element.removeClass('open');
+	$('body').removeClass('fixme');
 	$('.overlay').remove();
 }

@@ -9,6 +9,10 @@
 	<script type="text/javascript" src="/mobile/themes/baian/js/script.js" ></script>
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	<style>
+		/*去掉图片间的换行 */
+		.img-wp br{display: none;}
+	</style>
 </head>
 <body>
 	
@@ -266,10 +270,8 @@
 					</ul>
 				</div>
 				<div class="bd" id="tabBox2-bd">
-					
-
 					<!-- 详情 -->
-					<div class="con">
+					<div class="con img-wp">
 						<div>
 						<div class="ad">
 							  <!--{foreach from=$xqtop name=ban item=banner}-->

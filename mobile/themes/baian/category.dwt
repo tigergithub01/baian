@@ -77,67 +77,46 @@
 			<a href="javascript:void(0)" onclick="close_div($('#sect_filter'))">返回</a>
 		</div>
 		<ul class="ul-goods-class ul-goods-class1">
-			<li><a href="">爱的营养大师</a></li>
-			<li><a href="">美赞臣</a></li>
-			<li><a href="">惠氏</a></li>
+			<li><label class="checkbox" ><input id="promote" type="checkbox"><span>促销商品</span></label></li>
+			<li><label class="checkbox" ><input id="integral" type="checkbox"><span>可用积分</span></label></li>
+			<li><label class="checkbox"><input id="bonus" type="checkbox"><span>可用红包</span></label></li>
 		</ul>
 		<dl class="dl-guide-nav">
+			<!--{if $brands.1}-->
 			<dt>品牌</dt>
 			<dd>
 				<ul class="ul-goods-class">
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
+					<!--{foreach from=$brands item=brand}-->
+						<li><label class="checkbox <!-- {if $brand.selected} -->checked<!-- {/if} -->"><input id="cart-cuxiao2" type="checkbox" value="{$brand.brand_id}" <!-- {if $brand.selected} -->checked="checked"<!-- {/if} --> ><span>{$brand.brand_name}</span></label></li>
+		            <!--{/foreach}--> 
 				</ul>
 			</dd>
+			<!--{/if}-->
+			
+			<!--{if $price_grade.1}-->
 			<dt>价格</dt>
 			<dd>
 				<ul class="ul-goods-class">
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
+					<!--{foreach from=$price_grade item=grade}-->
+						<li><label class="checkbox"><input id="cart-cuxiao2" type="checkbox"><span>{$grade.price_range}</span></label></li>
+			        <!--{/foreach}-->
 				</ul>
 			</dd>
-			<dt>段位</dt>
+			<!--{/if}-->
+			
+			<!--{foreach from=$filter_attr_list item=filter_attr name=filter_attr}-->
+	  			<!-- {if $filter_attr|@count neq 0 } -->
+	  		<dt>{$filter_attr.filter_attr_name|escape:html}</dt>
 			<dd>
 				<ul class="ul-goods-class">
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
+					 <!--{foreach from=$filter_attr.attr_list item=attr}-->
+					  <li><label class="checkbox"><input id="cart-cuxiao2" type="checkbox"><span>{$attr.attr_value}</span></label></li>	
+			        <!--{/foreach}-->
 				</ul>
-			</dd>
-			<dt>规格</dt>
-			<dd>
-				<ul class="ul-goods-class">
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-					<li><a href="">爱的营养大师</a></li>
-					<li><a href="">美赞臣</a></li>
-					<li><a href="">惠氏</a></li>
-				</ul>
-			</dd>
+			</dd>				
+	  			<!-- {/if} -->
+            <!--{/foreach}-->				
+			
 		</dl>
 		<div class="bot">
 			<a href="" class="a2">确定</a>
@@ -236,6 +215,18 @@
         $('#sect_filter').click(function(e) {
     		e.stopPropagation();
     	});
+        
+        //可用积分、可用红包、促销商品选项
+        $('.m-screen .checkbox input').change(function(){
+			var _this = $(this).parents('.checkbox');
+
+		    if( _this.hasClass('checked') ){
+			    _this.removeClass('checked');
+		    }else{
+			    _this.addClass('checked');
+		    }
+
+		})
     });	
 	
 	function more_goods_list(){

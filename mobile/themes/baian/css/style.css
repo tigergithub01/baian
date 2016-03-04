@@ -817,7 +817,7 @@ input.btn4{border: 0;}
 .m-screen .ul-goods-class li a{width: 160px;display: block;}
 .m-screen .dl-guide-nav dt{color: #595757;}
 .m-screen .ul-goods-class1{padding: 10px 4px 0 20px;}
-.m-screen .bot{position: absolute;bottom: 0;right: 0;width: 100%;}
+.m-screen .bot{position: relative;bottom: 0;right: 0;width: 100%;}
 .m-screen .bot a{display: block;width: 160px;height: 50px;text-align: center;line-height: 50px;
 	font-size: 24px;color: #fff;float: right;
 }

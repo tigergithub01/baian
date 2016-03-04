@@ -100,3 +100,19 @@ function close_div(__element){
 	$('body').removeClass('fixme');
 	$('.overlay').remove();
 }
+
+/**
+ * 显示通知消息
+ * @param msg
+ */
+function showToastMessage(msg){
+	$().toastmessage('showToast', {
+	    text     : msg,
+	    stayTime : 2000,
+	    sticky   : false,
+	    position : 'middle-center',
+	    type     : 'notice',
+	    closeText: '',
+	    close    : function () {}
+	});
+}

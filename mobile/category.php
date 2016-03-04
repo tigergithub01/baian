@@ -538,6 +538,17 @@ if (1)
     		'filter_ext' => $filter_ext_str
     ), $cat ['cat_name'] );
     
+    $sale_sort_url = build_uri ( 'category', array (
+    		'cid' => $cat_id,
+    		'bid' => $brand,
+    		'price_min' => $price_min,
+    		'price_max' => $price_max,
+    		'filter_attr' => $filter_attr_str,
+    		'sort' => 'last_update',
+    		'order' => ($order=='ASC'?"DESC":"ASC"),
+    		'filter_ext' => $filter_ext_str
+    ), $cat ['cat_name'] );
+    
     
     $smarty->assign('promote_flag',    $promote);
     $smarty->assign('integral_flag',    $integral);
@@ -547,8 +558,7 @@ if (1)
     $smarty->assign('bonus_url',    $bonus_url);
     $smarty->assign('price_sort_url',    $price_sort_url);
     $smarty->assign('default_sort_url',    $default_sort_url);
-    
-    
+    $smarty->assign('sale_sort_url',    $sale_sort_url);
     
     
 

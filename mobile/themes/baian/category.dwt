@@ -19,7 +19,7 @@
 
 		<header id="head">
 			<a href="javascript:history.back(-1);" class="back-btn"></a>
-			<h2>商品分类</h2>
+			<h2>{$cat_name}</h2>
 		</header>
 
 		<div class="w-box">

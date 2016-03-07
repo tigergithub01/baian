@@ -9,9 +9,11 @@
 	<script type="text/javascript" src="/mobile/themes/baian/js/script.js" ></script>
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.lazyload.min.js" ></script>
 	<style>
 		/*去掉图片间的换行 */
 		.img-wp br{display: none;}
+		/* .img-wp img{display: block;} */
 	</style>
 </head>
 <body>
@@ -284,6 +286,7 @@
 						</div>
 						
       							{$goods.goods_desc} 
+      							
 
 						<div class="ad">
 							  <!--{foreach from=$xqdibu name=ban item=banner}-->
@@ -293,8 +296,16 @@
 							 	{$relative_module.footer_content}
 							 <!-- {/if} -->
 						</div>
+						
+						
+						<!-- {foreach from=$pictures item=picture}-->
+						 <!-- <img data-original="/{$picture.img_url}" src="images/ico_preload.jpg" height="640px"><br/>  -->
+						<!--{/foreach}-->
+					
+					
 						</div>
 					</div>
+					
 					
 					<!-- 介绍 -->
 					<div class="con">
@@ -334,17 +345,9 @@
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
 	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
-	<script type="text/javascript">
-		TouchSlide({ 
-			slideCell:"#focus",
-			titCell:".hd ul",
-			mainCell:".bd ul", 
-			effect:"left", 
-			autoPage:true //自动分页
-		});
-	</script>
-
-	<script type="text/javascript">
+	<script>
+	
+	/*详情页切换**/
 	TouchSlide( { slideCell:"#tabBox2",
 		startFun:function( i,c,s ){ console.debug(s) },
 		endFun :function(i){ //高度自适应			
@@ -354,10 +357,17 @@
 		}
 
 	} );
-	</script>
-
-	<script>
-	$(document).ready(function() {
+	
+	/*相册页切换**/
+	TouchSlide({ 
+		slideCell:"#focus",
+		titCell:".hd ul",
+		mainCell:".bd ul", 
+		effect:"left", 
+		autoPage:true //自动分页
+	});
+	
+	$(function(){
 		// 自定义单选按钮
 		$('.radio input').change(function(){
 			var _this = $(this).parent();
@@ -374,6 +384,13 @@
 			var val = $(this).prev('input').val()*1 + 1;
 			$(this).prev('input').val(val);
 		});
+		
+		$(".img-wp img").lazyload({ 
+        	placeholder : "images/ico_preload.jpg",
+            effect: "fadeIn",
+        });
+		
+		
 
 	});
 	</script>

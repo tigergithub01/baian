@@ -19,7 +19,7 @@
 
 		<header id="head">
 			<a href="javascript:history.back(-1);" class="back-btn"></a>
-			<h2>搜索结果（共<em>{$pager.record_count}</em>件商品）</h2>
+			<h2>搜索结果（<span>共{$pager.record_count}件商品</span>）</h2>
 		</header>
 
 		<div class="w-box">

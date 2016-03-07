@@ -33,6 +33,8 @@ if ((DEBUG_MODE & 2) != 2)
 $page = isset($_REQUEST['page'])   && intval($_REQUEST['page'])  > 0 ? intval($_REQUEST['page'])  : 1;
 $size = isset($_CFG['page_size'])  && intval($_CFG['page_size']) > 0 ? intval($_CFG['page_size']) : 10;
 
+//ajax 加载数据
+$is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0;
 
 /*------------------------------------------------------ */
 //-- PROCESSOR
@@ -45,7 +47,9 @@ setcookie('ECS[display]', $display, gmtime() + 86400 * 7);
 /* 页面的缓存ID */
 $cache_id = sprintf('%X', crc32($page . '-' . $_CFG['lang']));
 
-if (!$smarty->is_cached('promote.dwt', $cache_id))
+//ajax加载数据的时候不使用缓存
+if (1)
+// if (!$smarty->is_cached('promote.dwt', $cache_id))
 {
     /* 如果页面没有被缓存则重新获取页面的内容 */
 
@@ -88,9 +92,25 @@ if (!$smarty->is_cached('promote.dwt', $cache_id))
     $smarty->assign('may_like_goods',$may_like_goods);
 }
 
-$smarty->display('promote.dwt', $cache_id);
 
 
+if($is_ajax_fetch==1){
+	include_once('includes/cls_json.php');
+	$json = new JSON;
+	$result = array('error' => '', 'content' => '');
+	$result['content'] = $smarty->fetch('library/promote_goods_list.lbi');
+	$result['filter'] = array('category' => 0, 'brand' => 0,
+			'price_min'=>0, "price_max"=>0,
+			"filter_attr" =>'',"filter_ext" =>'',
+			"page" => $page, "size" =>$size,"sort"=>'',"order"=>'',
+			"record_count" => $count,
+			"page_count"=>($count = $count > 0 ? intval(ceil($count / $size)) : 1)
+	);
+	die($json->encode($result));
+}else{
+	$smarty->display('promote.dwt');
+	$smarty->display('promote.dwt', $cache_id);
+}
 
 
 

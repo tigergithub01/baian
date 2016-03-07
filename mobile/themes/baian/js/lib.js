@@ -24,6 +24,7 @@ $(document).ready(function($) {
 	$('.soBox').click(function(e) {
 		$('.box-so').addClass('open');
 		$('body').addClass('fixme')
+		$('#keywords').focus();
 		e.stopPropagation();
 	});
 	$('.box-so').click(function(e) {

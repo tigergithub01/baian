@@ -349,7 +349,7 @@
 	
 	/*详情页切换**/
 	TouchSlide( { slideCell:"#tabBox2",
-		startFun:function( i,c,s ){ console.debug(s) },
+		/* startFun:function( i,c,s ){ console.debug(s) }, */
 		endFun :function(i){ //高度自适应			
 			var bd = document.getElementById("tabBox2-bd");
 			bd.parentNode.style.height = bd.children[i].children[0].offsetHeight+40+"px";
@@ -358,14 +358,16 @@
 
 	} );
 	
-	/*相册页切换**/
-	TouchSlide({ 
-		slideCell:"#focus",
-		titCell:".hd ul",
-		mainCell:".bd ul", 
-		effect:"left", 
-		autoPage:true //自动分页
-	});
+	//if($("#focus .bd li").length>0){
+		/*相册页切换**/
+		TouchSlide({ 
+			slideCell:"#focus",
+			titCell:".hd ul",
+			mainCell:".bd ul", 
+			effect:"left", 
+			autoPage:true //自动分页
+		});
+	//}
 	
 	$(function(){
 		// 自定义单选按钮
@@ -388,6 +390,14 @@
 		$(".img-wp img").lazyload({ 
         	placeholder : "images/ico_preload.jpg",
             effect: "fadeIn",
+            load:function(elements_left, settings) {
+                //console.log('load');
+                //console.log(elements_left);
+                //console.log(this, elements_left, settings);
+                //加载完成后，自动修改tab的高度
+                var bd = document.getElementById("tabBox2-bd");
+    			bd.parentNode.style.height = bd.children[0].children[0].offsetHeight+40+"px";
+            },
         });
 		
 		

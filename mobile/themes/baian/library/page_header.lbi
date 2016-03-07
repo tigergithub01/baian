@@ -16,7 +16,7 @@
 			<a href="javascript:void(0);" class="a-close"></a>
 			<div class="so">
 				<form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()">
-				<input type="text" name="keywords" placeholder="{$search_keywords|escape}" class="inp1" onkeyup="keyupdeal(event,this.value);" onkeydown="keydowndeal(event);" onclick="keyupdeal(event,this.value);"/>
+				<input type="text" id="keywords" name="keywords" placeholder="{$search_keywords|escape}" class="inp1" onkeyup="keyupdeal(event,this.value);" onkeydown="keydowndeal(event);" onclick="keyupdeal(event,this.value);"/>
 				<input type="submit" value="" class="btn">
 				</form>
 			</div>

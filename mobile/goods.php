@@ -256,7 +256,7 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'cart_goods_number')
 	lib_main_make_json_result('',['cart_goods_number'=>$cart_goods_number]);
 }
 
-//clear_cache_files('goods');
+// clear_cache_files('goods');
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
@@ -371,6 +371,11 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 				$goods['goods_desc']=preg_replace('/(?!<[^>]*)'.$row_k['key_name'].'(?![^<]*>)/i', '<strong>' . $row_k['key_name'] . '</strong>', $goods['goods_desc'],1 );
 		}
 		/* 代码添加 end  by pgge */
+		
+// 		var_dump($goods['goods_desc']);
+		$goods['goods_desc']  = preg_replace('/<img (.*?) src=\"(.+?)\".*?>/','<img ${1} src="/mobile/themes/baian/images/ico_preload.jpg" data-original="${2}"/>',$goods['goods_desc']);
+// 		var_dump($goods['goods_desc']);
+		
 		$smarty->assign('article',get_article(136));          //获取文章的内容页面
 		$smarty->assign('article1',get_article(135));         //获取文章的内容页面
 		
@@ -533,6 +538,10 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		if (!empty($goods['relative_module']))
 		{
 			$relative_module = $db->getRow("SELECT * FROM " .$ecs->table('relative_module'). " WHERE module_id='" . $goods['relative_module'] . "' AND is_show = 1 LIMIT 1");
+			
+			$relative_module['header_content']  = preg_replace('/<img (.*?) src=\"(.+?)\".*?>/','<img ${1} src="/mobile/themes/baian/images/ico_preload.jpg" data-original="${2}"  />',$relative_module['header_content']);
+			$relative_module['footer_content']  = preg_replace('/<img (.*?) src=\"(.+?)\".*?>/','<img ${1} src="/mobile/themes/baian/images/ico_preload.jpg" data-original="${2}"  />',$relative_module['footer_content']);
+			
 			$smarty->assign('relative_module', $relative_module);
 		}
 		

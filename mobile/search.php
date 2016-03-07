@@ -35,10 +35,15 @@ if (empty($_GET['encode']))
     }
     $string['search_encode_time'] = time();
     $string = str_replace('+', '%2b', base64_encode(serialize($string)));
-
-    header("Location: search.php?encode=$string\n");
-
-    exit;
+	
+    //是否获取ajax内容
+    $is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0;
+    if($is_ajax_fetch){
+    	$string = array();
+    }else{
+    	header("Location: search.php?encode=$string\n");
+    	exit;
+    }
 }
 else
 {
@@ -121,6 +126,9 @@ else
     $_REQUEST['goods_type'] = !empty($_REQUEST['goods_type']) ? intval($_REQUEST['goods_type']) : 0;
     $_REQUEST['sc_ds']      = !empty($_REQUEST['sc_ds']) ? intval($_REQUEST['sc_ds']) : 0;
     $_REQUEST['outstock']   = !empty($_REQUEST['outstock']) ? 1 : 0;
+    
+    
+    
 
     $action = '';
     if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'form')
@@ -534,7 +542,26 @@ else
     
    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
 
-    $smarty->display('search.dwt');
+   if($is_ajax_fetch==1){
+   	include_once('includes/cls_json.php');
+   	$json = new JSON;
+   	$result = array('error' => '', 'content' => '');
+   	$result['content'] = $smarty->fetch('library/goods_list.lbi');
+   	$result['filter'] = array('keywords'   => stripslashes(urlencode($_REQUEST['keywords'])),
+   			'category' => $category, 'brand' => $_REQUEST['brand'],
+   			'price_min'=>$_REQUEST['min_price'], "price_max"=>$_REQUEST['max_price'],
+   			"filter_attr" =>'',"filter_ext" =>'',
+   			"page" => $page, "size" =>$size,"sort"=>$sort,"order"=>$order,
+   			"record_count" => $count,
+   			"page_count"=>($count = $count > 0 ? intval(ceil($count / $size)) : 1)
+   	);
+   	die($json->encode($result));
+   }else{
+   	$smarty->display('search.dwt');
+   	// 	$smarty->display('category.dwt', $cache_id);
+   }
+   
+    
 }
 
 /*------------------------------------------------------ */

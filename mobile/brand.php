@@ -62,6 +62,15 @@ $page = !empty($_REQUEST['page'])  && intval($_REQUEST['page'])  > 0 ? intval($_
 $size = !empty($_CFG['page_size']) && intval($_CFG['page_size']) > 0 ? intval($_CFG['page_size']) : 10;
 $cate = !empty($_REQUEST['cat'])   && intval($_REQUEST['cat'])   > 0 ? intval($_REQUEST['cat'])   : 0;
 
+$price_max = isset($_REQUEST['price_max']) && intval($_REQUEST['price_max']) > 0 ? intval($_REQUEST['price_max']) : 0;
+$price_min = isset($_REQUEST['price_min']) && intval($_REQUEST['price_min']) > 0 ? intval($_REQUEST['price_min']) : 0;
+
+//属性过滤
+$filter_attr_str = isset($_REQUEST['filter_attr']) ? htmlspecialchars(trim($_REQUEST['filter_attr'])) : '0';
+$filter_attr_str = trim(urldecode($filter_attr_str));
+$filter_attr_str = preg_match('/^((([0-9]+[,]?)+)[.]?)+$/',$filter_attr_str) ? $filter_attr_str : '';
+$filter_attr = empty($filter_attr_str) ? '' : explode('.', $filter_attr_str);
+
 /* 促销产品，可用积分，可用红包 ,参数值1.1.1用点号分隔*/
 $filter_ext_str = isset($_REQUEST['filter_ext']) ? htmlspecialchars(trim($_REQUEST['filter_ext'])) : '0';
 $filter_ext_str = trim(urldecode($filter_ext_str));
@@ -84,13 +93,26 @@ $display  = (isset($_REQUEST['display']) && in_array(trim(strtolower($_REQUEST['
 $display  = in_array($display, array('list', 'grid', 'text')) ? $display : 'text';
 setcookie('ECS[display]', $display, gmtime() + 86400 * 7);
 
+
+$is_ajax = isset($_REQUEST['is_ajax']) ? intval($_REQUEST['is_ajax']) : 0;
+if($is_ajax==1){
+	$build_uri = build_uri('brand', array('cid'=>$cate, 'bid'=>$brand_id,/*  'price_min'=>$price_min, 'price_max'=> $price_max,  'filter_attr'=>$filter_attr_str,*/'sort' => $sort, 'order' => $order,'filter_ext'=>$filter_ext_str), '');
+	lib_main_make_json_result('',$build_uri);
+	exit;
+}
+
+
+$is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0;
+
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
 /* 页面的缓存ID */
 $cache_id = sprintf('%X', crc32($brand_id . '-' . $display . '-' . $sort . '-' . $order . '-' . $page . '-' . $size . '-' . $_SESSION['user_rank'] . '-' . $_CFG['lang'] . '-' . $cate . '-'.$filter_ext_str));
 
-if (!$smarty->is_cached('brand.dwt', $cache_id))
+// if (!$smarty->is_cached('brand.dwt', $cache_id))
+//ajax加载数据的时候不使用缓存
+if (1)
 {
     
 	$brand_info = get_brand_info($brand_id);
@@ -173,6 +195,14 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     		'filter_ext' => $filter_ext_str
     ), $brand_info['brand_name'] );
     
+    $sale_sort_url = build_uri ( 'brand', array (
+    		'cid' => $cate,
+    		'bid' => $brand_id,
+    		'sort' => 'last_update',
+    		'order' => ($order=='ASC'?"DESC":"ASC"),
+    		'filter_ext' => $filter_ext_str
+    ), $brand_info['brand_name'] );
+    
     
     $smarty->assign('promote_flag',    $promote);
     $smarty->assign('integral_flag',    $integral);
@@ -182,6 +212,7 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     $smarty->assign('bonus_url',    $bonus_url);
     $smarty->assign('price_sort_url',    $price_sort_url);
     $smarty->assign('default_sort_url',    $default_sort_url);
+    $smarty->assign('sale_sort_url',    $sale_sort_url);
 
     /* 调查 */
     $vote = get_vote();
@@ -226,7 +257,24 @@ if (!$smarty->is_cached('brand.dwt', $cache_id))
     
 }
 
-$smarty->display('brand.dwt', $cache_id);
+if($is_ajax_fetch==1){
+	include_once('includes/cls_json.php');
+	$json = new JSON;
+	$result = array('error' => '', 'content' => '');
+	$result['content'] = $smarty->fetch('library/goods_list.lbi');
+	$result['filter'] = array('category' => $cate, 'brand' => $brand_id,
+			'price_min'=>$price_min, "price_max"=>$price_max,
+			"filter_attr" =>$filter_attr_str,"filter_ext" =>$filter_ext_str,
+			"page" => $page, "size" =>$size,"sort"=>$sort,"order"=>$order,
+			"record_count" => $count,
+			"page_count"=>($count = $count > 0 ? intval(ceil($count / $size)) : 1)
+	);
+	die($json->encode($result));
+}else{
+	$smarty->display('brand.dwt');
+// 	$smarty->display('brand.dwt', $cache_id);
+}
+
 
 /*------------------------------------------------------ */
 //-- PRIVATE FUNCTION

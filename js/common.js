@@ -191,6 +191,12 @@ function gotoPage(page, id, type)
 function gotoPageResponse(result)
 {
   document.getElementById("ECS_COMMENT").innerHTML = result.content;
+  
+  //手机版的详情页，根据需要调整tab页的高度
+  var bd = document.getElementById("tabBox2-bd");
+  if(bd!=null){
+	  bd.parentNode.style.height = bd.children[2].children[0].offsetHeight+40+"px";
+  }
 }
 
 /* *

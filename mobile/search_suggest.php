@@ -100,7 +100,8 @@ if ($keywords != "") {
 // 			var_dump($count);
 // 			var_dump($sql);
 // 			$result ['content'] = $result ['content'] . "<li onmouseout='javascript:suggestOut(this);' onmouseover='javascript:suggestOver(this);' onclick='javascript:form_submit(this);'><span class='suggest-key'>" . $row ['keyword'] . "</span><span class='suggest-result'>" . $count . "个商品</span></li>";
-			$result ['content'] = $result ['content'] . "<li><a href=\"search.php?keywords=$row[keyword]\">".$row ['keyword']."</a>"."<span>".$count."个商品</span>"."</li>";
+// 			$result ['content'] = $result ['content'] . "<li><a href=\"search.php?keywords=$row[keyword]\">".$row ['keyword']."</a>"."<span>".$count."个商品</span>"."</li>";
+			$result ['content'] = $result ['content'] . "<li><a href=\"search.php?keywords=$row[keyword]\">".$row ['keyword']."<span>".$count."个商品</span>"."</a>"."</li>";
 // 			$result ['content'] = $result ['content'] . "<li onmouseout='javascript:suggestOut(this);' onmouseover='javascript:suggestOver(this);' onclick='javascript:form_submit(this);'><span class='suggest-key'>" . $row ['keyword'] . "</span><span class='suggest-result'>" . $count . "个商品</span></li>";
 		}
 	}

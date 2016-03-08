@@ -787,7 +787,7 @@ input.btn4{border: 0;}
 }
 .ul-so2{overflow: hidden;}
 .ul-so2 li{min-height: 60px;border-bottom: 1px solid #b9b9b9;overflow: hidden;}
-.ul-so2 li a{line-height: 60px;/* display: block; */font-size: 24px;}
+.ul-so2 li a{line-height: 60px;display: block;font-size: 24px;}
 .ul-so2 span {margin-left:2px; line-height: 60px;;font-size: 18px;color: red;}
 
 .so-btn{height: 65px;width: 440px;display: block;margin: 30px auto;border-radius: 10px;

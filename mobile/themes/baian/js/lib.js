@@ -89,8 +89,12 @@ $(document).ready(function($) {
  * @param __element
  */
 function nav_div(__element,overlay){
-	if(overlay!=null && overlay){
+	/*if(overlay!=null && overlay){
 		$('body').addClass('fixme').append('<div class="overlay"></div>');
+	}*/
+	$('body').addClass('fixme');
+	if(overlay!=null && overlay){
+		$('body').append('<div class="overlay"></div>');
 	}
 	__element.addClass('open');
 	//e.stopPropagation();

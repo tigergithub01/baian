@@ -904,4 +904,28 @@ input.error {
 .ul-ping li .con .img{margin-top: 5px;}
 .ul-ping li .con .img img{width: 80px;height: 80px;border: 1px solid #ddd;float: left;margin-right: 5px;}
 
+/***详情页地址选择***/
+.goods-address{line-height: 60px;background: #fff;/* border-bottom: 1px solid #ddd; */}
+.goods-address a{display: block;/* padding: 0 20px; */background: url(../images/a2.png) no-repeat right center;text-decoration:none;}
+
+
+/***省市区tab页面***/
+.slideTxtBox{ /* width:450px; */ border:1px solid #ddd; text-align:left;  }
+.slideTxtBox .hd{ height:40px; line-height:40px; background:#f4f4f4; padding:0 10px 0 20px;   border-bottom:1px solid #ddd;  position:relative; }
+.slideTxtBox .hd ul{ float:left;  position:absolute; left:20px; top:-1px; height:42px;   }
+.slideTxtBox .hd ul li{ float:left; padding:0 15px; cursor:pointer; font-size: 14px; }
+.slideTxtBox .hd ul li.on{ height:40px;  background:#fff; /*border:1px solid #ddd; */ border-bottom:2px solid #f00 ; }
+.slideTxtBox .bd ul{ padding:15px;  zoom:1;  }
+.slideTxtBox .bd li{ height:45px; line-height:45px;  border-bottom: 1px solid #ddd; }
+.slideTxtBox .bd li .date{ float:right; color:#999;  }
+.slideTxtBox .bd a{ display: block;/* padding: 0 20px; *//* background: url(../images/a2.png) no-repeat right center; */text-decoration:none;}
+
+/* 下面是前/后按钮代码，如果不需要删除即可 */
+.slideTxtBox .arrow{  position:absolute; right:10px; top:0; }
+.slideTxtBox .arrow a{ display:block;  width:5px; height:9px; float:right; margin-right:5px; margin-top:10px;  overflow:hidden;
+	 cursor:pointer; background:url("../images/arrow.png") 0 0 no-repeat; }
+.slideTxtBox .arrow .next{ background-position:0 -50px;  }
+.slideTxtBox .arrow .prevStop{ background-position:-60px 0; }
+.slideTxtBox .arrow .nextStop{ background-position:-60px -50px; }
+
 

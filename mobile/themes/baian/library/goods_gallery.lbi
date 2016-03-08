@@ -1,14 +1,15 @@
-<!-- {if $pictures}-->
 <div id="focus" class="focus">
 	<div class="hd">
 		<ul></ul>
 	</div>
 	<div class="bd">
 		<ul>
-			 <!-- {foreach from=$pictures item=picture}-->
+			<!-- {foreach from=$pictures item=picture}-->
 			<li><a href="#"><img src="/{$picture.img_url}" /></a></li>
+			<!-- {foreachelse}-->
+			<li><a href="#"><img src="/{$goods.goods_img}" /></a></li>
 			<!--{/foreach}-->
+			
 		</ul>
 	</div>
 </div>
-<!-- {/if}-->

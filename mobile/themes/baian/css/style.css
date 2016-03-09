@@ -916,7 +916,7 @@ input.error {
 .slideTxtBox .hd ul li{ float:left; padding:0 15px; cursor:pointer; font-size: 0.85em; }
 .slideTxtBox .hd ul li.on{ height:40px;  background:#fff; /*border:1px solid #ddd; */ border-bottom:2px solid #f00 ; }
 .slideTxtBox .bd ul{ padding:15px;  zoom:1;  }
-.slideTxtBox .bd li{ /* height:45px; line-height:45px; */height:3em; line-height:3em;  border-bottom: 1px solid #ddd; }
+.slideTxtBox .bd li{ /* height:45px; line-height:45px; */height:4em; line-height:4em;  border-bottom: 1px solid #ddd; }
 .slideTxtBox .bd li .date{ float:right; color:#999;  }
 .slideTxtBox .bd a{ display: block;/* padding: 0 20px; *//* background: url(../images/a2.png) no-repeat right center; */text-decoration:none;}
 

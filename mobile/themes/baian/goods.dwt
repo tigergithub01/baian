@@ -102,7 +102,7 @@
 					<th>配送至：</th>
 					<td>
 						<div class="goods-address">
-							<a id="address_name" href="javascript:void(0)" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}{$addr_town_name}" onclick="nav_div($('#addr_sel'))">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}&nbsp;{$addr_town_name}</a>
+							<a id="address_name" href="javascript:void(0)" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}" onclick="nav_div($('#addr_sel'))">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}</a>
 						</div>
 						<div>
 							<!-- 配送至start  -->
@@ -134,7 +134,7 @@
 										<li data-index="0" title="{$addr_province_name}">{$addr_province_name}</li>
 										<li data-index="1" title="{$addr_city_name}" >{$addr_city_name}</li>
 										<li data-index="2" title="{$addr_district_name}">{$addr_district_name}</li>
-										<li data-index="3" title="{$addr_town_name}">{$addr_town_name}</li>
+										<li data-index="3" title="{$addr_town_name}" style="display: none;">{$addr_town_name}</li>
 									</ul>
 								</div>
 								<div class="bd" id="tabBox_addr">
@@ -153,7 +153,7 @@
 										<li><a href="javascript:void(0)" data-value="{$item.region_id}" onclick="change_district('{$item.region_id}','{$item.region_name}')">{$item.region_name}</a></li>
 										<!-- {/foreach} -->
 									</ul>
-									<ul data-area="3">
+									<ul data-area="3" style="display: none;">
 										<!-- {foreach from=$town_list item=item} -->
 										<li><a href="javascript:void(0)" data-value="{$item.region_id}" onclick="change_town('{$item.region_id}','{$item.region_name}')">{$item.region_name}</a></li>
 										<!-- {/foreach} -->
@@ -217,25 +217,24 @@
 				</tr>
 				
 				<!--{foreach from=$specifications item=attr key=key}-->
-                		<tr>
-                			<th><dt id="{$attr.attr_id}">{$attr.attr_name}：</dt></th>
-                			<td>
-                					
-                					<div class="radio goods-color">
-                					<!--{foreach from=$attr.attr_values item=goods_attr key=val_key}-->
-                							<!-- {if ($goods_attr.is_checked eq 1)} -->
-													<label for="color-r1" class="checked"><input name="color" goods_attr_id="{$goods_attr.goods_attr_id}" id="color-r1" type="radio" value="{$goods_attr.attr_value}">{$goods_attr.attr_value}</label>
-                							<!-- {else} -->
-													<label for="color-r1"><input name="color" goods_attr_id="{$goods_attr.goods_attr_id}" id="color-r1" type="radio" value="{$goods_attr.attr_value}">{$goods_attr.attr_value}</label>
-												
-                							<!-- {/if} -->
-                							
-                					<!-- {/foreach} --> 
-                					</div>
-                					
-                		
-							</td>                		
-                		</tr>
+              		<tr>
+              			<th><dt id="{$attr.attr_id}">{$attr.attr_name}：</dt></th>
+              			<td>
+              					
+              					<div class="radio goods_attr">
+              					<!--{foreach from=$attr.attr_values item=goods_attr key=val_key}-->
+              							<!-- {if ($goods_attr.is_checked eq 1)} -->
+											<label for="attr_id_{$goods_attr.goods_attr_id}" class="checked"><input name="chk_{$attr.attr_id}" goods_attr_id="{$goods_attr.goods_attr_id}" id="attr_id_{$goods_attr.goods_attr_id}" type="radio" value="{$goods_attr.attr_value}" checked="checked">{$goods_attr.attr_value}</label>
+              							<!-- {else} -->
+											<label for="attr_id_{$goods_attr.goods_attr_id}"><input name="chk_{$attr.attr_id}" goods_attr_id="{$goods_attr.goods_attr_id}" id="attr_id_{$goods_attr.goods_attr_id}" type="radio" value="{$goods_attr.attr_value}">{$goods_attr.attr_value}</label>
+              							<!-- {/if} -->
+              							
+              					<!-- {/foreach} --> 
+              					</div>
+              					
+              		
+						</td>                		
+              		</tr>
                 <!--{/foreach}-->
                 		
 				<tr>
@@ -370,11 +369,43 @@
 	
 	$(function(){
 		// 自定义单选按钮
-		$('.radio input').change(function(){
+		$('.goods_attr input').change(function(){
 			var _this = $(this).parent();
 			var _name = $(this).attr('name');
 			$('input[name='+_name+']').parent().removeClass('checked');
 		    _this.addClass('checked');
+		    
+		  //查找所有选中的商品属性值
+            var selected_attributes = "";
+            var $selected_lis = $(".goods_attr input[type='radio']:checked");
+            //console.debug($selected_lis);
+            //var arr=new Array()
+            $.each($selected_lis,function(index,v){
+            	//console.debug(v);
+            	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
+            	//arr.push($(v).attr("goods_attr_id"));
+            	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
+            });
+            //console.debug(selected_attributes);
+            //更换属性选择
+            $.ajax({     
+        	    url:'goods.php?act=select_attribute',     
+        	    type:'post',  
+        	    dataType:'json', 
+        	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
+        	    async :true, 
+        	    error:function(){ 
+        	    	alert('更新出错！');
+        	    },     
+        	    success:function(data){ 
+        	    	//console.debug(data);
+        	    	if(data.status==1){
+        	    		var goods_url = data.content.goods_url;
+        	    		window.location.href = goods_url;
+        	    	}
+        	    	
+        	    }  
+        	});
 		});
 
 		$('.buyNum .minus').click(function(){
@@ -427,9 +458,9 @@
 		
 		//重新赋值
 		$("#addr_sel").find("li[data-index='0']").text(region_name).attr('title',region_name);
-		$("#addr_sel").find("li[data-index='1']").text('请选择').attr('title','请选择');	
-		$("#addr_sel").find("li[data-index='2']").text('请选择').attr('title','请选择');	
-		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','请选择');	
+		$("#addr_sel").find("li[data-index='1']").text('请选择').attr('title','');	
+		$("#addr_sel").find("li[data-index='2']").text('请选择').attr('title','');	
+		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','');	
 		
 		/* $("#addr_province_name").text(region_name).attr('title',region_name);
 		$("#addr_city_name").text('请选择').attr('title','请选择');		
@@ -450,6 +481,9 @@
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择'); */
 		
 		$('#addr_province').val(region_id);
+		$('#addr_city').val('');
+    	$('#addr_district').val('');
+    	$('#addr_town').val('');
 		//刷新城市列表
 		changeRegion(1,region_id);
 		
@@ -465,8 +499,8 @@
 		
 		//重新赋值
 		$("#addr_sel").find("li[data-index='1']").text(region_name).attr('title',region_name);
-		$("#addr_sel").find("li[data-index='2']").text('请选择').attr('title','请选择');	
-		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','请选择');	
+		$("#addr_sel").find("li[data-index='2']").text('请选择').attr('title','');	
+		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','');	
 		
 		/* $("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title',region_name);		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='1'] em").text(region_name);
@@ -478,6 +512,8 @@
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择'); */
 		
 		$('#addr_city').val(region_id);
+    	$('#addr_district').val('');
+    	$('#addr_town').val('');
 		//刷新区域列表
 		changeRegion(2,region_id);
 	}
@@ -493,7 +529,7 @@
 		$("#addr_town_name").text('请选择').attr('title','请选择');	 */
 		
 		$("#addr_sel").find("li[data-index='2']").text(region_name).attr('title',region_name);
-		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','请选择');	
+		$("#addr_sel").find("li[data-index='3']").text('请选择').attr('title','');	
 		
 		/* $("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title',region_name);		
 		$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text(region_name);
@@ -502,22 +538,19 @@
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择'); */
 		
 		$('#addr_district').val(region_id);
-		//刷新城镇、街道列表
-		changeRegion(3,region_id);
+		$('#addr_town').val('');
+		//刷新城镇、街道列表,如果只使用三级地址，屏蔽此代码
+		//changeRegion(3,region_id);
+		
+		/**弃用三级地址使用此代码**/
+		select_address();
+		
 	}
 	
 	function change_town(region_id,region_name){
 		$("#addr_sel").find("li[data-index='3']").text(region_name).attr('title',region_name);
 		
 		$('#addr_town').val(region_id);
-		//设置选择的地址
-		var addr_province_name= $("#addr_sel").find("li[data-index='0']").attr('title');
-		var addr_city_name=     $("#addr_sel").find("li[data-index='1']").attr('title');
-		var addr_district_name= $("#addr_sel").find("li[data-index='2']").attr('title');
-		var addr_town_name=     $("#addr_sel").find("li[data-index='3']").attr('title');
-		
-		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name+"&nbsp;"+addr_town_name;
-		$("#address_name").html(address_name).attr('title',address_name);
 		
 		//TODO:更新相关逻辑
 		select_address();
@@ -541,6 +574,16 @@
 	
 	/*选择地址**/
 	function select_address(){
+		
+		//设置选择的地址
+		var addr_province_name= $("#addr_sel").find("li[data-index='0']").attr('title');
+		var addr_city_name=     $("#addr_sel").find("li[data-index='1']").attr('title');
+		var addr_district_name= $("#addr_sel").find("li[data-index='2']").attr('title');
+		var addr_town_name=     $("#addr_sel").find("li[data-index='3']").attr('title');
+		
+		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name+"&nbsp;"+addr_town_name;
+		$("#address_name").html(address_name).attr('title',address_name);
+		
 		$.ajax({     
     	    url:'goods.php?act=select_address',     
     	    type:'post',  
@@ -593,7 +636,7 @@
     	    },     
     	    success:function(data){ 
     		    //console.debug(data);
-    		    if(data.regions!=null){
+    		    if(data.regions!=null && data.regions.length > 0){
     		    	/*
     		    	$("#store-selector").find("[data-widget='tab-content']").hide();			
     				$("#store-selector").find("[data-widget='tab-content'][data-area='"+type+"']").show();
@@ -639,6 +682,8 @@
     		    	//重新调整tab页的高度
     		    	var bd = document.getElementById("tabBox_addr");
     				bd.parentNode.style.height = bd.children[type].offsetHeight+"px";
+    		    }else{
+    		    	//select_address();
     		    }
     	    }  
     	}); 

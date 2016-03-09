@@ -119,9 +119,11 @@
 	                	    },     
 	                	    success:function(data){ 
 	                		    if(data.status==1){
-	                		    	alert(data.message);
+	                		    	//alert(data.message);
+	                		    	showToastMessage(data.message);
 	                		    }else{
-	                		    	alert(data.message);
+	                		    	//alert(data.message);
+	                		    	showToastMessage(data.message);
 	                		    }
 	                	    }  
 	                	}); 
@@ -731,6 +733,10 @@ copyToClipboard = function(txt)
 var {$key} = "{$item}";
 {/foreach}
 </script>
+
+<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
 <!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </html>

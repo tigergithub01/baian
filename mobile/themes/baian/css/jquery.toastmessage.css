@@ -41,6 +41,7 @@
     position: absolute;
     top:7px;
     right:7px;
+    display: none;
 }
 
 .toast-item-image {

@@ -12,6 +12,7 @@
 </head>
 <body>
 <!-- <script type="text/javascript" src="themes/baian/js/jqm1.7.js"></script> -->
+
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
@@ -19,9 +20,7 @@
   <!-- {if $step eq "cart"} -->
 	
 	
-  <div class="c"></div>
-	<div id="bd">
-		<div class="wp2">
+  
 			
 			  {* 包含脚本文件 *}
 			  {insert_scripts files='showdiv.js'}
@@ -51,10 +50,19 @@
 			  </script>
   
   
+  	<!-- 主页面 -->
+	<section id="main">
+
+		<header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>购物车</h2>
+		</header>
 		
 		<div id="ECS_CART_GOODS">
 		<!-- #BeginLibraryItem "/library/cart_goods.lbi" --><!-- #EndLibraryItem --> 
 		</div>
+		
+	</section>	
 	
 		<!-- 底部主导航 -->
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
@@ -67,22 +75,36 @@
             	
             	/***全部选择**/
 	            $('.selcall').click(function(){
-	            	if($(this).attr("checked")) {     
+	            	if($(this).is(':checked')) {     
 	            		$(".check_goods").attr("checked",'true');
+	            		$(".check_goods").parent().addClass("checked");
+	            		
 	            		$(".selcall").attr("checked",'true');
+	            		$(this).parent().addClass("checked");
+	            		
+	            		
 	            	} else{     
 	            		$(".check_goods").removeAttr("checked"); 
+	            		$(".check_goods").parent().removeClass("checked");
+	            		
 	            		$(".selcall").removeAttr("checked"); 
+	            		$(this).parent().removeClass("checked");
 	            	}    
 	            	
 	            	//选中，反选商品更新购物车
-	            	check_all_cart_goods(($(this).attr("checked"))?1:0);
+	            	check_all_cart_goods(($(this).is(':checked'))?1:0);
 	        	});
 				
 	            /***选择商品**/
 	        	$('.check_goods').click(function(){
 	        		//选中，反选商品更新购物车
-	        		check_cart_goods($(this).val(),($(this).attr("checked"))?1:0);
+	        		if($(this).is(':checked')) { 
+	        			$(this).parent().addClass("checked");
+	        		}else{
+	        			$(this).parent().removeClass("checked");
+	        		}        		
+	        		
+	        		check_cart_goods($(this).val(),($(this).is(':checked'))?1:0);
 	        		
 	        		
 	        		autoCheckAll();
@@ -104,13 +126,17 @@
         		});
         		if(allChecked){
         			$(".selcall").attr("checked",'true');
+        			$(".selcall").parent().addClass("checked");
         		}else{
         			$(".selcall").removeAttr("checked"); 
+        			$(".selcall").parent().removeClass("checked");
         		}	
             }
             
             /***选中，反选购物车内的商品***/
             function check_cart_goods(rec_id,is_checked){
+            	
+            	
             	$.ajax({     
             	    url:'flow.php?step=check_cart_goods',     
             	    type:'post',  

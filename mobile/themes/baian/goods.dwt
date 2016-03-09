@@ -11,6 +11,9 @@
 	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
 	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.lazyload.min.js" ></script>
 	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="/js/shopping_flow.js"></script>
+	<script type="text/javascript" src="/js/region.js"></script>
+	
 	<style>
 		/*去掉图片间的换行 */
 		.img-wp br{display: none;}
@@ -205,7 +208,6 @@
 						  
 						  <script type="text/javascript" src="/themes/baian/js/goods.layer.js"></script>
 								
-									{insert_scripts files='region.js,shopping_flow.js'}
 						 	
 		  				
 		  				

@@ -250,7 +250,7 @@
     				},
     			},
     			errorPlacement : function(error, element) { 
-    				console.debug(element);
+    				//console.debug(element);
     				if(element.attr("id")=='captcha'){
     					console.debug(error);
     					error.appendTo(element.parent()); 
@@ -334,7 +334,7 @@
 	<section id="main">
 
 		<header id="head">
-			<a href="" class="back-btn"></a>
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>快速注册</h2>
 		</header>
 
@@ -372,7 +372,7 @@
 			</form>
 		</div>
 		
-	</section>
+	
 	
      <div id="bd">
         <div class="login-wrap">
@@ -446,6 +446,7 @@
         </div>
     </div>
 
+	</section>
 <!--{/if}-->
 <!--{/if}-->
 <!--#会员注册界面 end-->
@@ -561,6 +562,13 @@
     					required: "请接受用户协议",
     				},
     			},
+    			errorPlacement : function(error, element) { 
+    				if(element.attr("id")=='captcha'){
+    					error.appendTo(element.parent()); 
+    				}else{
+    					error.appendTo(element.parent()); 
+    				}
+    			},
     			submitHandler:function(form){
     				return validateMobileCode();
     	        }   
@@ -607,73 +615,46 @@
         });
 	</script> 
 	
-     <div id="bd">
-        <div class="login-wrap">
-            <ul class="s-login-tab" id="regist">
-                <li class="on"><a href="">找回密码</a></li>
-            </ul>
-            <div class="loginBox2">
-                <form action="user.php" method="post" id="formUser" name="formUser" onsubmit="">
-                    <table>
-                    	<tr>
-                            <th>用户名：</th>                               
-                            <td> 
-					          <input name="username" id="username" type="text" size="25" class="text required" placeholder="邮箱/手机" onblur="" /> 
- 						</td>
-                    	<tr style='display:none'><td><input type='hidden' value='0' name='reg_type' id='reg_type'/></td></tr>
-                        <tr id='row_mobile_phone'>
-                            <th>手机号：</th>                               
-                            <td> 
-                              <div style="">	 
-					          <input style="float:left; " name="mobile_phone" id="mobile_phone" type="text" size="25" class="text required isMobile" placeholder="请输入您注册或绑定手机号码" onblur="" /> 
-					          <a href='javascript:void(0)' style="color: #08c;float: right;" onclick="changeRegisterType('email')">或通过邮箱找回</a>
-					          </div>
-					          <!-- <label id="username_notice" style="color:#900;"></label> -->
- 						</td>
-                        <!--class="text"-->   
-                        </tr>
-                        <tr>
-                            <th>设置密码：</th>
-                            <td>
-                            <input name="password" type="password" placeholder="请输入密码" id="password" onblur="check_password(this.value);" onKeyUp="javascript:AuthPasswd(this.value);" class="text required " minlength="6" /><span class="clr"></span>
-    						</td>
-                        </tr>
-                        <tr>
-                            <th>确认密码：</th>
-                            <td><input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required"  onblur="check_conform_password(this.value);" autocomplete="off" minlength="6"/>   <span class="clr"></span>
-                    		<label id="conform_password_notice" style="color:#900;"></label></td>
-                        </tr>
-                        <tr>
-                            <th>验证码：</th>
-                            <td>
-               				 	<div style="float: right;">
-               				 	<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
-               				 	</div>
-                            	<input type="text" id="captcha" style="width: 90px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-							</td>
-                        </tr>
-				       	<tr id='row_verify_phone'> 
-				         <th>短信验证码：</th>
-				          <td colspan="2">				        
-				          	<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;float: right;"class="inputBg" onclick="sendSms();"/>
-				          	<input name="mobile_code" id="mobile_code" type="text" style="width:110px;"class="inputBg required"/>
-				          </td>
-				        </tr>
-                 		
-                      <tr>
-                            <td colspan="2">  
-						        
-						        <div class="item">
-						            <span class="label">&nbsp;</span>
-						             <input name="act" type="hidden" value="act_get_password" />
-						             <input type="hidden" name="back_act" value="{$back_act}" />
-						            <input name="Submit" type="submit" class="btn-img btn-regist" id="registsubmit" value="确认修改"/>
-						        </div>
-                            </td>
-                        </tr>
-                    </table>
-               </form>
+	<section id="main">
+	
+            	<header id="head">
+					<a href="javascript:history.back(-1)" class="back-btn"></a>
+					<h2>找回密码</h2>
+				</header>
                
+               <div class="login-reg-Box">
+					<form action="user.php" method="post" id="formUser" name="formUser" onsubmit="">
+						<dl class="dl-login-reg">
+							<dd>
+								<input name="username" id="username" type="text" size="25" class="text required" placeholder="用户名" onblur="" /> 
+							</dd>
+							<dd>
+								<input name="mobile_phone" id="mobile_phone" type="text" size="25" class="text required isMobile" placeholder="请输入您的手机号码" onblur="" />
+							</dd>
+							<dd>
+								<input name="password"  type="password" placeholder="请输入密码" id="password" onblur="check_password(this.value);"  class=" text required" minlength = "6" /><span class="clr"></span>
+							</dd>
+							<dd>
+								<input type="password" id="conform_password" placeholder="请再输入密码" name="confirm_password" class="text required" minlength = "6" autocomplete="off"/>
+							</dd>
+							<dd>
+		                        <input type="text" placeholder="验证码" id="captcha" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+		              			<span class="test-string"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reImg();">换一张</a>
+							</dd>
+							<dd>
+								<input name="mobile_code" placeholder="短信验证码" id="mobile_code" type="text" style="width:255px;"class="inputBg required"/>
+								<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+							</dd>
+							<dd>
+								<input name="act" type="hidden" value="act_get_password" />
+					            <input type="hidden" name="back_act" value="{$back_act}" />
+								<input type='hidden' value='0' name='reg_type' id='reg_type'/>
+								<input name="Submit" type="submit" class="btn-img btn-regist" id="registsubmit" value="确认修改"/>
+							</dd>
+						</dl>
+					</form>
+				</div>
+				
                <!-- 通过邮箱找回 -->
                 <form action="user.php" method="post" id="formUser_email" name="formUser_email" onsubmit="" style="display: none;">
                     <table>
@@ -739,9 +720,7 @@
                </form>
                
 			 <div class="h50"></div>
-            </div>
-        </div>
-    </div>
+    </section>
  <!--{/if}-->   
 <!--{/if}-->
 <!--#找回密码界面 end-->
@@ -751,6 +730,10 @@
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
+
+<!-- 底部主导航 -->
+<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
 <!-- 公用样式与脚本 -->
 <!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 	

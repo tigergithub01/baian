@@ -427,6 +427,7 @@ input.btn3{border: 0;cursor: pointer;}
 .goto-buy input[type='submit']{float: right;height: 52px;border: 0;background: #f00;color: #fff;width: 130px;}
 .goto-buy .total-price{font-size: 0.83em;}
 .goto-buy .total-price em{font-style: normal;font-size: 0.9em;}
+.goto-buy .btn{float: right;height: 52px;border: 0;background: #f00;color: #fff;width: 130px;text-align: center;}
 
 /*******************************
 	-------[=收货人信息]-------

@@ -1,53 +1,45 @@
 <form id="formCart" name="formCart" method="post" action="flow.php">
-          <table class="c-table1">
-           <th class="tl" width="70"> 
-           <label class="sc_box">
-           		<input type="checkbox" value="全选" name="checkbox" class="selcall" checked="checked">&nbsp;全选</label>
-           </th>
-			<th width="220">商品信息</th>
-			<th width="160">单价（元）</th>
-			<th width="120">库存</th>
-			<th width="180">数量</th>
-			<th width="150">小计（元）</th>
-			<th>操作</th>
-           <!-- {foreach from=$goods_list item=goods} -->
-           <tr class="bg">
-           <td  class="tl">
-           		<!-- {if $goods.is_gift eq 0} 赠品不能手工删除 -->
-            			 <!-- {if ($goods.is_checked eq 1)} -->	
-                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods" checked="checked">
-                     <!-- {else} -->
-                     <input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods">
-                     <!-- {/if} -->
-                    <!-- {/if} -->
-                       
-           </td>
-           <!--add by wanggz可以从购物车中选择商品购买功能end-->
-             <td>
-             	  <!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
 
+			
+          <ul class="ul-cart-list ul-cart-list1" id="cart-list">
+           <!-- {foreach from=$goods_list item=goods} -->
+           
+           <li>
+           		<!-- {if $goods.is_gift eq 0} 赠品不能手工删除 -->
+	       			<!-- {if ($goods.is_checked eq 1)} -->	
+	       			<label class="checkbox checked"><input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods" checked="checked"></label>	
+	                <!-- {else} -->
+	                <label class="checkbox"><input type="checkbox" value="{$goods.rec_id}" name="checkboxes[]" class="check_goods"></label>
+	                <!-- {/if} -->
+               <!-- {/if} -->
+                    
+				
+				
+				 <!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
+					
+					  <div class="pic">	
 					   <!-- {if $goods.is_momsuit eq 0} is_momsuit start-->
 						  <!-- {if $show_goods_thumb eq 1} -->						
 						  <!-- {elseif $show_goods_thumb eq 2} -->
-							<a  href="{$goods.goods_url}" target="_blank"><img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="{$goods.goods_url}" target="_blank"><img src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 						  <!-- {else} -->
-							<a  href="{$goods.goods_url}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="{$goods.goods_url}" target="_blank"><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 						  <!-- {/if} -->
 						  
 					   <!-- {elseif $goods.is_momsuit eq 1} -->
 						  <!-- {if $show_goods_thumb eq 1} -->
 							
 						  <!-- {elseif $show_goods_thumb eq 2} -->
-							<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 						  <!-- {else} -->
-							<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
+							<a  href="momsuit.php?suit_id={$goods.goods_id}" target="_blank"><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
 						  <!-- {/if} -->
 						  
 					   <!-- {/if} is_momsuit end-->
-		      
+		      		</div>	
 	                  
-	                  
-	                  <a class="tit" href="{$goods.goods_url}" target="_blank">
+	                <h3 class="title">
+	                  <a href="{$goods.goods_url}" target="_blank">
 	                  {$goods.goods_name}
 		                  <!-- {if $goods.parent_id gt 0} 配件 -->
 		                  <span style="color:#FF0000">（{$lang.accessories}）</span>
@@ -56,7 +48,7 @@
 		                  <span style="color:#FF0000">（{$lang.largess}）</span>
 		                  <!-- {/if} -->
 	                  </a>                  
-	                  
+	                 </h3>    
                  <!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
                   <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#DD0000;">（{$lang.remark_package}）</span></a>
                   <div id="suit_{$goods.goods_id}" style="display:none">
@@ -81,29 +73,33 @@
                <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
                <!-- {/if} -->
                <!--商品买满多少件送一件的优惠活动end-->
-                  	
-            		
-             </td>
-             <td >{$goods.goods_price} </td>
-             <td><!-- {if ($goods.goods_stock_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></td>
-             <td >
-               <!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
-			<span class="jian" onclick="goods_cut('{$goods.rec_id}');">-</span>
-			
-			<input type="text"  name="goods_number[{$goods.rec_id}]" 
-			id="number{$goods.rec_id}" value="{$goods.goods_number}" size="4" 
-			class="inp" onblur="change_goods_number('{$goods.rec_id}');" onchange=""
-			title="{$lang.goods_number_tip}" style=""/>
-			
-			<span class="jia" onclick="goods_add('{$goods.rec_id}');">+</span>
-               <!-- {else} -->
-               {$goods.goods_number}
-               <!-- {/if} -->
-             </td>
-          
-             <td><b id="sub_total_{$goods.rec_id}">{$goods.subtotal}</b></td>
-             <td>
-             <!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可删除与已入收藏夹 -->
+               
+				
+				<span class="price">{$goods.goods_price}</span>
+				
+				<span class="stock" style="display: none;"> <!-- {if ($goods.goods_stock_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></span>
+				
+				<div class="buyNum">
+					<!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可修改数量 -->
+					<span class="jian" onclick="goods_cut('{$goods.rec_id}');">-</span>
+					
+					<input type="text"  name="goods_number[{$goods.rec_id}]" 
+					id="number{$goods.rec_id}" value="{$goods.goods_number}" size="4" 
+					class="inp" onblur="change_goods_number('{$goods.rec_id}');" onchange=""
+					title="{$lang.goods_number_tip}" style=""/>
+					
+					<span class="plus" onclick="goods_add('{$goods.rec_id}');">+</span>
+				
+					<!-- {else} -->
+	                {$goods.goods_number}
+	               <!-- {/if} -->
+	               
+				</div>
+				
+				<b id="sub_total_{$goods.rec_id}" style="display: none">{$goods.subtotal}</b>
+				
+				<div class="operate">
+				<!-- {if $goods.goods_id gt 0 && $goods.is_gift eq 0 && $goods.parent_id eq 0} 普通商品可删除与已入收藏夹 -->
 	               <p>
 	               <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_goods&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0;">{$lang.drop}</a>
 	               </p>
@@ -113,25 +109,39 @@
 	               <a href="javascript:if (confirm('{$lang.drop_goods_confirm}')) location.href='flow.php?step=drop_to_collect&amp;id={$goods.rec_id}'; " class="f6" style="color:#005AA0">移入收藏夹</a>
 	               </p>
 	               <!-- {/if} -->    
-               <!-- {/if} -->        
-              </td>
-           </tr>
+               <!-- {/if} --> 
+               </div>
+				
+				
+				
+				<!-- <div class="pic"><a href=""><img src="images/p1.jpg" alt=""></a></div>
+				<div class="txt">
+					<h3 class="title"><a href="">雅培金装喜康力幼儿配方奶粉3段雅培金装喜康力幼儿3段雅培金装喜康力幼儿配方奶粉3段雅培金装喜康力幼儿配方奶粉</a></h3>
+					<span class="price">￥1000.00</span>
+					<div class="buyNum">
+						<span class="minus">-</span>
+						<input type="text" value="100">
+						<span class="plus">+</span>
+					</div>
+				</div> -->
+			</li>
          
            <!-- {/foreach} -->
-           </table>
+           </ul>
 		
-		<div class="h20"></div>
-		<div class="c-jie1">
-			<span class="r">
-				已选择 <b id="total_goods_number">{$total.goods_number}</b> 件商品　总价（不含运费）：<strong id="total_goods_amount">{$total.goods_amount}</strong>
+		<div class="h"></div>
+			<div class="w-box goto-buy">
 				<input type="hidden" name="step" id="step" value="update_cart" />
-				<a class="btn" style=" font-size:14px" href="javascript:void(0)" onclick="return checkout();" id="toSettlement" >去结算</a></span>
-			<input type="checkbox"   class="selcall" checked="checked"> 全选　　<a href="javascript:void(0)" onclick="return drop_goods_batch();">删除选中商品</a>　　
-			<!-- {if $smarty.session.user_id gt 0} 如果登录了，可以加入收藏 -->
-			<a href="javascript:void(0)" onclick="return drop_to_collect_batch();">移入收藏夹</a>
-			<!-- {/if} -->            
-			
-		</div>
-		<div class="h20"></div>
-              
+				<label class="checkbox" for="cart-all"><input id="cart-all" class="selcall" type="checkbox"></label>
+				<span class="total_number"><b id="total_goods_number">{$total.goods_number}</b> 件商品</span>
+				<span class="total-price">总价<em>（不含运费）:</em></span>
+				<span class="red" id="total_goods_amount">{$total.goods_amount}</span>
+				<a class="btn" href="javascript:void(0)" onclick="return checkout();" id="toSettlement" >去结算</a></span>
+				<a href="javascript:void(0)" onclick="return drop_goods_batch();">删除选中商品</a>　　
+				<!-- {if $smarty.session.user_id gt 0} 如果登录了，可以加入收藏 -->
+				<a href="javascript:void(0)" onclick="return drop_to_collect_batch();">移入收藏夹</a>
+				<!-- {/if} -->    
+			</div>
+		<div class="h"></div>
+		
     </form>

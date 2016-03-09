@@ -68,27 +68,33 @@
 	                		<span class="btn">送积分</span>{$goods.give_integral}积分<br>
                 			<!-- {/if} -->	
 							
-							
+								
 							<!-- {if ($goods.is_buy_gift eq 1)} -->
-	                			<div style="display: block;">
-	                			<span class="btn" style="display: inline; float: left;">商品促销</span>
-	                			<!-- <span class="l" style="display: inline; float: left;"><i>商品促销</i></span>  -->
-	                			<div style="display: inline-block;margin-left:5px;">
-	                				<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
-										<span style="display:table-row;float: inherit;padding-bottom: 3px;<!--{if ($smarty.foreach.buy_act.index neq 0)}-->margin-left: 20px;<!--{/if}-->">
+							<div class="con">
+								<span class="btn">商品促销</span>
+								<div class="content">
+									<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
+										<div class="lz-sales">
 											<!--{if $buy_act.package} -->
-												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
+												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
 												<!-- {/foreach} -->
-												
 											<!-- {else} -->
 												<span>
-													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" style="width: 30px;height: 30px;margin-bottom: -10px;" /></a><!-- {/if} -->×{$buy_act.give_number_activity}
+													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
 												</span>
 											<!-- {/if} -->
-											</span> 
+										</div>
 									<!-- {/foreach} -->
-	                			</div>
-	                			</div>
+									
+									
+								
+							</div>
+							</div>
+							
+							
+							
+							
+	                			
                 			<!-- {/if} --> 
 	                			
 						</div>
@@ -452,9 +458,9 @@
 		$("#stock_area_item").empty();
 		$("#stock_town_item").empty(); */
 		
-		$("#addr_sel").find("li[data-area='1']").empty();
-		$("#addr_sel").find("li[data-area='2']").empty();
-		$("#addr_sel").find("li[data-area='3']").empty();
+		$("#addr_sel").find("ul[data-area='1']").empty();
+		$("#addr_sel").find("ul[data-area='2']").empty();
+		$("#addr_sel").find("ul[data-area='3']").empty();
 		
 		//重新赋值
 		$("#addr_sel").find("li[data-index='0']").text(region_name).attr('title',region_name);
@@ -494,8 +500,8 @@
 		/* $("#stock_area_item").empty();
 		$("#stock_town_item").empty(); */
 		
-		$("#addr_sel").find("li[data-area='2']").empty();
-		$("#addr_sel").find("li[data-area='3']").empty();
+		$("#addr_sel").find("ul[data-area='2']").empty();
+		$("#addr_sel").find("ul[data-area='3']").empty();
 		
 		//重新赋值
 		$("#addr_sel").find("li[data-index='1']").text(region_name).attr('title',region_name);
@@ -522,7 +528,7 @@
 	function change_district(region_id,region_name){
 		/* $("#stock_town_item ul").empty(); */
 		
-		$("#addr_sel").find("li[data-area='3']").empty();
+		$("#addr_sel").find("ul[data-area='3']").empty();
 		
 		//重新赋值
 		/* $("#addr_district_name").text(region_name).attr('title',region_name);

@@ -404,9 +404,11 @@ input.btn3{border: 0;cursor: pointer;}
 .ul-cart-list li .title{font-size: 0.83em;line-height: 1.3;height: 2.6em;overflow: hidden;margin-bottom: 10px;}
 .ul-cart-list li .price{color: #f00;line-height: 40px;}
 .ul-cart-list li .buyNum{float: right;display: inline-block;}
-.lz-sales{font-size: 20px;color: #ea5504;line-height: 50px;padding-top: 20px;}
-.lz-sales span{display: inline-block;width: 50px;height: 50px;
-	border: 1px solid #dcdddd;vertical-align: middle;margin: 0 10px;
+.lz-sales{font-size: 20px;color: #ea5504;/* line-height: 50px; */padding-top: 20px;}
+.lz-sales span{/* display: inline-block; */width: 50px;height: 50px;
+	/* border: 1px solid #dcdddd; */vertical-align: middle;margin: 0 10px;
+}
+.lz-sales img{width: 30px;height: 30px;/* margin-bottom: -10px; */position: relative;top: 10px;margin-left:3px;
 }
 .lz-sales em{font-style: normal;color: #595757;}
 
@@ -910,7 +912,7 @@ input.error {
 
 
 /***省市区tab页面***/
-.slideTxtBox{ /* width:450px; */ border:1px solid #ddd; text-align:left;  }
+.slideTxtBox{ /* width:450px; */ /* border:1px solid #ddd;  */text-align:left;  }
 .slideTxtBox .hd{ height:40px; line-height:40px; background:#f4f4f4; padding:0 10px 0 20px;   border-bottom:1px solid #ddd;  position:relative; }
 .slideTxtBox .hd ul{ float:left;  position:absolute; left:20px; top:-1px; height:42px;   }
 .slideTxtBox .hd ul li{ float:left; padding:0 15px; cursor:pointer; font-size: 0.85em; }

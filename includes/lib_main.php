@@ -1717,9 +1717,10 @@ function assign_comment($id, $type, $page = 1)
 
     $page_count = ($count > 0) ? intval(ceil($count / $size)) : 1;
 
-    $sql = 'SELECT * FROM ' . $GLOBALS['ecs']->table('comment') .
-            " WHERE id_value = '$id' AND comment_type = '$type' AND status = 1 AND parent_id = 0".
-            ' ORDER BY comment_id DESC';
+    $sql = 'SELECT c.*,u.photo_url AS photo_url FROM ' . $GLOBALS['ecs']->table('comment') ." AS c ".
+    		' LEFT JOIN '. $GLOBALS['ecs']->table('users') . " AS u ON (c.user_id = u.user_id) " .
+            " WHERE c.id_value = '$id' AND c.comment_type = '$type' AND c.status = 1 AND c.parent_id = 0".
+            ' ORDER BY c.comment_id DESC';
     $res = $GLOBALS['db']->selectLimit($sql, $size, ($page-1) * $size);
 
     $arr = array();
@@ -1740,6 +1741,9 @@ function assign_comment($id, $type, $page = 1)
         $sql = "SELECT * FROM ". $GLOBALS['ecs']->table('comment_photo') .' WHERE comment_id = '.$row['comment_id'];
         $comment_photos = $GLOBALS['db']->getAll($sql);
         $arr[$row['comment_id']]['photos'] = $comment_photos;
+        
+        //评论人员图片
+        $arr[$row['comment_id']]['photo_url']       = $row['photo_url'];
         
     }
     /* 取得已有回复的评论 */

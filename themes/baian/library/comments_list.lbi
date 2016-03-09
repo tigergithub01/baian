@@ -4,7 +4,14 @@
        <!-- {foreach from=$comments item=comment} -->
        <li>
 									<div class="user">
-										<a href=""><img src="images/user.jpg" alt=""></a>
+										<a href="javascript:void(0)">
+										
+										<!-- {if $comment.photo_url && $comment.photo_url neq '' } -->
+			                    			<img src="{$comment.photo_url}" alt=""/>
+				                    	<!-- {else} -->
+				                    		<img src="images/user.jpg" alt=""/>
+				                    	<!-- {/if} -->
+										</a>
 									</div>
 									<div class="con">
 										<p><img src="../images/stars{$comment.rank}.gif" alt="{$comment.comment_rank}" /></p>

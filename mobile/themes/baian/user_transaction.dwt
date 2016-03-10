@@ -1985,76 +1985,70 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
     
       <!--* 积分兑换 start-->
        <!--{if $action eq 'transform_points'} -->
-		 <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=user_level">我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li class="now">我的积分</li></div>
-         <div class="blank"></div>
-         
-         <div class="s-myorder">
-       	 	<div class="title">我的积分</div>
-	       	 <table class="s-order-table noborder">
-				<tbody>
-					<tr>
-						<td>
-							{$lang.exchange_points.1}:<font color="#f08300">{$shop_points.pay_points}</font>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							 {$lang.exchange_points.0}:<font color="#f08300">{$shop_points.rank_points}</font>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			 <div class="title">最近积分记录</div> 	
-		     <table class="s-order-table datalist">
-	                 <thead>
-	                     <tr>
-	                         <th>
-	                            	日期
-	                         </th>
-	                         <th>
-	                            	消费积分
-	                         </th>
-	                         <th>
-	                            	成长值
-	                         </th>
-	                         <th>
-	                            	备注
-	                         </th>
-	                     </tr>
-	                 </thead>
-	                 <tbody>
-	                 	  <!--{foreach from=$account_log item=item}-->	
-	                     <tr>
-	                         <td>
-	                             {$item.change_time}	
-	                         </td>
-	                         <td>
-	                            {$item.pay_points}	
-	                         </td>
-	                         <td>
-	                         	{$item.rank_points}	
-	                         </td>
-	                         <td>
-					           {$item.change_desc}
-	                         </td>
-	                     </tr>
-	                     <!-- {foreachelse} -->
-	                     <tr>
-	                         <td colspan="4">
-	                             暂无数据
-	                         </td>
-	                      </tr>   
-	                     <!--{/foreach} -->
-	                 </tbody>
-	             </table>    
+		 <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>我的积分</h2>
+		</header>
+		
+			<div class="w-box redBox">
+				<div class="txt">
+					<p>
+						<span>{$lang.exchange_points.1}：<em>{$shop_points.pay_points}</em></span>
+						<span> {$lang.exchange_points.0}：<em>{$shop_points.rank_points}</em></span>
+					</p>
+				</div>
+		
+				<h3>最近积分记录</h3>
+			 
+     			<table class="integral_tabl3">
+	                <thead>
+	                    <tr>
+	                        <th class="dt">
+	                           	日期
+	                        </th>
+	                        <th class="resume">
+	                           	积分
+	                        </th>
+	                        <th class="level">
+	                           	成长值
+	                        </th>
+	                        <th>
+	                           	备注
+	                        </th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	  <!--{foreach from=$account_log item=item}-->	
+	                    <tr>
+	                        <td>
+	                            {$item.change_time}	
+	                        </td>
+	                        <td>
+	                           {$item.pay_points}	
+	                        </td>
+	                        <td>
+	                        	{$item.rank_points}	
+	                        </td>
+	                        <td>
+				           {$item.change_desc}
+	                        </td>
+	                    </tr>
+	                    <!-- {foreachelse} -->
+	                    <tr>
+	                        <td colspan="4">
+	                            暂无数据
+	                        </td>
+	                     </tr>   
+	                    <!--{/foreach} -->
+	                </tbody>
+            	</table>    
+	          
+	          <div class="h"></div>
 	             
-	             <div class="blank"></div>
-	             <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
-	         </div>                    
-		    
-		    
-		</div>
+	        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+	    </div>      
+			
+	    
            
            
         <!--{/if} -->

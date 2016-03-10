@@ -79,11 +79,11 @@
 									<!-- {foreach from=$buy_give_activity_list item=buy_act name=buy_act} -->
 										<div class="lz-sales">
 											<!--{if $buy_act.package} -->
-												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
+												买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="/{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
 												<!-- {/foreach} -->
 											<!-- {else} -->
 												<span>
-													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
+													买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="/{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
 												</span>
 											<!-- {/if} -->
 										</div>

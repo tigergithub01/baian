@@ -603,6 +603,12 @@
         
 		
 		<div class="s-myorder">
+		
+				<header id="head">
+					<a href="javascript:history.back(-1)" class="back-btn"></a>
+					<h2>修改密码</h2>
+				</header>
+				
 				
 				<ul class="ul-tab1">
 					<li class="on tab_link" id="by_mobile"><a href="javascript:void(0)" >通过手机号码修改密码</a></li>
@@ -616,7 +622,7 @@
 	       		<!-- {if $profile.is_validated_phone==0} -->
 	       			<div class="login-reg-Box w-box">
 						<a class="link_btn"  href="user.php?act=bind_mobile_email">请先绑定手机号码</a>
-					 </div>
+					</div>
 	       		<!-- {else} -->
 	       		
 	       		<div class="login-reg-Box w-box">
@@ -631,7 +637,7 @@
              				 <span class="test-string"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
 						</dd>
 						<dd>
-							<input name="mobile_code" id="mobile_code" type="text" size="30"
+							<input name="mobile_code" id="mobile_code" type="text" size="30" style="width:255px;"
 							class="inputBg required" placeholder="短信验证码" />
 							<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
 						</dd>
@@ -645,8 +651,8 @@
 							<input type="submit" value="{$lang.submit}" class="btn_submit" />
 						</dd>
 					</dl>
-				
 			  	</form>
+			  	</div>
 			  	<!-- {/if} -->
 			  	</div>
 			<!-- 通过绑定手机号码修改密码 end -->
@@ -656,7 +662,7 @@
 			<!-- <div class="title">通过绑定邮箱修改密码 </div> -->
 			<!-- {if $profile.is_validated==0} -->
 	       			<div class="login-reg-Box w-box">
-						<a class="bind_link" href="user.php?act=bind_mobile_email">请先绑定邮箱</a>
+						<a class="link_btn" href="user.php?act=bind_mobile_email">请先绑定邮箱</a>
 					</div>
 	       	<!-- {else} -->
 	       	<div class="login-reg-Box w-box">
@@ -686,6 +692,7 @@
 					</dd>
 				</dl>
 		  </form>
+		  </div>
 		  <!-- {/if} -->
 		  <!-- 通过绑定邮箱修改密码  end -->
 		  </div>

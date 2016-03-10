@@ -55,11 +55,15 @@
                       <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
                         
                         <div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
-	                        <a href="{$package_goods_list.goods_url}" target="_blank">
-	                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
-	                        </a>
+                        	<div class="pic">
+		                        <a href="{$package_goods_list.goods_url}" style="float: left;display: block;">
+		                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />
+		                        </a>
+	                        </div>
 	                        
-	                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+	                        <div class="txt">
+	                       	 <a href="{$package_goods_list.goods_url}"  class="f6" style="float: left;">{$package_goods_list.goods_name}</a><br />
+	                        </div>
                         </div>	
                       <!-- {/foreach} -->
                   </div>

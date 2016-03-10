@@ -273,7 +273,7 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 /*******************************
 	-------[=用户中心]-------
 ********************************/
-.userBox{padding: 20px 40px;}
+.userBox{padding: 20px 40px;background-color: #fff;}
 
 .avatarBox{text-align: center;font-size: 0.75em;}
 .avatarBox .avatar{position: relative;width: 145px;height: 145px;margin: 0 auto;}
@@ -653,7 +653,7 @@ input.btn4{border: 0;}
 }
 .lz-tit1 span:before{left: 100%;}
 
-.m-list3{overflow: hidden;padding-top: 40px;}
+.m-list3{overflow: hidden;padding-top: 40px;background-color: white;}
 .m-list3 li{width: 50%;float: left;margin-bottom: 40px;}
 .m-list3 .pic{width: 300px;height: 300px;margin: 0 auto 35px;}
 .m-list3 .pic img{width: 100%;height: 100%;display: block;}
@@ -964,7 +964,7 @@ input.error {
 
 .integral_tabl3 td:first-child,
 .integral_tabl3 th:first-child{text-align: center;padding-left: 15px;}
-.integral_tabl3 td:last-child{text-align: left;}
+.integral_tabl3 td:last-child{text-align: left;word-spacing:1px;letter-spacing:2px;}
 .integral_tabl3 tbody{padding-bottom: 200px;}
 .integral_tabl3 th.dt{width: 120px;}
 .integral_tabl3 th.resume{width: 60px;}

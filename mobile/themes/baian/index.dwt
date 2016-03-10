@@ -112,60 +112,9 @@
 		
 		
 		
-		<!-- 猜你喜欢 -->
-		
-		<h3 class="lz-tit1"><span>猜你喜欢</span></h3>
-		
-		<div class="w-box" style="background-color: transparent;">
-			<!-- <div class="tit">
-				<h3 class="st1">猜你喜欢</h3>
-			</div> -->
-				
-			<!--{foreach from=$may_like_goods  item=item_goods name=item_goods_foreach}-->
-			<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
-			<ul class="ul_may_like_goods">
-			<!-- {/if} -->	
-			
-				<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
-					<li style="">
-					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
-						<img src="/{$item_goods.goods_thumb}" alt="">
-					</a>
-					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:30}</a></p>
-					<p class="price">
-					<!-- {if $item_goods.promote_price neq 0} -->
-		           		{$item_goods.formated_promote_price}
-		            <!-- {else}-->
-		          		{$item_goods.shop_price}
-		            <!--{/if}-->
-		            </p>
-		            </li>
-		        <!-- {/if} -->
-				
-				<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1} -->	
-					<li style="">
-					<a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">
-						<img src="/{$item_goods.goods_thumb}" alt="">
-					</a>
-					<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" target="_blank">{$item_goods.short_name|escape:html|truncate:30}</a></p>
-					<p class="price">
-					<!-- {if $item_goods.promote_price neq 0} -->
-		           		{$item_goods.formated_promote_price}
-		            <!-- {else}-->
-		          		{$item_goods.shop_price}
-		            <!--{/if}-->
-		            </p>
-		            </li>
-		        <!-- {/if} -->
-		    
-		    <!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1 or $smarty.foreach.item_goods_foreach.last} -->    
-			</ul>
-			<!-- {/if} -->
-			<!--{/foreach}-->	
-			<div class="h"></div>
-
-		</div>
-		<div class="h"></div>
+		<!-- 猜你喜欢 start -->
+	    <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+	    <!-- 猜你喜欢 end --> 
 
 		<!-- 门店动态 -->
 		<div class="w-box">

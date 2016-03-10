@@ -59,6 +59,7 @@
 		</header>
 		
 		<div id="ECS_CART_GOODS">
+		<input type="hidden" value="1" id="disable_topBtn">
 		<!-- #BeginLibraryItem "/library/cart_goods.lbi" --><!-- #EndLibraryItem --> 
 		</div>
 		
@@ -119,7 +120,7 @@
             function autoCheckAll(){
             	var allChecked  = true;	
         		$.each($('.check_goods'),function(i,v){
-        			if(!$(v).attr("checked")){
+        			if(!$(v).is(':checked')){
         				allChecked = false;
         				return false;
         			}

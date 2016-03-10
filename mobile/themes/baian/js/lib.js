@@ -61,9 +61,19 @@ $(document).ready(function($) {
 	});
 	$(window).scroll(function(){
 	    if( $(window).scrollTop()>100 ){
-	        $(".topBtn").stop().fadeIn();
+	    	if($("#disable_topBtn").val()=='1'){
+	    		
+	    	}else{
+	    		$(".topBtn").stop().fadeIn();
+	    	}
+	        
 	    }else{
-	        $(".topBtn").stop().fadeOut();
+	    	if($("#disable_topBtn").val()=='1'){
+	    		
+	    	}else{
+	    		$(".topBtn").stop().fadeOut();
+	    	}
+	        
 	    }
 	});
 

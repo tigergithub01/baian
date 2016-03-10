@@ -429,6 +429,17 @@ input.btn3{border: 0;cursor: pointer;}
 .goto-buy .total-price em{font-style: normal;font-size: 0.9em;}
 .goto-buy .btn{float: right;height: 52px;border: 0;background: #f00;color: #fff;width: 130px;text-align: center;}
 
+.chart_oper_all{padding: 0 0 0 70px;}
+.chart_oper_all .drop{float: left;}
+.chart_oper_all .drop a{display: block;}
+.chart_oper_all .collect{float: left;display: block;margin-left: 20px;}
+
+.chart_operate{}
+.chart_operate .drop{float: left;}
+.chart_operate .drop a{display: block;}
+.chart_operate .collect{float: left;display: block;margin-left: 20px;}
+
+
 /*******************************
 	-------[=收货人信息]-------
 ********************************/
@@ -742,8 +753,8 @@ input.btn4{border: 0;}
 }
 
 
-.box-so{height: 100%;width: 100%;position: fixed;left: 0;
-	background-color: #efefef;z-index: 9999;bottom: -100%;
+.box-so{height: 100%;width: 100%;position: fixed;/* left: 0; */
+	background-color: #efefef;z-index: 9999;/* bottom: -100%; */right: -100%;
     transition: .3s;
     -ms-transition: .3s;
     -moz-transition: .3s;
@@ -752,7 +763,7 @@ input.btn4{border: 0;}
     overflow-x: hidden; 
     overflow-y: auto; 
 }
-.box-so.open{/* bottom: -85px; */bottom: 0px;}
+.box-so.open{/* bottom: -85px; *//* bottom: 0px; */right:0;}
 
 .box-so .top{overflow: hidden;border-bottom: 1px solid #b9b9b9;padding: 10px 15px;position: relative;}
 .box-so .a-close{width: 50px;height: 100%;position: absolute;top: 0;left: 0;

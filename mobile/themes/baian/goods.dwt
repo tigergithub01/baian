@@ -54,7 +54,7 @@
 						<span class="red price">{$goods.shop_price_formated}</span>　
 						<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
 						    <div id="promote_time" style="/* display:inline; */display: none;">
-				         	　	抢购倒计时：<span class="red datetime">{$lang.please_waiting}</span>
+				         	　	抢购倒计时：<span class="red datetime time">{$lang.please_waiting}</span>
 				         	</div>
 			         	<!--{/if}-->
 					</td>
@@ -351,6 +351,46 @@
 	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
 
 	<script type="text/javascript" src="/mobile/themes/baian/js/TouchSlide.js"></script>
+	
+	<script type="text/javascript">
+	var goods_id = {$goods_id};
+	var goodsattr_style = {$cfg.goodsattr_style|default:1};
+	var gmt_end_time = {$goods.promote_end_date|default:0};
+	{foreach from=$lang.goods_js item=item key=key}
+	var {$key} = "{$item}";
+	{/foreach}
+	var goodsId = {$goods_id};
+	var now_time = {$now_time|default:0};
+	
+	var g_goods_id = {$goods_id};
+	var g_goods_measure_unit = "{$goods.measure_unit}";
+	
+	<!-- {literal} -->
+	
+	var promote_end_date =Math.round(new Date("{$goods.gmt_end_time}")/1000);
+	 var remain_seconds =  promote_end_date - Date.parse(new Date())/1000;
+	
+	 //将时间减去1秒，计算天、时、分、秒 
+	 function setRemainTime() { 
+	 	  if (remain_seconds > 0) { 
+	 		   remain_seconds = remain_seconds - 1; 
+		 	   var second = Math.floor(remain_seconds % 60);             // 计算秒     
+		 	   var minite = Math.floor((remain_seconds / 60) % 60);      //计算分 
+		 	   var hour = Math.floor((remain_seconds / 3600) % 24);      //计算小时 
+		 	   var day = Math.floor((remain_seconds / 3600) / 24);        //计算天 
+	 	 
+	 	   		//$(".time").html(hour + ":" + minite + ":" + second ); 
+		 	  $(".time").html("<em>"+hour+"</em>" + ":" +"<em>"+ minite+"</em>" + ":" +"<em>"+ second+"</em>" ); 
+	 	  } else {
+	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
+	 	  	 	window.clearInterval(interValObj); 
+	 	   		//这里可以添加倒计时时间为0后需要执行的事件 
+	 	   		$("#promote_time").css('display','none');
+	 	  } 
+	 } 
+	 
+	</script>  
+
 	<script>
 	
 	/*详情页切换**/
@@ -376,6 +416,12 @@
 	//}
 	
 	$(function(){
+		//显示抢购倒计时显示
+		<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
+		$("#promote_time").css('display','inline');
+		interValObj = window.setInterval(setRemainTime, 1000); //间隔函数，1秒执行 
+		<!--{/if} 促销-->
+		
 		// 自定义单选按钮
 		$('.goods_attr input').change(function(){
 			var _this = $(this).parent();

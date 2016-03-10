@@ -21,18 +21,18 @@
 					   <!-- {if $goods.is_momsuit eq 0} is_momsuit start-->
 						  <!-- {if $show_goods_thumb eq 1} -->						
 						  <!-- {elseif $show_goods_thumb eq 2} -->
-							<a  href="{$goods.goods_url}" ><img src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="{$goods.goods_url}" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
 						  <!-- {else} -->
-							<a  href="{$goods.goods_url}" ><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="{$goods.goods_url}" ><img  src="/{$goods.goods_thumb}" border="0"  /></a>
 						  <!-- {/if} -->
 						  
 					   <!-- {elseif $goods.is_momsuit eq 1} -->
 						  <!-- {if $show_goods_thumb eq 1} -->
 							
 						  <!-- {elseif $show_goods_thumb eq 2} -->
-							<a  href="momsuit.php?suit_id={$goods.goods_id}" ><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+							<a  href="momsuit.php?suit_id={$goods.goods_id}" ><img  src="/{$goods.goods_thumb}" border="0"  /></a>
 						  <!-- {else} -->
-							<a  href="momsuit.php?suit_id={$goods.goods_id}" ><img  src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a><br />
+							<a  href="momsuit.php?suit_id={$goods.goods_id}" ><img  src="/{$goods.goods_thumb}" border="0"  /></a><br />
 						  <!-- {/if} -->
 						  
 					   <!-- {/if} is_momsuit end-->

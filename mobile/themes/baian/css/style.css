@@ -753,7 +753,7 @@ input.btn4{border: 0;}
 }
 
 
-.box-so{height: 100%;width: 100%;position: fixed;/* left: 0; */
+.box-so{height: 100%;width: 100%;position: fixed;/* left: 0; */top: 0;
 	background-color: #efefef;z-index: 9999;/* bottom: -100%; */right: -100%;
     transition: .3s;
     -ms-transition: .3s;

@@ -16,6 +16,9 @@
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
+	<!-- 主页面 -->
+	<section id="main">
+
 <!-- #购物车界面start -->
   <!-- {if $step eq "cart"} -->
 	
@@ -50,8 +53,6 @@
 			  </script>
   
   
-  	<!-- 主页面 -->
-	<section id="main">
 
 		<header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
@@ -63,10 +64,9 @@
 		<!-- #BeginLibraryItem "/library/cart_goods.lbi" --><!-- #EndLibraryItem --> 
 		</div>
 		
-	</section>	
 	
-		<!-- 底部主导航 -->
-	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
+		
 		
             <script type="text/javascript">
             $(function(){
@@ -1863,11 +1863,19 @@
         <!-- {/if} -->
     
     
-        
-
-
-
+     
+     <!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
+	
 	<div class="h20"></div>
+	   
+</section>	
+
+
+	
 
 <script language="javascript"> 
 <!--
@@ -1890,7 +1898,6 @@ window.onerror = killerrors;
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
 
 <!-- <script type="text/javascript" src="themes/baian/images/misc/lib/js/e/wl.js"></script> -->
-</div>
 </body>
 <script type="text/javascript">
 var process_request = "{$lang.process_request}";

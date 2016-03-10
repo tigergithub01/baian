@@ -13,6 +13,9 @@
 
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+	
+	<!-- 主页面 -->
+	<section id="main">
 
   <!--#登录界面 start-->
 <!-- {if $action eq 'login'} -->
@@ -39,7 +42,7 @@
               });
        </script>
        
-	<section id="main">
+	
 
 		<header id="head">
 			<a href="" class="back-btn"></a>
@@ -81,7 +84,7 @@
 			</form>
 		</div>
 
-	</section>
+	
 	
 <!--{/if}-->
 <!--#登录界面 end-->
@@ -331,7 +334,6 @@
 		
 	</script> 
 	
-	<section id="main">
 
 		<header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
@@ -446,7 +448,6 @@
         </div>
     </div>
 
-	</section>
 <!--{/if}-->
 <!--{/if}-->
 <!--#会员注册界面 end-->
@@ -615,7 +616,6 @@
         });
 	</script> 
 	
-	<section id="main">
 	
             	<header id="head">
 					<a href="javascript:history.back(-1)" class="back-btn"></a>
@@ -720,11 +720,11 @@
                </form>
                
 			 <div class="h50"></div>
-    </section>
  <!--{/if}-->   
 <!--{/if}-->
 <!--#找回密码界面 end-->
     
+</section>
 
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.validate.js"></script>
 <script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>

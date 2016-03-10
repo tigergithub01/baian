@@ -11,8 +11,8 @@
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
   		
-         
-
+     <!-- 主页面 -->    
+	<section id="main">
             <!-- *用户中心默认显示页面 start-->
             <!-- {if $action eq 'default'} -->
             
@@ -20,7 +20,7 @@
 	body{background: #fff;}
 	</style>
             
-            <section id="main">
+            
 
 				<header id="head">
 					<a href="" class="back-btn"></a>
@@ -102,7 +102,7 @@
 					<a href="user.php?act=logout" class="btn2">注销</a>
 		
 				</div>
-			</section>
+			
 			
                 
                 <script type="text/javascript">
@@ -119,11 +119,11 @@
 	                	    },     
 	                	    success:function(data){ 
 	                		    if(data.status==1){
-	                		    	//alert(data.message);
-	                		    	showToastMessage(data.message);
+	                		    	alert(data.message);
+	                		    	//showToastMessage(data.message);
 	                		    }else{
-	                		    	//alert(data.message);
-	                		    	showToastMessage(data.message);
+	                		    	alert(data.message);
+	                		    	//showToastMessage(data.message);
 	                		    }
 	                	    }  
 	                	}); 
@@ -720,6 +720,7 @@ copyToClipboard = function(txt)
 
     <!-- {/if} -->
 
+	</section>
 
  <div class="h30"></div>
    

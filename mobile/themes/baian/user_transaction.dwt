@@ -1,37 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="Keywords" content="{$keywords}" />
-<meta name="Description" content="{$description}" />
-<!-- TemplateBeginEditable name="doctitle" -->
-<title>{$page_title}</title>
-<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
-<link rel="stylesheet" href="/themes/baian/css/cui.css" />
-	<link rel="stylesheet" href="/themes/baian/css/lib.css" />
-	<link rel="stylesheet" href="/themes/baian/css/style.css" />
-	<script type="text/javascript" src="themes/baian/js/script.js" ></script>
-{* 包含脚本文件 *}
-{insert_scripts files='common.js,user.js'}
+	<meta charset="UTF-8">
+	<title>{$page_title}</title>
+	<meta name="keywords" content="{$keywords}" />
+	<meta name="description" content="{$description}" />
+	<!-- TemplateBeginEditable name="doctitle" -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	<script type="text/javascript" src="/mobile/themes/baian/js/script.js"></script>
+	<script type="text/javascript" src="/js/user.js"></script>
+	
+	
 </head>
 <body>
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-<!--当前位置 start-->
- <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
+	<!-- 搜索导航 -->
+	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
   
- <div id="bd">
-        <div class="wp">
-            <div class="s-cur"><!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --></div>
-
-            <div class="s-side-col l">
-                <div class="snavBox">
-                     <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
-                </div>
-            </div>
-
-            <div class="s-main-col r">
-              <div class="h"></div>
- <div class="box_1">
+  	<!-- 主页面 -->
+	<section id="main">
  
              <!-- 基本信息 start-->
          <!--{if $action eq 'profile'}-->
@@ -1287,6 +1275,8 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
           
        <!-- 我的等级 start -->
       <!-- {if $action eq 'user_level'} -->
+      
+      	
       		<div class="hyzx"><li>账户管理</li><li class="now"><a href="/user.php?act=user_level" >我的等级</a></li><li><a href="/user.php?act=bonus">我的红包</a></li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
       		<div class="blank"></div>
       		<div class="s-myorder">
@@ -1300,6 +1290,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	            </div>
             </div>
             <div class="h"></div>
+            
       		
       		
       <!-- {/if} -->
@@ -1312,50 +1303,41 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
           var {$key} = "{$item}";
         {/foreach}
       </script>
-      <div class="hyzx"><li>账户管理</li><li><a href="/user.php?act=user_level">我的等级</a></li><li class="now">我的红包</li><li><a href="user.php?act=transform_points">我的积分</a></li></div>
+      
+      <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>我的红包</h2>
+	  </header>
+		
       <div class="blank"></div>
       	
-       <div class="s-myorder">
-       	 <div class="title">我的红包</div>
-       	 <table class="s-order-table">
-			<tbody>
+       <div class="w-box redBox">
+        <div class="txt">
+			<p>
+				<span>红包数量：<em>{$total_bonus.total_count}</em></span>
+				<span>红包总金额：<em>{$total_bonus.formated_total_money}</em></span>
+			</p>
+			<form name="addBouns" action="user.php" method="post" onSubmit="return addBonus()">
+				<p>绑定红包：
+				<input name="bonus_sn" type="text" size="30" class="inputBg" placeholder="请输入红包序列号"/>
+	          	<input type="hidden" name="act" value="act_add_bonus" class="inputBg" />
+	          	<input type="submit" class="btn_submit a1" style="border:none;" value="{$lang.add_bonus}" />
+			</form>
+		</div>
+		
+		<h3>最近红包记录</h3>
+		<table class="lz-tabl3">
+			<thead>
 				<tr>
-					<td>红包数量：<font color="#f08300">{$total_bonus.total_count}</font>  红包总金额：<font color="#f08300">{$total_bonus.formated_total_money} </font> 
-					<form name="addBouns" action="user.php" method="post" onSubmit="return addBonus()">
-        <div style="padding-top: 15px;">
-         绑定红包：
-          <input name="bonus_sn" type="text" size="30" class="inputBg" placeholder="请输入红包序列号"/>
-          <input type="hidden" name="act" value="act_add_bonus" class="inputBg" />
-          <input type="submit" class="btn_submit" style="border:none;" value="{$lang.add_bonus}" />
-        </div>
-      </form></td>
+					<th>红包名称</th>
+					<th>序列号</th>
+					<th>红包金额</th>
+					<th>截至使用日期</th>
+					<th>状态</th>
 				</tr>
-			</tbody>
-		</table>
-       	 
-       	 <div class="title">最近红包记录</div> 	
-	     <table class="s-order-table datalist">
-                 <thead>
-                     <tr>
-                         <th>
-                            	红包名称
-                         </th>
-                         <th>
-                            	 红包序列号
-                         </th>
-                         <th>
-                            	 红包金额
-                         </th>
-                         <th>
-                            	截至使用日期
-                         </th>
-                         <th>
-                            	 状态
-                         </th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                 	  <!--{foreach from=$bonus item=item}-->	
+			</thead>
+			<tbody>
+				<!--{foreach from=$bonus item=item}-->	
                      <tr>
                          <td>
                              {$item.type_name}	
@@ -1367,18 +1349,18 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                          	  {$item.formated_type_money}	
                          </td>
                          <td>
-				           {$item.use_enddate}
+				           	{$item.use_enddate}
                          </td>
                          <td>
 				           {$item.status}
                          </td>
                      </tr>
                      <!--{/foreach} -->
-                 </tbody>
-             </table>    
-         </div>
-                    
-		    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+			</tbody>
+		</table>			
+			                  
+		<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+	</div>
 		    
     <!-- {/if} -->
    <!--用户红包结束 end-->
@@ -2305,20 +2287,13 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		    <!-- {/if} -->
     		<!--#缺货登记页面 end -->
     		
+  </section>
     		
-			</div>
-                 <!-- 猜你喜欢 start -->
-			     <div class="h"></div>
-			      <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
-			             
-			      <!-- 猜你喜欢 end -->
-			      
-          </div>
-        </div>
-    </div>
-
- <div class="h30"></div>
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+	<!-- 底部主导航 -->
+	<!-- #BeginLibraryItem "/library/navi.lbi" --><!-- #EndLibraryItem -->
+	
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 <script type="text/javascript">
 {foreach from=$lang.clips_js item=item key=key}

@@ -559,27 +559,39 @@
        <!--{if $action eq 'modify_pwd'}-->
         <script type="text/javascript" src="/js/sms.js"></script>    
 		<script type="text/javascript" src="/js/email.js"></script>  
-        <script type="text/javascript">
+        <script>
        	  $(function(){
 				//表单验证
 				$(".tab_link").click(function(){
-					$(this).addClass("selected");
-					$(".tab_link").not($(this)).removeClass("selected");
+					$(this).addClass("on");
+					$(".tab_link").not($(this)).removeClass("on");
 					
 					var contentId = $(this).prop('id')+"_content";
 					$(".tab_content").hide();
 					$('#'+contentId).show();
-					
-					
 				});
 				
 				$("#formMsg_by_mobile").validate({
+					errorPlacement : function(error, element) { 
+	    				if(element.attr("id")=='captcha'){
+	    					error.appendTo(element.parent()); 
+	    				}else{
+	    					error.appendTo(element.parent()); 
+	    				}
+	    			},
 	    			submitHandler:function(form){
 	    				return validateMobileCode();
 	    	        }   
 	        	});
 				
 				$("#formMsg_by_email").validate({
+					errorPlacement : function(error, element) { 
+	    				if(element.attr("id")=='captcha_email'){
+	    					error.appendTo(element.parent()); 
+	    				}else{
+	    					error.appendTo(element.parent()); 
+	    				}
+	    			},
 	    			submitHandler:function(form){
 	    				return register_by_email();
 	    	        }   
@@ -587,75 +599,53 @@
 	        });
         </script>
         
-		 <div class="hyzx"><li>会员资料</li><li><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li class="now"><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
+        
+        
 		
 		<div class="s-myorder">
 				
-				<div style="margin-bottom: 10px;">
-		          	<a href="javascript:void(0)" id="by_mobile" class="tab_link selected">通过手机号码修改密码</a>
-		          	<span>|</span>
-		          	<a href="javascript:void(0)" id="by_email" class="tab_link">通过邮箱修改密码</a>
-	          	</div>
+				<ul class="ul-tab1">
+					<li class="on tab_link" id="by_mobile"><a href="javascript:void(0)" >通过手机号码修改密码</a></li>
+					<li class="tab_link" id="by_email"><a href="javascript:void(0)">通过邮箱修改密码</a></li>
+				</ul>
+				
           	
 	       		<!-- 通过绑定手机号码修改start -->
 	       		<div id="by_mobile_content" class="tab_content">
 	       		<!-- <div class="title">通过绑定手机号码修改密码</div> -->
 	       		<!-- {if $profile.is_validated_phone==0} -->
-	       			<table class="s-order-table noborder datalist">
-						<tbody>
-							<tr>
-								<td>
-									<a class="link_btn"  href="/user.php?act=bind_mobile_email">请先绑定手机号码</a>
-								</td>
-							</tr>
-						</tbody>
-					 </table>
+	       			<div class="login-reg-Box w-box">
+						<a class="link_btn"  href="user.php?act=bind_mobile_email">请先绑定手机号码</a>
+					 </div>
 	       		<!-- {else} -->
 	       		
+	       		<div class="login-reg-Box w-box">
 	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg" id="formMsg_by_mobile">
-				     
-			       	 <table class="s-order-table noborder datalist">
-						<tbody>
-							<tr>
-								<td class="title">手机号码：</td>
-								<td>
-									{$profile.mobile_phone}
-									<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
-								</td>
-							</tr>
-							<tr>
-	                            <td class="title">验证码</td>
-	                            <td>
-	                            	<input type="text" id="captcha" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-	               				 	<div style="float: left;margin-left: 10px;">
-	               				 		<span class="ma"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
-	               				 	</div>
-								</td>
-	                        </tr>
-							<tr>
-								<td class="title">短信验证码：</td>
-								<td>
-									<input name="mobile_code" id="mobile_code" type="text" size="30"
-							class="inputBg required" />
-								<input id="zphone" type="button" value=" 获取短信验证码 " style=" height:30px;"class="inputBg" onclick="sendSms();"/>
-								</td>
-							</tr>
-							<tr>
-							<td class="title">新密码：</td>
-							<td>
-								<input name="password" type="password" size="30"
-						class="inputBg required" minlength = "6" />
-							</td>
-						</tr>
-							<tr>
-								<td colspan="2">
-									<input type='hidden' value='0' name='reg_type' id='reg_type'/>
-									<input type="hidden" name="act" value="act_modify_pwd" /> 
-									<input type="submit" value="{$lang.submit}" class="btn_submit" />
-								</td>
-							</tr>
-						</tbody>
-					 </table>
+				     <dl class="dl-login-reg">
+						<dd>
+							{$profile.mobile_phone}
+							<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
+						</dd>
+						<dd>
+							<input type="text" placeholder="验证码" id="captcha" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
+             				 <span class="test-string"><img id="yzm_img" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img'));">换一张</a>
+						</dd>
+						<dd>
+							<input name="mobile_code" id="mobile_code" type="text" size="30"
+							class="inputBg required" placeholder="短信验证码" />
+							<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+						</dd>
+						<dd>
+							<input name="password" type="password" size="30"
+						class="inputBg required" minlength = "6" placeholder="新密码" />
+						</dd>
+						<dd>
+							<input type='hidden' value='0' name='reg_type' id='reg_type'/>
+							<input type="hidden" name="act" value="act_modify_pwd" /> 
+							<input type="submit" value="{$lang.submit}" class="btn_submit" />
+						</dd>
+					</dl>
+				
 			  	</form>
 			  	<!-- {/if} -->
 			  	</div>
@@ -665,61 +655,36 @@
 			<div id="by_email_content" class="tab_content" style="display: none;">
 			<!-- <div class="title">通过绑定邮箱修改密码 </div> -->
 			<!-- {if $profile.is_validated==0} -->
-	       			
-	       			<table class="s-order-table noborder datalist">
-						<tbody>
-							<tr>
-								<td>
-									<a class="bind_link" href="/user.php?act=bind_mobile_email">请先绑定邮箱</a>
-								</td>
-							</tr>
-						</tbody>
-					 </table>
+	       			<div class="login-reg-Box w-box">
+						<a class="bind_link" href="user.php?act=bind_mobile_email">请先绑定邮箱</a>
+					</div>
 	       	<!-- {else} -->
+	       	<div class="login-reg-Box w-box">
          	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg" id="formMsg_by_email">
-		         
-		       	 <table class="s-order-table noborder datalist">
-					<tbody>
-						<tr>
-							<td class="title">绑定邮箱：</td>
-							<td>
-								{$profile.email}
-								<input name="email" id="email" type="hidden" value="{$profile.email}" /> 
-							</td>
-						</tr>
-						<tr>
-                            <td class="title">验证码</td>
-                            <td>
-                            	<input type="text" id="captcha_email" style="width: 90px;float: left;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>
-               				 	<div style="float: left;margin-left: 10px;">
-               				 		<span class="ma"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
-               				 	</div>
-							</td>
-                        </tr>
-						<tr>
-							<td class="title">邮箱验证码：</td>
-							<td>
-								<input name="email_code" id="email_code" type="text" size="30"
-						class="inputBg required" />
-							<input id="verify_mail" type="button" value="获取邮箱验证码 " style=" height:30px;"class="inputBg" onclick="sendEmail();"/>
-							</td>
-						</tr>
-						<tr>
-							<td class="title">新密码：</td>
-							<td>
-								<input name="password" type="password" size="30"
-						class="inputBg required" minlength = "6" />
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<input type='hidden' value='1' name='reg_type' id='reg_type'/>
-								<input type="hidden" name="act" value="act_modify_pwd" /> 
-								<input type="submit" value="{$lang.submit}" class="btn_submit" />
-							</td>
-						</tr>
-					</tbody>
-				 </table>
+		         <dl class="dl-login-reg">
+					<dd>
+						{$profile.email}
+						<input name="email" id="email" type="hidden" value="{$profile.email}" /> 
+					</dd>
+					<dd>
+						<input type="text" id="captcha_email" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6" placeholder="验证码"/>
+             			<span class="test-string"><img id="yzm_img_email" src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /></span> <a href="javascript:void(0)" onclick="reload_captcha($('#yzm_img_email'));">换一张</a>
+					</dd>
+					<dd>
+						<input name="email_code" id="email_code" type="text" size="30" style="width:255px;"
+						class="inputBg required" placeholder="邮箱验证码" />
+						<a id="verify_mail" href="javascript:void(0)" onclick="sendEmail();" class="get-test-ma">获取邮箱验证码</a>
+					</dd>
+					<dd>
+						<input name="password" type="password" size="30"
+						class="inputBg required" minlength = "6" placeholder="新密码" />
+					</dd>
+					<dd>
+						<input type='hidden' value='1' name='reg_type' id='reg_type'/>
+						<input type="hidden" name="act" value="act_modify_pwd" /> 
+						<input type="submit" value="{$lang.submit}" class="btn_submit" />
+					</dd>
+				</dl>
 		  </form>
 		  <!-- {/if} -->
 		  <!-- 通过绑定邮箱修改密码  end -->
@@ -2301,10 +2266,17 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
+	
+	<!-- 用于验证的js -->
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/jquery.validate.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/lib/jquery.form.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/dist/localization/messages_zh.js"></script>
+	<script type="text/javascript" src="/themes/baian/js/jquery-validation/jquery.validate.extend.js"></script>
+	
+	<script type="text/javascript">
+	{foreach from=$lang.clips_js item=item key=key}
+	var {$key} = "{$item}";
+	{/foreach}
+	</script>
 </body>
-<script type="text/javascript">
-{foreach from=$lang.clips_js item=item key=key}
-var {$key} = "{$item}";
-{/foreach}
-</script>
 </html>

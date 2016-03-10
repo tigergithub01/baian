@@ -970,3 +970,13 @@ input.error {
 .integral_tabl3 th.resume{width: 60px;}
 .integral_tabl3 th.level{width: 100px;}
 
+
+.w-box .link_btn{
+	  background: #f08300;
+	  color: #fff;
+	  display: block;
+	  line-height: 50px;
+	  text-align: center;
+	  font-size: 24px;
+}
+

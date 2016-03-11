@@ -23,9 +23,14 @@
  
              <!-- 基本信息 start-->
          <!--{if $action eq 'profile'}-->
-         <script type="text/javascript" src="/js/calendar.php?lang={$cfg_lang}"></script>
-         <link href="/js/calendar/calendar.css" rel="stylesheet" type="text/css" />
-         {insert_scripts files='utils.js'}
+         <!-- <script type="text/javascript" src="/js/calendar.php?lang={$cfg_lang}"></script> -->
+         <script type="text/javascript" src="/js/utils.js"></script>
+        <!--  <link href="/js/calendar/calendar.css" rel="stylesheet" type="text/css" /> -->
+        
+        <script src="/mobile/themes/baian/js/mobiscroll/script/mobiscroll.2.13.2.js" type="text/javascript"></script>
+		<link href="/mobile/themes/baian/js/mobiscroll/style/mobiscroll.2.13.2.css" rel="stylesheet" type="text/css" />
+        
+         
         <script type="text/javascript">
           {foreach from=$lang.profile_js item=item key=key}
             var {$key} = "{$item}";
@@ -42,7 +47,7 @@
 					$('#'+contentId).show();
 				});
 				
-				
+				//照片上传
 				$("#fileupload_my_photo").wrap("<form action='user.php?act=act_profile_upload_photo' method='post' enctype='multipart/form-data'></form>");
 				$("#fileupload_baby_photo").wrap("<form action='user.php?act=act_profile_upload_photo&is_baby=1' method='post' enctype='multipart/form-data'></form>");
 				$(".fileupload").change(function(){
@@ -84,6 +89,24 @@
 						}
 					});
 				});
+				
+				//日期选择
+				var curr = new Date().getFullYear();
+	            var opt = {  
+					'default': {
+						theme: 'default',
+						mode: 'scroller',
+						display: 'modal',
+						animate: 'fade',
+						theme: 'android-ics light', //皮肤样式
+	                },
+					'dateYMD': {
+	                    preset: 'date',
+						defaultValue: new Date(new Date()),
+	                },
+	            }
+				$('#birthday').scroller($.extend(opt['dateYMD'],opt['default']));
+	            $('#baby_birthday').scroller($.extend(opt['dateYMD'],opt['default']));
 	        });
        	  
        	  
@@ -134,7 +157,7 @@
 					<tr>
 						<td class="title">昵称:</td>
 						<td>
-							<input type="text" name="alias" value="{$profile.alias}"/>
+							<input type="text" name="alias" value="{$profile.alias}" placeholder="请输入昵称"/>
 						</td>
 					</tr>
 					<tr>
@@ -178,8 +201,8 @@
 					<tr>
 						<td class="title">生日:</td>
 						<td>
-							<input type="text" value="{$profile.birthday}" size="12" id="birthday" name="birthday"/>
-							<input type="button" class="button" value="选择" onclick="return showCalendar('birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+							<input type="text" value="{$profile.birthday}" size="12" id="birthday" name="birthday" placeholder="请输入生日"/>
+							<!-- <input type="button" class="button" value="选择" onclick="return showCalendar('birthday', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1"> -->
 						</td>
 					</tr>
 					
@@ -211,7 +234,7 @@
 					<tr>
 						<td class="title">宝宝昵称:</td>
 						<td>
-							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}"/>
+							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}" placeholder="宝宝昵称"/>
 						</td>
 					</tr>
 					<tr>
@@ -228,8 +251,8 @@
 					<tr>
 						<td class="title">生日:</td>
 						<td>
-							<input type="text" value="{$profile.baby_birthday}" size="12" id="baby_birthday" name="baby_birthday"/>
-							<input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn2');" id="selbtn2" name="selbtn2">
+							<input type="text" value="{$profile.baby_birthday}" size="12" id="baby_birthday" name="baby_birthday" placeholder="宝宝生日"/>
+							<!-- <input type="button" class="button" value="选择" onclick="return showCalendar('baby_birthday', '%Y-%m-%d', '24', false, 'selbtn2');" id="selbtn2" name="selbtn2"> -->
 						</td>
 					</tr>
 					<!-- <tr>

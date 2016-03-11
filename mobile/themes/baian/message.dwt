@@ -27,7 +27,7 @@
 			<h2>{$lang.system_info}</h2>
 		</header>
 		
-		<div style="margin:20px auto;">
+		<div style="margin:20px auto;text-align: center;">
 	        <p style="font-weight:bold; color: red;">{$message.content}</p>
 	        
 	        <div class="h"></div>

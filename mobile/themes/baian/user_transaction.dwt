@@ -1352,33 +1352,47 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        <header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>我的订单</h2>
+			<a href="javascript:void(0)" onclick="nav_div($('#order_query'))" class="a-cla" style="width: auto;">订单查询</a>
 		</header>
        
        <!-- TODO:增加查询区域 -->
-       	<form action="user.php" style="display: none;">
-       	<div style="margin-top: 10px;margin-bottom: 10px;height: 30px;">
-       		<div style="float: left;">
-       			<select style="" name="order_period">
-       				<!--{foreach from=$order_period_list item=item key=key}-->
-		      			<option  <!-- {if $key eq $order_period} -->selected="selected"<!--{/if}  --> value="{$key}">{$item}</option>
-		      		<!-- {/foreach} -->
-       			</select>
-       		</div>
-       		<div style="float: left;margin-left: 20px;">
-       			<select name="status" id="status">
-		      		<option value="-1" <!-- {if $key eq $status} -->selected="selected"<!--{/if}  -->>所有订单状态</option>
-		      		<!--{foreach from=$status_list item=stat key=key}-->
-		      			<option <!-- {if $key eq $status} -->selected="selected"<!--{/if}  --> value="{$key}">{$stat}</option>
-		      		<!-- {/foreach} -->
-    			</select>
-       		</div>
-       		<div style="float: right;margin-right: 15px;">
-       			<input type="hidden" name="act" value="order_list"/>
-       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号" style="margin-right: 10px;"/>
-       			<input type="submit" class="btn_submit" value="查找" />
-       		</div>
-       </div>
-       </form>
+       <div id="order_query" class="m-pop">
+       	<header class="head">
+			<a href="javascript:void(0)" class="back-btn"
+				onclick="close_div($('#order_query'))"></a>
+			<h2>订单查询</h2>
+		</header>
+		
+		<div>
+	       	<form action="user.php">
+		       	<div class="order_query" style="padding: 10px 20px;">
+		       		<div class="row">
+		       			<select style="width: 400px;" name="order_period">
+		       				<!--{foreach from=$order_period_list item=item key=key}-->
+				      			<option  <!-- {if $key eq $order_period} -->selected="selected"<!--{/if}  --> value="{$key}">{$item}</option>
+				      		<!-- {/foreach} -->
+		       			</select>
+		       		</div>
+		       		<div class="row">
+		       			<select name="status" id="status" style="width: 400px;">
+				      		<option value="-1" <!-- {if $key eq $status} -->selected="selected"<!--{/if}  -->>所有订单状态</option>
+				      		<!--{foreach from=$status_list item=stat key=key}-->
+				      			<option <!-- {if $key eq $status} -->selected="selected"<!--{/if}  --> value="{$key}">{$stat}</option>
+				      		<!-- {/foreach} -->
+		    			</select>
+		       		</div>
+		       		<div class="row">
+		       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号" style="margin-right: 10px;"/>
+		       		</div>
+		       		
+		       		<div class="btn">
+		       			<input type="hidden" name="act" value="order_list"/>
+		       			<input type="submit" class="btn_submit" value="查找" />
+		       		</div>
+		       </div>
+	       </form>
+	     </div>  
+	   </div>  
        
        <ul class="ul-tab1 order">
 			<li class="<!-- {if ($status==null or empty($status) or $status==-1)} -->on<!-- {/if} -->"><a href="user.php?act=order_list">全部</a></li>
@@ -1456,122 +1470,107 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
     
      <!-- ==========订单详情页面,包括：订单状态，商品列表，费用总计，收货人信息，支付方式，其它信息==========  start-->
       <!--{if $action eq order_detail} -->
-      <div id="bd">
-		<div class="wp2">
-			<!-- <div class="c-tit1">
-				<a class="r" href="">< 返回继续购物</a>
-				<strong>填写并确认订单信息</strong>
-			</div>	 -->
-			<div class="h15"></div>
-			<h3 class="c-tit3">订单信息</h3>												
-			<div class="shou-info">
-				<p class="info dn" style="display: block;padding: 15px 0 5px 50px;">订单编号：  {$order.order_sn}</p>
-				<p class="info dn" style="display: block;padding: 5px 0 5px 50px;">下单时间：  {$order.order_time}</p>
-				<p class="info dn" style="display: block;padding: 5px 0 15px 50px;">订单状态：  {$order.composite_status_name}</p>
+      
+      <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>订单详情</h2>
+		</header>
+
+		<div class="m-txt1">
+			<div class="top"><span>状态：{$order.composite_status_name}</span>订单编号：{$order.order_sn}</div>
+			<div class="con">
+				<p><span>收货人信息：{$order.shipping_address}</span></p>
 			</div>
-			<div class="h15"></div>
-			<h3 class="c-tit3">收货人信息</h3>												
-			<div class="shou-info">
-				<p class="info dn" style="display: block;">收货人信息：  {$order.shipping_address}</p>
+			<div class="con">				
+			 <!-- {if $order.invoice_no}-->
+	          <p>物流信息</p>
+	          <div class="h"></div>
+	          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	            <tr>
+	              <td bgcolor="#ffffff"><div id="retData"></div></td>
+	            </tr>
+	          </table>
+	          <!--{/if}-->
 			</div>
-			<div class="h15"></div>
-			<h3 class="c-tit3">配送及支付方式</h3>
-			<div class="ps-zf">
-				<p class="info dn" style="display: block;">配送方式： {$order.shipping_name}&#12288;&#12288;支付方式： {$order.pay_name}&#12288;&#12288;<!-- {if $order.invoice_no}-->快递单号： {$order.invoice_no}<!-- {/if} --></p>
-				
-				<!-- {if $order.pick_up_point_name} -->
-				<p class="info dn" style="display: block;">自提点： {$order.pick_up_point_name}&#12288;&#12288;自提地址：{$order.pick_up_point_addr}</p>
-				<!-- {/if} -->
-				
-				<!-- {if $order.invoice_no}-->
-		          <h5><span>物流跟踪</span></h5>
-		          <div class="blank"></div>
-		          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
-		            <tr>
-		              <td bgcolor="#ffffff"><div id="retData"></div></td>
-		            </tr>
-		          </table>
-		          <!--{/if}-->
-          
-			</div>
-			<div class="h15"></div>
-			<h3 class="c-tit3">商品信息</h3>
-			<table class="c-table1 c-table2">
-				
-				<tr>
-					<th class="tl" width="110"></th>
-					<th width="180">商品信息</th>
-					<th width="150"></th>
-					<th width="150">商品价格（元）</th>
-					<th width="90">数量</th>
-					<!-- <th width="150">促销</th> -->
-					<th>库存</th>
-				</tr>
-				<!--{foreach from=$goods_list item=goods name=goods_foreach}-->
-				<tr class="bg">
-					<td class="tr">
-						<a target="_blank" href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a>
-					</td>
-					<td>
-						<a class="tit" href="{$goods.goods_url}">{$goods.goods_name}</a>
-		                <!-- {if $goods.parent_id > 0} -->
-		                <span style="color:#FF0000">（{$lang.accessories}）</span>
-		               <!-- {elseif $goods.is_gift} -->
-		                <span style="color:#FF0000">（{$lang.largess}）</span>
-		                <!-- {/if} -->
-					</td>
-					<td></td>
-					<td><b>{$goods.goods_price}</b></td>
-					<td>{$goods.goods_number}</td>
-					<!-- <td>
-						<div class="cuxiao">
-						<p>买5送1</p>
-						<p><a target="_blank" href="{$goods.goods_url}" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a><a href="" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a><a href="" title="雅培金装喜康力幼儿配方奶粉粉段900g雅培金装喜康力幼儿奶粉"><img src="images/p2.jpg" alt=""></a></p>
-						</div>
-					</td> -->
-					<td>现货</td>
-				</tr>
-				<!--{/foreach}-->
-			</table>
-			<div class="h15"></div>
-			<h3 class="c-tit3">订单备注</h3>
-			<div class="ps-zf">
-				<p class="info dn" style="display: block;"><!-- {if $order.postscript} -->{$order.postscript}<!-- {else} -->无<!-- {/if} --></p>
-			</div>
-			<div class="h15"></div>
-			<h3 class="c-tit3">结算信息</h3>
-			<div class="jsxx">
-				<p>
-				<!-- {if $order.integral > 0} 是否使用积分 -->{$lang.use_integral}：<em>{$order.integral}分</em><!-- {/if} 是否使用积分 -->
-				<!-- {if $order.bonus > 0} 是否使用红包 -->{$lang.use_bonus}：<em>￥{$order.bonus}</em><!-- {/if} 是否使用红包 -->
-				</p>
-				<p class="tr he">商品总计：{$order.formated_goods_amount} + 运费：{$order.formated_shipping_fee} - 积分：{$order.formated_integral_money} - 红包： {$order.formated_bonus}</p>
-			</div>
-			<div class="h"></div>
-			<div class="c-jie1 c-jie2">
-				<span class="r">
-					应付总额：<strong>{$order.formated_order_amount}</strong>　<!-- <input type="submit" class="btn" value="立即支付"> -->
+		</div>
+
+		<!--{foreach from=$goods_list item=goods name=goods_foreach}-->
+		<div class="m-pic1">
+			<div class="pic"><a href="{$goods.goods_url}"><img src="/{$goods.goods_thumb}" alt=""></a></div>
+			<div class="con">
+				<h3><a href="{$goods.goods_url}">{$goods.goods_name}</a></h3>
+				<span>{$goods.goods_price}×{$goods.goods_number}
 				</span>
+				<!-- {if $goods.parent_id > 0} -->
+                <span style="color:#FF0000">（{$lang.accessories}）</span>
+               <!-- {elseif $goods.is_gift} -->
+                <span style="color:#FF0000">（{$lang.largess}）</span>
+                <!-- {/if} -->
+				<p>{$order.order_time}</p>
+			</div>
+		</div>	
+		<!--{/foreach}-->
+
+		<div class="m-txt1">
+			<div class="top"><span>状态：{$order.pay_name}</span>支付方式</div>
+			<div class="top">
+				<span>{$order.shipping_name}</span>配送方式
+			</div>
+			
+			<div class="con">
+				<!-- {if $order.pick_up_point_name} -->
+				<p class="info dn" style="display: block;">自提点： {$order.pick_up_point_name}</p>
+				<p class="info dn" style="display: block;">自提地址：{$order.pick_up_point_addr}</p>
+				<!-- {/if} -->
+			</div>
+			
+			<div class="con">
+				<p>
 				<!-- {if $order.inv_payee} -->
 				发票抬头：{$order.inv_payee}		
 				<!-- {else} -->
 				不需要发票		
 				<!-- {/if} -->
+				</p>
 			</div>
-			<div class="h"></div>
-			<div class="jsxx" style="text-align: right;">
-				<style>
-				.jsxx .btn_submit{font-size: 18px;}
-				</style>
-				{$order.pay_online}
-			</div>
-			<div class="h20"></div><div class="h"></div>
 		</div>
-	</div>
+		
+		<div class="m-txt1">
+			<div class="con"><p>订单备注：<!-- {if $order.postscript} -->{$order.postscript}<!-- {else} -->无<!-- {/if} --></p></div>
+		</div>	
+		
+		
+		
+		<div class="m-txt1">
+			
+			<div class="con">
+				<!-- {if ($order.integral > 0 or $order.bonus > 0)} 是否使用积分 ,红包-->
+				<p>
+				<!-- {if $order.integral > 0} 是否使用积分 -->{$lang.use_integral}：<em>{$order.integral}分</em><!-- {/if} 是否使用积分 -->
+				<!-- {if $order.bonus > 0} 是否使用红包 -->{$lang.use_bonus}：<em>￥{$order.bonus}</em><!-- {/if} 是否使用红包 -->
+				</p>
+				<!-- {/if} 是否使用红包 -->
+				<p class="p1">商品总计：{$order.formated_goods_amount} + 运费：{$order.formated_shipping_fee} - 积分：{$order.formated_integral_money} - 红包： {$order.formated_bonus}</p>
+			</div>
+			
+			
+			<div class="h"></div>
+			
+			<div class="c-jie1 c-jie2 con">
+				<p class="p1">应付总额：<em>{$order.formated_order_amount}</em></p>
+			</div>
+			
+		</div>
+
+		<div class="m-bottom1 order_detail">
+			{$order.pay_online}
+		</div>
+		
+      
 	<div class="h20"></div>
      
      <script language="javascript">
-		document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍后...</center>";
+		document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍候...</center>";
 		var expressid = '{$order.shipping_name}';
 		var expressno = '{$order.invoice_no}';
 		Ajax.call('plugins/kuaidi100/kuaidi100_post.php?com='+ expressid+'&nu=' + expressno,'showtest=showtest', function(data){document.getElementById("retData").innerHTML=data;}, 'GET', 'TEXT');

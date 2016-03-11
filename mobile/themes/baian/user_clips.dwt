@@ -48,7 +48,7 @@
 						</a></li>
 						<li><a href="user.php?act=order_list&status=101">
 							<span class="ico"><img src="images/i-car.png" alt=""></span>
-							<h3>待收货</h3>
+							<h3>待发货</h3>
 						</a></li>
 						<li><a href="user.php?act=order_list&status=102">
 							<span class="ico"><img src="images/i-edit.png" alt=""></span>

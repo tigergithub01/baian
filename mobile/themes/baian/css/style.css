@@ -545,11 +545,17 @@ input.btn4{border: 0;}
 .ul-add .top{margin-bottom: 10px;}
 .ul-add .top span{display: inline-block;width: 210px;}
 .ul-add .top em{font-style: normal;}
-.ul-add .con{height: 3em;line-height: 1.5em;overflow: hidden;}
+.ul-add .con{height: 2em;line-height: 1.5em;overflow: hidden;}
+.ul-add .operate{height: 1.5em;line-height: 1.5em;overflow: hidden;}
 .ul-add .con em{color: #ea5504;font-style: normal;}
-.ul-add li a{display: block;padding-right: 90px;
+/* .ul-add li a{display: block;padding-right: 90px;
+	background: url(../images/a2.png) no-repeat right center;
+} */
+.ul-add li{display: block;padding-right: 90px;
 	background: url(../images/a2.png) no-repeat right center;
 }
+.ul-add .link{color: #ea5504;font-style: normal;}
+
 
 .lz-btn1{width: 250px;height: 50px;display: block;font-size: 25px;background-color: #ea5504;
 	text-align: center;line-height: 50px;color: #fff;margin: 50px auto;border: 0;

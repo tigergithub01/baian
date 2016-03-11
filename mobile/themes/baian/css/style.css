@@ -574,6 +574,7 @@ input.btn4{border: 0;}
 /*手机客户端-我的评价*/
 .ul-tab1{overflow: hidden;border-bottom: 1px solid #dcdddd;background-color: #fff;}
 .ul-tab1 li{width: 33.33%;float: left;height: 55px;}
+.ul-tab1 li.two{width: 50%;}
 .ul-tab1 li a{font-size: 22px;color: #595757;display: block;text-align: center;line-height: 55px;}
 .ul-tab1 li.on a{color: #ea5504;border-bottom: 2px solid red;}
 

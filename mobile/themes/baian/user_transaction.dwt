@@ -124,8 +124,8 @@
      <div class="s-myorder s-userBox">
      		
      		<ul class="ul-tab1">
-				<li class="on tab_link" id="my_profile"><a href="javascript:void(0)" >我的信息</a></li>
-				<li class="tab_link" id="baby_profile"><a href="javascript:void(0)">宝宝信息</a></li>
+				<li class="on tab_link two" id="my_profile"><a href="javascript:void(0)" >我的信息</a></li>
+				<li class="tab_link two" id="baby_profile"><a href="javascript:void(0)">宝宝信息</a></li>
 			</ul>
 		
           	<div class="userBox">
@@ -349,8 +349,8 @@
 		
 		
 		<ul class="ul-tab1">
-			<li class="on tab_link" id="bind_mobile"><a href="javascript:void(0)" >手机绑定</a></li>
-			<li class="tab_link" id="bind_email"><a href="javascript:void(0)">邮箱绑定</a></li>
+			<li class="on tab_link two" id="bind_mobile"><a href="javascript:void(0)" >手机绑定</a></li>
+			<li class="tab_link two" id="bind_email"><a href="javascript:void(0)">邮箱绑定</a></li>
 		</ul>
 	          	
 	       		<!-- 手机绑定start -->
@@ -610,8 +610,8 @@
 				
 				
 				<ul class="ul-tab1">
-					<li class="on tab_link" id="by_mobile"><a href="javascript:void(0)" >通过手机号码修改密码</a></li>
-					<li class="tab_link" id="by_email"><a href="javascript:void(0)">通过邮箱修改密码</a></li>
+					<li class="on tab_link two" id="by_mobile"><a href="javascript:void(0)" >通过手机号码修改密码</a></li>
+					<li class="tab_link two" id="by_email"><a href="javascript:void(0)">通过邮箱修改密码</a></li>
 				</ul>
 				
           	

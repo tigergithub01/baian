@@ -23,8 +23,8 @@
  
              <!-- 基本信息 start-->
          <!--{if $action eq 'profile'}-->
-         <script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
-         <link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+         <script type="text/javascript" src="/js/calendar.php?lang={$cfg_lang}"></script>
+         <link href="/js/calendar/calendar.css" rel="stylesheet" type="text/css" />
          {insert_scripts files='utils.js'}
         <script type="text/javascript">
           {foreach from=$lang.profile_js item=item key=key}
@@ -34,15 +34,14 @@
        	  $(function(){
 				//表单验证
 				$(".tab_link").click(function(){
-					$(this).addClass("selected");
-					$(".tab_link").not($(this)).removeClass("selected");
+					$(this).addClass("on");
+					$(".tab_link").not($(this)).removeClass("on");
 					
 					var contentId = $(this).prop('id')+"_content";
 					$(".tab_content").hide();
 					$('#'+contentId).show();
-					
-					
 				});
+				
 				
 				$("#fileupload_my_photo").wrap("<form action='user.php?act=act_profile_upload_photo' method='post' enctype='multipart/form-data'></form>");
 				$("#fileupload_baby_photo").wrap("<form action='user.php?act=act_profile_upload_photo&is_baby=1' method='post' enctype='multipart/form-data'></form>");
@@ -67,7 +66,7 @@
 						success: function(data) {
 							//alert(data.message);
 							if(data.status==1){
-								$("#"+id+"_img").attr("src",data.content.image_url);
+								$("#"+id+"_img").attr("src","/"+data.content.image_url);
 							}else{
 								alert(data.message);
 							}
@@ -90,43 +89,40 @@
        	  
         </script>
         
-					 <div class="hyzx"><li>会员资料</li><li class="now"><a href="/user.php?act=profile">基本信息</a></li><li><a href="/user.php?act=bind_mobile_email">手机邮箱绑定</a></li><li><a href="/user.php?act=baby_info">宝宝生日登记</a></li><li><a href="/user.php?act=modify_pwd">修改密码</a></li><li><a href="/user.php?act=address_list">收货地址管理</a></li></div>
-
-					<div class="blank"></div>
+		<header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>会员资料</h2>
+		</header>
 					
 			
      <form name="formEdit" action="user.php" method="post" onSubmit="return userEdit()">
      
-     <div class="s-myorder s-userBox">
      
-     		<div style="margin-bottom: 10px;">
-	          	<a href="javascript:void(0)" id="my_profile" class="tab_link selected">我的信息</a>
-	          	<span>|</span>
-	          	<a href="javascript:void(0)" id="baby_profile" class="tab_link">宝宝信息</a>
-          	</div>
-          	
-          	
-          	
-	       	 <table class="s-order-table noborder datalist tab_content"  id="my_profile_content">
+     <div class="s-myorder s-userBox">
+     		
+     		<ul class="ul-tab1">
+				<li class="on tab_link" id="my_profile"><a href="javascript:void(0)" >我的信息</a></li>
+				<li class="tab_link" id="baby_profile"><a href="javascript:void(0)">宝宝信息</a></li>
+			</ul>
+		
+          	<div class="userBox">
+	       	 <table class="tab_content profile_tabl"  id="my_profile_content">
 				<tbody>
 					<tr>
-						<td class="title">头像:</td>
-						<td>
-							<div class="avatar upload_btn" style="width: 120px;height: 120px;">
-								<!-- {if $profile.photo_url && $profile.photo_url neq '' } -->
-		                    		<img src="{$profile.photo_url}" id="fileupload_my_photo_img" alt="" />
-		                    	<!-- {else} -->
-		                    		<img src="themes/baian/images/photo_add.png" id="fileupload_my_photo_img" alt="" />
-		                    	<!-- {/if} -->
-								
-								<input type="file" name="photo_img" class="fileupload" id="fileupload_my_photo"/>
+						<td colspan="2"  class="photo">
+							<div class="avatarBox">
+								<div class="avatar upload_btn" style="width: 120px;height: 120px;">
+									<!-- {if $profile.photo_url && $profile.photo_url neq '' } -->
+			                    		<img src="/{$profile.photo_url}" id="fileupload_my_photo_img" alt="" />
+			                    	<!-- {else} -->
+			                    		<img src="/themes/baian/images/photo_add.png" id="fileupload_my_photo_img" alt="" />
+			                    	<!-- {/if} -->
+									
+									<input type="file" name="photo_img" class="fileupload" id="fileupload_my_photo"/>
+									<em class="level">V<b>{$profile.rank_name}</b></em>
+								</div>
+								<h3 class="name">{$profile.user_name}</h3>
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="title">会员等级:</td>
-						<td>
-							<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$profile.rank_name}</b></span> --><span class="vipBox"><b>v</b>{$profile.rank_name}</span>
 						</td>
 					</tr>
 					<tr>
@@ -190,24 +186,26 @@
 				</tbody>
 			</table>      
 		    
-	       	 <table class="s-order-table noborder datalist tab_content" id="baby_profile_content" style="display: none;">
+	       	 <table class="s-order-table noborder datalist tab_content profile_tabl" id="baby_profile_content" style="display: none;">
 				<tbody>
 					<tr>
-						<td class="title">宝宝头像:</td>
-						<td>
-							<div class="avatar upload_btn" style="width: 120px;height: 120px;margin-right: 10px;">
-								<!-- {if $profile.baby_photo_url && $profile.baby_photo_url neq '' } -->
-		                    		<img src="{$profile.baby_photo_url}" id="fileupload_baby_photo_img" alt="" />
-		                    	<!-- {else} -->
-		                    		<img src="themes/baian/images/photo_add.png" id="fileupload_baby_photo_img" alt="" />
-		                    	<!-- {/if} -->
-								
-								<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
+						<td colspan="2">
+							<div class="avatarBox">
+								<div class="avatar upload_btn" style="width: 120px;height: 120px;margin-right: 10px;">
+									<!-- {if $profile.baby_photo_url && $profile.baby_photo_url neq '' } -->
+			                    		<img src="/{$profile.baby_photo_url}" id="fileupload_baby_photo_img" alt="" />
+			                    	<!-- {else} -->
+			                    		<img src="/themes/baian/images/photo_add.png" id="fileupload_baby_photo_img" alt="" />
+			                    	<!-- {/if} -->
+									
+									<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
+								</div>
 							</div>
 							
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
-							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
+							<div class="h"></div>
+							<div class=""><input class="btn_submit btn_apply_gift" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
 						</td>
 					</tr>
 					<tr>
@@ -242,9 +240,8 @@
 					</tr> -->
 				</tbody>
 			</table>
-			<div>
-			<input name="act" type="hidden" value="act_edit_profile" />
-			<input type="submit" style="" class="btn_submit" value="提交"/>
+				<input name="act" type="hidden" value="act_edit_profile" />
+				<input type="submit" style="" class="btn_submit_ok" value="保存"/>
 			</div>
 		</div>
      </form>

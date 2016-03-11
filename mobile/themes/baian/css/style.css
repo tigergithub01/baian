@@ -894,7 +894,7 @@ input.btn4{border: 0;}
 label.error {
     color: red;
     display: inline;
-    font-style: italic;
+    font-style: normal;
     /* float: left; */
 }
 .loginBox2 table input.error[type="text"], .loginBox2 table input.error[type="password"] {

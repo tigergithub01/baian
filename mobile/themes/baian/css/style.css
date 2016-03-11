@@ -1031,4 +1031,30 @@ input.error {
 	text-align: center;/* line-height: 50px; */color: #fff;/* margin: 50px auto; */border: 0;
 }
 
+/* 我的订单 tab页面 */
+.ul-tab1.order li{
+	width: 20%;
+}
+
+/* 我的订单操作按钮 */
+
+.order .btn div{
+	float: left;
+}
+
+.order .btn a{
+	color: #ea5504;font-size: 21px;
+}
+
+.order input.s-btn1 {display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
+	background-color: #e60012;color: #fff;font-size: 24px;
+}
+.order a.s-btn1 {display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
+	background-color: #e60012;color: #fff;font-size: 24px;
+}
+
+.order .a-btn{
+	color: #ea5504;font-size: 21px;
+}
+
 

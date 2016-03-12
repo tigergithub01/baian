@@ -254,10 +254,10 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 .ul-pro-list{}
 .ul-pro-list li{padding: 20px;border-bottom: 1px solid #ddd;overflow: hidden;}
 .ul-pro-list li:last-child{/* border-bottom: 0; */}
-.ul-pro-list li .pic{float: left;width: 160px;height: 160px;clear: left;border: 1px solid #ddd;}
+.ul-pro-list li .pic{float: left;width: 155px;height: 155px;clear: left;border: 1px solid #ddd;margin-right: 30px;}
 .ul-pro-list li .pic img{display: block;width: 100%;height: 100%;}
 .ul-pro-list li .txt{padding-left: 120px;}
-.ul-pro-list li .title{font-size: 0.83em;height: 3em;overflow: hidden;margin-bottom: 5px;}
+.ul-pro-list li .title{font-size: 0.83em;height: 120px;overflow: hidden;margin-bottom: 5px;}
 .ul-pro-list li .price{color: #f00;}
 .ul-pro-list li .common{font-size: 0.83em;float: right;}
 .ul-pro-list li .common em{color: #f08300;font-style: normal;}
@@ -429,15 +429,17 @@ input.btn3{border: 0;cursor: pointer;}
 .goto-buy .total-price em{font-style: normal;font-size: 0.9em;}
 .goto-buy .btn{float: right;height: 52px;border: 0;background: #f00;color: #fff;width: 130px;text-align: center;}
 
-.chart_oper_all{padding: 0 0 0 70px;}
+.chart_oper_all{padding: 30px 0 0 70px;}
 .chart_oper_all .drop{float: left;}
-.chart_oper_all .drop a{display: block;}
+.chart_oper_all .drop a{display: block;width: 120px;}
 .chart_oper_all .collect{float: left;display: block;margin-left: 20px;}
+.chart_oper_all .collect a{width: 120px;}
 
-.chart_operate{}
+.chart_operate{margin: 20px 0 0 0px;}
 .chart_operate .drop{float: left;}
-.chart_operate .drop a{display: block;}
+.chart_operate .drop a{display: block;width: 120px;}
 .chart_operate .collect{float: left;display: block;margin-left: 20px;}
+.chart_operate .collect a{width: 120px;} 
 
 
 /*******************************
@@ -554,8 +556,8 @@ input.btn4{border: 0;}
 .ul-add li{display: block;padding-right: 90px;
 	background: url(../images/a2.png) no-repeat right center;
 }
-.ul-add .link{color: #ea5504;font-style: normal;}
-
+.ul-add .link{color: #ea5504;font-style: normal;width: 100px;float: left;display: block;text-align: center;}
+.ul-add .link.default{color:rgb(85, 85, 85);}
 
 .lz-btn1{width: 250px;height: 50px;display: block;font-size: 25px;background-color: #ea5504;
 	text-align: center;line-height: 50px;color: #fff;margin: 50px auto;border: 0;

@@ -21,9 +21,9 @@
 					   <!-- {if $goods.is_momsuit eq 0} is_momsuit start-->
 						  <!-- {if $show_goods_thumb eq 1} -->						
 						  <!-- {elseif $show_goods_thumb eq 2} -->
-							<a  href="{$goods.goods_url}" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
+							<a  href="javascript:void(0)" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
 						  <!-- {else} -->
-							<a  href="{$goods.goods_url}" ><img  src="/{$goods.goods_thumb}" border="0"  /></a>
+							<a  href="javascript:void(0)" ><img  src="/{$goods.goods_thumb}" border="0"  /></a>
 						  <!-- {/if} -->
 						  
 					   <!-- {elseif $goods.is_momsuit eq 1} -->

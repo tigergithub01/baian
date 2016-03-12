@@ -311,9 +311,9 @@
 }
 .mbsc-android-holo .dwv {
     color: #31b6e7;
-    line-height: 36px;
+    line-height: 40px;
     border-bottom: 2px solid #31b6e7;
-    font-size: 18px;
+    font-size: 36px;
 }
 /* Buttons */
 .mbsc-android-holo .dwbc {
@@ -387,6 +387,7 @@
 }
 .mbsc-android-holo-light .dwbw .dwb {
     border-left: 1px solid #dbdbdb;
+    font-size: 36px;
 }
 .mbsc-android-holo-light .dwbw:first-child .dwb {
     border: 0;
@@ -858,7 +859,7 @@
 .dwwc {
     margin: 0 auto;
     position: relative;
-    zoom: 1;
+    zoom: 2;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

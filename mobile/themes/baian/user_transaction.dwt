@@ -1784,7 +1784,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 					</div>
 					<div class="operate">
 						<!-- {if $address eq $consignee.address_id} -->
-						[默认]
+						<a class="link default" href="javascript:void(0)">[默认]</a>
 						<!-- {else} -->
 						<a class="link" href="user.php?act=default_consignee&id={$consignee.address_id}">设为默认</a>
 						<!-- {/if} -->

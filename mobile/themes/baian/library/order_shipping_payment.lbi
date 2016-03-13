@@ -1,4 +1,9 @@
-<div class="ps-zf <!-- {if $smarty.session.flow_consignee} -->c-cur-bor<!-- {else} --><!-- {/if} -->">
+<div class="m-pop ps-zf <!-- {if $smarty.session.flow_consignee} -->c-cur-bor<!-- {else} --><!-- {/if} -->">
+				<header id="head">
+					<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.ps-zf'))"></a>
+					<h2>配送及支付方式</h2>
+				</header>
+				
 				<p class="tishi" style="<!-- {if $smarty.session.flow_consignee} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->">请先保存收货人信息</p>
 				<div class="form dn" style="<!-- {if $smarty.session.flow_consignee} -->display:block;<!-- {else} -->display:none;<!-- {/if} -->">
 					<h4 class="c-tit4">配送方式</h4>
@@ -89,10 +94,13 @@
 					    <!--{/if}-->
 					</ul>
 					<div class="h"></div>
-					<input type="button" class="btn" onclick="return select_shipping_payment();" value="保存配送及支付方式">
+					
+					<div class="subBox">
+						<input type="button" class="btn4" onclick="return select_shipping_payment();" value="保存配送及支付方式">
+					</div>
 					
 				</div>
 				
 				
-				<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+				
 		</div>

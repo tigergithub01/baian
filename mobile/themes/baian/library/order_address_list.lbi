@@ -1,63 +1,84 @@
 <!--#订单确认收货地址包含页面，无样式  start-->
-<table class="s-order-table noborder datalist address_list" style="min-height:100px;border: 0px;<!-- {if $smarty.session.flow_consignee && $act neq 'edit'} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->" >
-<tbody>
+
+<header id="head">
+	<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.shou-info'))"></a>
+	<h2>地址管理</h2>
+</header>
+		
+
+<ul class="ul-add s-order-table noborder datalist address_list" style="min-height:100px;border: 0px;<!-- {if $smarty.session.flow_consignee && $act neq 'edit'} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->">
+
 	 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
 	 <!-- {if $consignee.address_id} -->
-	<tr id="row_address_{$consignee.address_id}">
-		<td>
-			
-			<!-- {if $selected_address eq $consignee.address_id} -->
-			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
+	 <li>
+	<div id="row_address_{$consignee.address_id}">
+		<!-- {if $selected_address eq $consignee.address_id} -->
+			<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
 			<!-- {else} -->
-			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
+			<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
 			<!-- {/if} -->
-			<span style="padding-left: 5px;">{$consignee.consignee}</span>
-			<span style="padding-left: 10px;">{$consignee.mobile}</span>
-			<span style="padding-left: 5px;">{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}</span>
-		</td>
-		<td>
-			<a class="link update_address" href="javascript:void(0)" onclick="edit_address('{$consignee.address_id}');">修改</a> 
-			<a class="link" onclick="return drop_consignee('{$consignee.address_id}');" href="javascript:void(0)">删除</a> 
+		<div class="top"><span>{$consignee.consignee}</span><em>{$consignee.mobile}{$consignee.tel}</em></div>
+		<div class="con">
+			{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}
+		</div>
+		<div class="operate">
 			<!-- {if $address eq $consignee.address_id} -->
-			<a class="link" style="color: red;font-weight: bold;" href="javascript:void(0)">默认</a>
+			<a class="link default" href="javascript:void(0)">[默认]</a>
 			<!-- {else} -->
 			<a class="link" href="javascript:void(0)" onclick="return default_consignee('{$consignee.address_id}');">设为默认</a>
 			<!-- {/if} -->
-			
-		</td>
-	</tr>
+			<a class="link update_address" href="javascript:void(0)" onclick="return select_address('{$consignee.address_id}');">使用</a> 
+			<a class="link update_address" href="javascript:void(0)" onclick="edit_address('{$consignee.address_id}');">修改</a> 
+			<a class="link" onclick="return drop_consignee('{$consignee.address_id}');" href="javascript:void(0)">删除</a> 
+		</div>
+						
+	</div>
+	</li>
 	<!-- {else} -->
-	<tr>
-		<td>
+	<div>
+		<a class="lz-btn1" href="javascript:void(0)" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">新增收货地址</a>
+		<!-- <td>
 			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee"/><span style="padding-left: 5px;">添加新地址</span>
-		</td>
-	</tr>
+		</td> -->
+	</div>
 	<!-- {/if} -->
 	
-	<!-- {if $selected_address neq $consignee.address_id} -->
-	<tr id="addr_box_{$consignee.address_id}" class="address_row old" style="display: none;">
-	<!-- {else} -->
-	<tr id="addr_box_{$consignee.address_id}" class="address_row new">
-	<!-- {/if} -->
-		<td colspan="4">
-			<div class="addr_box" style="border: 0px;">
+	<div id="addr_box_{$consignee.address_id}" class="address_row old m-pop">
+			<div class="addr_box">
+				
+				<header id="head">
+					<a href="javascript:void(0)" class="back-btn" onclick="close_div($('#addr_box_{$consignee.address_id}'))"></a>
+					<!-- {if $consignee.address_id} -->
+					<h2>编辑地址</h2>
+					<!-- {else} -->
+					<h2>新增地址</h2>
+					<!-- {/if} -->
+				</header>
+							
 				<form action="user.php" method="post" name="address_form" id="address_form_{$consignee.address_id}">
-		            <table>
+		            <table class="recive-table">
 		                <tr>
-		                  <td><span class="required">*</span>收货人：</td>
+		                  <th>收货人：</th>
 		                  <td><input name="consignee" type="text" class="inputBg" id="consignee_{$sn}" value="{$consignee.consignee|escape}" />
 		                  </td>
 		                </tr>
 		                <tr>
-		                   	  <td><span class="required">*</span>{$lang.backup_phone}：</td>
-			                  <td>
-			                  <input name="mobile" type="text" class="inputBg" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
-			                  {$lang.phone}：<input name="tel" type="text" class="inputBg" id="tel_{$sn}" value="{$consignee.tel|escape}" />
-			                  </td>
-		                </tr>
+							<th>{$lang.backup_phone}：</th>
+							<td>
+								<input name="mobile" type="text" class="inputBg" id="mobile_{$sn}" value="{$consignee.mobile|escape}" />
+							</td>
+						</tr>
+						<tr>
+							<th>{$lang.phone}：</th>
+							<td>
+								<input name="tel" type="text" class="inputBg" id="tel_{$sn}" value="{$consignee.tel|escape}" />
+							</td>
+						</tr>
 		                <tr>
-		                  <td><span class="required">*</span>{$lang.country_province}：</td>
-		                  <td colspan="3"><select name="country" id="selCountries_{$sn}" onchange="region.changed(this, 1, 'selProvinces_{$sn}')">
+		                  <th>配送区域：</th>
+		                  <td>
+		                  <div class="goods-address">
+		                  <select name="country" id="selCountries_{$sn}" onchange="region.changed(this, 1, 'selProvinces_{$sn}')">
 		                      <option value="0">{$lang.please_select}{$name_of_region[0]}</option>
 		                      <!-- {foreach from=$country_list item=country} -->
 		                      <option value="{$country.region_id}" {if $consignee.country eq $country.region_id}selected{/if}>{$country.region_name}</option>
@@ -81,32 +102,33 @@
 		                      <option value="{$district.region_id}" {if $consignee.district eq $district.region_id}selected{/if}>{$district.region_name}</option>
 		                      <!-- {/foreach} -->
 		                    </select>
+		                  </div>
 		                  </td>
 		                </tr>
 		                <tr>
-		                  <td><span class="required">*</span>{$lang.detailed_address}：</td>
+		                  <th>{$lang.detailed_address}：</th>
 		                  <td>
-		                  	<input name="address" size="50" type="text" class="inputBg" id="address_{$sn}" value="{$consignee.address|escape}" />
+		                  	<textarea name="address" id="address_{$sn}">{$consignee.address|escape}</textarea>
 		                  </td>
 		                </tr>
 		                <tr>
 		                	<td>
 		                	</td>
 		                  <td>
-			                  	<!-- {if $address eq $consignee.address_id} -->
-								<input type="checkbox" checked="checked" value="1" name="default"/>
-								<!-- {else} -->
-								<input type="checkbox" value="1" name="default"/>
-								<!-- {/if} -->
-		                  	设为默认收货地址
+		                  	<!-- {if $address eq $consignee.address_id} -->
+		                  	<label class="checkbox checked"><input type="checkbox" 	checked="checked" value="1" name="default" onchange="default_chk_click(this)"></label>	
+							<!-- {else} -->
+							<label class="checkbox"><input type="checkbox" value="1" name="default" onchange="default_chk_click(this)"></label>
+							<!-- {/if} -->
+	                  		设为默认收货地址
 		                  </td>
 		                </tr>
 		                <tr>
 		                  <td>&nbsp;</td>
 		                  <td colspan="3" align="center" bgcolor="#ffffff"><!-- {if $consignee.address_id} -->
-		                    <input type="button" name="submit" class="btn" value="保存收货人信息" onclick="return select_address('{$consignee.address_id}');" />
+		                    <input type="button" name="submit" class="btn lz-btn1" value="保存并使用" onclick="return select_address('{$consignee.address_id}');" />
 		                    <!-- {else} -->
-		                    <input type="button" name="submit" class="btn"  value="新增收货人信息" onclick="return select_address('{$consignee.address_id}');"/>
+		                    <input type="button" name="submit" class="btn lz-btn1"  value="新增并使用" onclick="return select_address('{$consignee.address_id}');"/>
 		                    <!-- {/if} -->
 		                    <input type="hidden" name="is_ajax" value="1" />
 		                    <input name="address_id" type="hidden" value="{$consignee.address_id}" />
@@ -115,10 +137,8 @@
 		              </table>
 	            </form>
             </div>
-            
-		</td>
-	</tr>
+	</div>
 	<!-- {/foreach} -->
-	</tbody>
-</table>
+	
+</ul>
 <!--#订单确认收货地址包含页面，无样式  end-->

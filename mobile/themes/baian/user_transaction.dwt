@@ -1816,27 +1816,16 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 					</tr> -->
 					<!-- {/if} -->
 					
-					<tr>
-						
-						<td colspan="4">
-							<!-- {if $consignee.address_id} -->
 							<div class="addr_box m-pop" id="addr_box_{$consignee.address_id}">
-							
 							<header id="head">
 								<a href="javascript:void(0)" class="back-btn" onclick="close_div($('#addr_box_{$consignee.address_id}'))"></a>
+								<!-- {if $consignee.address_id} -->
 								<h2>编辑地址</h2>
-							</header>
-							
-							<!-- {else} -->
-							<div class="addr_box m-pop" id="addr_box_{$consignee.address_id}">
-							
-							<header id="head">
-								<a href="javascript:void(0)" class="back-btn" onclick="close_div($('#addr_box_{$consignee.address_id}'))"></a>
+								<!-- {else} -->
 								<h2>新增地址</h2>
+								<!-- {/if} -->
 							</header>
 							
-							
-							<!-- {/if} -->
 							<form action="user.php" method="post" name="theForm" onsubmit="return checkConsignee(this)">
 								<table class="recive-table">
 									<tr>
@@ -1923,7 +1912,6 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 							
 				            </form>
 				            </div>
-						</td>
 					</div>	
 					</li>
 					<!-- {/foreach} -->

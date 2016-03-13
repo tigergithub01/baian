@@ -627,27 +627,17 @@
 
         <!-- {if $step eq "checkout"}  -->
         <!-- #订单确认界面开始 -->
-      
-		<div id="hd">
-			<div class="wp2">
-				<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
-				<div class="hdr r">
-					<ul class="ul-step">
-						<li>1.我的购物车 ></li>
-						<li class="on">2.确认订单信息 ></li>
-						<li>3.提交订单 ></li>
-					</ul>
-				</div>
-			</div>
-	   </div>
+       
+       <header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>确认订单信息</h2>
+		</header>
+
+		
 	  
     <div class="c"></div>
 	<div id="bd">
 		<div class="wp2">
-			<div class="c-tit1">
-				<a class="r" href="/flow.php?step=cart">< 返回继续购物</a>
-				<strong>填写并确认订单信息</strong>
-			</div>	
 			<div class="h15"></div>
 
 	  {insert_scripts files='showdiv.js'}
@@ -658,8 +648,8 @@
 	
 	  </script>
 	 
-        {insert_scripts files='region.js,utils.js'}
-	
+	    <script type="text/javascript" src="/js/region.js"></script>
+       	<script type="text/javascript" src="/js/utils.js"></script>
         <script type="text/javascript">
 	          region.isAdmin = false;
 	          {foreach from=$lang.flow_js item=item key=key}
@@ -696,16 +686,25 @@
       <div class="blank"></div>
 
       <div>      
+			<input type="hidden" value="1" id="disable_topBtn">
 			<!--修改代码 by pgge  start -->
            <!--收货人地址开始-->
-           <h3 class="c-tit3">收货人信息 <a class="xg1" href="javascript:void(0)" style="<!-- {if $smarty.session.flow_consignee} -->display:inline-block;<!-- {else} -->display:none;<!-- {/if} -->">修改</a></h3>	
+           <h3 class="s-nav-t">
+           <!-- {if $smarty.session.flow_consignee} -->
+           		<a class="xg1 info dn">
+           			<span>收货人信息：</span>
+            		<span id="consignee" style="padding-left: 5px;">{$smarty.session.flow_consignee.consignee}</span>
+            		<span id="mobile" style="padding-left: 10px;">{$smarty.session.flow_consignee.mobile}</span>  
+            		<span id="address" style="padding-left: 5px;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
+             	</a>
+           <!-- {else} -->
+           		<a class="xg1" href="javascript:void(0)">收货人信息</a>
+           <!-- {/if} -->
+           	
+            
+           </h3>
             <!-- 如果有收货地址，循环显示用户的收货地址 -->
-             <div class="shou-info <!-- {if $smarty.session.flow_consignee} --><!-- {else} -->c-cur-bor<!-- {/if} -->">
-	             <p class="info dn" style="<!-- {if $smarty.session.flow_consignee} -->display:block;<!-- {else} -->display:none;<!-- {/if} -->">收货人信息：
-             		<span id="consignee" style="padding-left: 5px;">{$smarty.session.flow_consignee.consignee}</span>
-             		<span id="mobile" style="padding-left: 10px;">{$smarty.session.flow_consignee.mobile}</span>  
-             		<span id="address" style="padding-left: 5px;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
-	             </p>
+             <div class="m-pop shou-info <!-- {if $smarty.session.flow_consignee} --><!-- {else} -->c-cur-bor<!-- {/if} -->">
 		       	 <div id="order_address_list" class="">
 		       	 <!-- #BeginLibraryItem "/Library/order_address_list.lbi" --><!-- #EndLibraryItem -->
 		       	 </div>
@@ -717,83 +716,75 @@
 		<!--修改代码 by pgge  end -->
       </div>
      	
+     	<div class="h"></div>
+     	
      	<form action="flow.php" method="post" name="theForm" onsubmit="return checkOrder();"> 
 		<div class="h15"></div>
-			<h3 class="c-tit3">配送及支付方式 <a class="xg2" href="javascript:void(0);">修改</a></h3>
+			<h3 class="s-nav-t c-tit3"><a class="xg2" href="javascript:void(0);">配送及支付方式</a>
+			<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+			</h3>
             <div id="ECS_SHIPPING_PARMENT" >
             <!-- #BeginLibraryItem "/Library/order_shipping_payment.lbi" --><!-- #EndLibraryItem -->
 	 		</div>
 	            
-	  <!-- 商品信息start -->          
-	  <div class="h15"></div>
-	  <h3 class="c-tit3">商品信息</h3>
-        <table class="c-table1 c-table2">
-            <tr>
-              <th class="tl" width="110"></th>	
-              <th width="180">商品信息</th>
-              <th width="150"></th>
-              <th style="display: none;">{$lang.goods_attr}</th>
-              <th width="150">商品价格（元）</th>
-              <th width="90">数量</th>
-              <!-- <th width="150">促销</th> -->
-		      {*代码增加 By www.ecshop120.com 多城市多仓库*}
-		      <th>库存</th>
-		      {* 代码增加_end By www.ecshop120.com *}                 
-            </tr>
-
+	  <!-- 商品信息start -->       
+	  <div class="h"></div>
+        <ul class="ul-pro-list w-box" style="border-top: 0;">
             <!-- {foreach from=$goods_list item=goods} -->
-            <tr class="bg">
-	            <td class="tr">
-		            {if $goods.is_momsuit eq 1}
+             <li>
+            	<div class="pic">
+            		{if $goods.is_momsuit eq 1}
 		            	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}" target="_blank">
-		            	<img src="{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
+		            	<img src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 		            {elseif $goods.is_momsuit eq 0}
 			        	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="{$goods.goods_url}" target="_blank" >
-			        	<img src="{$goods.goods_thumb}"  border=0 ></a>
+			        	<img src="/{$goods.goods_thumb}"  border=0 ></a>
 		            {/if}
-	            </td>
-              <td>
-			      <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
-			     		 <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
-			      		<div id="suit_{$goods.goods_id}" style="display:none">
-				          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-					    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
-			                        <a href="{$package_goods_list.goods_url}" target="_blank">
-			                        	<img src="{$package_goods_list.goods_thumb}" border="0" title="" />
-			                        </a>
+            	</div>
+            	
+            	<div class="txt">
+					<h3 class="title">
+						<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+				      		<div id="suit_{$goods.goods_id}" style="display:none">
+					          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+						    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+				                        <a href="{$package_goods_list.goods_url}" target="_blank">
+				                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />
+				                        </a>
+				                        
+				                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+			                        </div>
 			                        
-			                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
-		                        </div>
-		                        
-				          	<!-- {/foreach} -->
-			     		 </div>
-			      <!-- { else } -->
-			      		{if $goods.is_momsuit eq 1}
-			      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-			      		{elseif $goods.is_momsuit eq 0}
-			      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
-			      		{/if}
-		                <!-- {if $goods.parent_id > 0} -->
-		                <span style="color:#FF0000">（{$lang.accessories}）</span>
-		               <!-- {elseif $goods.is_gift} -->
-		                <span style="color:#FF0000">（{$lang.largess}）</span>
-		                <!-- {/if} -->
-		          <!-- {/if} -->
-		          
-        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
-              	
+					          	<!-- {/foreach} -->
+				     		 </div>
+				      <!-- { else } -->
+				      		{if $goods.is_momsuit eq 1}
+				      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+				      		{elseif $goods.is_momsuit eq 0}
+				      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+				      		{/if}
+			                <!-- {if $goods.parent_id > 0} -->
+			                <span style="color:#FF0000">（{$lang.accessories}）</span>
+			               <!-- {elseif $goods.is_gift} -->
+			                <span style="color:#FF0000">（{$lang.largess}）</span>
+			                <!-- {/if} -->
+			          <!-- {/if} -->
+						
+					</h3>
+					<span class="price">{$goods.formated_goods_price}</span>
+					<span class="cx-num">
+						数量：<em class="yellow">{$goods.goods_number}</em>
+					</span>
+        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000;">{$lang.free_goods}</span>)<!-- {/if} -->
               	<!--add by wanggz商品买满多少件送一件的优惠活动-->
                 <!-- {if $goods.gift_goods_number gt 0}  -->
-                <br />
-                              <span style="color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
+                 <span style="display:none;color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
                 <!-- {/if} -->
                 
                	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
-	          </td>
-              <td style="">{$goods.goods_attr|nl2br}</td>
-              <td><b>{$goods.formated_goods_price}</b></td>
-              <td>{$goods.goods_number}</td>
-              <td style="display: none;">	      
+              <div style="display: none;">{$goods.goods_attr|nl2br}</div>
+              <div style="display: none;">	      
 			      <!--修改代码_start  By www.ecshop120.com-->                
 				<a href="javascript:minus_num(document.getElementById('formCart'), {$goods.rec_id});">
 				<img src="images/bag_close.gif" border=0></a>
@@ -801,7 +792,7 @@
 				<input type="hidden" id="hidden_{$goods.rec_id}" value="{$goods.goods_number}"><a href="javascript:add_num(document.getElementById('formCart'),{$goods.rec_id})" >
 				<img src="images/bag_open.gif" border=0></a>
 				<!--修改代码_end  By www.ecshop120.com-->	      
-		      </td>
+		      </div>
 		      <!-- <td>
 					<div class="cuxiao">
 					<p>买5送1</p>
@@ -809,29 +800,33 @@
 					</div>
 				</td> -->
 		      {* 代码增加_start By www.ecshop120.com 多城市多仓库*}
-		      <td>有货</td>
+		      <span style="display: none;">有货</span>
 		      {* 代码增加_end By www.ecshop120.com *}   
 		      	      
-              <td align="left" style="display: none;" id="subtotal_{$goods.rec_id}" >{$goods.formated_subtotal}</td>
-            </tr>
+              <span align="left" style="display: none;" id="subtotal_{$goods.rec_id}" >{$goods.formated_subtotal}</span>
+              
+              </div>
+            </li>
             <!-- {/foreach} -->
             <!-- {if !$gb_deposit} 团购且有保证金时不显示 -->
 
             
             <!-- {/if} -->
-          </table>
+          </ul>
 
 	  <!-- 商品信息end -->    
 	  
 	  <!-- 订单备注 start-->
-	  <div class="h15"></div>
-	  <h3 class="c-tit3">订单备注</h3>
-	  <div class="postscript">
-      		<input name="postscript" type="text" value="" size="90" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"	/>	
+	  <div class="w-box">
+		  <div class="h15"></div>
+		  <h3 class="c-tit3">订单备注</h3>
+		  <div class="postscript">
+		  		<textarea name="postscript" rows="" cols="" style="width: 100%" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
+		  </div>
 	  </div>     
 	  <!-- 订单备注end -->
 	  
-	  
+	  <div class="w-box">
 	  <!-- 发票信息start -->
 	  <div class="h15"></div>
 	  <h3 class="c-tit3">发票信息</h3>
@@ -856,15 +851,25 @@
            </select>
         </p>
 	  </div>     
+	  </div>     
 	  <!-- 发票信息end -->      
 	  
 	  
-	    <!-- 结算信息start -->   
+	    <!-- 结算信息start   -使用积分红包余额-->   
         <div class="h15"></div>
-		<h3 class="c-tit3">结算信息</h3>
 		<div class="h"></div>
-		<div class="jsxx">
+		
+		<h3 class="s-nav-t"><a href="javascript:void(0);" onclick="nav_div($('.jsxx'))">使用积分/红包</a></h3>
+		<div class="h"></div>
+		
+		<div class="jsxx m-pop">
+			<header id="head">
+				<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.jsxx'))"></a>
+				<h2>使用积分红包</h2>
+			</header>
+
 		   <p>本次订单可使用积分：<em>{$order_max_integral}{$points_name}</em>，使用红包：<em>￥{$order_max_bonus|default:0}</em></p>
+		    
 			<!-- {if $allow_use_integral} 是否使用积分 -->
 			<div class="jf">
 				<span class="show-btn <!-- {if $order_max_integral > 0} -->ok<!-- {/if} -->">使用积分</span>
@@ -898,24 +903,28 @@
 				<!-- {/if} 是否使用红包 -->
 				</p>
 			</div>
-		<p> 
-		
-   	   </p>
-   	   
+			
  	   	<!-- {if $allow_use_surplus} 是否使用余额start -->
          <strong>{$lang.use_surplus}: </strong>
           <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
            {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
         <!-- {/if} 是否使用余额end -->
    		
+   		
+   		<div class="subBox">
+			<input type="button" value="完成" class="btn4" onclick="close_div($('.jsxx'));">
+		</div>
+		
+   		</div>
+       <!-- 结算信息 -使用积分红包余额end -->
+       
    		<!-- 订单付款汇总start -->
-		<div id="ECS_ORDERTOTAL" >
+		<div class="w-box" id="ECS_ORDERTOTAL" >
 		<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
 		</div>	
 		<!-- 订单付款汇总end -->
            
-       </div>
-       <!-- 结算信息end -->
+       
 	         
         <!-- 订单提交start -->
         <div class="h"></div>
@@ -926,6 +935,16 @@
 	 		<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
 			</span>
  		</div> 
+ 		
+ 		<div class="w-box goto-buy">
+ 			<span class="r">
+			<input type="hidden" value="{$smarty.session.flow_consignee.address_id}" id="address_id"/>
+	 		<input type="hidden" name="step" value="done"/>
+	 		<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
+			</span>
+		</div>
+		<div class="h"></div>
+		
  		<!-- 订单提交end -->
    			
    		</form>  
@@ -940,9 +959,10 @@
 			
 			/***点击修改收货地址链接***/
 			$(".xg1").click(function(){
-				$(".shou-info").addClass("c-cur-bor");
-				$(".shou-info .address_list").show();
-				$(".shou-info .info").hide();
+				//$(".shou-info").addClass("c-cur-bor");
+				//$(".shou-info .address_list").show();
+				//$(".shou-info .info").hide();
+				nav_div($('.shou-info'))
 				
 				$(".ps-zf").removeClass("c-cur-bor");
 				$(".ps-zf .form").hide();
@@ -953,9 +973,13 @@
 			
 			/***点击修改配送已经支付方式链接***/
 			$(".xg2").click(function(){
+				nav_div($('.ps-zf'));
+				
 				$(".ps-zf").addClass("c-cur-bor");
 				$(".ps-zf .form").show();
-				$(".ps-zf .info").hide();
+				$(".ps-zf .info").hide(); 
+				
+				
 			});
 			
 		   	$(".jsxx .show-btn").click(function(){
@@ -968,6 +992,15 @@
 		   		}
 		   	});
 		   	
+		   	/* $('.checkbox input').change(function(){
+    			var _this = $(this).parents('.checkbox');
+    		    if( _this.hasClass('checked') ){
+    			    _this.removeClass('checked');
+    		    }else{
+    			    _this.addClass('checked');
+    		    }
+
+    		}); */
 		   	
 		   	/* $(".consignee_radio").click(function(){
 		   		var address_id = $(this).val();
@@ -985,13 +1018,25 @@
 	   		$("#addr_box_"+address_id).show();
 		} 
 		
+		/*选择默认收货地址*/
+		function default_chk_click(obj){
+			var _this = $(obj).parents('.checkbox');
+		    if( _this.hasClass('checked') ){
+			    _this.removeClass('checked');
+		    }else{
+			    _this.addClass('checked');
+		    }
+		}
+		
 		
 		function edit_address(address_id){
-			if($('#addr_box_'+address_id).css('display')=='none'){
+			/* if($('#addr_box_'+address_id).css('display')=='none'){
 				$(".address_row").hide();
 				$('#addr_box_'+address_id).show();
 				$('#radio_'+address_id).prop('checked',true);
-	   		}
+	   		} */
+			nav_div($('#addr_box_'+address_id));
+			//$('#radio_'+address_id).prop('checked',true);
 		}
 		
 		
@@ -1016,16 +1061,16 @@
         	    },     
         	    success:function(data){ 
         		    if(data.status==1){
-        		    	console.debug(data);
+        		    	//console.debug(data);
         		    	
         		    	//显示，隐藏显示区域
-        		    	$(".shou-info").removeClass("c-cur-bor");
+        		    	/* $(".shou-info").removeClass("c-cur-bor");
         				$(".shou-info .address_list").hide();
         				$(".shou-info .info").show();
         				$(".ps-zf").addClass("c-cur-bor");
         				$(".ps-zf .tishi").hide();
         				$(".xg1").show();
-        				$(".ps-zf .form").show();
+        				$(".ps-zf .form").show(); */
         				
         				//设置选中的地址
         				$("#address_id").val(data.content.address_id);
@@ -1039,6 +1084,8 @@
         				//TODO:重新刷新页面，计算的逻辑太多了
         				//window.location.href = 'flow.php?step=checkout';
         				order_shipping_payment_total();
+        				close_div($('.shou-info'));
+        				close_div($('#addr_box_'+address_id));
         		    }else{
         		    	alert(data.message);
         		    }
@@ -1131,6 +1178,7 @@
         
         /**重新加载地址列表****/
         function refresh_address_list(act){
+        	$(".address_list").html("<span>数据加载中，请稍候...</span>");
         	$.ajax({     
         	    url:'flow.php?step=address_list',     
         	    type:'post',  
@@ -1139,6 +1187,7 @@
         	    async :true, 
         	    error:function(){ 
         	    	//alert('更新出错！');
+        	    	$("#order_address_list").html("<span>数据加载出错，请刷新重试！</span>");
         	    },     
         	    success:function(data){ 
         		    $("#order_address_list").html(data);
@@ -1167,13 +1216,17 @@
         		    if(data.status==1){
         		    	//$("#row_address_"+address_id).remove();
         		    	
-        		    	$(".ps-zf .form").hide();
+        		    	/* $(".ps-zf .form").hide();
         		    	$(".ps-zf .info").show();
         				$(".xg2").show();
-        				$(".ps-zf").removeClass("c-cur-bor");
+        				$(".ps-zf").removeClass("c-cur-bor"); */
         		    	
+        				
+        				
         				$("#txt_shipping_name").text($("#shipping_name_"+shipping_id).val());
         				$("#txt_payment_name").text($("#payment_name_"+pay_id).val());
+        				close_div($('.ps-zf'));
+        				
         		    	
         		    }else{
         		    	if(data!=null){
@@ -1367,19 +1420,12 @@
 
         <!-- {if $step eq "done"} -->
         <!-- #订单提交成功开始 -->
-		<div id="hd">
-			<div class="wp2">
-				<a href="/" class="logo l"><img src="images/logo.jpg" alt=""></a>
-				<div class="hdr r">
-					<ul class="ul-step">
-						<li>1.我的购物车 ></li>
-						<li>2.确认订单信息 ></li>
-						<li class="on">3.提交订单 ></li>
-					</ul>
-				</div>
-			</div>
-		</div>
 		
+		<header class="head">
+			<a href="javascript:void(0)" class="back-btn"></a>
+			<h2>订单支付</h2>
+		</header>
+				
 	  <div class="c"></div>
 	   <div class="flowBox mod2">
          <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>

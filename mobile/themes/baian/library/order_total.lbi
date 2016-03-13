@@ -1,5 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-{insert_scripts files='utils.js'}
+<script type="text/javascript" src="/js/utils.js"></script>
   <!-- {if $smarty.session.user_id > 0 and ($config.use_integral or $config.use_bonus)} -->
   <p>    {$lang.complete_acquisition}
       <!-- {if $config.use_integral} 是否使用积分-->

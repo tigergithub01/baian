@@ -452,7 +452,7 @@ input.btn3{border: 0;cursor: pointer;}
 .recive-table td{font-size: 0.83em;padding-right: 20px;}
 .recive-table input,.recive-table select,.recive-table textarea{
 	font-size: 20px;border: 1px solid #ddd;resize:none;}
-.recive-table input,.recive-table textarea{width: 100%;padding: 0 10px;
+.recive-table input[type='text'],.recive-table textarea{width: 100%;padding: 0 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;

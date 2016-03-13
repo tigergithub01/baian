@@ -1764,6 +1764,16 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
             	$(function(){
   					//表单验证
   					//$("form[name='theForm']").validate();
+  					//复选框
+            		$('.checkbox input').change(function(){
+            			var _this = $(this).parents('.checkbox');
+            		    if( _this.hasClass('checked') ){
+            			    _this.removeClass('checked');
+            		    }else{
+            			    _this.addClass('checked');
+            		    }
+
+            		});
   		        });
               
             </script>
@@ -1793,7 +1803,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 							<a class="link" href="user.php?act=default_consignee&id={$consignee.address_id}">设为默认</a>
 							<!-- {/if} -->
 							<a class="link" href="javascript:void(0)" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">修改</a>
-							<a class="link" onclick="return confirm('你确认要删除该收货地址吗？');" href="/user.php?act=drop_consignee&id={$consignee.address_id}">删除</a> 
+							<a class="link" onclick="return confirm('你确认要删除该收货地址吗？');" href="user.php?act=drop_consignee&id={$consignee.address_id}">删除</a> 
 						</div>
 						
 					
@@ -1889,11 +1899,11 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 					                	</th>
 					                  <td>
 						                  	<!-- {if $address eq $consignee.address_id} -->
-											<input type="checkbox" checked="checked" value="1" name="default"/>
+						                  	<label class="checkbox checked"><input type="checkbox" 	checked="checked" value="1" name="default"></label>	
 											<!-- {else} -->
-											<input type="checkbox" value="1" name="default"/>
+											<label class="checkbox"><input type="checkbox" value="1" name="default"></label>
 											<!-- {/if} -->
-					                  	设为默认收货地址
+					                  		设为默认收货地址
 					                  </td>
 					                </tr>
 								</table>

@@ -39,6 +39,8 @@ http://localhost:8086/baadmin/goods.php?act=edit&goods_id=2371
 http://localhost:8086/goods-2371.html
 http://localhost:8086/baadmin/goods.php?act=product_list&goods_id=2371
 http://www.123121.com/goods-22138.html
+http://localhost:8086/mobile/goods-838.html (此商品可用来测试评论) 
+
 
 商品分类页：
 http://localhost:8086/baadmin/category.php?act=edit&cat_id=377
@@ -537,5 +539,89 @@ www.123121.com/category.php?id=332
 
 2016/01/21 15:20:49 [warn] 1639#0: *500879 a client request body is buffered to a temporary file /www/wdlinux/nginx-1.0.15/client_body_temp/0000005782, client: 113.91.148.167, server: weixin.123121.com, request: "POST /baadmin/upload2012.php HTTP/1.1", host: "www.123121.com"
 2016/01/21 15:21:48 [warn] 1639#0: *500904 an upstream response is buffered to a temporary file /www/wdlinux/nginx-1.0.15/proxy_temp/3/78/0000005783 while reading upstream, client: 203.208.60.11, server: weixin.123121.com, request: "GET /images/201601/source_img/22169_G_1452808868722.jpg HTTP/1.1", upstream: "http://127.0.0.1:88/images/201601/source_img/22169_G_1452808868722.jpg", host: "www.123121.com"
+
+ 1、{count($Arr)}
+      2、{$Arr|@count}
+      3、{$Arr|count}
+
+http://localhost:8086/baadmin/goods.php?act=edit&goods_id=22139&extension_code=&XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14537036048131
+      
+css样式调整：
+http://www.cnblogs.com/xiepeixing/p/4334556.html
+
+jquery slide menu
+
+touch slide api:
+http://www.superslide2.com/param.html
+
+css 参考手册：
+http://www.w3school.com.cn/cssref/index.asp
+
+http://localhost:8086/mobile/goods-2023.html
+
+银豹收银系统：
+http://pospal.cn/index.html
+
+易度文档管理系统：
+http://www.edodocs.com/
+
+apache ab 命令性能测试：
+ab -n 1 -c 1 http://www.123121.com/goods-22136.html
+ab参数说明：http://www.ha97.com/4617.html
+
+thinkphp 在线手册：
+http://document.thinkphp.cn/manual_3_2.html
+
+http://localhost/thinkphp_3.2.2_full/index.php/admin/index/index
+
+http://symfony.com/
+
+注意：现有的商品与属性的设计关系存在问题。正确的方式应为：设计商品基础信息->属性信息->货品信息（单价，库存，描述等信息）
+
+
+1、商品配送页面，不要弹出框，要类似商品分类页中的筛选效果。但是弹出的一个全屏的窗口，左上角有一个返回图片，点击后从右向左隐藏窗口。
+2、商品分类页中的加载更多的效果能否做一下（如果那边不做，就我这边来做）
+
+1、首页搜索框滚动到一定位置时固定位置（以前滚动时会出现两个搜索框重叠的情况）
+2、首页公告已经添加
+3、首页分类导航与猜你喜欢字体已经调小（看看字体大小是否合适）
+
+
+1、优化公告栏 ->ok
+2、限时抢购优化 ->ok
+3、启动页，（可配置在文章中-todo） 
+
+1、首页限时抢购样式  ->ok
+2、搜索功能  ->ok
+
+1、后台更新限时抢购后，手机版未及时显示问题。
+2、启动页优化问题。
+3、客户中心换成手机版。
+4、文章分类页(手机版与电脑板不需要显示的分类已经屏蔽)
+
+
+1\文章页面样式显示不正常
+2\商品列表页下拉加载更多数据。
+
+1\手机版详情页去掉详情间的图片空隙。 ->ok
+2\商品类别页面过滤商品功能。->ok
+
+1\商品分类列表页面显示标题纠正。
+
+1\搜索页面 ->ok
+2\更多抢购页 ->ok
+3\产品详情页图片使用延迟加载 ->ok
+
+1\详情页地址选择(三级地址选择)  ->ok
+2\详情页属性切换  ->ok
+3\列表页面图像调大 （160px * 160px);  ->ok
+4\购物车（部分完成)
+5\登录、注册、找回密码 ->ok
+
+1、搜索也的多少人评价没数据。
+2、nginx图片加载大小缓存问题。(网页老是加载中，图片未加载完成。)
+
+
+
 
 

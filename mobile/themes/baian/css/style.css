@@ -584,7 +584,8 @@ input.btn4{border: 0;}
 .ul-tab1 li{width: 33.33%;float: left;height: 55px;}
 .ul-tab1 li.two{width: 50%;}
 .ul-tab1 li a{font-size: 22px;color: #595757;display: block;text-align: center;line-height: 55px;}
-.ul-tab1 li.on a{color: #ea5504;border-bottom: 2px solid red;}
+.ul-tab1 li.on{border-bottom: 1px solid red;}
+.ul-tab1 li.on a{color: #ea5504;}
 
 .m-list1{}
 .m-list1 li{padding: 20px 15px;overflow: hidden;margin-bottom: 10px;position: relative;

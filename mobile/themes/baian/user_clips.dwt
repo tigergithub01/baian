@@ -78,7 +78,7 @@
 							<span class="ico"><img src="images/u-i4.png" alt=""></span>
 							<h3>我的等级</h3>
 						</a></li>
-						<li><a href="user.php?act=bonus">
+						<li><a href="user.php?act=comment_list&commented=-1">
 							<span class="ico"><img src="images/u-i5.png" alt=""></span>
 							<h3>客户服务</h3>
 						</a></li>
@@ -138,25 +138,48 @@
   					//表单验证
   					$("form[name='formMsg']").validate();
   					$("form[name='formMsg_complaint']").validate();
+  					
+  					$(".subTab li").click(function(){
+  						$(".subTab li").removeClass("on");
+  						$(this).addClass("on");
+  						 
+  						$(".sub_content").hide();
+  						$("#"+$(this).prop("id")+"_content").show();
+  					});
   		        });
             </script>
-         <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li class="now"><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
-          <div class="blank"></div>
-	       <div class="s-myorder">
+            
+        <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>客户服务</h2>
+		</header>
+
+		<ul class="ul-tab1">
+			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li class="on"><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li><a href="user.php?act=my_advice">建议有奖</a></li>
+		</ul>
+		
+		<ul class="ul-tab1 subTab">
+			<li class="on tab_link two" id="my_question"><a href="javascript:void(0)">我要提问</a></li>
+			<li class="tab_link two" id="my_complaint"><a href="javascript:void(0)">我要投诉</a></li>
+		</ul>
+		
+		
 	       		<!-- 我要提问 start -->
+	       	<div id="my_question_content" class="sub_content">
 	         	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg">
-				     <div class="title">我要提问</div>
-			       	 <table class="s-order-table noborder datalist">
+			       	 <table class="s-order-table noborder datalist recive-table">
 						<tbody>
 							<tr>
-								<td class="title">标题：</td>
+								<th class="title">标题：</th>
 								<td>
 									<input name="msg_title" type="text" size="30"
 							class="inputBg required" />
 								</td>
 							</tr>
 							<tr>
-								<td class="title">内容：</td>
+								<th class="title">内容：</th>
 								<td>
 									<textarea name="msg_content" cols="50" rows="4"
 								wrap="virtual" class="B_blue required"></textarea>
@@ -166,35 +189,36 @@
 								<td colspan="2">
 									<input type="hidden" name="act" value="act_add_message" /> 
 									<input type="hidden" name="msg_type" value="2" /> 
-									<input type="submit" value="{$lang.submit}" class="btn_submit" />
+									<input type="submit" value="{$lang.submit}" class="btn_submit btn4" />
 								</td>
 							</tr>
 						</tbody>
 					 </table>
 			  </form>
+		</div> 
 			<!-- 我要提问 end -->
 			
 			<!-- 我要投诉 start -->
+		<div id="my_complaint_content" class="sub_content" style="display: none;">
          	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_complaint">
-		         <div class="title">我要投诉</div>
-		       	 <table class="s-order-table noborder datalist">
+		       	 <table class="s-order-table noborder datalist recive-table">
 					<tbody>
 						<tr>
-							<td class="title">标题：</td>
+							<th class="title">标题：</th>
 							<td>
 								<input name="msg_title" type="text" size="30"
 						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
-							<td class="title">订单号：</td>
+							<th class="title">订单号：</th>
 							<td>
 								<input name="order_sn" type="text" size="30"
 						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
-							<td class="title">内容：</td>
+							<th class="title">内容：</th>
 							<td>
 								<textarea name="msg_content" cols="50" rows="4"
 							wrap="virtual" class="B_blue required"></textarea>
@@ -204,15 +228,15 @@
 							<td colspan="2">
 								<input type="hidden" name="act" value="act_add_message" /> 
 								<input type="hidden" name="msg_type" value="1" /> 
-								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								<input type="submit" value="{$lang.submit}" class="btn_submit btn4" />
 							</td>
 						</tr>
 					</tbody>
 				 </table>
 		  </form>
+		 </div>
 		  <!-- 咨询&投诉 end -->
 			
-		 </div>
 		 	
          <!-- {/if} -->
          <!--#我的留言 end-->
@@ -226,29 +250,37 @@
   					$("form[name='formMsg_advice']").validate();
   		        });
             </script>
-         <div class="hyzx"><li>客户服务</li><li><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li  class="now"><a href="/user.php?act=my_advice">建议有奖</a></li></div>
-          <div class="blank"></div>
-          <div class="s-myorder">
+            
+        <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
+			<h2>客户服务</h2>
+		</header>
+
+		<ul class="ul-tab1">
+			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li class="on"><a href="user.php?act=my_advice">建议有奖</a></li>
+		</ul>
+		
          	<form action="user.php" method="post" enctype="multipart/form-data" name="formMsg_advice">
-		         <div class="title">建议有奖</div>
-		       	 <table class="s-order-table noborder datalist">
+		       	 <table class="s-order-table noborder datalist recive-table">
 					<tbody>
 						<tr>
-							<td class="title">标题：</td>
+							<th class="title">标题：</th>
 							<td>
 								<input name="msg_title" type="text" size="30"
 						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
-							<td class="title">联系方式：</td>
+							<th class="title">联系方式：</th>
 							<td>
 								<input name="contact_method" type="text" size="30"
 						class="inputBg required" />
 							</td>
 						</tr>
 						<tr>
-							<td class="title">内容：</td>
+							<th class="title">内容：</th>
 							<td>
 								<textarea name="msg_content" cols="50" rows="4"
 							wrap="virtual" class="B_blue required"></textarea>
@@ -258,13 +290,12 @@
 							<td colspan="2">
 								<input type="hidden" name="act" value="act_add_message" /> 
 								<input type="hidden" name="msg_type" value="6" /> 
-								<input type="submit" value="{$lang.submit}" class="btn_submit" />
+								<input type="submit" value="{$lang.submit}" class="btn_submit btn4" />
 							</td>
 						</tr>
 					</tbody>
 				 </table>
 		  </form>
-		 </div>
          <!-- {/if} -->
          <!--#我的留言 end-->
          
@@ -292,7 +323,8 @@
 			        	    success:function(data){ 
 			        	    	alert(data.message);
 				        		if(data.status==1){
-				        			$("#formMsg_{$smarty.foreach.orders_foreach.index}").parent().parent().toggleClass('show');
+				        			//$("#formMsg_{$smarty.foreach.orders_foreach.index}").parent().parent().toggleClass('show');
+				        			close_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'))
 				        		}
 			        	    	
 			        	    }  
@@ -343,7 +375,7 @@
 						success: function(data) {
 							//alert(data.message);
 							if(data.status==1){
-								$("#"+id+"_img").attr("src",data.content.image_url);
+								$("#"+id+"_img").attr("src","/"+data.content.image_url);
 								$("#"+id+"_img_url").val(data.content.image_url);
 							}else{
 								alert(data.message);
@@ -369,33 +401,25 @@
 		  <style type="text/css">
 			.comment_detail{display: none}
 			.comment_detail.show{display: table-row;}
-			
-			</style>
-          <div class="hyzx"><li>客户服务</li><li class="now"><a href="/user.php?act=comment_list">我的评价</a></li><li><a href="/user.php?act=message_list">咨询&投诉</a></li><li><a href="/user.php?act=my_advice">建议有奖</a></li></div>
-          <div class="blank"></div>
+		</style>
+		
+		
+		<header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>客户服务</h2>
+		</header>
+
+		<ul class="ul-tab1">
+			<li class="on"><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li><a href="user.php?act=my_advice">建议有奖</a></li>
+		</ul>
           
-          <div class="s-myorder">
-          	<div style="margin-bottom: 10px;">
-	          	<a href="user.php?act=comment_list&commented=0" class="tab_link <!-- {if ($commented eq 0)} -->selected<!-- {/if} -->">待评价</a>
-	          	<span>|</span>
-	          	<a href="user.php?act=comment_list&commented=1" class="tab_link <!-- {if ($commented eq 1)} -->selected<!-- {/if} -->">已评价</a>
-          	</div>
+          	<ul class="m-list1">
        		<!--{foreach from=$goods_list item=goods name=orders_foreach}-->
-	       <table class="s-order-table">
-	           <thead>
-	               <tr>
-	                   <th colspan="2">
-	                       <span class="order_num">订单号：<a target="_blank" href="user.php?act=order_detail&order_id={$goods.order_id}" class="f6">{$goods.order_sn}</a></span>
-	                       <span class="order_time">下单时间：{$goods.order_time}</span>
-	                       <span>{$goods.total_fee}</span>（快递{$goods.shipping_fee}）
-	                   </th>
-	               </tr>
-	           </thead>
-	           <tbody>
-	           
-	               <tr>
-	                   <td>
-	                       <div class="goods_pic"><a href="{$goods.goods_url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
+	       		<li>
+	                       <div class="pic"><a href="user.php?act=order_detail&order_id={$goods.order_id}"><img src="/{$goods.goods_thumb}" alt=""></a></div>
+	                       <div class="con">
 	                       <div class="goods_title">
 	                       	<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
 						     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
@@ -412,16 +436,19 @@
 							          	<!-- {/foreach} -->
 						     		 </div>
 						      <!-- { else } -->
-						      		{if $goods.is_momsuit eq 1}
-						      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-						      		{elseif $goods.is_momsuit eq 0}
-						      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
-						      		{/if}
-					                <!-- {if $goods.parent_id > 0} -->
-					                <span style="color:#FF0000">（{$lang.accessories}）</span>
-					               <!-- {elseif $goods.is_gift} -->
-					                <span style="color:#FF0000">（{$lang.largess}）</span>
-					                <!-- {/if} -->
+						      		<h3>
+							      		{if $goods.is_momsuit eq 1}
+							      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+							      		{elseif $goods.is_momsuit eq 0}
+							      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
+							      		{/if}
+						                <!-- {if $goods.parent_id > 0} -->
+						                <span style="color:#FF0000">（{$lang.accessories}）</span>
+						               <!-- {elseif $goods.is_gift} -->
+						                <span style="color:#FF0000">（{$lang.largess}）</span>
+						                <!-- {/if} -->
+					                </h3>
+					                
 					          <!-- {/if} -->
 					          
 			        		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
@@ -434,21 +461,27 @@
 			               	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
 	                       
 	                       </div>
-	                       <div class="unit_price">{$goods.goods_price}</div>
-	                       <div class="goods_num">{$goods.goods_number}</div>
-	                   </td>
-	                   <td>
-	                       <a href="javascript:void(0)" onclick="$(this).parent().parent().siblings('.comment_detail').toggleClass('show');" class="s-btn1">点击评价</a>
-	                   </td>
+	                       <span>{$goods.goods_price}<em>×{$goods.goods_number}</em></span>
+	                       <div class="btn">
+		                       <!-- <a href="javascript:void(0)" onclick="$(this).parent().parent().siblings('.comment_detail').toggleClass('show');" class="s-btn1">点击评价</a> -->
+								<a href="javascript:void(0)" class="lz-btn2" onclick="nav_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'))">立即评价</a>
+								<!-- <a href="javascript:void(0)" class="a2" onclick="close_div($('sect_Msg_{$smarty.foreach.orders_foreach.index}'))">退换货申请</a> -->
+							</div>
+						</div>	
 	                   
-	               </tr>
-	               <tr class="comment_detail">
-	               		<td colspan="2" style="background: #fcfffa none repeat scroll 0 0">
+	                   	<div class="m-pop" id="sect_Msg_{$smarty.foreach.orders_foreach.index}">
+	                   		
+	                   		<header id="head">
+								<a href="javascript:void(0)" class="back-btn" onclick="close_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'))"></a>
+								<h2>评价商品</h2>
+							</header>
+							
+	                   	
 	               			<form action="user.php" method="post" enctype="multipart/form-data" id="formMsg_{$smarty.foreach.orders_foreach.index}" name="formMsg">
-						       	 <table class="s-order-table noborder datalist" style="border: none;">
+						       	 <table class="s-order-table noborder datalist recive-table">
 									<tbody>
 										<tr>
-											<td class="title">评分<font color="#FF0000">*</font>：</td>
+											<th class="title">评分<font color="#FF0000">*</font>：</th>
 											<td>
 												<input type="radio" name="comment_rank" value="1" class=""/>1分
 												<input type="radio" name="comment_rank" value="2"/>2分
@@ -458,37 +491,37 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="title">心得<font color="#FF0000">*</font>：</td>
+											<th class="title">心得<font color="#FF0000">*</font>：</th>
 											<td>
 												<textarea name="content" id="content" cols="80" rows="4"
-											wrap="virtual" class="B_blue required" maxlength="500"></textarea>
+											wrap="virtual" class="B_blue required"></textarea>
 											</td>
 										</tr>
 										<tr>
-											<td class="title">晒单：</td>
+											<th class="title">晒单：</th>
 											<td>
 												<div class="upload_btn" id="fileupload_{$goods.rec_id}_0_btn">
-													<img id="fileupload_{$goods.rec_id}_0_img" src="themes/baian/images/photo_add.png" alt="" />
+													<img id="fileupload_{$goods.rec_id}_0_img" src="/themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_0" class="fileupload" type="file" name="comment_img" />
 													<input id="fileupload_{$goods.rec_id}_0_img_url" type="hidden" name="img_url[0]"/>
 												</div>
 												<div class="upload_btn" id="fileupload_{$goods.rec_id}_1_btn">
-													<img id="fileupload_{$goods.rec_id}_1_img" src="themes/baian/images/photo_add.png" alt="" />
+													<img id="fileupload_{$goods.rec_id}_1_img" src="/themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_1" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_1_img_url" type="hidden" name="img_url[1]"/>
 												</div>
 												<div class="upload_btn" id="fileupload_{$goods.rec_id}_2_btn">
-													<img id="fileupload_{$goods.rec_id}_2_img" src="themes/baian/images/photo_add.png" alt="" />
+													<img id="fileupload_{$goods.rec_id}_2_img" src="/themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_2" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_2_img_url" type="hidden" name="img_url[2]"/>
 												</div>
 												<div class="upload_btn" id="fileupload_{$goods.rec_id}_3_btn">
-													<img id="fileupload_{$goods.rec_id}_3_img" src="themes/baian/images/photo_add.png" alt="" />
+													<img id="fileupload_{$goods.rec_id}_3_img" src="/themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_3" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_3_img_url" type="hidden" name="img_url[3]"/>
 												</div>
 												<div class="upload_btn" id="fileupload_{$goods.rec_id}_4_btn">
-													<img id="fileupload_{$goods.rec_id}_4_img" src="themes/baian/images/photo_add.png" alt="" />
+													<img id="fileupload_{$goods.rec_id}_4_img" src="/themes/baian/images/photo_add.png" alt="" />
 													<input id="fileupload_{$goods.rec_id}_4" class="fileupload" type="file" name="comment_img"/>
 													<input id="fileupload_{$goods.rec_id}_4_img_url" type="hidden" name="img_url[4]"/>
 												</div>
@@ -499,21 +532,18 @@
 												<input type="hidden" name="order_id" value="{$goods.order_id}" />
 												<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
 												<input type="hidden" name="act" value="act_add_comment" /> 
-												<input type="submit" value="发表评价" class="btn_submit" />
+												<input type="submit" value="发表评价" class="btn_submit btn4" />
 											</td>
 										</tr>
 									</tbody>
 								 </table>
 						  </form>
-	                   </td>
-	               </tr>
-	               
-	           </tbody>
-	       </table>
+						</div>
+	           </li>
 	       <!--{foreachelse}-->
-	       		<p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p>
+	       		<li><p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p></li>
 	       <!--{/foreach}-->
-       </div>
+	       </ul>
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
           <!--{/if} -->

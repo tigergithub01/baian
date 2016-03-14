@@ -692,10 +692,10 @@
            <h3 class="s-nav-t">
            <!-- {if $smarty.session.flow_consignee} -->
            		<a class="xg1 info dn">
-           			<span>收货人信息：</span>
-            		<span id="consignee" style="padding-left: 5px;">{$smarty.session.flow_consignee.consignee}</span>
-            		<span id="mobile" style="padding-left: 10px;">{$smarty.session.flow_consignee.mobile}</span>  
-            		<span id="address" style="padding-left: 5px;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
+           			<span class="label_addr">收货人信息</span>
+            		<span id="consignee" class="txt_consignee">{$smarty.session.flow_consignee.consignee}</span>
+            		<span id="mobile" style="padding-left: 10px;display: none;">{$smarty.session.flow_consignee.mobile}</span>  
+            		<span id="address" style="padding-left: 5px;display: none;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
              	</a>
            <!-- {else} -->
            		<a class="xg1" href="javascript:void(0)">收货人信息</a>
@@ -716,62 +716,70 @@
 		<!--修改代码 by pgge  end -->
       </div>
      	
-     	<div class="h"></div>
+     	
      	
      	<form action="flow.php" method="post" name="theForm" onsubmit="return checkOrder();"> 
 		<div class="h15"></div>
-			<h3 class="s-nav-t c-tit3"><a class="xg2" href="javascript:void(0);">配送及支付方式</a>
-			<p class="info dn">配送方式： <span id="txt_shipping_name">{$shipping.shipping_name} </span>　　支付方式：<span id="txt_payment_name">{$payment.pay_name}</span></p>
+			<h3 class="s-nav-t c-tit3">
+			<a class="xg2" href="javascript:void(0);">
+			<span class="label_shipping_pay">配送及支付方式</span>
+			<span class="info dn"><span class="txt_shipping_name" id="txt_shipping_name">{$shipping.shipping_name} </span><span class="txt_payment_name" id="txt_payment_name">{$payment.pay_name}</span></span>
+			</a>
 			</h3>
             <div id="ECS_SHIPPING_PARMENT" >
             <!-- #BeginLibraryItem "/Library/order_shipping_payment.lbi" --><!-- #EndLibraryItem -->
 	 		</div>
 	            
 	  <!-- 商品信息start -->       
-	  <div class="h"></div>
         <ul class="ul-pro-list w-box" style="border-top: 0;">
             <!-- {foreach from=$goods_list item=goods} -->
              <li>
             	<div class="pic">
             		{if $goods.is_momsuit eq 1}
-		            	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}" target="_blank">
+		            	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}">
 		            	<img src="/{$goods.goods_thumb}" border="0" title="{$goods.goods_name|escape:html}" /></a>
 		            {elseif $goods.is_momsuit eq 0}
-			        	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="{$goods.goods_url}" target="_blank" >
+			        	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="{$goods.goods_url}">
 			        	<img src="/{$goods.goods_thumb}"  border=0 ></a>
 		            {/if}
             	</div>
             	
             	<div class="txt">
-					<h3 class="title">
+					
 						<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
 				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
 				      		<div id="suit_{$goods.goods_id}" style="display:none">
 					          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-						    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
-				                        <a href="{$package_goods_list.goods_url}" target="_blank">
-				                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />
-				                        </a>
+						    		<div style="display: block;min-height: 60px; margin-top: 5px;">
+						    			<div class="pic">
+					                        <a href="{$package_goods_list.goods_url}">
+					                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />
+					                        </a>
+				                        </div>
 				                        
-				                        <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+				                        <div class="txt">
+				                       		 <a href="{$package_goods_list.goods_url}" target="_blank" class="f6" style="">{$package_goods_list.goods_name}</a><br />
+				                        </div>
 			                        </div>
 			                        
 					          	<!-- {/foreach} -->
 				     		 </div>
 				      <!-- { else } -->
-				      		{if $goods.is_momsuit eq 1}
-				      		<a href="momsuit.php?suit_id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
-				      		{elseif $goods.is_momsuit eq 0}
-				      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
-				      		{/if}
-			                <!-- {if $goods.parent_id > 0} -->
-			                <span style="color:#FF0000">（{$lang.accessories}）</span>
-			               <!-- {elseif $goods.is_gift} -->
-			                <span style="color:#FF0000">（{$lang.largess}）</span>
-			                <!-- {/if} -->
+				      		<h3 class="title">
+					      		{if $goods.is_momsuit eq 1}
+					      		<a href="momsuit.php?suit_id={$goods.goods_id}"  class="f6">{$goods.goods_name}</a>
+					      		{elseif $goods.is_momsuit eq 0}
+					      		<a href="{$goods.goods_url}"  class="f6">{$goods.goods_name}</a>
+					      		{/if}
+				                <!-- {if $goods.parent_id > 0} -->
+				                	<span style="color:#FF0000">（{$lang.accessories}）</span>
+					            <!-- {elseif $goods.is_gift} -->
+					            	<span style="color:#FF0000">（{$lang.largess}）</span>
+				                <!-- {/if} -->
+				             </h3>   
 			          <!-- {/if} -->
 						
-					</h3>
+					
 					<span class="price">{$goods.formated_goods_price}</span>
 					<span class="cx-num">
 						数量：<em class="yellow">{$goods.goods_number}</em>
@@ -821,26 +829,34 @@
 		  <div class="h15"></div>
 		  <h3 class="c-tit3">订单备注</h3>
 		  <div class="postscript">
-		  		<textarea name="postscript" rows="" cols="" style="width: 100%" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
+		  		<textarea name="postscript" rows="2" cols="" style="width: 100%" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
 		  </div>
 	  </div>     
 	  <!-- 订单备注end -->
 	  
 	  <div class="w-box">
 	  <!-- 发票信息start -->
-	  <div class="h15"></div>
-	  <h3 class="c-tit3">发票信息</h3>
 	  <div class="inv">
        <p>
        	<strong style="display:none;">{$lang.invoice}:</strong>
-           <input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="changeNeedInv()" value="1" {if $order.need_inv}checked="true"{/if} />
-         
+       		<!-- {if $order.need_inv} -->
+       			<label class="checkbox checked">
+	          	 	<input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="afterChangeNeedInv(this);changeNeedInv();" value="1" checked="checked" />
+	         	</label>
+       		<!-- {else} -->
+       			<label class="checkbox">
+	          	 	<input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="afterChangeNeedInv(this);changeNeedInv();" value="1" />
+	         	</label>
+       		<!-- {/if} -->
+       		
+       		
+         	
            <!-- {if $inv_type_list} -->
            &nbsp;{$lang.invoice}:&nbsp;{$lang.invoice_type}
            <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
            {html_options options=$inv_type_list selected=$order.inv_type}</select>
            <!-- {/if} -->
-           {$lang.invoice_title}
+           <label style="position: relative;top: -5px;">{$lang.invoice_title}</label>
            <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
            
          	<!-- 
@@ -865,52 +881,64 @@
 		<div class="jsxx m-pop">
 			<header id="head">
 				<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.jsxx'))"></a>
-				<h2>使用积分红包</h2>
+				<h2>使用积分/红包</h2>
 			</header>
 
-		   <p>本次订单可使用积分：<em>{$order_max_integral}{$points_name}</em>，使用红包：<em>￥{$order_max_bonus|default:0}</em></p>
+		   
 		    
-			<!-- {if $allow_use_integral} 是否使用积分 -->
-			<div class="jf">
+		    <ul class="ul-use-package">
+		    	<li>
+					<p>本次订单可使用积分：<span class="yellow">{$order_max_integral}{$points_name}</span>，使用红包：<span class="yellow">￥{$order_max_bonus|default:0}</span></p>
+				</li>
+			<!-- {if $allow_use_integral and $order_max_integral > 0} 是否使用积分 -->	
+			<li>
 				<span class="show-btn <!-- {if $order_max_integral > 0} -->ok<!-- {/if} -->">使用积分</span>
-				<p style="<!-- {if $order_max_integral > 0} -->display: block;<!-- {/if} -->">
-					您有积分<span>{$your_integral|default:0} {$points_name}</span>，本次可用<span>{$order_max_integral}{$points_name}</span>　
-					使用	<input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />积分　
-					<span id="ECS_INTEGRAL_NOTICE" class="notice"></span>
-				</p>
-			</div>
-			 <!-- {/if} 是否使用积分 -->
-			 
-			 <!-- {if $allow_use_bonus} 是否使用红包 -->
-			<div class="hb">
-				<span class="show-btn <!-- {if $order_max_bonus > 0} -->ok<!-- {/if} -->">使用红包</span>
+				<div class="jf txt">
+					<p style="<!-- {if $order_max_integral > 0} -->display: block;<!-- {/if} -->">
+						您有积分<span class="yellow">{$your_integral|default:0} {$points_name}</span>，本次可用<span class="yellow">{$order_max_integral}{$points_name}</span>　
+						使用	<input name="integral" type="text" class="inputBg" id="ECS_INTEGRAL" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10" />积分　
+						<span id="ECS_INTEGRAL_NOTICE" class="notice"></span>
+					</p>
+				</div>
+			 </li>
+			  <!-- {/if} 是否使用积分 -->
+			  <!-- {if $allow_use_bonus and $order_max_bonus > 0 and $bonus_list} 是否使用红包 -->
+			 <li>
+			 	<span class="show-btn <!-- {if $order_max_bonus > 0} -->ok<!-- {/if} -->">使用红包</span>
+				<div class="hb txt">
+					<p style="<!-- {if $order_max_bonus > 0} -->display: block;<!-- {/if} -->">
+					<!-- 您有红包<span>￥10.00</span>，本次可用<span>￥{$order_max_bonus|default:0}</span>　 -->
+					<!-- {foreach from=$bonus_list item=bonus} -->
+					<!-- {if $bonus.is_checked eq '1'} -->
+	                	<input type="checkbox" checked="checked" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp;<br/>
+					<!-- {else} -->
+						<input type="checkbox" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp;<br/>
+					<!-- {/if} -->
+	               	<!-- {/foreach} -->
+	                 
+	                 <br/>
+	                 
+					{foreach from=$spec_bonus_list item=spec_bonus}
+					<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
+					{/foreach}
 				
-				<p style="<!-- {if $order_max_bonus > 0} -->display: block;<!-- {/if} -->">
-				<!-- 您有红包<span>￥10.00</span>，本次可用<span>￥{$order_max_bonus|default:0}</span>　 -->
-				<!-- {foreach from=$bonus_list item=bonus} -->
-                 <input type="checkbox" <!-- {if $bonus.is_checked eq '1'} -->checked="checked"<!-- {/if} --> onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp;<br/>
-               	<!-- {/foreach} -->
-                 
-                 <br/>
-                 
-				{foreach from=$spec_bonus_list item=spec_bonus}
-				<input type="checkbox" onclick="return selectSpecBonus(this.value);" name="bonus_ids[]" id="bonus_{$spec_bonus.bonus_id}" value="{$spec_bonus.bonus_id}"/>{$spec_bonus.type_name}[{$spec_bonus.bonus_money_formated}]&nbsp;&nbsp;
-				{/foreach}
+	                <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
+	                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" /> 
+	                
+					
+					</p>
+				</div>
+			</li>
+			<!-- {/if} 是否使用红包 -->
 			
-                <input style="display:none;" name="bonus_sn" type="text" class="inputBg" size="15" value="{$order.bonus_sn}"/> 
-                <input style="display:none;" name="validate_bonus" type="button" style="background:url(images/bg_yellow.gif) no-repeat 0 0; width:82px; height:25px;  text-align:center; line-height:25px; color:#333; border:none; cursor:pointer;overflow:hidden" value="使用红包" onclick="validateBonus(document.forms['theForm'].elements['bonus_sn'].value)" /> 
-                
-				<!-- {/if} 是否使用红包 -->
-				</p>
-			</div>
-			
- 	   	<!-- {if $allow_use_surplus} 是否使用余额start -->
-         <strong>{$lang.use_surplus}: </strong>
-          <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
-           {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
-        <!-- {/if} 是否使用余额end -->
-   		
-   		
+			<!-- {if $allow_use_surplus} 是否使用余额start -->
+			<li>
+		         <strong>{$lang.use_surplus}: </strong>
+		          <input name="surplus" type="text" class="inputBg" id="ECS_SURPLUS" size="10" value="{$order.surplus|default:0}" onblur="changeSurplus(this.value)" {if $disable_surplus}disabled="disabled"{/if} />
+		           {$lang.your_surplus}{$your_surplus|default:0} <span id="ECS_SURPLUS_NOTICE" class="notice"></span></p>
+   			</li>
+   			 <!-- {/if} 是否使用余额end -->
+   		</ul>
    		<div class="subBox">
 			<input type="button" value="完成" class="btn4" onclick="close_div($('.jsxx'));">
 		</div>
@@ -983,13 +1011,13 @@
 			});
 			
 		   	$(".jsxx .show-btn").click(function(){
-		   		if ($(this).hasClass('ok')){
+		   		/* if ($(this).hasClass('ok')){
 		   			$(this).removeClass('ok');
 		   			$(this).next('p').slideUp();
 		   		} else{
 		   			$(this).addClass('ok');
 		   			$(this).next('p').slideDown();
-		   		}
+		   		} */
 		   	});
 		   	
 		   	/* $('.checkbox input').change(function(){
@@ -1086,6 +1114,7 @@
         				order_shipping_payment_total();
         				close_div($('.shou-info'));
         				close_div($('#addr_box_'+address_id));
+        				$(".ps-zf .dn").hide();
         		    }else{
         		    	alert(data.message);
         		    }
@@ -1405,12 +1434,26 @@
 		}
 		
 		/*选择自提点**/
-		
 		function select_pick_up_point(obj){
-			$(".pick_up_point_ckb").attr('checked',false);
+			$(".pick_up_point_ckb").parent().removeClass("checked");  
+			$(obj).parent().addClass("checked");
+			
+			$(".pick_up_point_ckb").attr('checked',false);			
 			$(obj).attr('checked',true);
 		}
+		
+		/*选择是否需要发票**/
+		function afterChangeNeedInv(obj){
+		  if($(obj).is(':checked')) { 
+			$(obj).parent().addClass("checked");
+		  }else{
+			$(obj).parent().removeClass("checked");
+		  }
+		}
+		
 		</script>
+		
+		
 	 	
         <!-- {/if} -->
         <!-- #订单确认界面结束 -->

@@ -2,32 +2,34 @@
 
 <header id="head">
 	<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.shou-info'))"></a>
-	<h2>地址管理</h2>
+	<h2>选择收货地址</h2>
 </header>
 		
 
-<ul class="ul-add s-order-table noborder datalist address_list" style="min-height:100px;border: 0px;<!-- {if $smarty.session.flow_consignee && $act neq 'edit'} -->display:none;<!-- {else} -->display:block;<!-- {/if} -->">
+<ul class="ul-add s-order-table noborder datalist address_list" style="min-height:100px;border: 0px;">
 
 	 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
 	 <!-- {if $consignee.address_id} -->
-	 <li>
+	<li>
 	<div id="row_address_{$consignee.address_id}">
-		<!-- {if $selected_address eq $consignee.address_id} -->
-			<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
-			<!-- {else} -->
-			<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
-			<!-- {/if} -->
-		<div class="top"><span>{$consignee.consignee}</span><em>{$consignee.mobile}{$consignee.tel}</em></div>
-		<div class="con">
-			{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}
-		</div>
+		<a class="info" href="javascript:void(0)" onclick="return select_address('{$consignee.address_id}');">
+			<!-- {if $selected_address eq $consignee.address_id} -->
+				<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee" checked="checked"/>
+				<!-- {else} -->
+				<input type="radio" style="display: none;" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" name="consignee" value="{$consignee.address_id}"/>
+				<!-- {/if} -->
+			<div class="top"><span>{$consignee.consignee}</span><em>{$consignee.mobile}{$consignee.tel}</em></div>
+			<div class="con">
+				{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}
+			</div>
+		</a>
 		<div class="operate">
 			<!-- {if $address eq $consignee.address_id} -->
 			<a class="link default" href="javascript:void(0)">[默认]</a>
 			<!-- {else} -->
 			<a class="link" href="javascript:void(0)" onclick="return default_consignee('{$consignee.address_id}');">设为默认</a>
 			<!-- {/if} -->
-			<a class="link update_address" href="javascript:void(0)" onclick="return select_address('{$consignee.address_id}');">使用</a> 
+			<!-- <a class="link update_address" href="javascript:void(0)" onclick="return select_address('{$consignee.address_id}');">使用</a>  -->
 			<a class="link update_address" href="javascript:void(0)" onclick="edit_address('{$consignee.address_id}');">修改</a> 
 			<a class="link" onclick="return drop_consignee('{$consignee.address_id}');" href="javascript:void(0)">删除</a> 
 		</div>

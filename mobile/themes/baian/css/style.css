@@ -550,12 +550,12 @@ input.btn4{border: 0;}
 .ul-add .con{height: 2em;line-height: 1.5em;overflow: hidden;}
 .ul-add .operate{height: 1.5em;line-height: 1.5em;overflow: hidden;}
 .ul-add .con em{color: #ea5504;font-style: normal;}
-/* .ul-add li a{display: block;padding-right: 90px;
-	background: url(../images/a2.png) no-repeat right center;
-} */
-.ul-add li{display: block;padding-right: 90px;
+.ul-add li a.info{display: block;padding-right: 90px;
 	background: url(../images/a2.png) no-repeat right center;
 }
+/* .ul-add li{display: block;padding-right: 90px;
+	background: url(../images/a2.png) no-repeat right center;
+} */
 .ul-add .link{color: #ea5504;font-style: normal;width: 100px;float: left;display: block;text-align: center;}
 .ul-add .link.default{color:rgb(85, 85, 85);}
 
@@ -1090,4 +1090,11 @@ input.error {
 	background-color: #e60012;color: #fff;font-size: 24px;
 }
 
-
+/* 订单提交页面 */
+.txt_consignee{padding-left: 5px;}
+.label_addr{display: inline-block;}
+.label_shipping_pay{display: inline-block;}
+.txt_shipping_name{margin-left: 5px;}
+.txt_payment_name{margin-left: 5px;}
+.txt_pickout_point{display: inline;position: relative;top: -6px;}
+.notice{color: red;font-size: 16px;}

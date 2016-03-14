@@ -45,7 +45,7 @@
       - {$lang.use_bonus}: {$total.bonus_formated}
       <!-- {/if} -->    
   <!-- {/if} 使用余额或积分或红包 -->
- {$lang.total_fee}: <strong style="color: #ff0000;font-size: 18px;">{$total.amount_formated}</strong>
+ {$lang.total_fee}: <span class="red">{$total.amount_formated}</span>
   {if $is_group_buy}
   {$lang.notice_gb_order_amount}{/if}
   <!--{if $total.exchange_integral }消耗积分--> +

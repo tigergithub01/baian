@@ -991,6 +991,15 @@ function selectShipping(obj)
 
   }
 
+  /*手机版单选框样式适应*/
+  if($(obj).is(':checked')) { 
+	$("input[type='radio'][name='"+$(obj).prop('name')+"']").parent().removeClass("checked");  
+	$(obj).parent().addClass("checked");
+  }else{
+	$("input[type='radio'][name='"+$(obj).prop('name')+"']").parent().removeClass("checked");    
+	$(obj).parent().removeClass("checked");
+  }
+  
   //付款方式为门店自提的时候，显示自提点选择
   if($(obj).attr('shipping_code')=='cac'){
 	  $(".CAC_POINT_LIST").show();
@@ -1094,6 +1103,15 @@ function selectPayment(obj)
 
     selectedPayment = obj;
 
+  }
+  
+  /*手机版单选框样式适应*/
+  if($(obj).is(':checked')) { 
+	$("input[type='radio'][name='"+$(obj).prop('name')+"']").parent().removeClass("checked");  
+	$(obj).parent().addClass("checked");
+  }else{
+	  $("input[type='radio'][name='"+$(obj).prop('name')+"']").parent().removeClass("checked");    
+	$(obj).parent().removeClass("checked");
   }
 
 

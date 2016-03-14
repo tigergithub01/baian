@@ -629,6 +629,11 @@ input.btn4{border: 0;}
 .m-list2 .con p span{min-width: 210px;display: inline-block;}
 .m-list2 li.ok .top{background-image: url(../images/i-up.png);}
 .m-list2 li.ok .con{display: block;}
+.m-list2 a.btn{  
+  color: #ea5504;
+  font-size: 21px;display: inline-block;
+  width: 160px;
+  text-align: center;}
 
 /*退换货申请*/
 .lz-table2{width: 100%;}

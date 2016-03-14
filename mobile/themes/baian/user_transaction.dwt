@@ -704,82 +704,57 @@
      
      <!--pgge退换货修改过代码-->
        <!-- {if $action eq 'order_back'} -->
-       <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now"><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
-        <div class="blank"></div>
-		    
-		    <div class="s-myorder">
-			     <table class="s-order-table datalist">
-	                  <thead>
-	                      <tr>
-	                      	 <!--  <th>
-	                             	 
-	                          </th> -->
-	                          <th>
-	                             	 退货申请流水号
-	                          </th>
-	                           <th>
-	                             	 订单编号
-	                           </th>
-	                          <th>
-	                             	 登记时间
-	                          </th>
-	                          <th>
-	                             	 申请理由
-	                          </th>
-	                          <!-- <th>
-	                             	审核状态
-	                          </th> -->
-	                           <th>
-	                             	发货单号
-	                          </th>
-	                          <th>
-	                             	 操作
-	                          </th>
-	                      </tr>
-	                  </thead>
-	                  <tbody>
-	                  	  <!--{foreach from=$order_back_list item=order_back}-->	
-	                      <tr>
-	                      	 <!--  <td>
-	                      	  		<input type='checkbox'/>
-	                      	  </td> -->
-	                          <td>
-	                              {$order_back.back_sn}
-	                          </td>
-	                          <td>
-	                          	  <a target="_blank" href="user.php?act=order_detail&order_id={$order_back.order_id}" class="f6">{$order_back.order_sn}</a></span>
-	                          </td>
-	                          <td>
-	                              {$order_back.add_time}
-	                          </td>
-	                          <td>
-	                              {$order_back.reason}
-	                          </td>
-	                          <!-- <td>
-	                          	  {$order_back.status_name}
-	                          </td> -->
-	                           <td>
-	                          	  {$order_back.invoice_no}
-	                          </td>
-	                          <td style="text-align: center;">
-	                          		<div class="order_state" style="width: 50px;">{$order_back.status_name}</div>
-						            {if $order_back.status == 0}
-							        	<a  href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn">撤销</a> 
-							        {/if}
-							        {if $order_back.status == 1}
-							        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="a-btn">去发货</a> 
-							        {/if}
-	                          </td>
-	                      </tr>
-	                      <!--{/foreach} -->
-	                  </tbody>
-	              </table>
-	              
-	              <!-- <input type="checkbox"/>全选   <a href="javascript:void(0)">批量删除</a> <a href="javascript:void(0)">批量加入购物车</a> -->
-	              
-              </div>
-              
-              <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+       
+       	<script>
+       	$(function(){
+			$(".m-list2 li").click(function(){
+				var txt = $(this).find('.con');
+				if( !txt.is(":visible") ){
+					$(".m-list7 li .con").slideUp();
+					$(".m-list7 li").removeClass('ok');
+					txt.stop().slideDown();
+					$(this).addClass('ok');
+				}else{
+					txt.stop().slideUp();
+					$(this).removeClass('ok');
+				}
+
+				return false;
+			});
+			$('.m-list2 li:first').click().addClass('ok'); //默认第一个展开
+       	});
+		</script>
+      
+		<header id="head">
+			<a href="" class="back-btn"></a>
+			<h2>退换货管理</h2>
+		</header>
+		
+		<ul class="m-list2">
+			<!--{foreach from=$order_back_list item=order_back}-->	
+			<li>
+				<div class="top">
+					<span>订单编号：<em>{$order_back.order_sn}</em></span>
+					<span>状态：{$order_back.status_name}</span>
+				</div>
+				<div class="con">
+					<p>退换货流水登记号：{$order_back.back_sn}</p>
+					<p>登记时间：{$order_back.add_time}</p>
+					<p>申请原因：{$order_back.reason}</p>
+					<p><!-- <span>发货公司：</span> --><span>发货单号： {$order_back.invoice_no}</span></p>
+					<p>
+						<!-- {if $order_back.status == 0} -->
+				        	<a  href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn btn">撤销</a> 
+				        <!-- {/if} --> 
+				        <!-- {if $order_back.status == 1} -->
+				        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="a-btn btn">去发货</a> 
+				       <!-- {/if} --> 
+					</p>
+				</div>
+			</li>
+			<!--{/foreach} -->
+		</ul>
+		 <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
        <!--{/if}-->
       <!--#退换货列表界面 end--> 
       
@@ -795,32 +770,34 @@
 		        });
 		    	
 		    </script>
-		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now"><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
-		    <div class="blank"></div>
-		    <div class="s-myorder">
-		     <form action="user.php" method="post" id="form_order_back" name="form_order_back" onsubmit="">
-		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist"  style="line-height:30px; font-size:14px;">
+		    <header id="head">
+				<a href="javascript:history.back(-1)" class="back-btn"></a>
+				<h2>退换货申请</h2>
+				<a href="user.php?act=order_back" class="a-cla" style="width: auto;">退换货列表</a>
+			</header>
+			
+			<div class="w-box">
+		    <form action="user.php" method="post" id="form_order_back" name="form_order_back" onsubmit="">
+		    <table class="lz-table2">
 		      <tr>
-		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">订单编号：</td>
+		        <th>订单编号：</th>
 		        <td bgcolor="#ffffff">{$order.order_sn}</td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">退货理由:</td>
+		        <th>退货理由：</th>
 		        <td bgcolor="#ffffff"><textarea name="reason" cols="50" rows="5" wrap="virtual" class="B_blue required">{$order.reason|escape}</textarea>
 		        </td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
-		        <td bgcolor="#ffffff">
-		        	<input name="act" type="hidden" value="act_add_order_back" />
+		        <td colspan="2">
+		          <input name="act" type="hidden" value="act_add_order_back" />
 		          <input name="id" type="hidden" value="{$order.order_id}" />
-		          <input type="submit" name="submit" class="btn_submit" value="提交退货申请" />
+		          <input type="submit" name="submit" class="btn_submit lz-btn1" value="提交退货申请" />
 		        </td>
 		      </tr>
 		    </table>
 		     </form>
-		    </div>
-		     </div>
+		     <div>
 		    <!-- {/if} -->
     		<!--#退货申请页面 end -->
     		

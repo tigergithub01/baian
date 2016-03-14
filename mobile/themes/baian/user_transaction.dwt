@@ -744,7 +744,7 @@
 					<p><!-- <span>发货公司：</span> --><span>发货单号： {$order_back.invoice_no}</span></p>
 					<p>
 						<!-- {if $order_back.status == 0} -->
-				        	<a  href="javascript:if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn btn">撤销</a> 
+							<a  href="javascript:void(0)" onclick="if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn btn">撤销</a>
 				        <!-- {/if} --> 
 				        <!-- {if $order_back.status == 1} -->
 				        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="a-btn btn">去发货</a> 

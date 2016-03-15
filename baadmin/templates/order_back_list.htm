@@ -34,6 +34,7 @@
     <th><a href="javascript:listTable.sort('add_time', 'DESC'); ">申请时间</a>{$sort_add_time}</th>
     <th><a href="javascript:listTable.sort('user_name', 'DESC'); ">申请人</a>{$sort_user_name}</th>
     <th><a href="javascript:listTable.sort('status', 'DESC'); ">状态</a>{$sort_status}</th>
+    <th><a href="javascript:listTable.sort('invoice_name', 'DESC'); ">发货公司</a>{$sort_invoice_name}</th>
     <th><a href="javascript:listTable.sort('invoice_no', 'DESC'); ">发货单号</a>{$sort_invoice_no}</th>
     <th>{$lang.handler}</th>
   <tr>
@@ -44,6 +45,7 @@
     <td align="center" valign="top" nowrap="nowrap">{$back.add_time}</td>
     <td align="left" valign="top"><a href="mailto:{$back.email}"> {$back.user_name|escape}</a></td>
     <td align="center" valign="top" nowrap="nowrap">{$back.status_name}</td>
+    <td align="center" valign="top" nowrap="nowrap">{$back.invoice_name}</td>
     <td align="center" valign="top" nowrap="nowrap">{$back.invoice_no}</td>
     <td align="center" valign="top"  nowrap="nowrap">
     	<a href="order.php?act=order_back_info&amp;id={$back.back_id}" title="查看">查看</a>

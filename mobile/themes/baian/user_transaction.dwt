@@ -1782,10 +1782,12 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 					 <!-- {if $consignee.address_id} -->
 					<li>
 					<div>
-						<div class="top"><span>{$consignee.consignee}</span><em>{$consignee.mobile}{$consignee.tel}</em></div>
-						<div class="con">
-							{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}
-						</div>
+						<a class="info" href="javascript:void(0)" onclick="return nav_div($('#addr_box_{$consignee.address_id}'));">
+							<div class="top"><span>{$consignee.consignee}</span><em>{$consignee.mobile}{$consignee.tel}</em></div>
+							<div class="con">
+								{$consignee.province_name}{$consignee.city_name}{$consignee.district_name}{$consignee.address}
+							</div>
+						</a>	
 						<div class="operate">
 							<!-- {if $address eq $consignee.address_id} -->
 							<a class="link default" href="javascript:void(0)">[默认]</a>

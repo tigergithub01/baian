@@ -32,7 +32,9 @@ h3{font-size: 1em;}
 	width: 100%;position: fixed;top: 0;/* left: 0; */z-index: 99;
 }
 #hd .logo{margin-right: 5px;}
-.m-hd{padding: 15px;height: 55px;line-height: 55px;background: #efefef;width: 100%;position: absolute;z-index: 99;}
+.m-hd{padding: 0 0 15px 5px; margin-top:0px; height: 55px;line-height: 55px;
+background: #efefef;width: 100%;position: absolute;z-index: 99;top: 236px;
+}
 /* .m-hd .soBox{width: 410px;} */
 .logo img{display: inline-block;vertical-align: middle;max-height: 55px;}
 
@@ -116,7 +118,7 @@ h3{font-size: 1em;}
 .picScroll .bd li .price{color: #f00;}
 .picScroll .bd li .price span{font-size: 1.11em;}
 
-.picScroll .prev,.picScroll .next{ position: absolute;top: 0;height:100%;width:30px;display:block;
+.picScroll .prev,.picScroll .next{ position: absolute;/* top: 0; */top: -32px;;height:100%;width:30px;display:block;
 	cursor: pointer;overflow:hidden;background: url(../images/arrows.png) no-repeat 9px center;z-index: 99;}
 .picScroll .prev{left: 0;}
 .picScroll .next{right: 0;background-position: -91px center;}
@@ -254,7 +256,7 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 .ul-pro-list{}
 .ul-pro-list li{padding: 20px;border-bottom: 1px solid #ddd;overflow: hidden;}
 .ul-pro-list li:last-child{/* border-bottom: 0; */}
-.ul-pro-list li .pic{float: left;width: 155px;height: 155px;clear: left;border: 1px solid #ddd;margin-right: 30px;}
+.ul-pro-list li .pic{float: left;width: 160px;height: 160px;clear: left;/* border: 1px solid #ddd; */margin-right: 30px;}
 .ul-pro-list li .pic img{display: block;width: 100%;height: 100%;}
 .ul-pro-list li .txt{padding-left: 120px;}
 .ul-pro-list li .title{font-size: 0.83em;height: 120px;overflow: hidden;margin-bottom: 5px;}

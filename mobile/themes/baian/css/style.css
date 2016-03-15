@@ -176,7 +176,7 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 
 .get-test-ma{display: inline-block;/* float: right; */width: 270px;text-align: center;border: 1px solid #ddd;background: #fff;}
 .test-string{display: inline-block;}
-.test-string img{display: inline-block;vertical-align: middle;width: 85px;height: 35px;margin-right: 10px;}
+.test-string img{display: inline-block;vertical-align: middle;width: 100px;height: 50px;margin-right: 10px;}
 
 /*******************************
 	-------[=登录]-------

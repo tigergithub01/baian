@@ -1467,17 +1467,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="con">
 				<p><span>收货人信息：{$order.shipping_address}</span></p>
 			</div>
-			<div class="con">				
-			 <!-- {if $order.invoice_no}-->
-	          <p>物流信息</p>
-	          <div class="h"></div>
-	          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
-	            <tr>
-	              <td bgcolor="#ffffff"><div id="retData"></div></td>
-	            </tr>
-	          </table>
-	          <!--{/if}-->
-			</div>
+			
 		</div>
 
 		<!--{foreach from=$goods_list item=goods name=goods_foreach}-->
@@ -1496,6 +1486,20 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			</div>
 		</div>	
 		<!--{/foreach}-->
+		
+		<div class="m-txt1">
+			<div class="con">				
+			 <!-- {if $order.invoice_no}-->
+	          <p>物流信息</p>
+	          <div class="h"></div>
+	          <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	            <tr>
+	              <td bgcolor="#ffffff"><div id="retData"></div></td>
+	            </tr>
+	          </table>
+	          <!--{/if}-->
+			</div>
+		</div>
 
 		<div class="m-txt1">
 			<div class="top"><span>状态：{$order.pay_name}</span>支付方式</div>

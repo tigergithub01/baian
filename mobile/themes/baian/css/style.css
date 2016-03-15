@@ -254,12 +254,12 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 
 
 .ul-pro-list{}
-.ul-pro-list li{padding: 20px;border-bottom: 1px solid #ddd;overflow: hidden;}
+.ul-pro-list li{padding: 5px 20px 5px 20px;border-bottom: 1px solid #ddd;overflow: hidden;}
 .ul-pro-list li:last-child{/* border-bottom: 0; */}
-.ul-pro-list li .pic{float: left;width: 160px;height: 160px;clear: left;/* border: 1px solid #ddd; */margin-right: 30px;}
+.ul-pro-list li .pic{float: left;width: 135px;height: 135px;clear: left;/* border: 1px solid #ddd; */margin-right: 30px;}
 .ul-pro-list li .pic img{display: block;width: 100%;height: 100%;}
 .ul-pro-list li .txt{padding-left: 120px;}
-.ul-pro-list li .title{font-size: 0.83em;height: 120px;overflow: hidden;margin-bottom: 5px;}
+.ul-pro-list li .title{font-size: 0.83em;height: 75px;overflow: hidden;margin-bottom: 5px;margin-top: 5px;}
 .ul-pro-list li .price{color: #f00;}
 .ul-pro-list li .common{font-size: 0.83em;float: right;}
 .ul-pro-list li .common em{color: #f08300;font-style: normal;}
@@ -302,13 +302,13 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 .ul-user-tool li:last-child{border-right: 0;}
 .ul-user-tool li .ico{display: inline-block;line-height: 42px;}
 .ul-user-tool li .ico img{display: inline-block;vertical-align: middle;}
-.ul-user-tool li h3{}
+.ul-user-tool li h3{font-size: .8em;}
 
 .ul-user-nav{overflow: hidden;}
 .ul-user-nav li{text-align: center;float: left;width: 25%;margin: 20px 0;}
 .ul-user-nav li .ico{display: inline-block;width: 66px;height: 66px;}
 .ul-user-nav li .ico img{display: block;width: 100%;height: 100%;}
-.ul-user-nav li h3{line-height: 1;}
+.ul-user-nav li h3{line-height: 1;font-size: .8em;}
 
 .btn2{display: block;border: 1px solid #ddd;text-align: center;line-height: 2;margin: 20px 0;}
 
@@ -606,7 +606,7 @@ input.btn4{border: 0;}
 	background: url(../images/a2.png) no-repeat right center;
 }
 .m-list1 .btn{padding-top: 20px;}
-.m-list1 .btn a{display: inline-block;width: 160px;text-align: center;}
+.m-list1 .btn a{display: inline-block;min-width: 120px;text-align: center;line-height: 50px;float: left;}
 .m-list1 .btn .a2{color: #ea5504;font-size: 21px;}
 .m-list1 .btn .a3{color: #e60012;font-size: 25px;}
 .lz-btn2{display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
@@ -1089,7 +1089,7 @@ input.error {
 
 .order_query .btn_submit{
 	display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
-	background-color: #e60012;color: #fff;font-size: 24px;
+	background-color: #e60012;color: #fff;font-size: 24px;border: 0px;
 }
 
 

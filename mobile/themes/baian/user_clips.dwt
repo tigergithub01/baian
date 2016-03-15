@@ -27,7 +27,7 @@
 				<div class="userBox">
 					<div class="avatarBox">
 						<div class="avatar">
-							<a href="">
+							<a href="user.php?act=profile">
 							<!-- {if $info.photo_url && $info.photo_url neq '' } -->
                     			<img src="/{$info.photo_url}" alt=""/>
 	                    	<!-- {else} -->

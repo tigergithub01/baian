@@ -112,6 +112,7 @@
 					<td>
 						<div class="goods-address">
 							<a id="address_name" href="javascript:void(0)" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}" onclick="nav_div($('#addr_sel'))">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}</a>
+							<div style="float: left;" class="orange" id="goods_number_status"><!-- {if ($goods_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></div>
 						</div>
 						<div>
 							<!-- 配送至start  -->
@@ -219,8 +220,7 @@
 				<tr>
 					<th>运　费：</th>
 					<td>
-						<div style="float: left;display: none;"><strong id="goods_number_status" style="font-size: 14px;"><!-- {if ($goods_number gt 0)} -->有货<!-- {else} -->无货 <!-- {/if} --></strong></div>
-						<div style="float: left;margin-left: 5px;"><a target="_blank" href="article-174.html">免运费说明</a></div>
+						<a class="orange" href="article-174.html">免运费说明</a>
 					</td>
 				</tr>
 				
@@ -655,7 +655,7 @@
     	    error:function(){ 
     	    	alert('更新出错！');
     	    },     
-    	    success:function(data){ 
+    	    success:function(data){     	    	
     	    	if(data.status==1){
     	    		if(data.content){
     	    			var goods_number = data.content.goods_number;

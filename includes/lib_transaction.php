@@ -564,7 +564,7 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
 		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
 	}
     
-	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ".
+	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ob.invoice_name, ".
 			"o.order_sn, o.order_status, o.shipping_status, o.pay_status, o.add_time AS order_time, o.shipping_fee, o.pay_id, " .
 			"(o.goods_amount + o.shipping_fee + o.insure_fee + o.pay_fee + o.pack_fee + o.card_fee + o.tax - o.discount) AS total_fee ".
 			" FROM " .$GLOBALS['ecs']->table('order_back') ." AS ob ".
@@ -589,6 +589,7 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
 				'user_id'       => $row['user_id'],
 				'reason'       => $row['reason'],
 				'invoice_no'       => $row['invoice_no'],
+				'invoice_name'       => $row['invoice_name'],
 				'status' =>  $row['status'],
 				'status_name' =>  $row['status_name'],
 				'order_id'       => $row['order_id'],
@@ -1098,7 +1099,7 @@ function add_order_back($order_id, $user_id = 0,$order_back)
  * @param unknown $invoice_no
  * @return boolean
  */
-function order_back_shipping($user_id = 0, $back_id, $invoice_no)
+function order_back_shipping($user_id = 0, $back_id, $invoice_no, $invoice_name)
 {
 /* 查询退货单信息 */
 	$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('order_back') ." WHERE back_id = '$back_id'";
@@ -1126,7 +1127,8 @@ function order_back_shipping($user_id = 0, $back_id, $invoice_no)
 	}
 
 	$sql = "UPDATE " .$GLOBALS['ecs']->table('order_back')." SET invoice_no = '$invoice_no', ".
-			" status = '".OBS_SHIPPING."'".
+			" status = '".OBS_SHIPPING."',".
+			" invoice_name = '".$invoice_name."'".
 			" WHERE back_id = '$back_id'";
 	$GLOBALS['db']->query($sql);
 	

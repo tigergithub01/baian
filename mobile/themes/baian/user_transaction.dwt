@@ -726,7 +726,7 @@
 		</script>
       
 		<header id="head">
-			<a href="" class="back-btn"></a>
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>退换货管理</h2>
 		</header>
 		
@@ -741,13 +741,13 @@
 					<p>退换货流水登记号：{$order_back.back_sn}</p>
 					<p>登记时间：{$order_back.add_time}</p>
 					<p>申请原因：{$order_back.reason}</p>
-					<p><!-- <span>发货公司：</span> --><span>发货单号： {$order_back.invoice_no}</span></p>
+					<p><span>发货公司：{$order_back.invoice_name}</span><span>发货单号： {$order_back.invoice_no}</span></p>
 					<p>
 						<!-- {if $order_back.status == 0} -->
 							<a  href="javascript:void(0)" onclick="if (confirm('是否撤销本次退货申请？')) location.href='user.php?act=act_cancel_order_back&id={$order_back.back_id}'" class="a-btn btn">撤销</a>
 				        <!-- {/if} --> 
 				        <!-- {if $order_back.status == 1} -->
-				        	<a href="user.php?act=order_back_shipping&id={$order_back.back_id}" class="a-btn btn">去发货</a> 
+				        	<a href="javascript:void(0)" onclick="window.location.href='user.php?act=order_back_shipping&id={$order_back.back_id}'" class="a-btn btn">去发货</a> 
 				       <!-- {/if} --> 
 					</p>
 				</div>
@@ -781,11 +781,11 @@
 		    <table class="lz-table2">
 		      <tr>
 		        <th>订单编号：</th>
-		        <td bgcolor="#ffffff">{$order.order_sn}</td>
+		        <td>{$order.order_sn}</td>
 		      </tr>
 		      <tr>
 		        <th>退货理由：</th>
-		        <td bgcolor="#ffffff"><textarea name="reason" cols="50" rows="5" wrap="virtual" class="B_blue required">{$order.reason|escape}</textarea>
+		        <td><textarea name="reason"  rows="5" wrap="virtual" class="B_blue required">{$order.reason|escape}</textarea>
 		        </td>
 		      </tr>
 		      <tr>
@@ -797,7 +797,7 @@
 		      </tr>
 		    </table>
 		     </form>
-		     <div>
+		     </div>
 		    <!-- {/if} -->
     		<!--#退货申请页面 end -->
     		
@@ -812,37 +812,46 @@
 		        });
 		    	
 		    </script>
-		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li class="now"><a href="/user.php?act=order_back">退换货管理</a></li><li><a href="/user.php?act=booking_list">缺货登记</a></li></div>
-		    <div class="blank"></div>
-		    <div class="s-myorder">
+		    
+		    <header id="head">
+				<a href="javascript:history.back(-1)" class="back-btn"></a>
+				<h2>退换货发货</h2>
+				<a href="user.php?act=order_back" class="a-cla" style="width: auto;">退换货列表</a>
+			</header>
+			
+			<div class="w-box">
 		     <form action="user.php" method="post" id="form_order_back" name="form_order_back" onsubmit="">
-		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist"  style="line-height:30px; font-size:14px;">
+		    <table class="lz-table2">
 		      <tr>
-		        <td align="right" bgcolor="#ffffff" class="title" style="width: 16%">退货申请流水号：</td>
-		        <td bgcolor="#ffffff">{$order_back.back_sn}</td>
+		        <th>退货申请流水号：</th>
+		        <td>{$order_back.back_sn}</td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">订单编号：</td>
-		        <td bgcolor="#ffffff">{$order_back.order_sn}</td>
+		        <th>订单编号：</th>
+		        <td>{$order_back.order_sn}</td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">快递单号:</td>
-		        <td bgcolor="#ffffff">
-		        	<input type="text" name="invoice_no" maxlength="50" size="50" class="required"/>
+		        <th>快递公司：</th>
+		        <td>
+		        	<input type="text" name="invoice_name" maxlength="100"  class="required"/>
 		        </td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
-		        <td bgcolor="#ffffff">
+		        <th>快递单号：</th>
+		        <td>
+		        	<input type="text" name="invoice_no" maxlength="50"  class="required"/>
+		        </td>
+		      </tr>
+		      <tr>
+		        <td colspan="2">
 		        	<input name="act" type="hidden" value="act_order_back_shipping" />
 		          	<input name="id" type="hidden" value="{$order_back.back_id}" />
-		          	<input type="submit" name="submit" class="btn_submit" value="确认发货" />
+		          	<input type="submit" name="submit" class="btn_submit lz-btn1" value="确认发货" />
 		        </td>
 		      </tr>
 		    </table>
 		     </form>
 		    </div>
-		     </div>
 		    <!-- {/if} -->
     		<!--#退货申请-去发货页面 end -->
       

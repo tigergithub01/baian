@@ -4200,12 +4200,17 @@ elseif ($action == 'act_order_back_shipping')
 		show_message("退货申请单号不能为空", $_LANG['back_page_up'], '', 'error');
 	}
 
+	$invoice_name = isset($_REQUEST['invoice_name']) ? trim($_REQUEST['invoice_name'])  : '';
+	if(empty($invoice_name)){
+		show_message("快递公司不能为空", $_LANG['back_page_up'], '', 'error');
+	}
+	
 	$invoice_no = isset($_REQUEST['invoice_no']) ? trim($_REQUEST['invoice_no'])  : '';
 	if(empty($invoice_no)){
 		show_message("快递单号不能为空", $_LANG['back_page_up'], '', 'error');
 	}	
 	
-	if (order_back_shipping($user_id,$back_id, $invoice_no))
+	if (order_back_shipping($user_id,$back_id, $invoice_no, $invoice_name))
 	{
 		show_message($_LANG['order_back_shipping_success'], $_LANG['back_order_back_list'], 'user.php?act=order_back',
 				'info');

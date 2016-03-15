@@ -1769,8 +1769,8 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
             </script>
             
             
-            <header id="head">
-			<a href="" class="back-btn"></a>
+        <header id="head">
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>地址管理</h2>
 		</header>
 

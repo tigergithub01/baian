@@ -771,7 +771,7 @@
 	                             	审核状态
 	                          </th> -->
 	                           <th>
-	                             	发货单号
+	                             	发货公司/单号
 	                          </th>
 	                          <th>
 	                             	 操作
@@ -800,6 +800,7 @@
 	                          	  {$order_back.status_name}
 	                          </td> -->
 	                           <td>
+	                           	  {$order_back.invoice_name}：
 	                          	  {$order_back.invoice_no}
 	                          </td>
 	                          <td style="text-align: center;">
@@ -888,6 +889,12 @@
 		      <tr>
 		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">订单编号：</td>
 		        <td bgcolor="#ffffff">{$order_back.order_sn}</td>
+		      </tr>
+		      <tr>
+		        <td align="right" bgcolor="#ffffff">快递公司:</td>
+		        <td bgcolor="#ffffff">
+		        	<input type="text" name="invoice_name" maxlength="100" size="50" class="required"/>
+		        </td>
 		      </tr>
 		      <tr>
 		        <td align="right" bgcolor="#ffffff">快递单号:</td>

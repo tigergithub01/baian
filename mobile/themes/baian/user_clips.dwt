@@ -20,7 +20,7 @@
             
 
 				<header id="head">
-					<a href="" class="back-btn"></a>
+					<a href="javascript:history.back(-1)" class="back-btn"></a>
 					<h2>用户中心</h2>
 				</header>
 		
@@ -405,7 +405,7 @@
 		
 		
 		<header id="head">
-			<a href="" class="back-btn"></a>
+			<a href="javascript:history.back(-1)" class="back-btn"></a>
 			<h2>客户服务</h2>
 		</header>
 

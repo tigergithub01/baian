@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.SuperSlide.2.1.1.js"></script>
 	<script type="text/javascript" src="/js/shopping_flow.js"></script>
 	<script type="text/javascript" src="/js/region.js"></script>
+	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.json.min.js"></script>
 	
 	<style>
 		/*去掉图片间的换行 */
@@ -252,10 +253,76 @@
 							<span class="minus">-</span>
 							<input name="number" type="text" id="number" value="1">
 							<span class="plus">+</span>
+							<a class="orange" href="javascript:void(0)" onclick="return nav_div($('.zuBox'));">优惠套装></a>
 						</div>
 					</td>
 				</tr>
 			</table>
+			
+			
+			<div class="zuBox m-pop">
+			
+				<header id="head">
+					<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.zuBox'))"></a>
+					<h2>优惠套装/推荐组合</h2>
+				</header>
+		
+				<ul class="ul-tab1">
+					<li class="on tab_link two" id="packages_suit"><a href="javascript:void(0)">优惠套装</a></li>
+					<li class="tab_link two" id="combination"><a  href="javascript:void(0)">推荐组合</a></li>
+				</ul>
+		
+					<!-- 优惠套装 start-->
+					<div class="tab_content" id="packages_suit_content">
+					<!--{foreach from=$package_goods_list item=pg name=pg}-->
+					
+	
+					<ul class="ul-pic4 ul-pro-list" title="{$pg.act_name}" style="">
+						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
+						<li>
+							<div class="pic"><a href="{$p_goods.goods_url}"><img class="lazy"  src="/{$p_goods.goods_thumb}" alt=""></a></div>
+							<div class="txt">
+								<h3 class="title"><a href="{$p_goods.goods_url}">{$p_goods.goods_name}</a></h3>
+							</div>
+						</li>
+						<!--{/foreach}-->
+					</ul>
+					<div>
+						<ul style="padding: 20px;">
+							<li class="all">
+								<div class="h5"></div>
+								<p class="">套装价：<span class="f14 price">{$pg.package_price}</span></p>
+								<p class="">原&#12288;价：<span class="yj f14 price" style="text-decoration: line-through;font-size: 24px;">{$pg.subtotal}</span></p>
+								<p class="">立即省：<span class="f14 price">{$pg.saving}</span></p>
+								<div class="h"></div>
+								<p><a class="btn3" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">加入购物车</a></p>
+							</li>
+						</ul>
+					</div>	
+					<div class="h"></div>
+					<!--{/foreach}-->
+					</div>
+					<!-- 优惠套装 end-->
+					
+					<!-- 推荐组合 start-->
+					<div class="tab_content" id="combination_content" style="display: none;">
+					<!--{foreach from=$recommand_goods_list item=pg name=pg}-->
+						<ul class="ul-pic4 ul-pro-list" title="{$pg.act_name}" style="">
+						<!--{foreach from=$pg.goods_list item=p_goods name=p_goods}-->
+							<li>
+								<div class="pic"><a href="{$p_goods.goods_url}"><img class="lazy"  src="/{$p_goods.goods_thumb}" alt=""></a></div>
+								<div class="txt">
+									<h3 class="title"><a href="{$p_goods.goods_url}">{$p_goods.goods_name}</a></h3>
+									<span class="price">{$p_goods.shop_price_formated}</span>
+								</div>
+							</li>
+							<!--{/foreach}-->
+						</ul>
+					<div class="h"></div>	
+					<!--{/foreach}-->
+					</div>
+					<!-- 推荐组合 end-->	
+			</div>
 
 			<ul class="ul-subBox">
 				<li><input class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
@@ -497,6 +564,16 @@
 				var bd = document.getElementById("tabBox_addr");
 				bd.parentNode.style.height = bd.children[i].offsetHeight+"px";
 			}
+		});
+		
+		//优惠套装/推荐组合
+		$(".zuBox .tab_link").click(function(){
+			$(this).addClass("on");
+			$(".tab_link").not($(this)).removeClass("on");
+			
+			var contentId = $(this).prop('id')+"_content";
+			$(".tab_content").hide();
+			$('#'+contentId).show();
 		});
 		
 		

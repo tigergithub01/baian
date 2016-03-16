@@ -942,7 +942,7 @@ input.error {
 
 /***详情页地址选择***/
 .goods-address{line-height: 60px;background: #fff;/* border-bottom: 1px solid #ddd; */}
-.goods-address a{display: block;/* padding: 0 20px; */background: url(../images/a2.png) no-repeat right center;text-decoration:none;}
+.goods-address a{display: block;/* padding: 0 20px; */background: url(../images/a2.png) no-repeat right center;text-decoration:none;float: left;width: 80%;}
 
 
 /***省市区tab页面***/

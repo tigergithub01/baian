@@ -225,10 +225,16 @@
 								</div>
 							</div>
 							
-							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
-							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
-							<div class="h"></div>
-							<div class=""><input class="btn_submit btn_apply_gift" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
+							<div class="baby_gift_detail">
+								<div class="appy_gift"><input class="btn_submit btn_apply_gift" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
+								
+								<div class="apply_desc">
+									<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
+									<div class="babyinfo orange"><a class="orange" href="article-177.html">查看详细说明>></a></div>
+								</div>
+							</div>
+							
+							<!-- <div class="h"></div> -->
 						</td>
 					</tr>
 					<tr>

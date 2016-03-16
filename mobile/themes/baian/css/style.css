@@ -1106,3 +1106,18 @@ input.error {
 .txt_payment_name{margin-left: 5px;}
 .txt_pickout_point{display: inline;position: relative;top: -6px;}
 .notice{color: red;font-size: 16px;}
+
+/* 会员资料-宝宝信息 */
+.baby_gift_detail{
+	
+}
+
+.baby_gift_detail .appy_gift{
+	float: left;width: 20%;height: 70px;padding: 20px 0 10px 0;
+}
+
+.baby_gift_detail .apply_desc{
+	float: right;width: 70%;
+}
+
+

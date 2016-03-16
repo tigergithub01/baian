@@ -712,6 +712,7 @@ function get_pager($url, $param, $record_count, $page = 1, $size = 10)
     $pager['size']         = $size;
     $pager['record_count'] = $record_count;
     $pager['page_count']   = $page_count;
+    $pager['param_url']          = $url . $param_url;
 
     if ($pager['styleid'] == 0)
     {

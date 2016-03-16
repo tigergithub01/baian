@@ -381,13 +381,17 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 
 .subBox{padding: 20px 30px;}
 
-.ul-subBox{padding: 20px 30px;overflow: hidden;}
-.ul-subBox li{width: 48%;float: left;}
-.ul-subBox li:last-child{float: right;}
+.ul-subBox{padding: 20px 5px;overflow: hidden;}
+.ul-subBox li{width: 38%;float: left;margin-left: 15px;}
+.ul-subBox li:last-child{float: right;width: 15%;line-height: 50px;}
+
 
 .btn3{background: #f08300;color: #fff;display: block;line-height: 50px;text-align: center;font-size: 24px;}
 input.btn3{border: 0;cursor: pointer;}
 .btn3:hover{color: #fff;background: #d87600;}
+.collect_btn{float: left;display: block;width: 30px;height: 50px;cursor: pointer;background: url(../images/collect.png) no-repeat left center;}
+.collect_btn_txt{padding: 0 5px 5px 0;display: block;float: left;cursor: pointer;}
+
 
 #tabBox2 .hd ul li a{width: 125px;}
 

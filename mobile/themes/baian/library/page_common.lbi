@@ -14,11 +14,13 @@ var process_request = "{$lang.process_request}";
 <script type="text/javascript" src="/js/utils.js"></script>
 <script type="text/javascript" src="/mobile/themes/baian/js/jquery-validation/lib/jquery.js"></script> 
 <!-- <script type="text/javascript" src="/mobile/themes/baian/js/jNotify.jquery.js"></script> -->
+<script type="text/javascript" src="/mobile/themes/baian/js/jquery.lazyload.min.js" ></script>
 
 <script type="text/javascript" src="/mobile/themes/baian/js/lib.js"></script>
 
 <link rel="stylesheet" href="/mobile/themes/baian/css/jquery.toastmessage.css" />
 <script type="text/javascript" src="/mobile/themes/baian/js/jquery.toastmessage.js"></script>
+
 
 <!-- <link href="/mobile/themes/baian/css/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css" /> -->
 <!-- <script type="text/javascript" src="/mobile/themes/baian/js/jquery.mobile-1.4.5.min.js"></script> -->

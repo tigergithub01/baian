@@ -1,6 +1,6 @@
 <div class="h"></div>
 <h3 class="lz-tit1"><span>猜你喜欢</span></h3>
-<div class="w-box" style="background-color: transparent;">
+<div class="w-box may_like_goods" style="background-color: transparent;">
 	<!-- <div class="tit">
 		<h3 class="st1">猜你喜欢</h3>
 	</div> -->
@@ -9,11 +9,10 @@
 	<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
 	<ul class="ul_may_like_goods">
 	<!-- {/if} -->	
-	
 		<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==0} -->	
 			<li style="">
 			<a href="{$item_goods.url}" title="{$item_goods.short_name}" >
-				<img src="/{$item_goods.goods_thumb}" alt="">
+				<img src="/mobile/themes/baian/images/ico_preload.jpg" data-original="/{$item_goods.goods_img}" alt="">
 			</a>
 			<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" >{$item_goods.short_name|escape:html|truncate:30}</a></p>
 			<p class="price">
@@ -29,7 +28,7 @@
 		<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1} -->	
 			<li style="">
 			<a href="{$item_goods.url}" title="{$item_goods.short_name}" >
-				<img src="/{$item_goods.goods_thumb}" alt="">
+				<img src="/mobile/themes/baian/images/ico_preload.jpg" data-original="/{$item_goods.goods_img}" alt="">
 			</a>
 			<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" >{$item_goods.short_name|escape:html|truncate:30}</a></p>
 			<p class="price">

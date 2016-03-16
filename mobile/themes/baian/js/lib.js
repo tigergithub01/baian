@@ -87,7 +87,19 @@ $(document).ready(function($) {
 		}
 	});
 	
-	
+	//详情页图片延迟加载
+	$(".may_like_goods img").lazyload({ 
+    	placeholder : "images/ico_preload.jpg",
+        effect: "fadeIn",
+        load:function(elements_left, settings) {
+            console.log('load');
+            //console.log(elements_left);
+            //console.log(this, elements_left, settings);
+            //加载完成后，自动修改tab的高度
+            //var bd = document.getElementById("tabBox2-bd");
+			//bd.parentNode.style.height = bd.children[0].children[0].offsetHeight+40+"px";
+        },
+    });
 	
 	
 

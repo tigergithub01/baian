@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="/mobile/themes/baian/js/script.js" ></script>
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
-	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.lazyload.min.js" ></script>
+	
 	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.SuperSlide.2.1.1.js"></script>
 	<script type="text/javascript" src="/js/shopping_flow.js"></script>
 	<script type="text/javascript" src="/js/region.js"></script>

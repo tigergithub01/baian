@@ -28,6 +28,9 @@ $smarty->assign('affiliate', $affiliate);
 $back_act='';
 $smarty->assign("yhzc",getads(187,1));
 		$smarty->assign("yhdl",getads(188,1));
+		
+/* 是否ajax方式获取数据 */		
+$is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0;
 
 
 // 不需要登录的操作或自己验证是否登录（如ajax处理）的act
@@ -1595,7 +1598,22 @@ elseif ($action == 'order_list')
     $smarty->assign('orders', $orders);
     $smarty->assign('status_list', $_LANG['cs_filter']);   // 订单状态
     $smarty->assign('order_period_list', $_LANG['order_period']);   // 订单查询时间段
-    $smarty->display('user_transaction.dwt');
+    
+    //是否ajax方式获取数据
+    if($is_ajax_fetch==1){
+    	include_once('includes/cls_json.php');
+    	$json = new JSON;
+    	$result = array('error' => '', 'content' => '');
+    	$result['content'] = $smarty->fetch('library/order_list.lbi');
+    	$result['filter'] = array("page" => $page, "size" =>$pager['size'],"sort"=>isset($sort)?$sort:'',"order"=>isset($order)?$order:'',
+    			"record_count" => $pager['record_count'],
+    			"page_count"=>$pager['page_count'],
+    	);
+    	die($json->encode($result));
+    }else{
+    	$smarty->display('user_transaction.dwt');
+    }
+    
 }
 
 /* 查看订单详情 */

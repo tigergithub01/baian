@@ -450,7 +450,7 @@
 		 	   var day = Math.floor((remain_seconds / 3600) / 24);        //计算天 
 	 	 
 	 	   		//$(".time").html(hour + ":" + minite + ":" + second ); 
-		 	  $(".time").html("<em>"+hour+"</em>" + ":" +"<em>"+ minite+"</em>" + ":" +"<em>"+ second+"</em>" ); 
+		 	  $(".time").html("<em>"+hour+"</em>" + "时" +"<em>"+ minite+"</em>" + "分" +"<em>"+ second+"秒</em>" ); 
 	 	  } else {
 	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
 	 	  	 	window.clearInterval(interValObj); 

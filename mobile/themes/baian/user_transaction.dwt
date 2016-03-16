@@ -1394,31 +1394,14 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<li class="<!-- {if ($status==2)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=2">已取消</a></li>
 			<!-- <li><a href="user.php?act=order_list&status=4">已退货</a></li> -->
 		</ul>
-		<ul class="m-list1 order">
-			<!--{foreach from=$orders item=order name=orders_foreach}-->
-	       <li>
-	            <!-- {if empty($order.goods_list)} -->
-	            <!-- {else} -->
-	           	<!--{foreach from=$order.goods_list item=goods name=goods_foreach}-->
-	           		<div class="pic"><a href="user.php?act=order_detail&order_id={$order.order_id}"><img src="/{$goods.goods_thumb}" alt=""></a></div>
-					<div class="con">
-						<h3><a href="user.php?act=order_detail&order_id={$order.order_id}">美国本土嘉宝补铁锌火鸡肉泥2段 Gerber（6个月以上）71g</a></h3>
-						<span>{$goods.goods_price}<em>×{$goods.goods_number}</em></span>
-						<p>{$order.order_time}</p>
-						<div class="btn">
-							 {$order.handler}
-						</div>
-					</div>
-					<a href="user.php?act=order_detail&order_id={$order.order_id}" class="a1"></a>
-	           		
-	               <!--{/foreach}-->
-	            <!-- {/if} -->
-			</li>
-			<!--{/foreach}-->
-		</ul>		
+		<div class="pager_list">
+			<!-- #BeginLibraryItem "/library/order_list.lbi" --><!-- #EndLibraryItem -->		
+		</div>
+		<!-- #BeginLibraryItem "/library/pages_ajax.lbi" --><!-- #EndLibraryItem -->		
+				
        
         <div class="h"></div>
-       <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+       
        
        <!-- 用来显示物流明细信息 -->
        <div id="shipping_detail_info"></div>

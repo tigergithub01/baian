@@ -386,6 +386,8 @@ $_LANG['cfg_range']['upload_size_limit']['512'] = '512KB';
 $_LANG['cfg_range']['upload_size_limit']['1024'] = '1MB';
 $_LANG['cfg_range']['upload_size_limit']['2048'] = '2MB';
 $_LANG['cfg_range']['upload_size_limit']['4096'] = '4MB';
+$_LANG['cfg_range']['upload_size_limit']['5120'] = '5MB';
+$_LANG['cfg_range']['upload_size_limit']['6144'] = '6MB';
 $_LANG['cfg_range']['visit_stats']['on'] = '開啟';
 $_LANG['cfg_range']['visit_stats']['off'] = '關閉';
 

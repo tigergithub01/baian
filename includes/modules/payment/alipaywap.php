@@ -519,58 +519,80 @@ if(($ua == '' || preg_match($uachar, $ua)) && !strpos(strtolower($_SERVER['REQUE
 				return false;
 
 			}
-
-	
-
-			if ($_GET['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
-
+			
+			if (isset($_GET['result']) && $_GET['result'] == 'success')
+			
 			{
-
+			
 				/* 改变订单状态 */
-
+			
 				order_paid($order_sn, 2);
-
-	
-
+			
+			
+			
 				return true;
-
+			
 			}
-
-			elseif ($_GET['trade_status'] == 'TRADE_FINISHED')
-
-			{
-
-				/* 改变订单状态 */
-
-				order_paid($order_sn);
-
-	
-
-				return true;
-
-			}
-
-			elseif ($_GET['trade_status'] == 'TRADE_SUCCESS')
-
-			{
-
-				/* 改变订单状态 */
-
-				order_paid($order_sn, 2);
-
-	
-
-				return true;
-
-			}
-
+			
 			else
-
+			
 			{
-
+			
 				return false;
-
+			
 			}
+
+	
+
+// 			if ($_GET['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
+
+// 			{
+
+// 				/* 改变订单状态 */
+
+// 				order_paid($order_sn, 2);
+
+	
+
+// 				return true;
+
+// 			}
+
+// 			elseif ($_GET['trade_status'] == 'TRADE_FINISHED')
+
+// 			{
+
+// 				/* 改变订单状态 */
+
+// 				order_paid($order_sn);
+
+	
+
+// 				return true;
+
+// 			}
+
+// 			elseif ($_GET['trade_status'] == 'TRADE_SUCCESS')
+
+// 			{
+
+// 				/* 改变订单状态 */
+
+// 				order_paid($order_sn, 2);
+
+	
+
+// 				return true;
+
+// 			}
+
+// 			else
+
+// 			{
+
+// 				return false;
+
+// 			}
 
 		}
 

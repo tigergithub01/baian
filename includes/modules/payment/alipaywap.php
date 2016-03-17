@@ -269,12 +269,12 @@ if(($ua == '' || preg_match($uachar, $ua)) && !strpos(strtolower($_SERVER['REQUE
 
 	}
 }else{
-	class alipay
+	class alipaywap
 	{
 		
 		function __construct()
 		{
-			$this->alipay();
+			$this->alipaywap();
 		}
 		
 		/**
@@ -285,7 +285,7 @@ if(($ua == '' || preg_match($uachar, $ua)) && !strpos(strtolower($_SERVER['REQUE
 		 *
 		 * @return void
 		 */
-		function alipay()
+		function alipaywap()
 		{
 		}
 

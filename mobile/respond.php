@@ -61,7 +61,7 @@ else
     }
     else
     {
-        $plugin_file = 'includes/modules/payment/' . $pay_code . '.php';
+        $plugin_file = ROOT_PATH .'includes/modules/payment/' . $pay_code . '.php';
 
         /* 检查插件文件是否存在，如果存在则验证支付是否成功，否则则返回失败信息 */
         if (file_exists($plugin_file))

@@ -45,7 +45,7 @@
 					<span>{$goods.goods_price}<em>×{$goods.goods_number}</em></span>
 					<p>{$order.order_time}</p>
 					<div class="btn">
-						 {$order.handler}
+						 <a href="javascript:void(0)">{$order.composite_status_name}</a> {$order.handler}
 					</div>
 				</div>
 				<a href="user.php?act=order_detail&order_id={$order.order_id}" class="a1"></a>

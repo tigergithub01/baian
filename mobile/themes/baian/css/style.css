@@ -1099,7 +1099,7 @@ input.error {
 
 /**订单详情**/
 .order_detail .s-btn1 {display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
-	background-color: #e60012;color: #fff;font-size: 24px;
+	background-color: #e60012;color: #fff;font-size: 24px;border: 0px;
 }
 
 /* 订单提交页面 */

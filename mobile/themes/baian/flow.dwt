@@ -827,7 +827,7 @@
 	  <div class="h"></div>
 	  
 	  <!-- 订单备注 start-->
-	  <div class="w-box" style="padding-top: 1px;">
+	  <div class="w-box address_box" style="">
 		  <div class="h15"></div>
 		  <h3 class="c-tit3" style="float: left;width: 20%;">订单备注</h3>
 		  <div class="postscript" style="float: left;width: 80%">
@@ -839,7 +839,7 @@
 	  <!-- 订单备注end -->
 	  
 	  <div class="h"></div>
-	  <div class="w-box">
+	  <div class="w-box inv_box">
 	  <!-- 发票信息start -->
 	  <div class="inv">
        <p>
@@ -861,7 +861,7 @@
            <select name="inv_type" id="ECS_INVTYPE" {if $order.need_inv neq 1}disabled="true"{/if} onchange="changeNeedInv()" style="border:1px solid #ccc;">
            {html_options options=$inv_type_list selected=$order.inv_type}</select>
            <!-- {/if} -->
-           <label style="position: relative;top: -5px;">{$lang.invoice_title}</label>
+           <label class="invoice_title" style="">{$lang.invoice_title}</label>
            <input name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
            
          	<!-- 

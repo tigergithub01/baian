@@ -1111,7 +1111,14 @@ input.error {
 .txt_payment_name{margin-left: 5px;}
 .txt_pickout_point{display: inline;position: relative;top: -6px;}
 .notice{color: red;font-size: 16px;}
+#ECS_ORDERTOTAL {padding:5px 20px 5px 20px;}
+#ECS_ORDERTOTAL .red{color: #f00 !important;font-size: 1.5em;}
 #ECS_ORDERTOTAL p{font-size: .70em;}
+.address_box{padding:5px 20px 5px 20px;}
+.inv_box{padding:5px 20px 5px 20px;}
+.inv_box input{width: 100%;}
+.inv_box input label{float: left;display: block;}
+.inv_box .invoice_title{position: relative;top: -5px;margin-left: 5px;}
 
 /* 会员资料-宝宝信息 */
 .baby_gift_detail{

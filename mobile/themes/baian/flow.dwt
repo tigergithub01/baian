@@ -824,16 +824,21 @@
 
 	  <!-- 商品信息end -->    
 	  
+	  <div class="h"></div>
+	  
 	  <!-- 订单备注 start-->
-	  <div class="w-box">
+	  <div class="w-box" style="padding-top: 1px;">
 		  <div class="h15"></div>
-		  <h3 class="c-tit3">订单备注</h3>
-		  <div class="postscript">
-		  		<textarea name="postscript" rows="2" cols="" style="width: 100%" placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
+		  <h3 class="c-tit3" style="float: left;width: 20%;">订单备注</h3>
+		  <div class="postscript" style="float: left;width: 80%">
+		  		<textarea name="postscript" rows="3" cols="" 
+		  		style="width: 100%" 
+		  		placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
 		  </div>
 	  </div>     
 	  <!-- 订单备注end -->
 	  
+	  <div class="h"></div>
 	  <div class="w-box">
 	  <!-- 发票信息start -->
 	  <div class="inv">
@@ -844,7 +849,7 @@
 	          	 	<input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="afterChangeNeedInv(this);changeNeedInv();" value="1" checked="checked" />
 	         	</label>
        		<!-- {else} -->
-       			<label class="checkbox">
+       			<label class="checkbox" style="float: left;">
 	          	 	<input name="need_inv" type="checkbox"  class="inputBg" id="ECS_NEEDINV" onclick="afterChangeNeedInv(this);changeNeedInv();" value="1" />
 	         	</label>
        		<!-- {/if} -->
@@ -869,7 +874,6 @@
 	  </div>     
 	  </div>     
 	  <!-- 发票信息end -->      
-	  
 	  
 	    <!-- 结算信息start   -使用积分红包余额-->   
         <div class="h15"></div>

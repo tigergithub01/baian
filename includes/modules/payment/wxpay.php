@@ -75,8 +75,8 @@ class wxpay
 	public $wxpay_partnerid	= '';
 	public $wxpay_partnerkey	= '';
 	public $wxpay_paySignKey	= '';
-	private $_background_notify_url = 'http://caiya.com/wxpay/token.php?n=1'; ///后台支付成功通知url，需要给微信返回success
-	private $_pay_success_url = 'http://caiya.com/wxpay/token.php?n=1'; ///支付成功后前台展示给用户的地址
+// 	private $_background_notify_url = 'http://www.123121.com/wxpay/token.php?n=1'; ///后台支付成功通知url，需要给微信返回success
+// 	private $_pay_success_url = 'http://'.$_SERVER['HTTP_HOST'].'/mobile/user.php?act=order_list&status=101'; ///支付成功后前台展示给用户的地址
 
 	private $_redis = null;
 	
@@ -143,11 +143,10 @@ class wxpay
             $charset = EC_CHARSET;
         }
 
-		if(!$this->is_show_pay($_SERVER['HTTP_USER_AGENT'])){
+		/* if(!$this->is_show_pay($_SERVER['HTTP_USER_AGENT'])){
 			///TODO:显示支付二维码
-			$pay_url = 'http://caiya.com/';
 			return "<img src=\"\" />";
-		}
+		} */
 /////////////////
 		$noncestr = uniqid();
 		$timestamp = time();
@@ -157,7 +156,7 @@ class wxpay
 			'noncestr' => $noncestr, // 随机字符串
 			'body' => $order['order_sn'], // 商品描述
 			'out_trade_no' => $order['order_sn'], // 本站订单号
-			'notify_url' => $this->_background_notify_url, // 微信支付成功服务器通知，可自定义
+			'notify_url' => return_url(basename(__FILE__, '.php')), // 微信支付成功服务器通知，可自定义
 			'spbill_create_ip' => $_SERVER['REMOTE_ADDR'], // 微信用户IP
 			'total_fee' => intval($order['order_amount'] * 100), // 支付金额 单位：分
 		);
@@ -170,46 +169,48 @@ class wxpay
 
         
         $button = <<<EOT
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>微信支付</title>
-</head>
-
-<body>
-<form>
-<p>订单号：{$order['order_sn']}</p>
-<!--input type="submit" value="微信安全支付" id="getBrandWCPayRequest" /-->
-</form>
+<div style="text-align:center"><input class="s-btn1" type="submit" value="微信安全支付" onclick="callpay_{$order['order_sn']}()" /></div>
 <script type="text/javascript">
 // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
 // 其实中间部分可以写成一个事件，点击某个按钮触发
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+//document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+	function jsApiCall(){
+	     WeixinJSBridge.invoke('getBrandWCPayRequest',{
+	                           "appId" : '{$this->wxpay_app_id}', //公众号名称，由商户传入
+	                           "timeStamp" : '{$timestamp}', //时间戳
+	                           "nonceStr" : '{$noncestr}', //随机串
+	                           "package" : '{$package}',//扩展包
+	                           "signType" : 'SHA1', //微信签名方式:1.sha1
+	                           "paySign" : '{$paysign}' //微信签名
+	     },function(res){
+	        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+	            window.location.href = 'http://{$_SERVER['HTTP_HOST']}/mobile/user.php?act=order_list&status=101';               
+	        } else {
+	            // 这里是取消支付或者其他意外情况，可以弹出错误信息或做其他操作
+	           WeixinJSBridge.log(res.err_msg);
+			   alert(res.err_code+res.err_desc+res.err_msg); 		
+	           //alert('未知原因支付失败，请改用其他支付方式');
+	        }
+	     });
+    } 
 
-     WeixinJSBridge.invoke('getBrandWCPayRequest',{
-                           "appId" : '{$this->wxpay_app_id}', //公众号名称，由商户传入
-                           "timeStamp" : '{$timestamp}', //时间戳
-                           "nonceStr" : '{$noncestr}', //随机串
-                           "package" : '{$package}',//扩展包
-                           "signType" : 'SHA1', //微信签名方式:1.sha1
-                           "paySign" : '{$paysign}' //微信签名
-     },function(res){
-        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-            window.location.href = '{$this->_pay_success_url}';               
-        } else {
-            // 这里是取消支付或者其他意外情况，可以弹出错误信息或做其他操作
-            alert('未知原因支付失败，请改用其他支付方式');
-        }
-     }); 
-
-}, false)
+//}, false)
+	            		
+	function callpay_{$order['order_sn']}()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	}	            		
 </script>
-<!-- 下面为必需js文件 -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="http://res.mail.qq.com/mmr/static/lib/js/lazyloadv3.js"></script>
-</body>
-</html>
+
 EOT;
         return $button;
     }

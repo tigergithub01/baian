@@ -429,7 +429,7 @@ input.btn3{border: 0;cursor: pointer;}
 .checkbox input{display: none;}
 .checkbox.checked{background-position: 0 -100px;}
 
-.goto-buy{padding: 0 0 0 20px;line-height: 50px;}
+.goto-buy{padding: 5px 20px 5px 20px;line-height: 50px;}
 .goto-buy .checkbox{margin-right: 20px;vertical-align: middle;}
 .goto-buy input[type='submit']{float: right;height: 52px;border: 0;background: #f00;color: #fff;width: 130px;}
 .goto-buy .total-price{font-size: 0.83em;}
@@ -438,9 +438,9 @@ input.btn3{border: 0;cursor: pointer;}
 
 .chart_oper_all{padding: 30px 0 0 70px;}
 .chart_oper_all .drop{float: left;}
-.chart_oper_all .drop a{display: block;width: 120px;}
+.chart_oper_all .drop a{display: block;width: 120px;font-size: .83em;text-align: center;}
 .chart_oper_all .collect{float: left;display: block;margin-left: 20px;}
-.chart_oper_all .collect a{width: 120px;}
+.chart_oper_all .collect a{display: block;width: 130px;font-size: .83em;text-align: center;}
 
 .chart_operate{margin: 20px 0 0 0px;}
 .chart_operate .drop{float: left;}

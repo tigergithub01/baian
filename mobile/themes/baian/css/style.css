@@ -174,7 +174,8 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 .dl-login-reg input[type='submit']{color: #fff;background: #e60012;}
 .dl-login-reg input[type='submit']:hover{background: #cc0111;}
 
-.get-test-ma{display: inline-block;/* float: right; */width: 270px;text-align: center;border: 1px solid #ddd;background: #fff;}
+input.get-test-ma{display: inline-block;/* float: right; */width: 270px;text-align: center;border: 1px solid #ddd;background: #fff;color: #f08300}
+input[type="button"]:disabled{background: #efefef;}
 .test-string{display: inline-block;}
 .test-string img{display: inline-block;vertical-align: middle;width: 100px;height: 50px;margin-right: 10px;}
 

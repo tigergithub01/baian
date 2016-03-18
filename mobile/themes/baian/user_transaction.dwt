@@ -395,7 +395,7 @@
 						<dd>
 							<input name="mobile_code" id="mobile_code" type="text" size="30" style="width:255px;"
 							class="inputBg required" placeholder="短信验证码" />
-							<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+							<input type="button" id="zphone" onclick="sendSms();" class="get-test-ma" value="获取短信验证码"/>
 						</dd>
 						<dd>
 							<input type="hidden" name="act" value="act_bind_mobile" /> 
@@ -430,7 +430,7 @@
 					<dd>
 						<input name="email_code" id="email_code" type="text" size="30" style="width:255px;"
 						class="inputBg required" />
-						<a id="verify_mail" href="javascript:void(0)" onclick="sendEmail();" class="get-test-ma">获取邮箱验证码</a>
+						<input type="button" id="verify_mail" onclick="sendEmail();" class="get-test-ma" value="获取邮箱验证码"/>
 					</dd>
 					<dd>
 						<input type="hidden" name="act" value="act_bind_email" /> 
@@ -656,7 +656,7 @@
 						<dd>
 							<input name="mobile_code" id="mobile_code" type="text" size="30" style="width:255px;"
 							class="inputBg required" placeholder="短信验证码" />
-							<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+							<input type="button" id="zphone" onclick="sendSms();" class="get-test-ma" value="获取短信验证码"/>
 						</dd>
 						<dd>
 							<input name="password" type="password" size="30"
@@ -696,7 +696,7 @@
 					<dd>
 						<input name="email_code" id="email_code" type="text" size="30" style="width:255px;"
 						class="inputBg required" placeholder="邮箱验证码" />
-						<a id="verify_mail" href="javascript:void(0)" onclick="sendEmail();" class="get-test-ma">获取邮箱验证码</a>
+						<input type="button" id="verify_mail" onclick="sendEmail();" class="get-test-ma" value="获取邮箱验证码"/>
 					</dd>
 					<dd>
 						<input name="password" type="password" size="30"

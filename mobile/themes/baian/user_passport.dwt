@@ -370,7 +370,7 @@
 					</dd>
 					<dd>
 						<input name="mobile_code" placeholder="短信验证码" id="mobile_code" type="text" style="width:255px;"class="inputBg required"/>
-						<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+						<input type="button" id="zphone" onclick="sendSms();" class="get-test-ma" value="获取短信验证码"/>
 					</dd>
 					<dd style="display: none;">
 						<input name="agreement" type="checkbox" value="1" class="checkbox required" checked="checked" />
@@ -411,7 +411,7 @@
 						</dd>
 						<dd>
 		                 	<input name="email_code" placeholder="邮箱验证码" id="email_code" type="text" style="width:255px;"class="inputBg required"/>
-							<a id="verify_mail" href="javascript:void(0)" onclick="sendEmail();" class="get-test-ma">获取邮箱验证码 </a>
+		                 	<input type="button" id="verify_mail" onclick="sendEmail();" class="get-test-ma" value="获取邮箱验证码"/>
 						</dd>
 						<dd style="display: none;">
 							<input name="agreement" type="checkbox" value="1" class="checkbox required" checked="checked" />
@@ -633,7 +633,7 @@
 							</dd>
 							<dd>
 								<input name="mobile_code" placeholder="短信验证码" id="mobile_code" type="text" style="width:255px;"class="inputBg required"/>
-								<a id="zphone" href="javascript:void(0)" onclick="sendSms();" class="get-test-ma">获取短信验证码</a>
+								<input type="button" id="zphone" onclick="sendSms();" class="get-test-ma" value="获取短信验证码"/>
 							</dd>
 							<dd>
 								<input name="act" type="hidden" value="act_get_password" />
@@ -670,7 +670,7 @@
 						</dd>
 						<dd>
                        		<input name="email_code" id="email_code" type="text" style="width:255px;"class="inputBg required" placeholder="邮箱验证码"/>
-                       		<a id="verify_mail" href="javascript:void(0)" onclick="sendEmail();" class="get-test-ma">获取邮箱验证码</a>
+                       		<input type="button" id="verify_mail" onclick="sendEmail();" class="get-test-ma" value="获取邮箱验证码"/>
 						</dd>
 						<dd>
 							<input name="act" type="hidden" value="act_get_password" />

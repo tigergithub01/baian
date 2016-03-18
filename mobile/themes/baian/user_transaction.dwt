@@ -53,6 +53,9 @@
 				$(".fileupload").change(function(){
 					//console.debug($(this).parent());
 					var id = $(this).attr('id');
+					var progress_id = id+"_progress";
+					var $progress_bar = $("#"+progress_id);
+					var $progress_percent = $("#"+progress_id +" .percent");
 					$(this).parent().ajaxSubmit({
 						dataType:  'json',
 						beforeSend: function() {
@@ -62,11 +65,16 @@
 			        		bar.width(percentVal);
 			        		percent.html(percentVal);
 							btn.html("上传中..."); */
+							$progress_bar.show();
+							$progress_percent.text('0%');
+							
 			    		},
 			    		uploadProgress: function(event, position, total, percentComplete) {
 			        		/* var percentVal = percentComplete + '%';
 			        		bar.width(percentVal);
 			        		percent.html(percentVal); */
+			        		var percentVal = percentComplete + '%';
+			        		$progress_percent.text(percentVal);
 			    		},
 						success: function(data) {
 							//alert(data.message);
@@ -80,9 +88,11 @@
 							var img = "http://localhost/upload/files/"+data.pic;
 							showimg.html("<img src='"+img+"'>");
 							btn.html("添加附件"); */
+							$progress_bar.hide();
 						},
 						error:function(xhr){
 							alert("上传失败");
+							$progress_bar.hide();
 							/* btn.html("上传失败");
 							bar.width('0')
 							files.html(xhr.responseText); */
@@ -145,6 +155,7 @@
 									<em class="level">V<b>{$profile.rank_name}</b></em>
 								</div>
 								<h3 class="name">{$profile.user_name}</h3>
+								<p class="orange" id="fileupload_my_photo_progress" style="display: none;"><span>上传进度：</span><span class="percent"></span></p>
 							</div>
 						</td>
 					</tr>
@@ -223,6 +234,7 @@
 									
 									<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
 								</div>
+								<p class="orange" id="fileupload_baby_photo_progress" style="display: none;"><span>上传进度：</span><span class="percent"></span></p>
 							</div>
 							
 							<div class="baby_gift_detail">

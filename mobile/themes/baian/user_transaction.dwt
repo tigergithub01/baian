@@ -238,11 +238,11 @@
 							</div>
 							
 							<div class="baby_gift_detail">
-								<div class="appy_gift"><input class="btn_submit btn_apply_gift" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
-								
+								<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 								<div class="apply_desc">
-									<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
-									<div class="babyinfo orange"><a class="orange" href="article-177.html">查看详细说明>></a></div>
+									<div class="appy_gift"><input class="btn_submit btn_apply_gift" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
+									
+									<div class="babyinfo orange apply_detail"><a class="orange" href="article-177.html">查看详细说明>></a></div>
 								</div>
 							</div>
 							
@@ -647,7 +647,7 @@
 				     <dl class="dl-login-reg">
 						<dd>
 							{$profile.mobile_phone}
-							<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
+							<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile}" /> 
 						</dd>
 						<dd>
 							<input type="text" placeholder="验证码" id="captcha" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>

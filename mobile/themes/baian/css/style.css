@@ -280,7 +280,7 @@ input[type="button"]:disabled{background: #efefef;}
 
 .avatarBox{text-align: center;font-size: 0.75em;}
 .avatarBox .avatar{position: relative;width: 145px;height: 145px;margin: 0 auto;}
-.avatarBox .avatar img{display: block;/* border-radius: 50%; */width: 100%;height: 100%;}
+.avatarBox .avatar img{display: block;border-radius: 50%;width: 100%;height: 100%;}
 .avatarBox .avatar .level{position: absolute;right: 10px;bottom: 10px;}
 .avatarBox .level{background: #f08300;color: #fff;border-radius: 50%;
 	display: inline-block;width: 30px;height: 30px;line-height: 30px;}
@@ -1125,12 +1125,18 @@ input.error {
 	
 }
 
-.baby_gift_detail .appy_gift{
-	float: left;width: 20%;height: 70px;padding: 20px 0 10px 0;
+.baby_gift_detail .apply_desc{
+	text-align: center;padding: 5px 0 50px 120px;
 }
 
-.baby_gift_detail .apply_desc{
-	float: right;width: 70%;
+.baby_gift_detail .apply_desc .appy_gift{
+	float: left;;display: block;
 }
+
+.baby_gift_detail .apply_desc .apply_detail{
+	float: left;display: block;margin-left: 10px;font-size: 18px;
+}
+
+
 
 

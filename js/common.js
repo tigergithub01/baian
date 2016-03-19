@@ -1251,7 +1251,7 @@ function get_shipping_detail(shipping_name,invoice_no){
 	$("#shipping_detail_info").css({width:600,height:400}).empty().append("<span>数据加载中，请稍等...</span>");
 	$.fancybox.open("#shipping_detail_info");
 	$.ajax({     
-	    url:'plugins/kuaidi100/kuaidi100_post.php?com='+ shipping_name+'&nu=' + invoice_no,     
+	    url:'/plugins/kuaidi100/kuaidi100_post.php?com='+ shipping_name+'&nu=' + invoice_no,     
 	    type:'post',  
 	    dataType:'html', 
 	    data:{},     

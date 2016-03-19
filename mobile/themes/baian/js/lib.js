@@ -92,7 +92,7 @@ $(document).ready(function($) {
     	placeholder : "images/ico_preload.jpg",
         effect: "fadeIn",
         load:function(elements_left, settings) {
-            console.log('load');
+            //console.log('load');
             //console.log(elements_left);
             //console.log(this, elements_left, settings);
             //加载完成后，自动修改tab的高度

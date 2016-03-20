@@ -101,6 +101,27 @@ $(document).ready(function($) {
         },
     });
 	
+	//输入时，自动隐藏底部固定导航栏；否则固定导航栏会挡住输入框
+	$("input[type='text']").focus(function() {
+		$(".ul-fmenu").hide();
+	}).blur(function(){
+		$(".ul-fmenu").show();
+	});
+	
+	$("input[type='password']").focus(function() {
+		$(".ul-fmenu").hide();
+	}).blur(function(){
+		$(".ul-fmenu").show();
+	});
+	
+	$("textarea").focus(function() {
+		$(".ul-fmenu").hide();
+	}).blur(function(){
+		$(".ul-fmenu").show();
+	});
+	
+	
+	
 	
 
 

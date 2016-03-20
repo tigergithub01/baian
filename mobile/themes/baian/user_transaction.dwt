@@ -160,7 +160,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="title">账户名:</td>
+						<td class="title" style="">账户名:</td>
 						<td>
 							<span class="username">{$profile.user_name}</span>
 						</td>
@@ -168,7 +168,7 @@
 					<tr>
 						<td class="title">昵称:</td>
 						<td>
-							<input type="text" name="alias" value="{$profile.alias}" placeholder="请输入昵称" size="20"/>
+							<input type="text" name="alias" value="{$profile.alias}" placeholder="请输入昵称" size="20" style="width: 100%;"/>
 						</td>
 					</tr>
 					<tr>
@@ -252,7 +252,7 @@
 					<tr>
 						<td class="title">宝宝昵称:</td>
 						<td>
-							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}" placeholder="宝宝昵称" size="20"/>
+							<input type="text" name="baby_nickname" value="{$profile.baby_nickname}" placeholder="宝宝昵称" size="20" style="width: 100%;"/>
 						</td>
 					</tr>
 					<tr>

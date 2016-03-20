@@ -1,6 +1,6 @@
 <!-- 底部主导航 -->
-<div class="h100"></div>
-<nav class="ul-fmenu">
+<div class="h100 nav_bottom"></div>
+<nav class="ul-fmenu nav_bottom">
 	<ul>
 		<li><a href="/mobile/index.html"> <span class="ico"><img
 					src="images/f-i1.png" alt=""></span>

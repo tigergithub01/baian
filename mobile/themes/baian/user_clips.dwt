@@ -495,7 +495,7 @@
 									<!-- {if $comment.photos} -->
 									<p class="img" style="margin-top: 20px;">
 										<!-- {foreach from=$comment.photos item=photo} -->
-										<img style="width: 100px;height: 100px;" alt="" src="/{$photo.thumb_url}" img_url="/{$photo.img_url}" onclick="view_image(this);">
+										<img style="width: 100px;height: 100px;margin-left: 15px;" alt="" src="/{$photo.thumb_url}" img_url="/{$photo.img_url}" onclick="view_image(this);">
 										<!-- {/foreach} -->
 									</p>
 									<!--{/if}-->
@@ -579,12 +579,15 @@
 						  </form>
 						</div>
 						
-						<div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 100%;height: 100%;"></div>
+						
 	           </li>
 	       <!--{foreachelse}-->
 	       		<li><p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p></li>
 	       <!--{/foreach}-->
 	       </ul>
+	       
+	       <div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 100%;height: auto;"></div>
+	       
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
           <!--{/if} -->

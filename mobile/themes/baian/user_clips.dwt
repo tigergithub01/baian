@@ -586,7 +586,7 @@
 	       <!--{/foreach}-->
 	       </ul>
 	       
-	       <div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 100%;height: auto;"></div>
+	       <div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 350px;height: auto;"></div>
 	       
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->

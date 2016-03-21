@@ -698,7 +698,12 @@
             		<span id="address" style="padding-left: 5px;display: none;">{$smarty.session.flow_consignee.province_name}{$smarty.session.flow_consignee.city_name}{$smarty.session.flow_consignee.district_name}{$smarty.session.flow_consignee.address}</span>
              	</a>
            <!-- {else} -->
-           		<a class="xg1" href="javascript:void(0)">收货人信息</a>
+           		<a class="xg1" href="javascript:void(0)">
+           			<span class="label_addr">收货人信息</span>
+           			<span id="consignee" class="txt_consignee"></span>
+            		<span id="mobile" style="padding-left: 10px;display: none;"></span>  
+            		<span id="address" style="padding-left: 5px;display: none;"></span>
+           		</a>
            <!-- {/if} -->
            	
             

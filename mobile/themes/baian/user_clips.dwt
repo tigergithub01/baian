@@ -156,7 +156,7 @@
 
 		<ul class="ul-tab1">
 			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
-			<li class="on"><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li class="on"><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
 		
@@ -258,7 +258,7 @@
 
 		<ul class="ul-tab1">
 			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
-			<li><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li class="on"><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
 		
@@ -411,7 +411,7 @@
 
 		<ul class="ul-tab1">
 			<li class="on"><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
-			<li><a href="user.php?act=message_list">资讯&投诉</a></li>
+			<li><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
           

@@ -78,7 +78,7 @@
 							<span class="ico"><img src="images/u-i4.png" alt=""></span>
 							<h3>我的等级</h3>
 						</a></li>
-						<li><a href="user.php?act=comment_list&commented=-1">
+						<li><a href="user.php?act=comment_list">
 							<span class="ico"><img src="images/u-i5.png" alt=""></span>
 							<h3>客户服务</h3>
 						</a></li>
@@ -155,7 +155,7 @@
 		</header>
 
 		<ul class="ul-tab1">
-			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li><a href="user.php?act=comment_list">我的评价</a></li>
 			<li class="on"><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
@@ -257,7 +257,7 @@
 		</header>
 
 		<ul class="ul-tab1">
-			<li><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li><a href="user.php?act=comment_list">我的评价</a></li>
 			<li><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li class="on"><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
@@ -410,11 +410,16 @@
 		</header>
 
 		<ul class="ul-tab1">
-			<li class="on"><a href="user.php?act=comment_list&commented=-1">我的评价</a></li>
+			<li class="on"><a href="user.php?act=comment_list">我的评价</a></li>
 			<li><a href="user.php?act=message_list">咨询&投诉</a></li>
 			<li><a href="user.php?act=my_advice">建议有奖</a></li>
 		</ul>
           
+         <ul class="ul-tab1 subTab">
+			<li class="<!-- {if ($commented eq 0)} -->on<!-- {/if} --> tab_link two" id="my_question"><a href="user.php?act=comment_list&commented=0">待评价</a></li>
+			<li class="<!-- {if ($commented eq 1)} -->on<!-- {/if} --> tab_link two" id="my_complaint"><a href="user.php?act=comment_list&commented=1">已评价</a></li>
+		 </ul>
+		
           	<ul class="m-list1">
        		<!--{foreach from=$goods_list item=goods name=orders_foreach}-->
 	       		<li>

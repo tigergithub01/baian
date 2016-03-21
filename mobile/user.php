@@ -913,8 +913,20 @@ elseif ($action == 'act_profile_upload_photo')
 		lib_main_make_json_error("文件上传失败！");
 	}	
 	
-	//压缩文件
-	$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height'], ROOT_PATH . $image->data_dir . '/' . $dir . '/');
+	//等比压缩文件
+// 	$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height'], ROOT_PATH . $image->data_dir . '/' . $dir . '/');
+	$max=$GLOBALS['_CFG']['thumb_width'];
+	$size_src=getimagesize($img_name);
+	$w=$size_src['0'];
+	$h=$size_src['1'];
+	if($w > $h){
+		$w=$max;
+		$h=$h*($max/$size_src['0']);
+	}else{
+		$h=$max;
+		$w=$w*($max/$size_src['1']);
+	}	
+	$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $w,  $h, ROOT_PATH . $image->data_dir . '/' . $dir . '/');
 		
 	//格式化文件
 	if($is_baby==1){

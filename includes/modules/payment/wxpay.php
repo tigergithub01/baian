@@ -185,7 +185,9 @@ class wxpay
 	     },function(res){
 	        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 	            window.location.href = 'http://{$_SERVER['HTTP_HOST']}/mobile/user.php?act=order_list&status=101';               
-	        } else {
+	        }else if(res.err_msg == "get_brand_wcpay_request:cancel" ) {
+	            //alert('取消支付');     
+	        }else {
 	            // 这里是取消支付或者其他意外情况，可以弹出错误信息或做其他操作
 	           WeixinJSBridge.log(res.err_msg);
 			   alert(res.err_code+res.err_desc+res.err_msg); 		
@@ -581,9 +583,10 @@ EOT;
 	 */
 	public function is_show_pay($agent) {
 		$ag1  = strstr($agent,"MicroMessenger");
-		$ag2 = explode("/",$ag1);
-		$ver = floatval($ag2[1]);
-		if ( $ver < 5.0 || empty($aid) ){
+		if(empty($ag1)){
+// 		$ag2 = explode("/",$ag1);
+// 		$ver = floatval($ag2[1]);
+// 		if ( $ver < 5.0 || empty($aid) ){
 			return false;
     	}else{
     		return true;

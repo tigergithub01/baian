@@ -302,15 +302,15 @@
          
          <!-- *我的评论 start-->
           <!-- {if $action eq 'comment_list'} -->
-          <script type="text/javascript" src="themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
-		  <link rel="stylesheet" type="text/css" href="themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+           <script type="text/javascript" src="/themes/baian/js/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	   	   <link rel="stylesheet" type="text/css" href="/themes/baian/js/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 		  <script type="text/javascript">
 			  $(function(){
 				  //$('.fancybox').fancybox();
 				  <!--{foreach from=$goods_list item=goods name=orders_foreach}-->
 				  
 				  $("#formMsg_{$smarty.foreach.orders_foreach.index}").submit(function(){
-					  	console.debug($(this).serialize());
+					  	//console.debug($(this).serialize());
 					  	$.ajax({     
 					  		url:'user.php?act=act_add_comment',
 			        	    type:'post',  
@@ -324,7 +324,8 @@
 			        	    	alert(data.message);
 				        		if(data.status==1){
 				        			//$("#formMsg_{$smarty.foreach.orders_foreach.index}").parent().parent().toggleClass('show');
-				        			close_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'))
+				        			close_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'));
+				        			window.location.href='user.php?act=comment_list&commented=1';
 				        		}
 			        	    	
 			        	    }  
@@ -349,6 +350,7 @@
 		    	        }   
 		        	}); */
 				  <!--{/foreach} -->
+				  
 				  
 				  
 				$(".fileupload").wrap("<form class='fileupload_form' action='user.php?act=act_add_comment_pic' method='post' enctype='multipart/form-data'></form>");
@@ -396,6 +398,12 @@
 				});
 					  
 			  });
+			  
+			  function view_image(obj){
+				  var img_url = $(obj).attr('img_url');
+				  $("#img_photo_url").attr('src',img_url);
+				  $.fancybox.open("#image_show");
+			  }
 		  
 		  </script>
 		  <style type="text/css">
@@ -473,6 +481,32 @@
 								<!-- <a href="javascript:void(0)" class="a2" onclick="close_div($('sect_Msg_{$smarty.foreach.orders_foreach.index}'))">退换货申请</a> -->
 							</div>
 						</div>	
+						
+						<!-- 我的评论 start {if goods.$comments} -->
+						<div class="user_center_cmt" style="padding-top: 50px;">
+						<ul>
+					       <!-- {foreach from=$goods.comments item=comment} -->
+					       <li>
+								<div class="con">
+									<p class="top"><img style=""  src="images/stars{$comment.rank}.gif" alt="{$comment.comment_rank}" /><span style="">{$comment.add_time}</span></p>
+									<div style="clear: both;"></div>
+									<p>{$comment.content}</p>
+									
+									<!-- {if $comment.photos} -->
+									<p class="img" style="margin-top: 20px;">
+										<!-- {foreach from=$comment.photos item=photo} -->
+										<img style="width: 100px;height: 100px;" alt="" src="/{$photo.thumb_url}" img_url="/{$photo.img_url}" onclick="view_image(this);">
+										<!-- {/foreach} -->
+									</p>
+									<!--{/if}-->
+								</div>
+							</li>
+				        <!-- {/foreach} -->
+				        </ul>
+				        </div>
+				        <!-- 我的评论 end {/if}-->
+        
+        
 	                   
 	                   	<div class="m-pop" id="sect_Msg_{$smarty.foreach.orders_foreach.index}">
 	                   		
@@ -544,6 +578,8 @@
 								 </table>
 						  </form>
 						</div>
+						
+						<div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 100%;height: 100%;"></div>
 	           </li>
 	       <!--{foreachelse}-->
 	       		<li><p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p></li>

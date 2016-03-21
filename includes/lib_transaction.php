@@ -131,7 +131,7 @@ function get_profile($user_id)
     $infos = array();
     $sql  = "SELECT user_name, birthday, sex, baby_sex, baby_birthday, question, answer, rank_points, pay_points,user_money, user_rank,".
              " msn, qq, office_phone, home_phone, mobile_phone, passwd_question, passwd_answer, is_validated, is_validated_phone, alias,  ".
-             " baby_nickname, baby_sex, baby_birthday, photo_url, baby_photo_url ".
+             " baby_nickname, baby_sex, baby_birthday, photo_url, baby_photo_url, photo_thumb_url, baby_photo_thumb_url ".
            " FROM " .$GLOBALS['ecs']->table('users') . " WHERE user_id = '$user_id'";
     $infos = $GLOBALS['db']->getRow($sql);
     $infos['user_name'] = addslashes($infos['user_name']);
@@ -207,8 +207,10 @@ function get_profile($user_id)
     $info['is_validated']    = isset($infos['is_validated'])  ? intval($infos['is_validated'])  : 0;
     $info['is_validated_phone']    = isset($infos['is_validated_phone'])  ? intval($infos['is_validated_phone'])  : 0;
     $info['alias']   = $infos['alias'];
-    $info['photo_url']   = $infos['photo_url'];
-    $info['baby_photo_url']   = $infos['baby_photo_url'];
+    /* $info['photo_url']   = $infos['photo_url'];
+    $info['baby_photo_url']   = $infos['baby_photo_url']; */
+    $info['photo_url']   = $infos['photo_thumb_url'];
+    $info['baby_photo_url']   = $infos['baby_photo_thumb_url'];
 
     return $info;
 }

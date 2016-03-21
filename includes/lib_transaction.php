@@ -727,6 +727,7 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 			}
 		}
 		
+		
 		//综合状态
 		$row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status']);
 		$row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
@@ -734,11 +735,65 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 		$row['subtotal']     = price_format($row['subtotal'], false);
 		
 		$row['order_time']    = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+		
+		//查询我对订单的评论
+		$cmt_list = get_my_order_comment($user_id, $row['goods_id'], $row['order_id']);
+		
+		$row['comments'] = $cmt_list;
 	
 		$goods_list[] = $row;
 	}
 	
 	return $goods_list;
+}
+
+
+function get_my_order_comment($user_id,$goods_id,$order_id){
+	$sql = 'SELECT c.*,u.photo_url AS photo_url FROM ' . $GLOBALS['ecs']->table('comment') ." AS c ".
+			' LEFT JOIN '. $GLOBALS['ecs']->table('users') . " AS u ON (c.user_id = u.user_id) " .
+			" WHERE c.user_id = '$user_id' AND  c.id_value = '$goods_id' AND c.order_id = '$order_id' AND c.comment_type = 0 AND c.parent_id = 0".
+			' ORDER BY c.comment_id DESC';
+	$res = $GLOBALS['db']->query($sql);
+	
+	$arr = array();
+	$ids = '';
+	while ($row = $GLOBALS['db']->fetchRow($res))
+	{
+		$ids .= $ids ? ",$row[comment_id]" : $row['comment_id'];
+		$arr[$row['comment_id']]['id']       = $row['comment_id'];
+		$arr[$row['comment_id']]['email']    = $row['email'];
+		$arr[$row['comment_id']]['username'] = $row['user_name'];
+		$arr[$row['comment_id']]['formatted_username'] = empty($row['user_name'])?'':substr_cut($row['user_name']);
+		$arr[$row['comment_id']]['content']  = str_replace('\r\n', '<br />', htmlspecialchars($row['content']));
+		$arr[$row['comment_id']]['content']  = nl2br(str_replace('\n', '<br />', $arr[$row['comment_id']]['content']));
+		$arr[$row['comment_id']]['rank']     = $row['comment_rank'];
+		$arr[$row['comment_id']]['add_time'] = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+	
+		//货品评论图片
+		$sql = "SELECT * FROM ". $GLOBALS['ecs']->table('comment_photo') .' WHERE comment_id = '.$row['comment_id'];
+		$comment_photos = $GLOBALS['db']->getAll($sql);
+		$arr[$row['comment_id']]['photos'] = $comment_photos;
+	
+		//评论人员图片
+		$arr[$row['comment_id']]['photo_url']       = $row['photo_url'];
+	
+	}
+	/* 取得已有回复的评论 */
+	if ($ids)
+	{
+		$sql = 'SELECT * FROM ' . $GLOBALS['ecs']->table('comment') .
+		" WHERE parent_id IN( $ids )";
+		$res = $GLOBALS['db']->query($sql);
+		while ($row = $GLOBALS['db']->fetch_array($res))
+		{
+			$arr[$row['parent_id']]['re_content']  = nl2br(str_replace('\n', '<br />', htmlspecialchars($row['content'])));
+			$arr[$row['parent_id']]['re_add_time'] = local_date($GLOBALS['_CFG']['time_format'], $row['add_time']);
+			$arr[$row['parent_id']]['re_email']    = $row['email'];
+			$arr[$row['parent_id']]['re_username'] = $row['user_name'];
+		}
+	}
+	
+	return $arr;
 }
 
 

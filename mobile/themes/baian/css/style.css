@@ -1074,18 +1074,22 @@ input.error {
 
 .order .btn a{
 	color: #ea5504;font-size: 21px;
+	float: left;
 }
 
 
 .order input.s-btn1 {display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
 	background-color: #e60012;color: #fff;font-size: 24px;border: 0px;
+	float: left;
 }
 .order a.s-btn1 {display: inline-block;width: 160px;height: 50px;line-height: 50px;text-align: center;
 	background-color: #e60012;color: #fff;font-size: 24px;
+	float: left;
 }
 
 .order .a-btn{
 	color: #ea5504;font-size: 21px;
+	
 }
 
 .order_query{

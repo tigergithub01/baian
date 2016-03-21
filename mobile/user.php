@@ -970,7 +970,7 @@ elseif ($action == 'act_profile_upload_photo')
 	if($result){
 		lib_main_make_json_result("图片上传成功",array('image_url'=>$thumb_img_url));
 	}else{
-		lib_main_make_json_error("文件上传失败！");
+		lib_main_make_json_error("图片上传失败！");
 	}
 }
 

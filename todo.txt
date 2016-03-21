@@ -621,7 +621,24 @@ http://symfony.com/
 1、搜索也的多少人评价没数据。
 2、nginx图片加载大小缓存问题。(网页老是加载中，图片未加载完成。)
 
+1\订单列表页面的支付按钮要扁平效果。
+
+http://localhost:8086/mobile/user.php?order_period=0&status=-1&keyword=2015122404657&act=order_list
+
+http://www.123121.com/mobile/respond.php?code=alipaywap&out_trade_no=2016031722502_156&request_token=requestToken&result=success&trade_no=2016031700001000960090010959&sign=10b0fe82f51b519306479287303676de&sign_type=MD5
+http://localhost:8086/mobile/respond.php?code=alipaywap&out_trade_no=2016031722502_156&request_token=requestToken&result=success&trade_no=2016031700001000960090010959&sign=10b0fe82f51b519306479287303676de&sign_type=MD5
+
+XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14581973964042
+
+http://os-android.liqucn.com/rj/348897.shtml
+
+统一下单支付单信息
+return_code : FAIL 
+return_msg : 商户号mch_id与appid不匹配 
 
 
+http://www.cnblogs.com/txw1958/p/weixin-pay-account-system.html
 
+nginx 重启：
+./nginx -s reload
 

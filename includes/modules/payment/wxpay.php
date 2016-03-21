@@ -143,10 +143,10 @@ class wxpay
             $charset = EC_CHARSET;
         }
 
-		/* if(!$this->is_show_pay($_SERVER['HTTP_USER_AGENT'])){
+		if(!$this->is_show_pay($_SERVER['HTTP_USER_AGENT'])){
 			///TODO:显示支付二维码
-			return "<img src=\"\" />";
-		} */
+			return "<input class=\"s-btn1\" type=\"button\" value=\"".$GLOBALS['_LANG']['pay_button']."\" onclick=\"alert('请在微信中进行支付！')\" />";
+		}
 /////////////////
 		$noncestr = uniqid();
 		$timestamp = time();
@@ -169,7 +169,7 @@ class wxpay
 
         
         $button = <<<EOT
-<div style="text-align:center"><input class="s-btn1" type="submit" value="微信安全支付" onclick="callpay_{$order['order_sn']}()" /></div>
+<div style="text-align:center"><input class="s-btn1" type="submit" value="{$GLOBALS['_LANG']['pay_button']}" onclick="callpay_{$order['order_sn']}()" /></div>
 <script type="text/javascript">
 // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
 // 其实中间部分可以写成一个事件，点击某个按钮触发

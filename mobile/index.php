@@ -97,6 +97,8 @@ if ($act == 'cat_rec')
 if($_COOKIE['startup_show']==null){
 	$position = assign_ur_here();
 	$smarty->assign('page_title',      $position['title']);    // 页面标题
+	$startup_ads = getads(197,1);
+	$smarty->assign("startup_ads",$startup_ads);
 	$smarty->display('startup.dwt');
 	exit;
 }

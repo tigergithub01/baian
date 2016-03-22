@@ -26,7 +26,7 @@
 	
 	<script type="text/javascript">
 	
-	  /* $(function(){
+	   $(function(){
 		    window.setTimeout(function(){
 		    	//$(".startup_broad").hide();
 		    	//$(".startup_broad").css("right","0");
@@ -34,7 +34,7 @@
 		    	$.cookie('startup_show', '1'); //启动页是否已经显示
 		    	window.location.href="index.html";
 			}, 2000); 	 	  
-	  }); */
+	  }); 
 	</script>
 </body>
 </html>

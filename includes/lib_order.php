@@ -308,7 +308,15 @@ function available_payment_list($support_cod, $cod_fee = 0, $is_online = false,$
 
         $row['format_pay_fee'] = strpos($row['pay_fee'], '%') !== false ? $row['pay_fee'] :
         price_format($row['pay_fee'], false);
-        $modules[] = $row;
+        
+       //微信支付只有在微信浏览器中加载
+        $ag1  = strstr($_SERVER['HTTP_USER_AGENT'],"MicroMessenger");
+        if($row['pay_code']=='wxpay' && empty($ag1)){
+        	//do nothing
+        }else{
+        	 $modules[] = $row;
+        }
+       
     }
 
     include_once(ROOT_PATH.'includes/lib_compositor.php');

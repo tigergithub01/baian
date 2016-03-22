@@ -152,7 +152,7 @@ header.head .back-btn{position: absolute;left: 0;top: 0;width: 60px;height: 100%
 /*猜你喜欢*/
 .ul_may_like_goods{background-color: transparent;display: inline-block;margin-bottom: 10px;}
 .ul_may_like_goods li{margin-bottom: 10px;width:49%; float:left;margin: 0 1% 0 0;background-color: white;}
-.ul_may_like_goods li img{display: block;width: 100%;height: auto;}
+.ul_may_like_goods li img{display: block;width: 320px;height: 320px;}
 .ul_may_like_goods .goods_name{height: 3em;font-size: 0.8em;margin: 0px 10px 0px 10px;overflow: hidden;}
 .ul_may_like_goods .price{text-align: left;color: #f00;font-size: 0.8em;margin: 0px 10px 0px 10px;}
 

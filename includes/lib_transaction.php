@@ -455,7 +455,11 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     {
         
     	$row['handler'] = getOrderHandler($row);
-
+	
+    	$row['original_order_status'] = $row['order_status'];
+    	$row['original_shipping_status'] = $row['shipping_status'];
+    	$row['original_original_pay_status'] = $row['pay_status'];
+    	
         $row['shipping_status'] = ($row['shipping_status'] == SS_SHIPPED_ING) ? SS_PREPARING : $row['shipping_status'];
         
         //综合状态
@@ -474,7 +478,11 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
                        'total_fee'      => price_format($row['total_fee'], false),
         			   'shipping_fee'      => price_format($row['shipping_fee'], false),
         			   'pay_online' => $row['pay_online'],
-                       'handler'        => $row['handler']);
+                       'handler'        => $row['handler'],
+		        	   'original_order_status' => $row['original_order_status'],
+		        	   'original_shipping_status' => $row['original_shipping_status'],
+		        	   'original_pay_status' => $row['original_pay_status'],
+        );
     }
 
     return $arr;

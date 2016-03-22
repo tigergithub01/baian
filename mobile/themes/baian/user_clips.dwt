@@ -475,11 +475,13 @@
 	                       
 	                       </div>
 	                       <span>{$goods.goods_price}<em>×{$goods.goods_number}</em></span>
+	                       <!-- {if ($commented eq 0)} -->
 	                       <div class="btn">
 		                       <!-- <a href="javascript:void(0)" onclick="$(this).parent().parent().siblings('.comment_detail').toggleClass('show');" class="s-btn1">点击评价</a> -->
 								<a href="javascript:void(0)" class="lz-btn2" onclick="nav_div($('#sect_Msg_{$smarty.foreach.orders_foreach.index}'))">立即评价</a>
 								<!-- <a href="javascript:void(0)" class="a2" onclick="close_div($('sect_Msg_{$smarty.foreach.orders_foreach.index}'))">退换货申请</a> -->
 							</div>
+							<!-- {/if} -->
 						</div>	
 						
 						<!-- 我的评论 start {if goods.$comments} -->

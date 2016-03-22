@@ -25,17 +25,47 @@
 			<!-- <div class="m-atart" style="background-image: url(images/pic-atart.png);"></div> -->
 	<!-- {/if} -->
 	
-	<script type="text/javascript">
+	<div class="skip_page"><a href="javascript:void(0)" onclick="skip();">倒计时<span id="time">3</span>秒，直接跳过>></a></div>
 	
-	    $(function(){
-		    window.setTimeout(function(){
+	<script type="text/javascript">
+		
+		//设定倒数秒数  
+		var t = 4;  
+		//显示倒数秒数  
+		function showTime(){  
+		    t -= 1;  
+		    $("#time").text(t);
+		    if(t==0){ 
+		    	//$(".startup_section").animate({"width":"0"});
+		    	$.cookie('startup_show', '1'); //启动页是否已经显示
+		    	window.clearInterval(interval); 
+		    	window.location.href="index.html";
+		    }
+		}  
+		
+		
+		 var interval = null;
+	      $(function(){
+		    /* window.setTimeout(function(){
 		    	//$(".startup_broad").hide();
 		    	//$(".startup_broad").css("right","0");
 		    	$(".startup_section").animate({"width":"0"});
 		    	$.cookie('startup_show', '1'); //启动页是否已经显示
 		    	window.location.href="index.html";
-			}, 3000); 	 	  
-	  });  
+			}, 1000); */ 
+			
+			//执行showTime()  
+			interval = setInterval("showTime()",1000);  
+	    	//  showTime();  
+	  	}); 
+	      
+	      /**
+	      直接跳转到首页
+	      */
+	      function skip(){
+	    	  $.cookie('startup_show', '1'); //启动页是否已经显示
+	    	  window.location.href="index.html";
+	      }
 	</script>
 </body>
 </html>

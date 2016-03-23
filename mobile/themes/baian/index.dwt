@@ -159,7 +159,7 @@
 	    
 	    //第一次打开浏览器时，显示启动页
 	    if($.cookie('startup_show')==null){
-	    	show_startup_page();
+	    	//show_startup_page();
 	    }
 	    
 	    //滚动时，自动显示搜索框

@@ -37,7 +37,7 @@
 		    $("#time").text(t);
 		    if(t==0){ 
 		    	//$(".startup_section").animate({"width":"0"});
-		    	$.cookie('startup_show', '1'); //启动页是否已经显示
+		    	//$.cookie('startup_show', '1'); //启动页是否已经显示
 		    	window.clearInterval(interval); 
 		    	window.location.href="index.html";
 		    }
@@ -63,7 +63,7 @@
 	      直接跳转到首页
 	      */
 	      function skip(){
-	    	  $.cookie('startup_show', '1'); //启动页是否已经显示
+	    	  //$.cookie('startup_show', '1'); //启动页是否已经显示
 	    	  window.location.href="index.html";
 	      }
 	</script>

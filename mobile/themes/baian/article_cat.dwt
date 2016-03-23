@@ -32,7 +32,9 @@
 			 <!-- {/foreach} -->
 		</ul>
 		
-		
+		<!-- 猜你喜欢 start -->
+	    <!-- #BeginLibraryItem "/library/may_like_goods.lbi" --><!-- #EndLibraryItem -->   
+	    <!-- 猜你喜欢 end --> 
 
 	</section>
 	

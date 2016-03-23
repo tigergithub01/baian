@@ -825,6 +825,7 @@
 	
 	</script>
 	
-	<script type="text/javascript" src="/js/transport1.js"></script>
+	<!-- 公用样式与脚本 -->
+	<!-- #BeginLibraryItem "/library/page_common_footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 </html>

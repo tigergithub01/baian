@@ -94,11 +94,13 @@ if ($act == 'cat_rec')
 
 
 //第一次访问网站的时候，直接进入启动页面
-if($_COOKIE['startup_show']==null){
+if($_SESSION['startup_show']==null){
+// if($_COOKIE['startup_show']==null){
 	$position = assign_ur_here();
 	$smarty->assign('page_title',      $position['title']);    // 页面标题
 	$startup_ads = getads(197,1);
 	$smarty->assign("startup_ads",$startup_ads);
+	$_SESSION['startup_show'] = "1";
 	$smarty->display('startup.dwt');
 	exit;
 }

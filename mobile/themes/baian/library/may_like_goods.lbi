@@ -28,7 +28,7 @@
 		<!-- {if $smarty.foreach.item_goods_foreach.index % 2 ==1} -->	
 			<li style="">
 			<a href="{$item_goods.url}" title="{$item_goods.short_name}" >
-				<img src="/mobile/themes/baian/images/ico_preload.jpg" data-original="/{$item_goods.goods_thumb}" alt="">
+				<img src="/mobile/themes/baian/images/ico_preload_maylike.jpg" data-original="/{$item_goods.goods_thumb}" alt="">
 			</a>
 			<p class="goods_name"><a href="{$item_goods.url}" title="{$item_goods.short_name}" >{$item_goods.short_name|escape:html|truncate:30}</a></p>
 			<p class="price">

@@ -42,7 +42,7 @@
 			<!-- <a href="#sect_filter" data-direction="reverse" data-transition="slide" class="">page</a> -->
 		</div>
 		
-		  <input type="hidden" id="keywords" name="keywords" value="{$keywords}" />	
+		  <input type="hidden" id="search_keywords" name="keywords" value="{$keywords}" />	
 		  <input type="hidden" id="category" name="category" value="{$category}" />
 		  <input type="hidden"  name="display" value="{$pager.display}" id="display" />
 		  <input type="hidden" id="brand" name="brand" value="{$brand}" />
@@ -197,7 +197,7 @@
     });	
 	
 	function more_goods_list(){
-		var keywords = $("#keywords").val();    
+		var keywords = $("#search_keywords").val();    
 		var category = $("#category").val();
     	var brand = $("#brand").val();
     	var price_min = parseInt($("#price_min").val()==''?0:$("#price_min").val());
@@ -320,7 +320,8 @@
     	    		$("#goods_list").append(data.content);
     	    		
     	    		//update condition
-    	    		$("#keywords").val(filter_con.keywords);
+    	    		//$("#keywords").val(filter_con.keywords);
+    	    		$("#search_keywords").val(data.filter.keywords);
     	    		$("#category").val(filter_con.category);
     	        	$("#brand").val(filter_con.brand);
     	        	$("#price_min").val(filter_con.price_min);

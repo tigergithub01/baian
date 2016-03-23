@@ -18,10 +18,10 @@
 	<!-- {if $startup_ads} -->	
 		<!--{foreach from=$startup_ads name=ban item=banner}-->
 			<!-- <div class="m-atart" style="background-image: url(/{$banner.ad_code});" onclick="window.location.href='{$banner.ad_link}'"></div> -->
-			<a class="m-atart" href="{$banner.ad_link}"><img style="width: 100;height: 100%;" src="/{$banner.ad_code}" alt=""></a>
+			<a class="m-atart" href="{$banner.ad_link}"><img src="/{$banner.ad_code}" alt=""></a>
 		<!--{/foreach}-->
 	<!-- {else} -->
-			<a class="m-atart" href="javascript:void(0)"><img style="width: 100;height: 100%;" src="images/pic-atart.png" alt=""></a>
+			<a class="m-atart" href="javascript:void(0)"><img src="images/pic-atart.png" alt=""></a>
 			<!-- <div class="m-atart" style="background-image: url(images/pic-atart.png);"></div> -->
 	<!-- {/if} -->
 	

@@ -148,7 +148,7 @@
 									<!-- {if $profile.photo_url && $profile.photo_url neq '' } -->
 			                    		<img src="/{$profile.photo_url}" id="fileupload_my_photo_img" alt="" />
 			                    	<!-- {else} -->
-			                    		<img src="/themes/baian/images/photo_add.png" id="fileupload_my_photo_img" alt="" />
+			                    		<img src="images/avatar.png" id="fileupload_my_photo_img" alt="" />
 			                    	<!-- {/if} -->
 									
 									<input type="file" name="photo_img" class="fileupload" id="fileupload_my_photo"/>
@@ -229,7 +229,7 @@
 									<!-- {if $profile.baby_photo_url && $profile.baby_photo_url neq '' } -->
 			                    		<img src="/{$profile.baby_photo_url}" id="fileupload_baby_photo_img" alt="" />
 			                    	<!-- {else} -->
-			                    		<img src="/themes/baian/images/photo_add.png" id="fileupload_baby_photo_img" alt="" />
+			                    		<img src="images/avatar.png" id="fileupload_baby_photo_img" alt="" />
 			                    	<!-- {/if} -->
 									
 									<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>

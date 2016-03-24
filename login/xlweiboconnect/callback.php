@@ -56,7 +56,18 @@ $user_info = $m->show_user_by_id($token['uid']);
 //						  if(isset($_COOKIE["XPH_return_uri"])){
 //					   	$back_act =$_COOKIE["XPH_return_uri"];
 //						    }else{
-						$back_act ="/user.php";
+						
+						
+// 						$back_act ="/user.php";
+						//手机版与电脑版跳转到不同的页面
+						$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+						$uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|mobile)/i";
+						if(($ua == '' || preg_match($uachar, $ua)) && !strpos(strtolower($_SERVER['REQUEST_URI']),'wap')){
+							$back_act ="/mobile/user.php";
+						}else{
+							$back_act ="/user.php";
+						}
+						
 //						    }
 						if (check_user($user_info['id'] , $username) !== false){
 								$GLOBALS['user']->set_session($username);

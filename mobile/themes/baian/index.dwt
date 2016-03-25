@@ -87,7 +87,7 @@
 			
 			
 		</div>
-		<div class="h20"></div>
+		<div class="h"></div>
 
 		<!-- 每天限时抢购 -->
 		<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->
@@ -176,7 +176,7 @@
 		    	
 		    	//$("#hd").show();
 		    }else{
-		    	$(".m-hd").css({"position":'absolute',"top":y+10});
+		    	$(".m-hd").css({"position":'absolute',"top":y+20});
 		    	//$("#hd").hide();
 		    }
 		});

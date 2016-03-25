@@ -921,7 +921,7 @@ input.btn4{border: 0;}
 .txtMarquee-left .bd{ /* padding:10px; */loat: left; }
 .txtMarquee-left .bd .tempWrap{ width:410px !important; }/* 用 !important覆盖SuperSlide自动生成的宽度，这样就可以手动控制可视宽度。 */
 .txtMarquee-left .bd ul{ overflow:hidden; zoom:1; }
-.txtMarquee-left .bd ul li{font-size:23px;;margin-right:20px;  float:left; height:45px; line-height:40px;  text-align:center; display: inline; width:auto !important;  }/* 用 width:auto !important 覆盖SuperSlide自动生成的宽度，解决文字不衔接问题 */
+.txtMarquee-left .bd ul li{padding-top:1px;margin-right:20px;  float:left; height:45px; line-height:40px;  text-align:center; display: inline; width:auto !important;  }/* 用 width:auto !important 覆盖SuperSlide自动生成的宽度，解决文字不衔接问题 */
 		
 
 /** jquery validate 错误提醒样式 */

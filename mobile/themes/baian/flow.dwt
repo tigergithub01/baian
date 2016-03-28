@@ -776,6 +776,9 @@
 					      		{elseif $goods.is_momsuit eq 0}
 					      		<a href="{$goods.goods_url}"  class="f6">{$goods.goods_name}</a>
 					      		{/if}
+					      		
+					      		
+				
 				                <!-- {if $goods.parent_id > 0} -->
 				                	<span style="color:#FF0000">（{$lang.accessories}）</span>
 					            <!-- {elseif $goods.is_gift} -->
@@ -786,14 +789,37 @@
 						
 					
 					<span class="price">{$goods.formated_goods_price}</span>
+					
+					
+					
 					<span class="cx-num">
 						数量：<em class="yellow">{$goods.goods_number}</em>
 					</span>
+					
+					<div style="clear: both;"></div>
+					
+					<!-- 买几送几 { if $goods.buy_give_activity_list} -->
+		                <!-- {foreach from=$goods.buy_give_activity_list item=buy_act name=buy_act} -->
+							<div class="lz-sales" style="font-size: 16px;text-align: left;padding-left: 45px;padding-top: 0px;">
+								<!--{if $buy_act.package} -->
+									买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="/{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
+									<!-- {/foreach} -->
+								<!-- {else} -->
+									<span>
+										买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="/{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
+									</span>
+								<!-- {/if} -->
+							</div>
+						<!-- {/foreach} -->
+					<!-- {/if} -->
+					
         		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000;">{$lang.free_goods}</span>)<!-- {/if} -->
               	<!--add by wanggz商品买满多少件送一件的优惠活动-->
                 <!-- {if $goods.gift_goods_number gt 0}  -->
                  <span style="display:none;color:#FF0000">您购买了本商品{$goods.goods_number}件，免费赠送{$goods.gift_goods_number}件！</span>             
                 <!-- {/if} -->
+                
+                
                 
                	<!--add by wanggz商品买满多少件送一件的优惠活动end-->
               <div style="display: none;">{$goods.goods_attr|nl2br}</div>

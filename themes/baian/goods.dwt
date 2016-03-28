@@ -161,7 +161,7 @@
 										<input type="hidden" id="addr_city" name="addr_city" value="{$addr_city}"/>
 										<input type="hidden" id="addr_district" name="addr_district" value="{$addr_district}"/>
 										<input type="hidden" id="addr_town" name="addr_town" value="{$addr_town}"/>
-										<div id="address_name" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}{$addr_town_name}">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}&nbsp;{$addr_town_name}</div>
+										<div id="address_name" title="{$addr_province_name}{$addr_city_name}{$addr_district_name}">{$addr_province_name}&nbsp;{$addr_city_name}&nbsp;{$addr_district_name}</div>
 										<b></b>
 									</div>
 									<div class="content">
@@ -174,11 +174,11 @@
 													<li class="" data-index="1" data-widget="tab-item" style="">
 														<a title="{$addr_city_name}" href="javascript:void(0)" class=""><em>{$addr_city_name}</em><i></i></a>
 													</li>
-													<li class="" data-index="2" data-widget="tab-item" style="display: list-item;">
-														<a title="{$addr_district_name}" href="javascript:void(0)" class=""><em>{$addr_district_name}</em><i></i></a>
+													<li class="curr" data-index="2" data-widget="tab-item" style="display: list-item;">
+														<a title="{$addr_district_name}" href="javascript:void(0)" class="hover"><em>{$addr_district_name}</em><i></i></a>
 													</li>
-													<li data-index="3" data-widget="tab-item" style="" class="curr">
-														<a title="{$addr_town_name}" href="javascript:void(0)" class="hover"><em>{$addr_town_name}</em><i></i></a>
+													<li data-index="3" data-widget="tab-item" style="display: none;">
+														<a title="{$addr_town_name}" href="javascript:void(0)"><em>{$addr_town_name}</em><i></i></a>
 													</li>
 												</ul>
 												<div class="stock-line"></div>
@@ -201,7 +201,7 @@
 													<!-- {/foreach} -->
 												</ul>
 											</div>
-											<div style="display: none;" class="mc" data-area="2"
+											<div style="display: block;" class="mc" data-area="2"
 												data-widget="tab-content" id="stock_area_item">
 												<ul class="area-list">
 													<!-- {foreach from=$district_list item=item} -->
@@ -209,7 +209,7 @@
 													<!-- {/foreach} -->
 												</ul>
 											</div>
-											<div style="display: block;" class="mc" data-area="3"
+											<div style="display: none;" class="mc" data-area="3"
 												data-widget="tab-content" id="stock_town_item">
 												<ul class="area-list">
 													<!-- {foreach from=$town_list item=item} -->
@@ -353,9 +353,9 @@
 			
 			
 			<script type="text/javascript">
-				$(function(){
+				//$(function(){
 					//jQuery(".yhtz").slide({mainCell:".bd ul",autoPlay:false,effect:"left",vis:1,scroll:1,autoPage:true,trigger:"click"});
-				});
+				//});
 				
 			</script>
 			<div class="h"></div>
@@ -675,6 +675,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		<!--{/if} 促销-->
 		
 		$("#store-selector .text").click(function(){
+			//alert('test');
 			$("#store-selector").addClass('hover');
 		});
 		
@@ -817,8 +818,13 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
 		
 		$('#addr_district').val(region_id);
+		
 		//刷新城镇、街道列表
-		changeRegion(3,region_id);
+		//changeRegion(3,region_id);
+		
+		/**弃用三级地址使用此代码**/
+		$("#store-selector").removeClass('hover');
+		select_address();
 	}
 	
 	function change_town(region_id,region_name){
@@ -827,17 +833,9 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		
 		
 		$('#addr_town').val(region_id);
-		//设置选择的地址
-		var addr_province_name= $("#store-selector").find("[data-widget='tab-item'][data-index='0'] a").attr('title');
-		var addr_city_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title');
-		var addr_district_name= $("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title');
-		var addr_town_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title');
 		
-		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name+"&nbsp;"+addr_town_name;
-		$("#address_name").html(address_name).attr('title',address_name);
 		
-		$("#store-selector").removeClass('hover');
-		
+		$("#store-selector").removeClass('hover');		
 		//TODO:更新相关逻辑
 		select_address();
 		
@@ -858,6 +856,16 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 	
 	/*选择地址**/
 	function select_address(){
+		//设置选择的地址
+		var addr_province_name= $("#store-selector").find("[data-widget='tab-item'][data-index='0'] a").attr('title');
+		var addr_city_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='1'] a").attr('title');
+		var addr_district_name= $("#store-selector").find("[data-widget='tab-item'][data-index='2'] a").attr('title');
+		//var addr_town_name=     $("#store-selector").find("[data-widget='tab-item'][data-index='3'] a").attr('title');
+		
+		//var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name+"&nbsp;"+addr_town_name;
+		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name;
+		$("#address_name").html(address_name).attr('title',address_name);
+		
 		$.ajax({     
     	    url:'goods.php?act=select_address',     
     	    type:'post',  

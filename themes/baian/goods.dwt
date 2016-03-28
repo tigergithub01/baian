@@ -39,6 +39,109 @@
 <body>
 <script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-2011.js"></script>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<script type="text/javascript">
+	/* 因为把$(function()代码页面不起作用，提到前面来，不要觉得奇怪  */
+		$(function(){
+			//显示抢购倒计时显示
+			<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
+			$("#promote_time").css('display','inline');
+			interValObj = window.setInterval(setRemainTime, 1000); //间隔函数，1秒执行 
+			<!--{/if} 促销-->
+			
+			$("#store-selector .text").click(function(){
+				//alert('test');
+				$("#store-selector").addClass('hover');
+			});
+			
+			$("li[data-widget='tab-item']").click(function(){
+				var data_index = $(this).attr('data-index');
+				//console.debug($(this).find("a[title='请选择']"));
+				if(($(this).find("a[title='请选择']")).length>0){
+					return false;
+				}
+				show_hide_tab_item(data_index);
+			});
+			
+			/**选择省份**/
+			$("#stock_province_item a").click(function(){
+				
+			});
+			
+			/**选择城市**/
+			$("#stock_city_item a").click(function(){
+				/*
+				alert('5');
+				$("#stock_area_item ul").empty();
+				$("#stock_town_item ul").empty();
+				
+				$("#store-selector").find("[data-widget='tab-item'][data-index='1']").attr('title',$(this).text());		
+				$("#store-selector").find("[data-widget='tab-item'][data-index='1'] em").text($(this).text());
+				
+				$("#store-selector").find("[data-widget='tab-item'][data-index='2']").attr('title','请选择');		
+				$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text('请选择');
+				
+				$("#store-selector").find("[data-widget='tab-item'][data-index='3']").attr('title','请选择');		
+				$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
+				
+				//刷新区域列表
+				var city_id  = $(this).attr('data-value');
+				changeRegion(2,city_id);
+				*/
+			});
+			
+			
+			//商品属性选择
+			$('.ul-sel li').click(function(){
+				//如果已经选中，则返回
+				if($(this).hasClass('on')){
+					return false;
+				}
+				
+				//选中，取消选中
+		        $(this).siblings('li').removeClass('on');
+		        $(this).addClass('on');
+		        
+		        //查找所有选中的商品属性值
+		        var selected_attributes = "";
+		        var $selected_lis = $('.ul-sel li.on');
+		        //var arr=new Array()
+		        $.each($selected_lis,function(index,v){
+		        	//console.debug(v);
+		        	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
+		        	//arr.push($(v).attr("goods_attr_id"));
+		        	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
+		        });
+		        //console.debug(selected_attributes);
+		        //更换属性选择
+		        $.ajax({     
+		    	    url:'goods.php?act=select_attribute',     
+		    	    type:'post',  
+		    	    dataType:'json', 
+		    	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
+		    	    async :true, 
+		    	    error:function(){ 
+		    	    	alert('更新出错！');
+		    	    },     
+		    	    success:function(data){ 
+		    	    	console.debug(data);
+		    	    	if(data.status==1){
+		    	    		var goods_url = data.content.goods_url;
+		    	    		window.location.href = goods_url;
+		    	    	}
+		    	    	
+		    	    }  
+		    	});
+		        
+		        
+		        
+		        
+		     });
+			
+		});
+	
+</script>
+
  <!-- #BeginLibraryItem "/library/nav.lbi" --><!-- #EndLibraryItem -->
  <div id="bd">
 		<div class="wp">
@@ -341,6 +444,8 @@
 	                	
 	            		<div class="h30"></div>
 	            		<div class="btn">
+	            			<input type="hidden" value="{$goods.goods_id}" id="goods_goods_id" />
+	            			<input type="hidden" value="{$product_id}" id="product_id" />
 	            			
 							<a class="btn1"  id="flowChart" href="javascript:void(0)" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)">立即购买</a>            			
 							<a class="btn2"  id="flowChart" href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')">加入购物车</a>            			
@@ -666,104 +771,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
  	
  
  
-	$(function(){
-		
-		//显示抢购倒计时显示
-		<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->
-		$("#promote_time").css('display','inline');
-		interValObj = window.setInterval(setRemainTime, 1000); //间隔函数，1秒执行 
-		<!--{/if} 促销-->
-		
-		$("#store-selector .text").click(function(){
-			//alert('test');
-			$("#store-selector").addClass('hover');
-		});
-		
-		$("li[data-widget='tab-item']").click(function(){
-			var data_index = $(this).attr('data-index');
-			//console.debug($(this).find("a[title='请选择']"));
-			if(($(this).find("a[title='请选择']")).length>0){
-				return false;
-			}
-			show_hide_tab_item(data_index);
-		});
-		
-		/**选择省份**/
-		$("#stock_province_item a").click(function(){
-			
-		});
-		
-		/**选择城市**/
-		$("#stock_city_item a").click(function(){
-			/*
-			alert('5');
-			$("#stock_area_item ul").empty();
-			$("#stock_town_item ul").empty();
-			
-			$("#store-selector").find("[data-widget='tab-item'][data-index='1']").attr('title',$(this).text());		
-			$("#store-selector").find("[data-widget='tab-item'][data-index='1'] em").text($(this).text());
-			
-			$("#store-selector").find("[data-widget='tab-item'][data-index='2']").attr('title','请选择');		
-			$("#store-selector").find("[data-widget='tab-item'][data-index='2'] em").text('请选择');
-			
-			$("#store-selector").find("[data-widget='tab-item'][data-index='3']").attr('title','请选择');		
-			$("#store-selector").find("[data-widget='tab-item'][data-index='3'] em").text('请选择');
-			
-			//刷新区域列表
-			var city_id  = $(this).attr('data-value');
-			changeRegion(2,city_id);
-			*/
-		});
-		
-		
-		//商品属性选择
-		$('.ul-sel li').click(function(){
-			//如果已经选中，则返回
-			if($(this).hasClass('on')){
-				return false;
-			}
-			
-			//选中，取消选中
-            $(this).siblings('li').removeClass('on');
-            $(this).addClass('on');
-            
-            //查找所有选中的商品属性值
-            var selected_attributes = "";
-            var $selected_lis = $('.ul-sel li.on');
-            //var arr=new Array()
-            $.each($selected_lis,function(index,v){
-            	//console.debug(v);
-            	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
-            	//arr.push($(v).attr("goods_attr_id"));
-            	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
-            });
-            //console.debug(selected_attributes);
-            //更换属性选择
-            $.ajax({     
-        	    url:'goods.php?act=select_attribute',     
-        	    type:'post',  
-        	    dataType:'json', 
-        	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
-        	    async :true, 
-        	    error:function(){ 
-        	    	alert('更新出错！');
-        	    },     
-        	    success:function(data){ 
-        	    	console.debug(data);
-        	    	if(data.status==1){
-        	    		var goods_url = data.content.goods_url;
-        	    		window.location.href = goods_url;
-        	    	}
-        	    	
-        	    }  
-        	});
-            
-            
-            
-            
-         });
-		
-	});
+	
 	
 	
 	function change_province(region_id,region_name){
@@ -866,6 +874,7 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
 		var address_name = addr_province_name+"&nbsp;"+addr_city_name+"&nbsp;"+addr_district_name;
 		$("#address_name").html(address_name).attr('title',address_name);
 		
+		
 		$.ajax({     
     	    url:'goods.php?act=select_address',     
     	    type:'post',  
@@ -876,8 +885,10 @@ var g_goods_measure_unit = "{$goods.measure_unit}";
     	    	"address[2]":$("#addr_city").val(),
     	    	"address[3]":$("#addr_district").val(),
     	    	"address[4]":$("#addr_town").val(),
-    	    	"goods_id"  :'{$goods.goods_id}',
-    	    	"product_id":'{$product_id}',
+    	    	//"goods_id"  :"{$goods.goods_id}",
+    	    	//"product_id":'{$product_id}',
+    	    	"goods_id"  :$("#goods_goods_id").val(),
+    	    	"product_id":$("#product_id").val(),
     	    },     
     	    async :true, 
     	    error:function(){ 

@@ -39,7 +39,7 @@
       	<!--相册 END-->
 
 		<div class="w-box goods-det-box">
-			<form action="">
+			<form action="javascript:addToCart({$goods.goods_id})" method="post" name="ECS_FORMBUY" id="ECS_FORMBUY" >
 
 			<div class="goods-tit">
 				<h3>{$goods.goods_style_name}</h3>

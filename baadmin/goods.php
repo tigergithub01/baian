@@ -78,7 +78,7 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     $smarty->assign('action_link',  $action_link);
     $smarty->assign('code',     $code);
     $smarty->assign('cat_list',     cat_list(0, $cat_id));
-    $smarty->assign('brand_list',   get_brand_list());
+    $smarty->assign('brand_list',   get_brand_list('brand_name'));
     $smarty->assign('intro_list',   get_intro_list());
     $smarty->assign('lang',         $_LANG);
     $smarty->assign('list_type',    $_REQUEST['act'] == 'list' ? 'goods' : 'trash');
@@ -510,7 +510,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     $smarty->assign('goods_name_color', $goods_name_style[0]);
     $smarty->assign('goods_name_style', $goods_name_style[1]);
     $smarty->assign('cat_list', cat_list(0, $goods['cat_id']));
-    $smarty->assign('brand_list', get_brand_list());
+    $smarty->assign('brand_list', get_brand_list('brand_name'));
     $smarty->assign('unit_list', get_unit_list());
     $smarty->assign('user_rank_list', get_user_rank_list());
     $smarty->assign('weight_unit', $is_add ? '1' : ($goods['goods_weight'] >= 1 ? '1' : '0.001'));

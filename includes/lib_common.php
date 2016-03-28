@@ -636,9 +636,9 @@ function load_config()
  * 取得品牌列表
  * @return array 品牌列表 id => name
  */
-function get_brand_list()
+function get_brand_list($order = 'sort_order')
 {
-    $sql = 'SELECT brand_id, brand_name FROM ' . $GLOBALS['ecs']->table('brand') . ' ORDER BY sort_order';
+    $sql = 'SELECT brand_id, brand_name FROM ' . $GLOBALS['ecs']->table('brand') . ' ORDER BY ' . $order;
     $res = $GLOBALS['db']->getAll($sql);
 
     $brand_list = array();

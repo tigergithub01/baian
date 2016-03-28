@@ -413,9 +413,9 @@ input.btn3{border: 0;cursor: pointer;}
 .ul-cart-list li .buyNum{float: right;display: inline-block;}
 .lz-sales{font-size: 20px;color: #ea5504;/* line-height: 50px; */padding-top: 20px;}
 .lz-sales span{/* display: inline-block; */width: 50px;height: 50px;
-	/* border: 1px solid #dcdddd; */vertical-align: middle;margin: 0 10px;
+	/* border: 1px solid #dcdddd; */vertical-align: middle;/* margin: 0 10px; */
 }
-.lz-sales img{width: 30px;height: 30px;/* margin-bottom: -10px; */position: relative;top: 10px;margin-left:3px;
+.lz-sales img{width: 45px;height: 45px;/* margin-bottom: -10px; */position: relative;top: 10px;margin-left:3px;
 }
 .lz-sales em{font-style: normal;color: #595757;}
 

@@ -2526,7 +2526,12 @@ function category_related_random_goods($category_id)
 function brand_related_random_goods($brand_id)
 {
 	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND ".
-			"g.is_delete = 0 AND g.brand_id=$brand_id ";
+			"g.is_delete = 0";
+	
+	if($brand_id){
+		$where .= " AND g.brand_id=$brand_id";
+	}
+	
 	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price, ' .
 			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
 			'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .

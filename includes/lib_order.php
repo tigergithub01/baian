@@ -1000,6 +1000,18 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
         {
             $arr[$key]['package_goods_list'] = get_package_goods($value['goods_id']);
         }
+        
+        /* 订单提交时显示买几送几 */        
+        $goods_sql = "SELECT g.is_buy_gift, g.gift_start_date, g.gift_end_date FROM " . $GLOBALS['ecs']->table('goods') . ' AS g ' . 'WHERE g.goods_id = ' . $arr[$key]['goods_id'];        	
+        $goods = $GLOBALS['db']->getRow($goods_sql);
+        $goods['is_buy_gift'] = ($goods['is_buy_gift']==1 && gmtime() >= $goods['gift_start_date'] && gmtime() <= $goods['gift_end_date'])?1:0;
+        //非赠送并且当前参与赠送活动
+        if($goods['is_buy_gift'] == 1 && $arr[$key]['is_gift']==0 && $arr[$key]['parent_id']==0){
+        	$buy_give_activity_list = get_buy_give_activity_list($arr[$key]['goods_id']);
+        	$arr[$key]['buy_give_activity_list'] = $buy_give_activity_list;
+        }   
+        
+        
     }
 
     return $arr;

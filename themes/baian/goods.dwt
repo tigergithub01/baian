@@ -40,11 +40,12 @@
 <script type="text/javascript" src="themes/baian/images/misc/lib/js/2012/base-2011.js"></script>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 
-<script type="text/javascript" src="themes/baian/js/jquery.lazyload.min.js" ></script>
+<!-- <script type="text/javascript" src="themes/baian/js/jquery.lazyload.min.js" ></script> -->
 <script type="text/javascript">
 	/* 因为把$(function()代码页面不起作用，提到前面来，不要觉得奇怪  */
 		$(function(){
 			//详情页图片延迟加载
+			/*
 			$(".img-wp img").lazyload({ 
 	        	placeholder : "images/ico_preload.jpg",
 	            effect: "fadeIn",
@@ -54,6 +55,7 @@
 	                //console.log(this, elements_left, settings);
 	            },
 	        });
+			*/
 			
 			//显示抢购倒计时显示
 			<!--{if ($goods.is_promote eq 1) and $goods.gmt_end_time } 促销-->

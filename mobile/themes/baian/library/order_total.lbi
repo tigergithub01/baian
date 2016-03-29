@@ -53,7 +53,7 @@
 	
 	<div class="h"></div>
  		<div class="w-box goto-buy">
- 		{$lang.total_fee}: <span class="red">{$total.amount_formated}</span>
+ 		应付总额（含运费）: <span class="red">{$total.amount_formated}</span>
   {if $is_group_buy}
   {$lang.notice_gb_order_amount}{/if}
   <!--{if $total.exchange_integral }消耗积分--> +

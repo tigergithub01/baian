@@ -370,6 +370,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 				}
 				$goods['goods_desc']=preg_replace('/(?!<[^>]*)'.$row_k['key_name'].'(?![^<]*>)/i', '<strong>' . $row_k['key_name'] . '</strong>', $goods['goods_desc'],1 );
 		}
+		
+		
 		/* 代码添加 end  by pgge */
 		$smarty->assign('article',get_article(136));          //获取文章的内容页面
 		$smarty->assign('article1',get_article(135));         //获取文章的内容页面
@@ -533,6 +535,8 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 		if (!empty($goods['relative_module']))
 		{
 			$relative_module = $db->getRow("SELECT * FROM " .$ecs->table('relative_module'). " WHERE module_id='" . $goods['relative_module'] . "' AND is_show = 1 LIMIT 1");
+			
+			
 			$smarty->assign('relative_module', $relative_module);
 		}
 		

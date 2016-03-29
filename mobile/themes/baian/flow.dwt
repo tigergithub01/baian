@@ -799,18 +799,23 @@
 					<div style="clear: both;"></div>
 					
 					<!-- 买几送几 { if $goods.buy_give_activity_list} -->
-		                <!-- {foreach from=$goods.buy_give_activity_list item=buy_act name=buy_act} -->
-							<div class="lz-sales" style="font-size: 16px;text-align: left;padding-left: 45px;padding-top: 0px;">
-								<!--{if $buy_act.package} -->
-									买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="/{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
-									<!-- {/foreach} -->
-								<!-- {else} -->
-									<span>
-										买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="/{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
-									</span>
-								<!-- {/if} -->
+						<div style="padding-left: 45px;">
+							<span  style="font-size: 0.83em;text-align: left;padding-top: 0px;float: left;line-height: 53px;height: 53px;position: relative;top: 11px;">促销：</span>
+							<div style="float: left;">
+			                <!-- {foreach from=$goods.buy_give_activity_list item=buy_act name=buy_act} -->
+								<div class="lz-sales" style="font-size: 16px;text-align: left;padding-top: 0px;">
+									<!--{if $buy_act.package} -->
+										买{$buy_act.buy_number_activity}送<!-- {foreach from=$buy_act.package item=buy_act_pkg name=buy_act_pkg} --><!-- {if ($buy_act_pkg.other_goods_id)} -->赠品<a style="" target="_blank" href="{$buy_act_pkg.gift_goods_url}" title="{$buy_act_pkg.other_goods_name}"><img src="/{$buy_act_pkg.gift_goods_thumb}" /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}" /></a><!-- {/if} -->×{$buy_act_pkg.give_number_activity}<!--{if not ($smarty.foreach.buy_act_pkg.last)}--><b style="font-size: 22px;">+</b><!-- {/if} -->
+										<!-- {/foreach} -->
+									<!-- {else} -->
+										<span>
+											买{$buy_act.buy_number_activity}送<!-- {if ($buy_act.other_goods_id)} -->赠品<a style="bottom: 0px;" target="_blank" href="{$buy_act.gift_goods_url}" title="{$buy_act.other_goods_name}"><img src="/{$buy_act.gift_goods_thumb}"  /></a><!-- {else} -->原品<a style="" href="javascript:void(0)" title="{$goods.goods_name}"><img src="/{$goods.goods_thumb}"  /></a><!-- {/if} -->×{$buy_act.give_number_activity}
+										</span>
+									<!-- {/if} -->
+								</div>
+							<!-- {/foreach} -->
 							</div>
-						<!-- {/foreach} -->
+						</div>
 					<!-- {/if} -->
 					
         		<!-- {if $goods.is_shipping} -->(<span style="color:#FF0000;">{$lang.free_goods}</span>)<!-- {/if} -->
@@ -862,7 +867,7 @@
 		  <div class="h15"></div>
 		  <h3 class="c-tit3" style="float: left;width: 20%;">订单备注</h3>
 		  <div class="postscript" style="float: left;width: 80%">
-		  		<textarea name="postscript" rows="3" cols="" 
+		  		<textarea name="postscript" rows="2" cols="" 
 		  		style="width: 100%" 
 		  		placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
 		  </div>

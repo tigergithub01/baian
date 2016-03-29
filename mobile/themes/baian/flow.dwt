@@ -915,7 +915,7 @@
         <div class="h15"></div>
 		<div class="h"></div>
 		
-		<h3 class="s-nav-t"><a href="javascript:void(0);" onclick="nav_div($('.jsxx'))">使用积分/红包</a></h3>
+		<h3 class="s-nav-t"><a class="integral_bonus" href="javascript:void(0);" onclick="nav_div($('.jsxx'))">使用积分/红包</a></h3>
 		<div class="h"></div>
 		
 		<div class="jsxx m-pop">
@@ -1501,10 +1501,10 @@
 		</header>
 				
 	  <div class="c"></div>
-	   <div class="flowBox mod2">
+	   <div class="flowBox mod2 w-box pay_done">
          <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
          
-         <h6 style="text-align:center; margin-top:20px; border-bottom:#C91422 2px solid; padding-bottom:10px;">{$lang.remember_order_number}: <font style="color:red">{$order.order_sn}</font></h6>
+         
          
          <!-- {if $nfsum > 4} -->
          <!--<form action="flow.php?step=deposit" id="depositForm" name="depositForm" method="post">
@@ -1516,29 +1516,43 @@
          
           <table width="100%" align="center" border="0" cellpadding="10" cellspacing="0" bgcolor="#fff" style="border-bottom:1px solid #ddd; margin:20px auto;" >
             <tr>
-              <td align="center" bgcolor="#FFFFFF">
-              <!--{if $order.shipping_name}-->{$lang.select_shipping}: <strong>{$order.shipping_name}</strong>，<!--{/if}-->{$lang.select_payment}: <strong>{$order.pay_name}</strong>。{$lang.order_amount}: <strong style="color: red;font-size: 19px;font-weight: bold;">{$total.amount_formated}</strong>
+              <td align="left" bgcolor="#FFFFFF">
+              	<p class="info">
+              	<span style="text-align:center; margin-top:20px; padding-bottom:10px;">{$lang.remember_order_number}: <font style="color:#ea5504;">{$order.order_sn}</font></span>
+              	</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" bgcolor="#FFFFFF">
+              <p class="info">
+              <span><!--{if $order.shipping_name}-->{$lang.select_shipping}: <font style="color: #ea5504">{$order.shipping_name}</font><!--{/if}--></span>
+              
+              <span class="payment">{$lang.select_payment}: <font style="color: #ea5504">{$order.pay_name}</font></span>
+              
+              </p>
+              <p class="info">
+              	{$lang.order_amount}: <font style="color: red;font-size: 1.0em;">{$total.amount_formated}</font><p>
               </td>
             </tr>
             
             <!-- {if $pay_online} -->
             <!-- 如果是线上支付则显示支付按钮 -->
-            <tr class="online_pay">
-              <td align="center" bgcolor="#FFFFFF">{$pay_online}</td>
+            <tr>
+              <td align="center" bgcolor="#FFFFFF" class="online_pay" >{$pay_online}</td>
             </tr>
             <!-- {/if} -->  
                       
-            <tr>
+            <!-- <tr>
               <td align="center" bgcolor="#FFFFFF">{$order.pay_desc}</td>
-            </tr>
+            </tr> -->
 			<style type="text/css">
 				.online_pay input[type="submit"],.online_pay input[type="button"]{
 				background-color: red;
 				color: white;
-				height: 40px;
-				line-height: 40px;
-				width: 180px;
-				font-size: 16px;
+				height: 55px;
+				line-height: 55px;
+				width: 80%;
+				font-size: 1em;
 				font-weight: bolder;
 				border: 2px solid;
 				border-radius: 6px;
@@ -1571,7 +1585,7 @@
           </div>
           <!--{/if}-->
           
-          <p style="text-align:center; margin-bottom:20px;" class="submit_back">{$order_submit_back}</p>
+          <!-- <p style="text-align:center; margin-bottom:20px;" class="submit_back">{$order_submit_back}</p> -->
           </div>
           <style>
           .submit_back a{ color:#F00;}

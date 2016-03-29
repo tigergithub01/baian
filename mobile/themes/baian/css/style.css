@@ -515,7 +515,8 @@ input.btn4{border: 0;}
 	-------[=确认订单信息]-------
 ********************************/
 .s-nav-t{line-height: 60px;background: #fff;border-bottom: 1px solid #ddd;}
-.s-nav-t a{display: block;padding: 0 20px;background: url(../images/a2.png) no-repeat right center;color: #ea5504;}
+.s-nav-t a{display: block;padding: 0 20px;background: url(../images/a2.png) no-repeat right center;/* color: #ea5504; */}
+.s-nav-t a.integral_bonus{color: #ea5504;}
 
 .ul-pro-list .cx-num{float: right;font-size: 0.83em;}
 .ul-pro-list .cx-num em{font-style: normal;}
@@ -1129,7 +1130,7 @@ input.error {
 .notice{color: red;font-size: 16px;}
 #ECS_ORDERTOTAL {/* padding:5px 20px 5px 20px; */}
 #ECS_ORDERTOTAL .detail_pay_info {padding:5px 20px 5px 20px;}
-#ECS_ORDERTOTAL .red{color: #f00 !important;font-size: 1.5em;}
+#ECS_ORDERTOTAL .red{color: #f00 !important;font-size: 1.0em;}
 #ECS_ORDERTOTAL p{font-size: .70em;}
 .address_box{padding:5px 20px 5px 20px;}
 .inv_box{padding:5px 20px 5px 20px;}
@@ -1160,3 +1161,9 @@ input.error {
 .user_center_cmt .top span{	display: block;float: right;}
 .user_center_cmt li{border: 0px;border-top: 1px solid #dcdddd}
 .user_center_cmt .img img{width: 100px;height: 100px;margin-left: 15px;}
+
+/* 订单提交成功支付页面 */
+.pay_done{}
+.pay_done p.info{min-height: 55px;/* line-height: 40px; */padding: 5px 20px 5px 20px;}
+.pay_done .online_pay{padding: 20px 20px 20px 20px;}
+.pay_done .payment{padding-left: 20px;}

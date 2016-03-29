@@ -515,7 +515,7 @@ input.btn4{border: 0;}
 	-------[=确认订单信息]-------
 ********************************/
 .s-nav-t{line-height: 60px;background: #fff;border-bottom: 1px solid #ddd;}
-.s-nav-t a{display: block;padding: 0 20px;background: url(../images/a2.png) no-repeat right center;}
+.s-nav-t a{display: block;padding: 0 20px;background: url(../images/a2.png) no-repeat right center;color: #ea5504;}
 
 .ul-pro-list .cx-num{float: right;font-size: 0.83em;}
 .ul-pro-list .cx-num em{font-style: normal;}
@@ -1121,13 +1121,14 @@ input.error {
 
 /* 订单提交页面 */
 .txt_consignee{padding-left: 5px;}
-.label_addr{display: inline-block;}
-.label_shipping_pay{display: inline-block;}
+.label_addr{display: inline-block;color: #ea5504;}
+.label_shipping_pay{display: inline-block;color: #ea5504;}
 .txt_shipping_name{margin-left: 5px;}
 .txt_payment_name{margin-left: 5px;}
 .txt_pickout_point{display: inline;position: relative;top: -6px;}
 .notice{color: red;font-size: 16px;}
-#ECS_ORDERTOTAL {padding:5px 20px 5px 20px;}
+#ECS_ORDERTOTAL {/* padding:5px 20px 5px 20px; */}
+#ECS_ORDERTOTAL .detail_pay_info {padding:5px 20px 5px 20px;}
 #ECS_ORDERTOTAL .red{color: #f00 !important;font-size: 1.5em;}
 #ECS_ORDERTOTAL p{font-size: .70em;}
 .address_box{padding:5px 20px 5px 20px;}

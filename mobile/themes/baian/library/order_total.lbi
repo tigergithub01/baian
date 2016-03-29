@@ -1,5 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="/js/utils.js"></script>
+  <div class="w-box detail_pay_info" >
   <!-- {if $smarty.session.user_id > 0 and ($config.use_integral or $config.use_bonus)} -->
   <p>    {$lang.complete_acquisition}
       <!-- {if $config.use_integral} 是否使用积分-->
@@ -45,10 +46,20 @@
       - {$lang.use_bonus}: {$total.bonus_formated}
       <!-- {/if} -->    
   <!-- {/if} 使用余额或积分或红包 -->
- {$lang.total_fee}: <span class="red">{$total.amount_formated}</span>
+ 
+	</p>
+	
+	</div>
+	
+	<div class="h"></div>
+ 		<div class="w-box goto-buy">
+ 		{$lang.total_fee}: <span class="red">{$total.amount_formated}</span>
   {if $is_group_buy}
   {$lang.notice_gb_order_amount}{/if}
   <!--{if $total.exchange_integral }消耗积分--> +
 	{$lang.notice_eg_integral}{$total.exchange_integral}
 	<!--{/if}-->
-	</p>
+	
+ 		
+	<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
+	</div>

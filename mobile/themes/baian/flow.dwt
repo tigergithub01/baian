@@ -868,7 +868,7 @@
 		  <h3 class="c-tit3" style="float: left;width: 20%;">订单备注</h3>
 		  <div class="postscript" style="float: left;width: 80%">
 		  		<textarea name="postscript" rows="2" cols="" 
-		  		style="width: 100%;font-size: .6em" 
+		  		style="width: 100%;font-size: 0.83em" 
 		  		placeholder="限45个字（定制类商品，请将购买需求在备注中做详细说明）"></textarea>
 		  </div>
 	  </div>     
@@ -898,7 +898,7 @@
            {html_options options=$inv_type_list selected=$order.inv_type}</select>
            <!-- {/if} -->
            <label class="invoice_title" style="">{$lang.invoice_title}</label>
-           <input style="font-size: .6em" name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
+           <input style="font-size: 0.83em" name="inv_payee" type="text" placeholder="填写个人名称/公司名称" class="inputBg" id="ECS_INVPAYEE" size="50" {if !$order.need_inv}disabled="true"{/if} value="{$order.inv_payee}" onblur="changeNeedInv()" />
            
          	<!-- 
          	{$lang.invoice_content}
@@ -987,7 +987,7 @@
        <!-- 结算信息 -使用积分红包余额end -->
        
    		<!-- 订单付款汇总start -->
-		<div class="w-box" id="ECS_ORDERTOTAL" >
+		<div class="w-box" id="ECS_ORDERTOTAL" style="background-color: transparent;">
 		<!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
 		</div>	
 		<!-- 订单付款汇总end -->
@@ -995,14 +995,15 @@
        
 	         
         <!-- 订单提交start -->
+        <div style="display: none;">
         <div class="h"></div>
  		<div class="w-box goto-buy">
 			<input type="hidden" value="{$smarty.session.flow_consignee.address_id}" id="address_id"/>
 	 		<input type="hidden" name="step" value="done"/>
-	 		<input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/>
+	 		<!-- <input type="submit" class="btn" id="btn_submit_order"  value="提交订单"/> -->
 		</div>
 		<div class="h"></div>
-		
+		</div>
  		<!-- 订单提交end -->
    			
    		</form>  

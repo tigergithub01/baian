@@ -147,10 +147,10 @@ $_LANG['not_fount_consignee'] = '对不起，您选定的收货地址不存在�
 
 $_LANG['goods_amount_not_enough'] = '您购买的商品没有达到本店的最低限购金额 %s ，不能提交订单。';
 $_LANG['balance_not_enough'] = '您的余额不足以支付整个订单，请选择其他支付方式';
-$_LANG['select_shipping'] = '您选定的配送方式为';
-$_LANG['select_payment'] = '您选定的支付方式为';
-$_LANG['order_amount'] = '您的应付款金额为';
-$_LANG['remember_order_number'] = '感谢您在本店购物！您的订单已提交成功，请记住您的订单号';
+$_LANG['select_shipping'] = '配送方式';
+$_LANG['select_payment'] = '支付方式';
+$_LANG['order_amount'] = '应付款金额（含运费）';
+$_LANG['remember_order_number'] = '订单已提交成功，订单号: ';
 $_LANG['back_home'] = '<a href="index.php">返回首页</a>';
 $_LANG['goto_user_center'] = '<a href="user.php">用户中心</a>';
 $_LANG['order_submit_back'] = '您可以 %s 或去 %s';

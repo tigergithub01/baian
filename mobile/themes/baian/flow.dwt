@@ -1143,6 +1143,11 @@
         				//TODO:重新刷新页面，计算的逻辑太多了
         				//window.location.href = 'flow.php?step=checkout';
         				order_shipping_payment_total();
+        				
+        				//清空配送与支付方式：
+        				$("#txt_shipping_name").text('');
+        				$("#txt_payment_name").text('');
+        				
         				close_div($('.shou-info'));
         				close_div($('#addr_box_'+address_id));
         				$(".ps-zf .dn").hide();
@@ -1480,6 +1485,22 @@
 		  }else{
 			$(obj).parent().removeClass("checked");
 		  }
+		}
+		
+		/*为了方便radiobox选择做的辅助功能，因为样式的缺陷，先这样解决**/
+		function select_alias(obj){
+			var alias_id = $(obj).attr("alias_id");
+			console.debug(alias_id);
+			var __targetObj = $("input[type='radio'][alias_id='"+alias_id+"']");
+			console.debug(__targetObj);
+			//$("input[type='radio'][name='"+$(obj).prop('name')+"']").parent().removeClass("checked");  
+			//$(obj).parent().addClass("checked");
+			$("input[type='radio'][name='"+__targetObj.prop('name')+"']").attr('checked',false);  
+			__targetObj.attr('checked',true);	
+			$("input[type='radio'][name='"+__targetObj.prop('name')+"']").change();
+			__targetObj.click();
+			//$("input[type='radio'][alias_id='"+alias_id+"']").click();
+			//console.debug($("input[type='radio'][alias_id='"+alias_id+"']"));
 		}
 		
 		</script>

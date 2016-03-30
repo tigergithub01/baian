@@ -415,7 +415,7 @@ input.btn3{border: 0;cursor: pointer;}
 .lz-sales span{/* display: inline-block; */width: 50px;height: 50px;
 	/* border: 1px solid #dcdddd; */vertical-align: middle;/* margin: 0 10px; */
 }
-.lz-sales img{width: 45px;height: 45px;/* margin-bottom: -10px; */position: relative;top: 10px;margin-left:3px;
+.lz-sales img{width: 60px;height: 60px;/* margin-bottom: -10px; */position: relative;top: 10px;margin-left:3px;
 }
 .lz-sales em{font-style: normal;color: #595757;}
 
@@ -486,7 +486,7 @@ input.btn4{border: 0;}
 .table-divide-pay tr{border-bottom: 1px solid #ddd;}
 .table-divide-pay th{font-weight: normal;padding-left: 20px;width: 5em;}
 .table-divide-pay td{padding: 0 20px;font-size: 0.83em;}
-.table-divide-pay .radio{float: right;width: 30px;height: 30px;margin-top: 15px;
+.table-divide-pay .radio{float: right;width: 50px;height: 30px;margin-top: 15px;
 	background: url(../images/i-check-bg.png) no-repeat left top;cursor: pointer;}
 .table-divide-pay .radio.checked{background-position: 0 -100px;}
 .table-divide-pay .top{overflow: hidden;line-height: 60px;height: 60px;}

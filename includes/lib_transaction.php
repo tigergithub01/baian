@@ -1753,7 +1753,9 @@ function getOrderHandler($row){
         		if(!is_order_backed($row['order_id'])){
         			$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
         		}
-        	}
+        	}else{
+        		$handler .= "<a href=\"user.php?act=order_detail&order_id=" .$row['order_id']. '">' .$GLOBALS['_LANG']['view_order']. '</a>';
+        	}        	
         }
         else if ($row['order_status'] == OS_CANCELED){
         	//added by tiger.guo 20151220

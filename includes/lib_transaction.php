@@ -463,7 +463,8 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
         $row['shipping_status'] = ($row['shipping_status'] == SS_SHIPPED_ING) ? SS_PREPARING : $row['shipping_status'];
         
         //综合状态
-        $row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status']);
+        $payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $row[pay_id]"); 
+        $row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status'],$payment_is_cod);
         $row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
         
         $row['order_status'] = $GLOBALS['_LANG']['os'][$row['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$row['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$row['shipping_status']];
@@ -701,7 +702,7 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 			" og.rec_id, og.goods_id, og.goods_name, og.goods_sn, og.market_price, og.goods_number, " .
 			" og.goods_price, og.goods_attr, og.is_real, og.parent_id, og.is_gift, " .
 			" og.goods_price * og.goods_number AS subtotal, og.extension_code, " .
-			" g.goods_thumb , g.goods_img, og.product_id " .
+			" g.goods_thumb , g.goods_img, og.product_id, o.pay_id " .
 			"FROM " . $GLOBALS['ecs']->table('order_goods') . ' AS og ' .
 			'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON (og.goods_id = g.goods_id) ' .
 			"LEFT JOIN ".  $GLOBALS['ecs']->table('order_info') ." AS o ON (og.order_id=o.order_id) ".
@@ -737,7 +738,8 @@ function get_user_comment_goods($user_id, $num = 10, $start = 0, $commented=-1)
 		
 		
 		//综合状态
-		$row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status']);
+		$payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $row[pay_id]");
+		$row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status'],$payment_is_cod);
 		$row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
 		
 		$row['subtotal']     = price_format($row['subtotal'], false);
@@ -1655,7 +1657,9 @@ function get_order_detail($order_id, $user_id = 0)
     
     $order['order_time'] =  local_date($GLOBALS['_CFG']['time_format'], $row['order_time']);
     $order['order_status_name'] = $GLOBALS['_LANG']['os'][$order['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$order['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$order['shipping_status']];
-    $order['composite_status'] = get_order_cs_status($order['order_status'], $order['shipping_status'], $order['pay_status']);
+    
+    $payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $order[pay_id]");
+    $order['composite_status'] = get_order_cs_status($order['order_status'], $order['shipping_status'], $order['pay_status'],$payment_is_cod);
     $order['composite_status_name'] = $GLOBALS['_LANG']['cs'][$order['composite_status']];
     
     $order['handler'] = getOrderHandler($order);
@@ -1696,6 +1700,9 @@ function getOrderHandler($row){
 		$handler = "";
 	
 		$pay_online = get_order_pay_online($row);
+		
+		//是否货到付款
+		$payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $row[pay_id]");
     	
     	if ($row['order_status'] == OS_UNCONFIRMED)
         {
@@ -1741,7 +1748,7 @@ function getOrderHandler($row){
         }
         else if ($row['order_status'] == OS_CONFIRMED){
         	//added by tiger.guo 20151220
-        	if ($row['pay_status'] == PS_UNPAYED){
+        	if ($row['pay_status'] == PS_UNPAYED && !$payment_is_cod){
         		$handler = $pay_online;
         		$handler .= "<a class=\"a-btn\" href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
         	}else if(in_array($row['shipping_status'], array(SS_SHIPPED, SS_RECEIVED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){

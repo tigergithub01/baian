@@ -689,7 +689,7 @@
 									  <!--{foreach from=$xqdibu name=ban item=banner}-->
 										<!-- <a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a> -->
 									  <!--{/foreach}-->
-									  <!-- { if $relative_module && $relative_module.header_content} -->
+									  <!-- { if $relative_module && $relative_module.footer_content} -->
 									 	{$relative_module.footer_content}
 									 <!-- {/if} -->
 								</div>

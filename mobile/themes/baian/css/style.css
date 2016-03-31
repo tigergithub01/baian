@@ -442,7 +442,7 @@ input.btn3{border: 0;cursor: pointer;}
 .chart_oper_all .collect{float: left;display: block;margin-left: 20px;}
 .chart_oper_all .collect a{display: block;width: 130px;font-size: .83em;text-align: center;}
 
-.chart_operate{margin: 20px 0 0 0px;}
+.chart_operate{margin: 20px 0 0 0px;clear: left;}
 .chart_operate .drop{float: left;}
 .chart_operate .drop a{display: block;width: 120px;font-size: .83em;text-align: center;}
 .chart_operate .collect{float: left;display: block;margin-left: 20px;}

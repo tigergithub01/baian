@@ -50,8 +50,12 @@
 	                  </a>                  
 	                 </h3>    
                  <!-- {elseif $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+                  <div class="pic">	
+					  <a href="javascript:void(0)" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
+		      	  </div>
                   <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#DD0000;">（{$lang.remark_package}）</span></a>
                   <div id="suit_{$goods.goods_id}" style="display:none">
+                  	  	
                       <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
                         
                         <div style="display: block;min-height: 60px;float: left; margin-top: 5px;">

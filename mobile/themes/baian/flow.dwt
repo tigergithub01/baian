@@ -739,6 +739,7 @@
         <ul class="ul-pro-list w-box" style="border-top: 0;">
             <!-- {foreach from=$goods_list item=goods} -->
              <li>
+             	<!-- {if $goods.goods_id gt 0 && $goods.extension_code neq 'package_buy'} 商品 -->
             	<div class="pic">
             		{if $goods.is_momsuit eq 1}
 		            	<a {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'}style="display:none;"{/if} href="momsuit.php?suit_id={$goods.goods_id}">
@@ -748,14 +749,19 @@
 			        	<img src="/{$goods.goods_thumb}"  border=0 ></a>
 		            {/if}
             	</div>
+            	<!-- {/if} -->
             	
-            	<div class="txt">
+            	
 					
 						<!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+							<div class="pic">	
+							  <a href="javascript:void(0)" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
+				      	    </div>
 				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+				      		<span class="price">{$goods.formated_goods_price}</span>
 				      		<div id="suit_{$goods.goods_id}" style="display:none">
 					          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-						    		<div style="display: block;min-height: 60px; margin-top: 5px;">
+						    		<div style="display: block;min-height: 60px; margin-top: 5px;clear: both;">
 						    			<div class="pic">
 					                        <a href="{$package_goods_list.goods_url}">
 					                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />
@@ -785,13 +791,15 @@
 					            	<span style="color:#FF0000">（{$lang.largess}）</span>
 				                <!-- {/if} -->
 				             </h3>   
+				             
+				             <span class="price">{$goods.formated_goods_price}</span>
 			          <!-- {/if} -->
 						
-					
-					<span class="price">{$goods.formated_goods_price}</span>
-					
+				
 					
 					
+					
+				<div class="txt">		
 					<span class="cx-num">
 						数量：<em class="yellow">{$goods.goods_number}</em>
 					</span>
@@ -1517,7 +1525,7 @@
         <!-- #订单提交成功开始 -->
 		
 		<header class="head">
-			<a href="javascript:void(0)" class="back-btn"></a>
+			<!-- <a href="javascript:void(0)" class="back-btn"></a> -->
 			<h2>订单支付</h2>
 		</header>
 				

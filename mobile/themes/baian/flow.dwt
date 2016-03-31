@@ -757,11 +757,11 @@
 							<div class="pic">	
 							  <a href="javascript:void(0)" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
 				      	    </div>
-				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="suit_buy_title">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
 				      		<span class="price">{$goods.formated_goods_price}</span>
 				      		<div id="suit_{$goods.goods_id}" style="display:none">
 					          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-						    		<div style="display: block;min-height: 60px; margin-top: 5px;clear: both;">
+						    		<div class="suit_buy_content">
 						    			<div class="pic">
 					                        <a href="{$package_goods_list.goods_url}">
 					                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />

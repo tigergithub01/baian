@@ -11,7 +11,7 @@
 			     		<h3><a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a></h3>
 			      		<div id="suit_{$goods.goods_id}" style="display:none">
 				          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
-					    		<div style="display: block;min-height: 60px;float: left; margin-top: 5px;">
+					    		<div class="suit_buy_content">
 					    			<div class="pic">
 				                        <a href="{$package_goods_list.goods_url}" style="float: left;display: block;">
 				                        	<img src="/{$package_goods_list.goods_thumb}" border="0" title="" />

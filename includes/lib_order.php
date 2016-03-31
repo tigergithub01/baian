@@ -507,6 +507,10 @@ function order_goods($order_id)
         if ($row['extension_code'] == 'package_buy')
         {
             $row['package_goods_list'] = get_package_goods($row['goods_id']);
+            if($row['package_goods_list'] && count($row['package_goods_list']>0)){
+            	$row['goods_thumb'] = $row['package_goods_list'][0]['goods_thumb'];
+            }
+            
         }
         
         $row['goods_thumb']      = get_image_path($row['goods_id'], $row['goods_thumb'], true);
@@ -999,6 +1003,9 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
         if ($value['extension_code'] == 'package_buy')
         {
             $arr[$key]['package_goods_list'] = get_package_goods($value['goods_id']);
+            if($arr[$key]['package_goods_list'] && count($arr[$key]['package_goods_list']>0)){
+            	$arr[$key]['goods_thumb'] = $arr[$key]['package_goods_list'][0]['goods_thumb'];
+            }
         }
         
         /* 订单提交时显示买几送几 */        
@@ -1944,6 +1951,10 @@ function get_cart_goods($is_checked)
         if ($row['extension_code'] == 'package_buy')
         {
             $row['package_goods_list'] = get_package_goods($row['goods_id']);
+            if($row['package_goods_list'] && count($row['package_goods_list']>0)){
+            	$row['goods_thumb'] = $row['package_goods_list'][0]['goods_thumb'];
+            }
+           
         }
         
         /**商品链接**/

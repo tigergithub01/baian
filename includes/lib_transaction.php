@@ -455,6 +455,13 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     {
         
     	$row['handler'] = getOrderHandler($row);
+    	
+    	//是否已评价
+    	$is_commented = is_commented($row['order_id']);
+    	
+    	//是否已申请退货
+    	$is_order_backed = is_order_backed($row['order_id']);
+    	
 	
     	$row['original_order_status'] = $row['order_status'];
     	$row['original_shipping_status'] = $row['shipping_status'];
@@ -483,6 +490,8 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
 		        	   'original_order_status' => $row['original_order_status'],
 		        	   'original_shipping_status' => $row['original_shipping_status'],
 		        	   'original_pay_status' => $row['original_pay_status'],
+        			   'is_commented' => $is_commented,
+        			   'is_order_backed' => $is_order_backed,
         );
     }
 

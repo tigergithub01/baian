@@ -743,10 +743,19 @@
        	});
 		</script>
       
+		
 		<header id="head">
 			<a href="javascript:history.back(-1)" class="back-btn"></a>
-			<h2>退换货管理</h2>
+			<h2>客户服务</h2>
 		</header>
+
+		<ul class="ul-tab1 fourtab">
+			<li><a href="user.php?act=comment_list">我的评价</a></li>
+			<li><a href="user.php?act=message_list">咨询&投诉</a></li>
+			<li><a href="user.php?act=my_advice">建议有奖</a></li>
+			<li class="on"><a href="user.php?act=order_back">退换货管理</a></li>
+		</ul>
+		
 		
 		<ul class="m-list2">
 			<!--{foreach from=$order_back_list item=order_back}-->	
@@ -1402,7 +1411,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<li class="<!-- {if ($status==null or empty($status) or $status==-1)} -->on<!-- {/if} -->"><a href="user.php?act=order_list">全部</a></li>
 			<li class="<!-- {if ($status==100)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=100">待付款</a></li>
 			<li class="<!-- {if ($status==101)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=101">待发货</a></li>
-			<li class="<!-- {if ($status==102)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=102">待评价</a></li>
+			<li class="<!-- {if ($status==102)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=102">已完成</a></li>
 			<li class="<!-- {if ($status==2)} -->on<!-- {/if} -->"><a href="user.php?act=order_list&status=2">已取消</a></li>
 			<!-- <li><a href="user.php?act=order_list&status=4">已退货</a></li> -->
 		</ul>

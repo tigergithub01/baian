@@ -599,6 +599,9 @@ input.btn4{border: 0;}
 .ul-tab1 li.on{border-bottom: 1px solid red;}
 .ul-tab1 li.on a{color: #ea5504;}
 
+.ul-tab1.fourtab{}
+.ul-tab1.fourtab li{width: 25%;float: left;height: 55px;}
+
 .m-list1{}
 .m-list1 li{padding: 20px 15px;overflow: hidden;margin-bottom: 10px;position: relative;
 	border: 1px solid #dcdddd;border-left: 0;border-right: 0;background-color: #fff;

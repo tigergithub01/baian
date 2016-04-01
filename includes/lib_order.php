@@ -1082,7 +1082,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
     $packages_row['free_shipping'] = 1;
 
     /* 计算超值礼包内商品的相关配送参数 */
-    $sql = 'SELECT goods_id, goods_number, goods_price FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE extension_code = 'package_buy' AND session_id = '" . SESS_ID . "'";
+    $sql = 'SELECT goods_id, goods_number, goods_price FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE extension_code = 'package_buy' AND session_id = '" . SESS_ID . "' AND is_checked = 1";
     $row = $GLOBALS['db']->getAll($sql);
 
     if ($row)

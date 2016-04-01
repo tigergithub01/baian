@@ -649,9 +649,11 @@ elseif ($_REQUEST['step'] == 'checkout')
     $insure_disabled   = true;
     $cod_disabled      = true;
 
-    // 查看购物车中是否全为免运费商品，若是则把运费赋为零
+    // 查看购物车中是否全为免运费商品，若是则把运费赋为零,下面这段代码可能没用 start
     $sql = 'SELECT count(*) FROM ' . $ecs->table('cart') . " WHERE `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
     $shipping_count = $db->getOne($sql);
+    //上面这段代码可能没用end
+    
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
     $shipping_count = get_not_free_shipping_count($region);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  

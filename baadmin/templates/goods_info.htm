@@ -524,7 +524,7 @@
              <td colspan="2">
                <fieldset style="border:1px solid #DDEEF2">
   <legend style="background:#FFF">免运费所辖地区:</legend>
-  <table style="width:600px" align="center">
+  <table style="width:80%;" align="center">
   <tr>
     <td id="regionCell">
       {foreach from=$regions item=region key=id}
@@ -541,18 +541,23 @@
           {/foreach}
         </select>
         <span  style="vertical-align: top">省份： </span>
-        <select name="province" id="selProvinces" onchange="region.changed(this, 2, 'selCities')" size="10" style="width:80px">
+        <select name="province" id="selProvinces" onchange="region.changed(this, 2, 'selCities')" size="10" style="width:80px" multiple="multiple">
           <option value=''>{$lang.select_please}</option>
         </select>
         <span  style="vertical-align: top"> 城市: </span>
-        <select name="city" id="selCities" onchange="region.changed(this, 3, 'selDistricts')" size="10" style="width:80px">
+        <select name="city" id="selCities" onchange="region.changed(this, 3, 'selDistricts')" size="10" style="width:80px" multiple="multiple">
           <option value=''>{$lang.select_please}</option>
         </select>
         <span  style="vertical-align: top">区/县：</span>
-        <select name="district" id="selDistricts" size="10" style="width:130px">
+        <select name="district" id="selDistricts" size="10" style="width:130px" multiple="multiple">
           <option value=''>{$lang.select_please}</option>
         </select>
-        <span  style="vertical-align: top"><input type="button" value="+" class="button" onclick="addRegion()" /></span>
+        <span  style="vertical-align: top">
+        <input type="button" value="+" class="button" onclick="addRegion()" />
+        </span>
+        <span style="vertical-align: bottom;display: block;">
+        <input type="button" value="清空所辖地区" class="button" onclick="$('#regionCell').empty();" />
+        </span>	
     </td>
   </tr>
   </table >
@@ -823,7 +828,8 @@
       document.forms['theForm'].reset();
   }
 
-      /*add by wangz设置某个商品在在某些地区可以包邮，某些地区不能*/   
+      /*add by wangz设置某个商品在在某些地区可以包邮，某些地区不能*/  
+      /* 区域可以多选  */
       function addRegion()
     {
         var selCountry  = document.forms['theForm'].elements['country'];
@@ -831,11 +837,14 @@
         var selCity     = document.forms['theForm'].elements['city'];
         var selDistrict = document.forms['theForm'].elements['district'];
         var regionCell  = document.getElementById("regionCell");
-
+        
+        var __selectedOptions = null;
+	
         if (selDistrict.selectedIndex > 0)
         {
             regionId = selDistrict.options[selDistrict.selectedIndex].value;
             regionName = selDistrict.options[selDistrict.selectedIndex].text;
+            __selectedOptions =  $("#selDistricts").find("option:selected");
         }
         else
         {
@@ -843,6 +852,7 @@
             {
                 regionId = selCity.options[selCity.selectedIndex].value;
                 regionName = selCity.options[selCity.selectedIndex].text;
+                __selectedOptions =  $("#selCities").find("option:selected");
             }
             else
             {
@@ -850,6 +860,7 @@
                 {
                     regionId = selProvince.options[selProvince.selectedIndex].value;
                     regionName = selProvince.options[selProvince.selectedIndex].text;
+                    __selectedOptions =  $("#selProvinces").find("option:selected");
                 }
                 else
                 {
@@ -857,6 +868,7 @@
                     {
                         regionId = selCountry.options[selCountry.selectedIndex].value;
                         regionName = selCountry.options[selCountry.selectedIndex].text;
+                        __selectedOptions =  $("#selCountries").find("option:selected");
                     }
                     else
                     {
@@ -865,11 +877,30 @@
                 }
             }
         }
-
+	
+        
+        if(__selectedOptions!=null){
+        	$.each(__selectedOptions,function(i,v){
+        		var regionId = $(v).attr("value");
+        		var regionName = $(v).text();
+        		var __selCheckbox = $("#regionCell input[type='checkbox'][value='"+regionId+"']");
+        		/* console.debug(regionId);
+        		console.debug(regionName);
+        		console.debug(__selCheckbox); */
+        		if(__selCheckbox==null || __selCheckbox.length ==0){
+        			var checkboxHtml = "<input type='checkbox' name='regions[]' value='" + regionId + "' checked='true' /> " + regionName + "&nbsp;&nbsp;";
+        			$("#regionCell").append(checkboxHtml);
+        			//regionCell.innerHTML += "<input type='checkbox' name='regions[]' value='" + regionId + "' checked='true' /> " + regionName + "&nbsp;&nbsp;";
+        		}
+        		
+            });
+        }
         // 检查该地区是否已经存在
         
         
-        var exists = false;
+        
+        
+        /* var exists = false;
         //var $checkboxes = $("#regionCell").find("input[type='checkbox']");
         var $checkboxes = $("#regionCell input[type='checkbox']");
         $.each($checkboxes,function(i,v){
@@ -878,7 +909,7 @@
         		 alert('选定的地区已经存在。');
         		 return false;
         	}
-        });
+        }); */
         
         /* 
         for (i = 0; i < document.forms['theForm'].elements.length; i++)
@@ -895,10 +926,10 @@
         } */
         
         // 创建checkbox
-        if (!exists)
+       /*  if (!exists)
         {
           regionCell.innerHTML += "<input type='checkbox' name='regions[]' value='" + regionId + "' checked='true' /> " + regionName + "&nbsp;&nbsp;";
-        }
+        } */
     }
     /*add by wangz设置某个商品在在某些地区可以包邮，某些地区不能end*/ 
   

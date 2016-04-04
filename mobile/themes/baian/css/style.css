@@ -1182,7 +1182,7 @@ span.required{color: red;}
 .booking th{padding-right: 5px;}
 
 /*缺货登记列表页面*/
-.booking_list{font-size: 1em;}
+.booking_list{font-size: 22px;}
 .booking_list li{border-bottom: 1px solid #dcdddd;}
 .booking_list .goods_pic{ width: 155px; height: 155px;margin-right: 10px;float: left;
 }

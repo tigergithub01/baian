@@ -1733,10 +1733,10 @@ function getOrderHandler($row){
             	if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
             		$handler = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
             	}
-            	//申请退货
-            	if(!is_order_backed($row['order_id'])){
+            	//申请退货（已经确认收货的商品不能申请退货）
+            	/* if(!is_order_backed($row['order_id'])){
             		$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
-            	}
+            	} */
             	
             	if(!empty($row['invoice_no'])){
             		$handler .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
@@ -1760,12 +1760,12 @@ function getOrderHandler($row){
         	if ($row['pay_status'] == PS_UNPAYED && !$payment_is_cod){
         		$handler = $pay_online;
         		$handler .= "<a class=\"a-btn\" href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
-        	}else if(in_array($row['shipping_status'], array(SS_SHIPPED, SS_RECEIVED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
+        	}else if(in_array($row['shipping_status'], array(SS_SHIPPED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
         		//去评价
         		if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
         			$handler = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
         		}
-        		//申请退货
+        		//申请退货（已经确认收货的商品不能申请退货）
         		if(!is_order_backed($row['order_id'])){
         			$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
         		}

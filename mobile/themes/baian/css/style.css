@@ -1192,7 +1192,7 @@ span.required{color: red;}
 .booking_list .con p{font-size: 22px;line-height: 30px;color: #595757;}
 .booking_list .con p span{min-width: 210px;display: inline-block;}
 .booking_list .item{display: block;  padding: 5px 10px 5px 20px;}
-.booking_list .goods_title{padding: 0px 20px 5px 20px;margin-left: 20px;font-size: .83em;}
+.booking_list .goods_title{padding: 0px 20px 5px 20px;margin-left: 20px;/* font-size: .83em; */}
 .booking_list a.btn{  
   color: #ea5504;
   font-size: 21px;display: inline-block;
@@ -1200,5 +1200,5 @@ span.required{color: red;}
   text-align: center;}
 .booking_list  .goods_number{color: red;}
 .booking_list  .booking_time{color: red;}
-.booking_list  .dispose_note{font-size: .83em;}
+.booking_list  .dispose_note{/* font-size: .83em; */}
 .booking_list .status{padding: 20px 0px 10px 0px;color: #ea5504;}

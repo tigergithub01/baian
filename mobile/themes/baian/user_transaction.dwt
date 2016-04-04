@@ -2117,67 +2117,39 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		    
 		    <!--*缺货登记列表页面 start-->
 		    <!--{if $action eq 'booking_list'} -->
-		 <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now"><a href="/user.php?act=booking_list">缺货登记</a></li></div>
-		    <div class="blank"></div>
-		    
-		    <div class="s-myorder">
-			     <table class="s-order-table datalist">
-	                  <thead>
-	                      <tr>
-	                      	 <!--  <th>
-	                             	 
-	                          </th> -->
-	                          <th>
-	                             	 商品名称
-	                          </th>
-	                          <th>
-	                             	 订购数量
-	                          </th>
-	                          <th>
-	                             	 登记时间
-	                          </th>
-	                          <th>
-	                             	 处理备注
-	                          </th>
-	                          <th>
-	                             	 操作
-	                          </th>
-	                      </tr>
-	                  </thead>
-	                  <tbody>
-	                  	  <!--{foreach from=$booking_list item=goods}-->	
-	                      <tr>
-	                      	 <!--  <td>
-	                      	  		<input type='checkbox'/>
-	                      	  </td> -->
-	                          <td>
-	                              <div class="goods_pic"><a href="{$goods.url}"><img src="{$goods.goods_thumb}" alt=""></a></div>
-	                              <div class="goods_title"><a href="{$goods.url}">{$goods.goods_name|escape:html}</a></div>
-	                          </td>
-	                          <td>
-	                              <div class="total_money">{$goods.goods_number}</div>
-	                          </td>
-	                          <td>
-	                              <div class="total_money">{$goods.booking_time}</div>
-	                          </td>
-	                          <td>
-	                          	  {$goods.dispose_note}	
-	                          </td>
-	                          <td>
-						           {if $goods.is_dispose == 1}
-							        	已到货
-							        {else}
-							        	<a href="javascript:if (confirm('{$lang.confirm_remove_account}')) location.href='user.php?act=act_del_booking&id={$goods.rec_id}'" class="f6">{$lang.drop}</a> 
-							        {/if}
-	                          </td>
-	                      </tr>
-	                      <!--{/foreach} -->
-	                  </tbody>
-	              </table>
+		 
+		 	
+		 	<header id="head">
+				<a href="javascript:history.back(-1)" class="back-btn"></a>
+				<h2>缺货登记列表</h2>
+			</header>
+			
+			<ul class="booking_list w-box">
+				
+				 <!--{foreach from=$booking_list item=goods}-->
+				<li>
+					<div class="item">
+						<div class="goods_pic"><a href="{$goods.url}"><img src="/{$goods.goods_thumb}" alt=""></a></div>
+	                    <div class="goods_title"><a href="{$goods.url}">{$goods.goods_name|escape:html}</a></div>
+						<div style="clear: left;"></div>
+						<p><span>订购数量：</span><span class="goods_number">{$goods.goods_number}</span></p>
+						<p><span>登记时间：</span><span class="booking_time">{$goods.booking_time}</span></p>
+						<p><span>处理备注：</span><span class="dispose_note">{$goods.dispose_note}</span></p>
+						<p class="status">
+							{if $goods.is_dispose == 1}
+					        	已到货
+					        {else}
+					        	<a href="javascript:if (confirm('{$lang.confirm_remove_account}')) location.href='user.php?act=act_del_booking&id={$goods.rec_id}'" class="a-btn btn f6">{$lang.drop}</a> 
+					        {/if}
+						</p>
+					</div>
+				</li>
+				<!--{/foreach} -->
+			</ul>
+			<div class="h"></div>
+						    
 	              
 	              <!-- <input type="checkbox"/>全选   <a href="javascript:void(0)">批量删除</a> <a href="javascript:void(0)">批量加入购物车</a> -->
-	              
-              </div>
               
               <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
 		    <!--{/if} -->
@@ -2200,49 +2172,56 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 		        });
 		    	
 		    </script>
-		    <div class="hyzx"><li>交易管理</li><li><a href="/user.php?act=order_list">我的订单</a></li><li><a href="/user.php?act=collection_list">我的收藏夹</a></li><li><a href="/user.php?act=order_back">退换货管理</a></li><li class="now"><a href="/user.php?act=booking_list">缺货登记</a></li></div>
+		    
+			<header id="head">
+				<a href="javascript:history.back(-1)" class="back-btn"></a>
+				<h2>缺货登记</h2>
+				<a href="user.php?act=booking_list"  class="a-cla" style="width: auto;">缺货登记列表</a>
+			</header>
+			
+	
 		    <div class="blank"></div>
+		    
 		    <div class="s-myorder">
 		     <form action="user.php" method="post" id="formBooking" name="formBooking" onsubmit="">
-		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist"  style="line-height:30px; font-size:14px;">
+		    <table width="100%" border="0" cellpadding="5" class="s-order-table noborder datalist recive-table booking"  style="line-height:30px; font-size:14px;">
 		      <tr>
-		        <td align="right" bgcolor="#ffffff" class="title" style="width: 15%">{$lang.booking_goods_name}</td>
-		        <td bgcolor="#ffffff">{$info.goods_name}</td>
+		        <th  class="title" style="width: 200px;">{$lang.booking_goods_name}:</th>
+		        <td style="font-size: 20px;">{$info.goods_name}</td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.booking_amount}<span class="required">*</span>:</td>
-		        <td bgcolor="#ffffff"><input name="number" type="text" value="{$info.goods_number}" class="inputBg required isIntGtZero" /></td>
+		        <th >{$lang.booking_amount}<span class="required">*</span>:</th>
+		        <td ><input name="number" type="text" value="{$info.goods_number}" class="inputBg required isIntGtZero" /></td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.describe}:</td>
-		        <td bgcolor="#ffffff"><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue">{$info.goods_desc|escape}</textarea>
+		        <th >{$lang.describe}:</th>
+		        <td ><textarea name="desc" cols="50" rows="5" wrap="virtual" class="B_blue">{$info.goods_desc|escape}</textarea>
 		        </td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.contact_username}:</td>
-		        <td bgcolor="#ffffff"><input name="linkman" type="text" value="{$info.consignee|escape}" size="25"  class="inputBg required"/>
+		        <th >{$lang.contact_username}<span class="required">*</span>:</th>
+		        <td ><input name="linkman" type="text" value="{$info.consignee|escape}" size="25"  class="inputBg required"/>
 		        </td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.email_address}:</td>
-		        <td bgcolor="#ffffff"><input name="email" type="text" value="{$info.email|escape}" size="25" class="inputBg" /></td>
+		        <th >{$lang.email_address}:</th>
+		        <td ><input name="email" type="text" value="{$info.email|escape}" size="25" class="inputBg" /></td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">{$lang.contact_phone}<span class="required">*</span>:</td>
-		        <td bgcolor="#ffffff"><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg required isTel" /></td>
+		        <th >{$lang.contact_phone}<span class="required">*</span>:</th>
+		        <td ><input name="tel" type="text" value="{$info.tel|escape}" size="25" class="inputBg required isTel" /></td>
 		      </tr>
 		      <tr>
-		        <td align="right" bgcolor="#ffffff">&nbsp;</td>
-		        <td bgcolor="#ffffff"><input name="act" type="hidden" value="act_add_booking" />
+		        <td  colspan="2">
+		        	<input name="act" type="hidden" value="act_add_booking" />
 		          <input name="id" type="hidden" value="{$info.id}" />
 		          <input name="rec_id" type="hidden" value="{$info.rec_id}" />
-		          <input type="submit" name="submit" class="btn_submit" value="{$lang.submit_booking_goods}" />
+		          <input type="submit" name="submit" class="btn_submit btn4" value="{$lang.submit_booking_goods}" />
 		        </td>
 		      </tr>
 		    </table>
 		     </form>
 		    </div>
-		     </div>
 		    <!-- {/if} -->
     		<!--#缺货登记页面 end -->
     		

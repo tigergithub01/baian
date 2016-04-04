@@ -1174,3 +1174,31 @@ input.error {
 /* 购物车，提交订单，订单列表，订单详情页优惠套装  */
 .suit_buy_title{font-size: .83em;}
 .suit_buy_content{display: block;min-height: 60px;float: left; margin-top: 5px;font-size: .83em;}
+
+/* 必填星号标识 */
+span.required{color: red;}
+
+/* 缺货登记  */
+.booking th{padding-right: 5px;}
+
+/*缺货登记列表页面*/
+.booking_list{font-size: 1em;}
+.booking_list li{border-bottom: 1px solid #dcdddd;}
+.booking_list .goods_pic{ width: 155px; height: 155px;margin-right: 10px;float: left;
+}
+.booking_list .top em{font-style: normal;color: #ea5504;}
+.booking_list .top span{margin-right: 50px;}
+.booking_list .con{padding: 10px 20px;display: none;}
+.booking_list .con p{font-size: 22px;line-height: 30px;color: #595757;}
+.booking_list .con p span{min-width: 210px;display: inline-block;}
+.booking_list .item{display: block;  padding: 5px 10px 5px 20px;}
+.booking_list .goods_title{padding: 0px 20px 5px 20px;margin-left: 20px;font-size: .83em;}
+.booking_list a.btn{  
+  color: #ea5504;
+  font-size: 21px;display: inline-block;
+  width: 160px;
+  text-align: center;}
+.booking_list  .goods_number{color: red;}
+.booking_list  .booking_time{color: red;}
+.booking_list  .dispose_note{font-size: .83em;}
+.booking_list .status{padding: 20px 0px 10px 0px;color: #ea5504;}

@@ -273,7 +273,7 @@ function get_booking_list($user_id, $num, $start)
     {
         if (empty($row['dispose_note']))
         {
-            $row['dispose_note'] = 'N/A';
+            $row['dispose_note'] = '无';
         }
         
         $booking[] = array('rec_id'       => $row['rec_id'],

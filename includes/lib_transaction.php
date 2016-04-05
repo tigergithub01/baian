@@ -1276,10 +1276,11 @@ function del_delivery($order_id, $action_array)
  * @access  public
  * @param   int         $order_id       订单ID
  * @param   int         $user_id        用户ID
- *
+ * @param   int         $admin       	是否系统自动确认收货
+ * @param   int         $action_note       	操作订单日志
  * @return  bool        $bool
  */
-function affirm_received($order_id, $user_id = 0)
+function affirm_received($order_id, $user_id = 0,$admin = 0, $action_note = '')
 {
     /* 查询订单信息，检查状态 */
     $sql = "SELECT user_id, order_sn , order_status, shipping_status, pay_status FROM ".$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
@@ -1287,7 +1288,7 @@ function affirm_received($order_id, $user_id = 0)
     $order = $GLOBALS['db']->GetRow($sql);
 
     // 如果用户ID大于 0 。检查订单是否属于该用户
-    if ($user_id > 0 && $order['user_id'] != $user_id)
+    if ($user_id > 0 && $order['user_id'] != $user_id && $admin==0)
     {
         $GLOBALS['err'] -> add($GLOBALS['_LANG']['no_priv']);
 
@@ -1309,11 +1310,24 @@ function affirm_received($order_id, $user_id = 0)
     /* 修改订单发货状态为“确认收货” */
     else
     {
-        $sql = "UPDATE " . $GLOBALS['ecs']->table('order_info') . " SET shipping_status = '" . SS_RECEIVED . "' WHERE order_id = '$order_id'";
+    	if($admin>0){
+    		//查询发货10天内未确认收货的订单，系统自动确认收货
+    		$receive_order_days = empty($_CFG['receive_order_days'])?10:floatval($_CFG['receive_order_days']);
+    		if((gmtime() - intval($order['shipping_time'])) <= $receive_order_days * 3600 * 24 ){
+    			$GLOBALS['err']->add("订单发货超过".$receive_order_days."天才能自动确认收货");
+    			return false;
+    		}
+    	}
+    	
+    	$sql = "UPDATE " . $GLOBALS['ecs']->table('order_info') . " SET shipping_status = '" . SS_RECEIVED . "' WHERE order_id = '$order_id'";
         if ($GLOBALS['db']->query($sql))
         {
             /* 记录日志 */
-            order_action($order['order_sn'], $order['order_status'], SS_RECEIVED, $order['pay_status'], '', $GLOBALS['_LANG']['buyer']);
+        	if($admin>0){
+        		order_action($order['order_sn'], $order['order_status'], SS_RECEIVED, $order['pay_status'], $action_note, $user_id);
+        	}else{
+        		order_action($order['order_sn'], $order['order_status'], SS_RECEIVED, $order['pay_status'], '', $GLOBALS['_LANG']['buyer']);
+        	}
 
             return true;
         }

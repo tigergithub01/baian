@@ -2753,7 +2753,7 @@ function get_order_cs_status($order_status,$shipping_status,$pay_status,$payment
 		return CS_FINISHED;
 	}else if(in_array($order_status, array(OS_CONFIRMED, OS_SPLITED, OS_SPLITING_PART))
 			&& in_array($shipping_status, array(SS_UNSHIPPED, SS_PREPARING, SS_SHIPPED_ING))
-			&& (in_array($pay_status, array(PS_PAYED, PS_PAYING))) || $payment_is_cod){
+			&& (in_array($pay_status, array(PS_PAYED, PS_PAYING)) || $payment_is_cod)){
 		return CS_AWAIT_SHIP;
 	}else if(in_array($order_status, array(OS_CONFIRMED, OS_SPLITED))
 			&& (in_array($shipping_status, array(SS_SHIPPED, SS_RECEIVED)) || !$payment_is_cod)

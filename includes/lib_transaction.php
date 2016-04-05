@@ -1731,16 +1731,24 @@ function getOrderHandler($row){
         {
             $handler = "<a href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
         }
-        else if ($row['order_status'] == OS_SPLITED)
+        else if ($row['order_status'] == OS_SPLITED || $row['order_status'] == OS_CONFIRMED)
         {
-            /* 对配送状态的处理 */
+            /* 待收货*/
             if ($row['shipping_status'] == SS_SHIPPED)
             {
-                $handler = "<a class=\"s-btn1\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                //确认收货
+            	$handler = "<a class=\"s-btn1\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
                 if(!empty($row['invoice_no'])){
                 	$handler .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
                 }
+                
+            	//申请退货（已经确认收货的商品不能申请退货）
+        		if(!is_order_backed($row['order_id'])){
+        			$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
+        		} 
+                
             }
+            /* 已收货  */
             elseif ($row['shipping_status'] == SS_RECEIVED)
             {
 //                 @$row['handler'] = '<span style="color:red">'.$GLOBALS['_LANG']['ss_received'] .'</span>';
@@ -1756,36 +1764,13 @@ function getOrderHandler($row){
             		$handler .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
             	}
             }
-            else
-            {
-                if ($row['pay_status'] == PS_UNPAYED)
-                {
-                    $handler = "<a href=\"user.php?act=order_detail&order_id=" .$row['order_id']. '">' .$GLOBALS['_LANG']['pay_money']. '</a>';
-                }
-                else
-                {
-                    $handler = "<a href=\"user.php?act=order_detail&order_id=" .$row['order_id']. '">' .$GLOBALS['_LANG']['view_order']. '</a>';
-                }
-
-            }
-        }
-        else if ($row['order_status'] == OS_CONFIRMED){
-        	//added by tiger.guo 20151220
-        	if ($row['pay_status'] == PS_UNPAYED && !$payment_is_cod){
+            else if ($row['pay_status'] == PS_UNPAYED && !$payment_is_cod){
+            	//待支付
         		$handler = $pay_online;
         		$handler .= "<a class=\"a-btn\" href=\"user.php?act=cancel_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_cancel']."')) return false;\">".$GLOBALS['_LANG']['cancel']."</a>";
-        	}else if(in_array($row['shipping_status'], array(SS_SHIPPED)) && in_array($row['pay_status'], array(PS_PAYED, PS_PAYING))){
-        		//去评价
-        		if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
-        			$handler = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
-        		}
-        		//申请退货（已经确认收货的商品不能申请退货）
-        		if(!is_order_backed($row['order_id'])){
-        			$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
-        		}
-        	}else{
-        		$handler .= "<a href=\"user.php?act=order_detail&order_id=" .$row['order_id']. '">' .$GLOBALS['_LANG']['view_order']. '</a>';
-        	}        	
+            }else{
+               $handler = "<a href=\"user.php?act=order_detail&order_id=" .$row['order_id']. '">' .$GLOBALS['_LANG']['view_order']. '</a>';
+            }
         }
         else if ($row['order_status'] == OS_CANCELED){
         	//added by tiger.guo 20151220

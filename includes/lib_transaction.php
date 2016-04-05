@@ -454,26 +454,27 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
     while ($row = $GLOBALS['db']->fetchRow($res))
     {
         
-    	$row['handler'] = getOrderHandler($row);
+    	//是否已申请退货
+    	$is_order_backed = is_order_backed($row['order_id']);
+    	$row['is_order_backed'] = $is_order_backed;
     	
     	//是否已评价
     	$is_commented = is_commented($row['order_id']);
+    	$row['is_commented'] = $is_commented;
     	
-    	//是否已申请退货
-    	$is_order_backed = is_order_backed($row['order_id']);
+    	//综合状态
+    	$payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $row[pay_id]");
+    	$row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status'],$payment_is_cod);
+    	$row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
+    	
+    	//对应的操作链接
+    	$row['handler'] = getOrderHandler($row);
     	
 	
     	$row['original_order_status'] = $row['order_status'];
     	$row['original_shipping_status'] = $row['shipping_status'];
     	$row['original_original_pay_status'] = $row['pay_status'];
-    	
         $row['shipping_status'] = ($row['shipping_status'] == SS_SHIPPED_ING) ? SS_PREPARING : $row['shipping_status'];
-        
-        //综合状态
-        $payment_is_cod = $GLOBALS['db']->getOne("SELECT is_cod FROM " . $GLOBALS['ecs']->table('payment') ." WHERE pay_id = $row[pay_id]"); 
-        $row['composite_status'] = get_order_cs_status($row['order_status'], $row['shipping_status'], $row['pay_status'],$payment_is_cod);
-        $row['composite_status_name'] = $GLOBALS['_LANG']['cs'][$row['composite_status']];
-        
         $row['order_status'] = $GLOBALS['_LANG']['os'][$row['order_status']] . ',' . $GLOBALS['_LANG']['ps'][$row['pay_status']] . ',' . $GLOBALS['_LANG']['ss'][$row['shipping_status']];
         
         
@@ -510,7 +511,7 @@ function get_user_orders($user_id, $num = 10, $start = 0, $keyword = '',$composi
  * @return  array       $order_list     订单列表
  *
  */
-function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
+function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='',$order_id = 0)
 {
 	/* 取得订单列表 */
 	$arr    = array();
@@ -519,6 +520,9 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
 	if (!empty($keyword))
 	{
 		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+	}
+	if($order_id){
+		$where .= " AND o.order_id = '$order_id'";
 	}
     
 	$sql = "SELECT ob.back_id, ob.back_sn, ob.order_id, ob.add_time, ob.reason, ob.user_id, ob.status, ob.invoice_no, ob.invoice_name, ".
@@ -565,7 +569,7 @@ function get_user_order_back_list($user_id, $num = 10, $start = 0,$keyword='')
  * 退货申请单行数 
  * @param unknown $user_id
  */
-function get_user_order_back_count($user_id,$keyword=''){
+function get_user_order_back_count($user_id,$keyword='',$order_id = 0){
 	/* 取得订单列表 */
 	$arr    = array();
 
@@ -573,6 +577,10 @@ function get_user_order_back_count($user_id,$keyword=''){
 	if (!empty($keyword))
 	{
 		$where .= " AND o.order_sn LIKE '%" . mysql_like_quote($keyword) . "%'";
+	}
+	
+	if($order_id){
+		$where .= " AND o.order_id = '$order_id'";
 	}
     
 	$sql = "SELECT COUNT(1) ".
@@ -1738,6 +1746,8 @@ function getOrderHandler($row){
             {
                 //确认收货
             	$handler = "<a class=\"s-btn1\" href=\"user.php?act=affirm_received&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_received']."')) return false;\">".$GLOBALS['_LANG']['received']."</a>";
+                
+            	//查看物流
                 if(!empty($row['invoice_no'])){
                 	$handler .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
                 }
@@ -1745,6 +1755,9 @@ function getOrderHandler($row){
             	//申请退货（已经确认收货的商品不能申请退货）
         		if(!is_order_backed($row['order_id'])){
         			$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
+        		}else{
+        			//退换货状态
+        			$handler .= "<a class=\"a-btn\" href=\"user.php?act=order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back_status']."</a>";
         		} 
                 
             }
@@ -1755,14 +1768,19 @@ function getOrderHandler($row){
             	if(!is_commented($row['order_id']) && !is_order_backed($row['order_id'])){
             		$handler = "<a class=\"s-btn1\" href=\"user.php?act=comment_list\">".$GLOBALS['_LANG']['comment']."</a>";
             	}
-            	//申请退货（已经确认收货的商品不能申请退货）
-            	/* if(!is_order_backed($row['order_id'])){
-            		$handler .= "<a class=\"a-btn\" href=\"user.php?act=add_order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back']."</a>";
-            	} */
             	
+            	//查看物流
             	if(!empty($row['invoice_no'])){
             		$handler .= "<a class=\"a-btn\" href=\"javascript:void(0)\" onclick=\"get_shipping_detail('".$row['shipping_name']."','".$row['invoice_no']."')\">".查看物流."</a>";
             	}
+            	
+            	//退换货状态
+            	if(!is_order_backed($row['order_id'])){
+            		
+            	}else{
+            		$handler .= "<a class=\"a-btn\" href=\"user.php?act=order_back&id=".$row['order_id']."\">".$GLOBALS['_LANG']['order_back_status']."</a>";
+            	}
+            	
             }
             else if ($row['pay_status'] == PS_UNPAYED && !$payment_is_cod){
             	//待支付

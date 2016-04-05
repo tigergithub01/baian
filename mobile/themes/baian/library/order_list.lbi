@@ -45,7 +45,7 @@
 					<span>{$goods.goods_price}<em>×{$goods.goods_number}</em></span>
 					<p>{$order.order_time}</p>
 					<div class="btn">
-						 <!-- 待支付，待收货，待评价状态下不显示状态列 { if ($order.composite_status neq 100) && !($order.original_order_status == 5 && $order.original_shipping_status == 1)&& !($order.original_order_status == 5 && $order.original_shipping_status == 2 && !$order.is_commented && !$order.is_order_backed )} -->
+						 <!-- 待支付，待收货，待评价，退货申请状态下不显示状态列 { if ($order.composite_status neq 100) && !($order.original_order_status == 5 && $order.original_shipping_status == 1)&& !($order.original_order_status == 5 && $order.original_shipping_status == 2 && !$order.is_commented && !$order.is_order_backed ) && !($order.is_order_backed)} -->
 						 <a href="javascript:void(0)">{$order.composite_status_name}</a> 
 						 <!-- {/if} -->
 						 {$order.handler}

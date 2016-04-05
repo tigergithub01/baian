@@ -729,4 +729,6 @@ $_LANG['order_back_success'] = '您的退货申请已经成功提交！';
 $_LANG['back_order_back_list'] = '返回退货申请列表';
 $_LANG['order_back_shipping_success'] = '您的发货单已经成功提交！';
 
+$_LANG['order_back_status'] = '退换货状态';
+
 ?>

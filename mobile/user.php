@@ -4094,14 +4094,16 @@ elseif ($action == 'order_back')
 	//订单编号或名称
 	$keyword =  isset($_REQUEST['keyword']) ? trim($_REQUEST['keyword']) : '';
 	
+	//订单编号
+	$order_id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+	
 	$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 	
-	$record_count = get_user_order_back_count($user_id);
+	$record_count = get_user_order_back_count($user_id, $keyword, $order_id);
 	
 	$pager  = get_pager('user.php', array('act' => $action,'keyword'=>$keyword), $record_count, $page);
 	
-	$order_back_list = get_user_order_back_list($user_id, $pager['size'], $pager['start'], $keyword);
-	
+	$order_back_list = get_user_order_back_list($user_id, $pager['size'], $pager['start'], $keyword, $order_id);
 	
 	//获取订单明细信息 added by tiger.guo 20151023
 	/* foreach ($orders as $index => $order) {

@@ -173,6 +173,7 @@ $_LANG['cfg_name']['related_goods_number'] = '关联商品显示数量';
 $_LANG['cfg_name']['visit_stats'] = '站点访问统计';
 $_LANG['cfg_name']['help_open'] = '用户帮助是否打开';
 $_LANG['cfg_name']['cancel_order_hours'] = '系统自动取消未付款订单（小时数）';
+$_LANG['cfg_name']['receive_order_days'] = '系统自动确认收货（天数）';
 
 $_LANG['cfg_desc']['smtp'] = '设置邮件服务器基本参数';
 $_LANG['cfg_desc']['market_price_rate'] = '输入商品售价时将自动根据该比例计算市场价格';

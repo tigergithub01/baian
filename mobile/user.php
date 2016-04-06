@@ -767,7 +767,8 @@ elseif ($action == 'act_edit_profile')
     $other['qq'] = $qq = isset($_POST['extend_field2']) ? trim($_POST['extend_field2']) : '';
     $other['office_phone'] = $office_phone = isset($_POST['extend_field3']) ? trim($_POST['extend_field3']) : '';
     $other['home_phone'] = $home_phone = isset($_POST['extend_field4']) ? trim($_POST['extend_field4']) : '';
-    $other['mobile_phone'] = $mobile_phone = isset($_POST['extend_field5']) ? trim($_POST['extend_field5']) : '';
+    //手机号码不能直接更新，必须通过绑定更新
+    //$other['mobile_phone'] = $mobile_phone = isset($_POST['extend_field5']) ? trim($_POST['extend_field5']) : '';
     $sel_question = empty($_POST['sel_question']) ? '' : compile_str($_POST['sel_question']);
     $passwd_answer = isset($_POST['passwd_answer']) ? compile_str(trim($_POST['passwd_answer'])) : '';
     
@@ -1001,6 +1002,7 @@ elseif ($action == 'bind_mobile_email'){
 }
 /* 手机绑定 */
 elseif ($action == 'act_bind_mobile'){
+	//（TODO：一个手机号码与邮箱只能绑定一次）	
 	$mobile_phone    = isset($_POST['mobile_phone']) ? trim($_POST['mobile_phone']) : '';
 	if(empty($mobile_phone)){
 		show_message("手机号码不能为空！");

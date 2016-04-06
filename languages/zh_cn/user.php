@@ -289,6 +289,7 @@ $_LANG['business_message'] = '发送/查看商家留言';
 $_LANG['pay_order_by_surplus'] = '追加使用余额支付订单：%s';
 $_LANG['return_surplus_on_cancel'] = '取消订单 %s，退回支付订单时使用的预付款';
 $_LANG['return_integral_on_cancel'] = '取消订单 %s，退回支付订单时使用的积分';
+$_LANG['sign_day_add_rank_points'] = '每日签到，增加成长值';
 
 /* 综合状态 */
 $_LANG['cs'][OS_UNCONFIRMED] = '待确认';

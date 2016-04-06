@@ -906,15 +906,16 @@ function lib_clips_get_last_sign_time(){
  * 每日签到后后增加10个积分
  */
 function lib_clips_sign_day(){
-	/* $sql = "UPDATE " .$GLOBALS['ecs']->table('users'). " SET".
-			" last_sign_time = '" .gmtime(). "',".
-			" rank_points = IFNULL(rank_points,0) + 10 ".
-			" WHERE user_id = '" . $_SESSION['user_id'] . "'";
-	$GLOBALS['db']->query($sql); */
-	
+	//增加成长值
 	$sign_day_rank_points = empty($_CFG['sign_day_rank_points'])?10:floatval($_CFG['sign_day_rank_points']);
 	$change_desc = $GLOBALS['_LANG']['sign_day_add_rank_points'];
 	log_account_change($_SESSION['user_id'], 0, 0, $sign_day_rank_points,0 , $change_desc);
+	
+	//记录最后一次签到时间
+	$sql = "UPDATE " .$GLOBALS['ecs']->table('users'). " SET".
+			" last_sign_time = '" .gmtime(). "'".
+			" WHERE user_id = '" . $_SESSION['user_id'] . "'";
+	$GLOBALS['db']->query($sql);
 	
 }
 ?>

@@ -159,7 +159,7 @@
 							{$profile.email}
 							
 							<span style="padding-left: 10px;">
-							<!-- {if $profile.is_validated ==1} -->
+							<!-- {if $profile.is_validated ==1 && $profile.email} -->
 								已绑定
 							<!-- {else} -->	
 								<a href="user.php?act=bind_mobile_email" style="color: #f08300">立即绑定</a>
@@ -172,7 +172,7 @@
 						<td>
 							{$profile.mobile_phone}
 							<span style="padding-left: 10px;">
-							<!-- {if $profile.is_validated_phone ==1} -->
+							<!-- {if $profile.is_validated_phone ==1 && $profile.mobile_phone} -->
 								已绑定
 							<!-- {else} -->	
 								<a href="user.php?act=bind_mobile_email" style="color: #f08300">立即绑定</a>
@@ -329,7 +329,7 @@
 	       		<!-- 手机绑定start -->
 	       		<div id="bind_mobile_content" class="tab_content">
 	       		<!-- <div class="title">手机绑定</div> -->
-	       		<!-- {if $profile.is_validated_phone==1} -->
+	       		<!-- {if $profile.is_validated_phone==1 && $profile.mobile_phone} -->
 	       			<table class="s-order-table noborder datalist">
 						<tbody>
 							<tr>
@@ -385,7 +385,7 @@
 			<!-- 邮箱绑定 start -->
 			<div id="bind_email_content" class="tab_content" style="display: none;">
 			<!-- <div class="title">邮箱绑定</div> -->
-			<!-- {if $profile.is_validated==1} -->
+			<!-- {if $profile.is_validated==1 && $profile.email} -->
 	       			
 	       			<table class="s-order-table noborder datalist">
 						<tbody>
@@ -612,7 +612,7 @@
 	       		<!-- 通过绑定手机号码修改start -->
 	       		<div id="by_mobile_content" class="tab_content">
 	       		<!-- <div class="title">通过绑定手机号码修改密码</div> -->
-	       		<!-- {if $profile.is_validated_phone==0} -->
+	       		<!-- {if $profile.is_validated_phone==0 || !$profile.mobile_phone} -->
 	       			<table class="s-order-table noborder datalist">
 						<tbody>
 							<tr>
@@ -676,7 +676,7 @@
 			<!-- 通过绑定邮箱修改密码 start -->
 			<div id="by_email_content" class="tab_content" style="display: none;">
 			<!-- <div class="title">通过绑定邮箱修改密码 </div> -->
-			<!-- {if $profile.is_validated==0} -->
+			<!-- {if $profile.is_validated==0 || !$profile.email } -->
 	       			
 	       			<table class="s-order-table noborder datalist">
 						<tbody>

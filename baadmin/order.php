@@ -407,6 +407,7 @@ elseif ($_REQUEST['act'] == 'info')
         $region_id = !empty($_CFG['shop_country']) ? $_CFG['shop_country'] . ',' : '';
         $region_id .= !empty($_CFG['shop_province']) ? $_CFG['shop_province'] . ',' : '';
         $region_id .= !empty($_CFG['shop_city']) ? $_CFG['shop_city'] . ',' : '';
+        $region_id .= !empty($_CFG['shop_district']) ? $_CFG['shop_district'] . ',' : '';
         $region_id = substr($region_id, 0, -1);
         $region = $db->getAll("SELECT region_id, region_name FROM " . $ecs->table("region") . " WHERE region_id IN ($region_id)");
         if (!empty($region))
@@ -423,6 +424,22 @@ elseif ($_REQUEST['act'] == 'info')
         $smarty->assign('shop_address', $_CFG['shop_address']);
         $smarty->assign('service_phone',$_CFG['service_phone']);
         $shipping = $db->getRow("SELECT * FROM " . $ecs->table("shipping") . " WHERE shipping_id = " . $order['shipping_id']);
+        
+        //收件人所在地
+        $region_rev_array = array();
+        $region_rev_id = !empty($order['country']) ? $order['country'] . ',' : '';
+        $region_rev_id .= !empty($order['province']) ? $order['province'] . ',' : '';
+        $region_rev_id .= !empty($order['city']) ? $order['city'] . ',' : '';
+        $region_rev_id .= !empty($order['district']) ? $order['district'] . ',' : '';
+        $region_rev_id = substr($region_rev_id, 0, -1);
+        $region_rev = $db->getAll("SELECT region_id, region_name FROM " . $ecs->table("region") . " WHERE region_id IN ($region_rev_id)");
+        if (!empty($region_rev))
+        {
+        	foreach($region_rev as $region_data_rev)
+        	{
+        		$region_rev_array[$region_data_rev['region_id']] = $region_data_rev['region_name'];
+        	}
+        }
 
         //打印单模式
         if ($shipping['print_model'] == 2)
@@ -453,13 +470,13 @@ elseif ($_REQUEST['act'] == 'info')
             $lable_box['t_shop_city'] = $region_array[$_CFG['shop_city']]; //网店-城市
             $lable_box['t_shop_province'] = $region_array[$_CFG['shop_province']]; //网店-省份
             $lable_box['t_shop_name'] = $_CFG['shop_name']; //网店-名称
-            $lable_box['t_shop_district'] = ''; //网店-区/县
+            $lable_box['t_shop_district'] = $region_array[$_CFG['shop_district']];; //网店-区/县
             $lable_box['t_shop_tel'] = $_CFG['service_phone']; //网店-联系电话
             $lable_box['t_shop_address'] = $_CFG['shop_address']; //网店-地址
-            $lable_box['t_customer_country'] = $region_array[$order['country']]; //收件人-国家
-            $lable_box['t_customer_province'] = $region_array[$order['province']]; //收件人-省份
-            $lable_box['t_customer_city'] = $region_array[$order['city']]; //收件人-城市
-            $lable_box['t_customer_district'] = $region_array[$order['district']]; //收件人-区/县
+            $lable_box['t_customer_country'] = $region_rev_array[$order['country']]; //收件人-国家
+            $lable_box['t_customer_province'] = $region_rev_array[$order['province']]; //收件人-省份
+            $lable_box['t_customer_city'] = $region_rev_array[$order['city']]; //收件人-城市
+            $lable_box['t_customer_district'] = $region_rev_array[$order['district']]; //收件人-区/县
             $lable_box['t_customer_tel'] = $order['tel']; //收件人-电话
             $lable_box['t_customer_mobel'] = $order['mobile']; //收件人-手机
             $lable_box['t_customer_post'] = $order['zipcode']; //收件人-邮编
@@ -2461,7 +2478,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit')
                 unserialize($shipping['configure']), $total['weight'], $total['amount'], $total['number']);
             $shipping_list[$key]['shipping_fee'] = $shipping_fee;
             $shipping_list[$key]['format_shipping_fee'] = price_format($shipping_fee);
-            $shipping_list[$key]['free_money'] = price_format($shipping['configure']['free_money']);
+            $shipping_list[$key]['free_money'] = price_format(is_array($shipping['configure'])?$shipping['configure']['free_money']:"0");
         }
         $smarty->assign('shipping_list', $shipping_list);
     }

@@ -473,6 +473,7 @@ elseif ($_REQUEST['act'] == 'info')
             $lable_box['t_shop_district'] = $region_array[$_CFG['shop_district']];; //网店-区/县
             $lable_box['t_shop_tel'] = $_CFG['service_phone']; //网店-联系电话
             $lable_box['t_shop_address'] = $_CFG['shop_address']; //网店-地址
+            $lable_box['t_shop_contact_person'] = $_CFG['shop_contact_person']; //网店-联系人
             $lable_box['t_customer_country'] = $region_rev_array[$order['country']]; //收件人-国家
             $lable_box['t_customer_province'] = $region_rev_array[$order['province']]; //收件人-省份
             $lable_box['t_customer_city'] = $region_rev_array[$order['city']]; //收件人-城市

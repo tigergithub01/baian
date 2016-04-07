@@ -72,6 +72,7 @@ $_LANG['cfg_name']['shop_city'] = '所在城市';
 $_LANG['cfg_name']['shop_district'] = '所在地区';
 $_LANG['cfg_name']['shop_town'] = '所在城镇、街道';
 $_LANG['cfg_name']['shop_address'] = '详细地址';
+$_LANG['cfg_name']['shop_contact_person'] = '商店联系人';
 $_LANG['cfg_name']['licensed'] = '是否显示 Licensed';
 $_LANG['cfg_name']['qq'] = '客服QQ号码';
 $_LANG['cfg_name']['ww'] = '淘宝旺旺';

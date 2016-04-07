@@ -42,6 +42,7 @@ $_LANG['lable_box']['shop_name'] = '网店-名称';
 $_LANG['lable_box']['shop_district'] = '网店-区/县';
 $_LANG['lable_box']['shop_tel'] = '网店-联系电话';
 $_LANG['lable_box']['shop_address'] = '网店-地址';
+$_LANG['lable_box']['shop_contact_person'] = '网店-联系人';
 $_LANG['lable_box']['customer_country'] = '收件人-国家';
 $_LANG['lable_box']['customer_province'] = '收件人-省份';
 $_LANG['lable_box']['customer_city'] = '收件人-城市';

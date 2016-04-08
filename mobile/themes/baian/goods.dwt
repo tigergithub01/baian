@@ -17,6 +17,7 @@
 	
 	<style>
 		/*去掉图片间的换行 */
+		.img-wp {font-size: 0px;}
 		.img-wp br{display: none;}
 		/* .img-wp img{display: block;} */
 	</style>

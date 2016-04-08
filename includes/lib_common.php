@@ -1289,14 +1289,22 @@ function clear_tpl_files($is_cache = true, $ext = '')
     }
     if ($is_cache)
     {
-        $cache_dir = ROOT_PATH . $tmp_dir . '/caches/';
-        $cache_dir = ROOT_PATH . $tmp_dir . '/caches_mobile/';
+        //clear caches;
         $dirs[] = ROOT_PATH . $tmp_dir . '/query_caches/';
         $dirs[] = ROOT_PATH . $tmp_dir . '/static_caches/';
+        $cache_dir = ROOT_PATH . $tmp_dir . '/caches/';
         for($i = 0; $i < 16; $i++)
         {
             $hash_dir = $cache_dir . dechex($i);
             $dirs[] = $hash_dir . '/';
+        }
+        
+        //clear mobile caches
+        $cache_dir = ROOT_PATH . $tmp_dir . '/caches_mobile/';
+        for($i = 0; $i < 16; $i++)
+        {
+	        $hash_dir = $cache_dir . dechex($i);
+	        $dirs[] = $hash_dir . '/';
         }
     }
     else

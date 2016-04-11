@@ -313,10 +313,12 @@ function available_payment_list($support_cod, $cod_fee = 0, $is_online = false,$
         $ag1  = strstr($_SERVER['HTTP_USER_AGENT'],"MicroMessenger");
         if($row['pay_code']=='wxpay' && empty($ag1)){
         	//do nothing
+        }else if($row['pay_code']=='alipay' && !empty($ag1)){
+        	//支付宝在微信浏览器中不显示
+        	//do nothing        	
         }else{
         	 $modules[] = $row;
         }
-       
     }
 
     include_once(ROOT_PATH.'includes/lib_compositor.php');

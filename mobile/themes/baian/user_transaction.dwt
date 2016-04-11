@@ -1267,11 +1267,13 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 			<div class="userBox">
 				<div class="avatarBox">
 					<div class="avatar">
-						<a href=""><!-- {if $info.photo_url && $info.photo_url neq '' } -->
+						<a href="user.php?act=profile">
+							<!-- {if $info.photo_url && $info.photo_url neq '' } -->
                     			<img src="/{$info.photo_url}" alt=""/>
 	                    	<!-- {else} -->
 	                    		<img src="images/avatar.png" alt=""/>
-	                    	<!-- {/if} --></a>
+	                    	<!-- {/if} -->
+	                    </a>
 						<em class="level">V<b>{$rank_name}</b></em>
 					</div>
 					<h3 class="name">{$info.username}</h3>

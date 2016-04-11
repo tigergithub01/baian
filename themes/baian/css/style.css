@@ -424,7 +424,7 @@ filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80);}
 
 .s-userBox{border: 1px solid #c9caca;padding: 25px 40px;overflow: hidden;}
 .s-userBox .avatar{float: left;text-align: center;clear: left;}
-.s-userBox .avatar img{display: block;border: 1px solid #c9caca;width: 110px;height: 110px;margin-bottom: 5px;}
+.s-userBox .avatar img{display: block;border: 1px solid #c9caca;width: 110px;height: 110px;margin-bottom: 5px;border-radius: 50%;}
 .s-userBox .txt{padding-left: 125px;}
 .s-userBox .txt p{line-height: 27px;}
 .s-userBox .username{font-size: 14px;color: #f08300;display: inline-block;margin: 0 5px;}

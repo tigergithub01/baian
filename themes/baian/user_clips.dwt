@@ -488,10 +488,11 @@
 	                       <div class="unit_price">{$goods.goods_price}</div>
 	                       <div class="goods_num">{$goods.goods_number}</div>
 	                   </td>
+	                   <!-- {if ($commented eq 0)} -->
 	                   <td>
 	                       <a href="javascript:void(0)" onclick="$(this).parent().parent().siblings('.comment_detail').toggleClass('show');" class="s-btn1">点击评价</a>
 	                   </td>
-	                   
+	                   <!-- {/if} -->
 	               </tr>
 	               <tr class="comment_detail">
 	               		<td colspan="2" style="background: #fcfffa none repeat scroll 0 0">

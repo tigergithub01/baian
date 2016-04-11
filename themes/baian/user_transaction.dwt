@@ -61,6 +61,9 @@
 				$(".fileupload").change(function(){
 					//console.debug($(this).parent());
 					var id = $(this).attr('id');
+					var progress_id = id+"_progress";
+					var $progress_bar = $("#"+progress_id);
+					var $progress_percent = $("#"+progress_id +" .percent");
 					$(this).parent().ajaxSubmit({
 						dataType:  'json',
 						beforeSend: function() {
@@ -70,11 +73,15 @@
 			        		bar.width(percentVal);
 			        		percent.html(percentVal);
 							btn.html("上传中..."); */
+							$progress_bar.show();
+							$progress_percent.text('0%');
 			    		},
 			    		uploadProgress: function(event, position, total, percentComplete) {
 			        		/* var percentVal = percentComplete + '%';
 			        		bar.width(percentVal);
 			        		percent.html(percentVal); */
+			    			var percentVal = percentComplete + '%';
+			        		$progress_percent.text(percentVal);
 			    		},
 						success: function(data) {
 							//alert(data.message);
@@ -88,9 +95,11 @@
 							var img = "http://localhost/upload/files/"+data.pic;
 							showimg.html("<img src='"+img+"'>");
 							btn.html("添加附件"); */
+							$progress_bar.hide();
 						},
 						error:function(xhr){
 							alert("上传失败");
+							$progress_bar.hide();
 							/* btn.html("上传失败");
 							bar.width('0')
 							files.html(xhr.responseText); */
@@ -133,6 +142,7 @@
 								
 								<input type="file" name="photo_img" class="fileupload" id="fileupload_my_photo"/>
 							</div>
+							<p class="orange" id="fileupload_my_photo_progress" style="display: none;clear: left;line-height: normal;"><span>上传进度：</span><span class="percent"></span></p>
 						</td>
 					</tr>
 					<tr>
@@ -217,9 +227,13 @@
 								<input type="file" name="photo_img" class="fileupload" id="fileupload_baby_photo"/>
 							</div>
 							
+							
 							<div style="" class="babyinfo">登记并索要生日礼物，就可以免费收到一份宝宝生日礼物哦！</div>
 							<div class="babyinfo"><a href="javascript:void(0)">查看详细说明>></a></div>
 							<div class=""><input class="btn_submit" type="button" value="索要生日礼物" onclick="apply_baby_gift()"/> </div>
+							
+							<p class="orange" id="fileupload_baby_photo_progress" style="display: none;line-height: normal;clear: left;"><span>上传进度：</span><span class="percent"></span></p>
+							
 						</td>
 					</tr>
 					<tr>
@@ -1298,7 +1312,15 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
       		<div class="blank"></div>
       		<div class="s-myorder">
 	      		<div class="s-userBox">
-	                  <div class="avatar"><img src="images/sp2.jpg" alt=""></div>
+	                  <div class="avatar">
+	                  		<a href="user.php?act=profile">
+	                  		<!-- {if $info.photo_url && $info.photo_url neq '' } -->
+                    			<img src="/{$info.photo_url}" alt=""/>
+	                    	<!-- {else} -->
+	                    		<img src="images/avatar.png" alt=""/>
+	                    	<!-- {/if} -->
+	                    	</a>
+	                  </div>
 	                  <div class="txt">
 	                      <p>你现在的等级：<!-- <span class="" style="padding: 1px;background: #f08300 none repeat scroll 0 0"><b>{$rank_name}</b></span> --><span class="vipBox"><b>v</b>{$rank_name}</span><a class="orange" target="_blank"  href="article-172.html">查看等级说明》</a></p>
 	                      <p>当前成长值：<span class="degreeBox" score="{$info.rank_points}" total="{$max_points}"></span><a class="orange" target="_blank" href="article-173.html">如何快速升级》</a></p>
@@ -1420,7 +1442,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        		</div>
        		<div style="float: right;margin-right: 15px;">
        			<input type="hidden" name="act" value="order_list"/>
-       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号" style="margin-right: 10px;"/>
+       			<input type="text" name="keyword" value="{$keyword}" placeholder="订单号/商品名称" style="margin-right: 10px;"/>
        			<input type="submit" class="btn_submit" value="查找" />
        		</div>
        </div>

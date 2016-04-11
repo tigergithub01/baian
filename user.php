@@ -911,42 +911,76 @@ elseif ($action == 'act_profile_upload_photo')
 		lib_main_make_json_error("文件上传失败！");
 	}	
 	
-	
+	//等比压缩文件
+// 	$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height'], ROOT_PATH . $image->data_dir . '/' . $dir . '/');
+	$max=$GLOBALS['_CFG']['thumb_width'];
+	$size_src=getimagesize(ROOT_PATH.'/'.$img_name);
+	$w=$size_src['0'];
+	$h=$size_src['1'];
+	if($w > $h){
+		$w=$max;
+		$h=$h*($max/$size_src['0']);
+	}else{
+		$h=$max;
+		$w=$w*($max/$size_src['1']);
+	}	
+	$thumb_img = $image->make_thumb(ROOT_PATH.'/'.$img_name , $w,  $h, ROOT_PATH . $image->data_dir . '/' . $dir . '/');
+		
 	//格式化文件
 	if($is_baby==1){
 		$formatted_img_name    =  dirname($img_name)."/". $user_id.'_baby_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
 		rename(ROOT_PATH.'/'. $img_name, ROOT_PATH.'/'.$formatted_img_name);
 		$img_url = $formatted_img_name;
+		
+		//格式化缩略图
+		$formatted_thumb_img_name    =  dirname($thumb_img)."/". $user_id.'_thumb_baby_'.$image->random_filename() . substr(basename($thumb_img), strpos(basename($thumb_img), '.'));
+		rename(ROOT_PATH.'/'. $thumb_img, ROOT_PATH.'/'.$formatted_thumb_img_name);
+		$thumb_img_url = $formatted_thumb_img_name;
+		
 	}else{
 		$formatted_img_name    =  dirname($img_name)."/". $user_id.'_'.$image->random_filename() . substr(basename($img_name), strpos(basename($img_name), '.'));
 		rename(ROOT_PATH.'/'. $img_name, ROOT_PATH.'/'.$formatted_img_name);
 		$img_url = $formatted_img_name;
+		
+		//格式化缩略图
+		$formatted_thumb_img_name    =  dirname($thumb_img)."/". $user_id.'_thumb_'.$image->random_filename() . substr(basename($thumb_img), strpos(basename($thumb_img), '.'));
+		rename(ROOT_PATH.'/'. $thumb_img, ROOT_PATH.'/'.$formatted_thumb_img_name);
+		$thumb_img_url = $formatted_thumb_img_name;
 	}
 	
 	//删除以前的文件
-	$row = $GLOBALS['db']->getRow("SELECT photo_url, baby_photo_url FROM ". $GLOBALS['ecs']->table('users') ." WHERE user_id = '$user_id' LIMIT 1");
+	$row = $GLOBALS['db']->getRow("SELECT photo_url, baby_photo_url, photo_thumb_url, baby_photo_thumb_url FROM ". $GLOBALS['ecs']->table('users') ." WHERE user_id = '$user_id' LIMIT 1");
 	if($is_baby==1){
 		if(!empty($row['baby_photo_url']) && file_exists(ROOT_PATH.'/'. $row['baby_photo_url'])){
 			unlink(ROOT_PATH.'/'. $row['baby_photo_url']);
-		}		
+		}	
+
+		if(!empty($row['baby_photo_thumb_url']) && file_exists(ROOT_PATH.'/'. $row['baby_photo_thumb_url'])){
+			unlink(ROOT_PATH.'/'. $row['baby_photo_thumb_url']);
+		}
+		
 	}else{
 		if(!empty($row['photo_url']) && file_exists(ROOT_PATH.'/'. $row['photo_url'])){
 			unlink(ROOT_PATH.'/'. $row['photo_url']);
+		}
+		
+		if(!empty($row['photo_thumb_url']) && file_exists(ROOT_PATH.'/'. $row['photo_thumb_url'])){
+			unlink(ROOT_PATH.'/'. $row['photo_thumb_url']);
 		}
 	}
 	
 	
 	//更新图片
 	if($is_baby==1){
-		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET baby_photo_url = '$img_url' WHERE user_id = '$user_id'";
+		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET baby_photo_url = '$img_url', baby_photo_thumb_url = '$thumb_img_url'  WHERE user_id = '$user_id'";
 	}else{
-		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET photo_url = '$img_url' WHERE user_id = '$user_id'";
+		$sql = 'UPDATE ' . $GLOBALS['ecs']->table('users') . " SET photo_url = '$img_url', photo_thumb_url = '$thumb_img_url' WHERE user_id = '$user_id'";
 	}
 	$result= $GLOBALS['db']->query($sql);
 	if($result){
-		lib_main_make_json_result("图片上传成功",array('image_url'=>$img_url));
+		lib_main_make_json_result("图片上传成功",array('image_url'=>$thumb_img_url));
 	}else{
-		lib_main_make_json_error("文件上传失败！");
+		lib_main_make_json_error("图片上传失败！");
 	}
 }
 

@@ -405,6 +405,7 @@ $_LANG['cfg_range']['upload_size_limit']['2048'] = '2MB';
 $_LANG['cfg_range']['upload_size_limit']['4096'] = '4MB';
 $_LANG['cfg_range']['upload_size_limit']['5120'] = '5MB';
 $_LANG['cfg_range']['upload_size_limit']['6144'] = '6MB';
+$_LANG['cfg_range']['upload_size_limit']['8192'] = '8MB';
 $_LANG['cfg_range']['visit_stats']['on'] = '开启';
 $_LANG['cfg_range']['visit_stats']['off'] = '关闭';
 

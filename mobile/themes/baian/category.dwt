@@ -187,7 +187,7 @@
             }
 			
             //console.log($(document).scrollTop()+":"+($(document).height() - $(window).height()));
-            if ($(document).scrollTop() >= $(document).height() - $(window).height()-1) {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height()-5) {
                 //alert("滚动条已经到达底部为" + $(document).scrollTop());
             	more_goods_list();
             }

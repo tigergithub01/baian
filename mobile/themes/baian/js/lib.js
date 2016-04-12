@@ -104,27 +104,41 @@ $(document).ready(function($) {
 	//输入时，自动隐藏底部固定导航栏；否则固定导航栏会挡住输入框
 	$("input[type='text']").focus(function() {
 		$(".nav_bottom").hide();
+		
+		//微信浏览器特别处理
+		if((navigator.userAgent.toLowerCase()).match(/MicroMessenger/i)=="micromessenger") {
+			$("body").height($(window).height()+300);
+			$("body").animate({scrollTop: $(this).offset().top-100 + 'px'}, 200);
+		}
+        
 	}).blur(function(){
 		$(".nav_bottom").show();
 	});
 	
 	$("input[type='password']").focus(function() {
 		$(".nav_bottom").hide();
+		
+		//微信浏览器特别处理
+		if((navigator.userAgent.toLowerCase()).match(/MicroMessenger/i)=="micromessenger") {
+			$("body").height($(window).height()+300);
+			$("body").animate({scrollTop: $(this).offset().top-100 + 'px'}, 200);
+		}
 	}).blur(function(){
 		$(".nav_bottom").show();
 	});
 	
 	$("textarea").focus(function() {
 		$(".nav_bottom").hide();
+		
+		//微信浏览器特别处理
+		if((navigator.userAgent.toLowerCase()).match(/MicroMessenger/i)=="micromessenger") {
+			$("body").height($(window).height()+300);
+			$("body").animate({scrollTop: $(this).offset().top-100 + 'px'}, 200);
+		}
 	}).blur(function(){
 		$(".nav_bottom").show();
 	});
 	
-	
-	
-	
-
-
 });
 
 /**
@@ -164,3 +178,4 @@ function showToastMessage(msg){
 	    close    : function () {}
 	});
 }
+

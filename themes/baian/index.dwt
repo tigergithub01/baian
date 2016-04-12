@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				<div class="i-rush r">
-<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
+				<!-- #BeginLibraryItem "/library/xcuxiao.lbi" --><!-- #EndLibraryItem -->  
 				</div>
 			</div>
 			<div class="h"></div>
@@ -89,8 +89,8 @@
 				<div class="sec-con">
 					<div class="adBox">
                      <!--{foreach from=$huiju name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->
+					<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+					<!--{/foreach}-->
 						
 					</div>
 				</div>
@@ -104,9 +104,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>1F</b> 孕妈专区</h3></div>
 					<ul class="s-tab-ul">
-                   <!–{foreach name=categories_child1 from=$categories1 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+                   <!--{foreach name=categories_child1 from=$categories1 item=cat}-->
+					<li><span>{$cat.cat_name|escape:html}</span></li>
+					<!--{/foreach}-->
 
   
   
@@ -119,8 +119,8 @@
 					<div class="slide-bd">
 						<ul>
                         <!--{foreach from=$ym name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+						<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+						<!--{/foreach}-->
                         
                      
 							
@@ -128,49 +128,33 @@
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child1 from=$categories1 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-                        <!--{foreach from=$cat_id344_best_goods item=goods}-->
+                        <!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+									    {$goods.shop_price}
+									 </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
-
-
-
+				<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							 <!--{foreach from=$cat_id386_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->
-						</ul>
-					</div>
+					<!--{/foreach}-->
+					
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 			   <!--{foreach from=$f1tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+				<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+				<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -181,9 +165,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>2F</b> 宝宝食品</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child2 from=$categories2 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child2 from=$categories2 item=cat}-->
+							<li><span>{$cat.cat_name|escape:html}</span></li>
+							<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=333" class="red r">更多&gt;</a>
@@ -193,52 +177,38 @@
 					<div class="slide-bd">
 						<ul>
 							  <!--{foreach from=$shipin name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+							<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+							<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach from=$categories2 name=categories_child2 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-						 <!--{foreach from=$cat_id341_best_goods item=goods}-->
+						 <!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+									    {$goods.shop_price}
+									    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+							<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							 <!--{foreach from=$cat_id342_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 				 <!--{foreach from=$f2tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+				<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+				<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -249,9 +219,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>3F</b> 宝宝用品</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child3 from=$categories3 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child3 from=$categories3 item=cat}-->
+						<li><span>{$cat.cat_name|escape:html}</span></li>
+						<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=336" class="red r">更多&gt;</a>
@@ -261,52 +231,38 @@
 					<div class="slide-bd">
 						<ul>
 							  <!--{foreach from=$yongpin name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+							<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+							<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child3 from=$categories3 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-							 <!--{foreach from=$cat_id421_best_goods item=goods}-->
+							 <!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+								    {$goods.shop_price}
+								    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+						<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							 <!--{foreach from=$cat_id548_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 				 <!--{foreach from=$f3tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+				<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+				<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -317,9 +273,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>4F</b> 婴童服饰</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child4 from=$categories4 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child4 from=$categories4 item=cat}-->
+						<li><span>{$cat.cat_name|escape:html}</span></li>
+						<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=335" class="red r">更多&gt;</a>
@@ -329,52 +285,38 @@
 					<div class="slide-bd">
 						<ul>
 							  <!--{foreach from=$fushi name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+							<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+							<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child4 from=$categories4 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-							 <!--{foreach from=$cat_id355_best_goods item=goods}-->
+							 <!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+								    {$goods.shop_price}
+								    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+						<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							 <!--{foreach from=$cat_id351_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 				 <!--{foreach from=$f4tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+					<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+					<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -385,9 +327,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>5F</b> 童车童床</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child5 from=$categories5 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child5 from=$categories5 item=cat}-->
+							<li><span>{$cat.cat_name|escape:html}</span></li>
+							<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=334" class="red r">更多&gt;</a>
@@ -398,52 +340,38 @@
 						<ul>
 
 							  <!--{foreach from=$tongchuang name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+								<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+								<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child5 from=$categories5 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-							<!--{foreach from=$cat_id349_best_goods item=goods}-->
+							<!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+								    {$goods.shop_price}
+								    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+							<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							<!--{foreach from=$cat_id347_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 				 <!--{foreach from=$f5tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+				<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+				<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -454,9 +382,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>6F</b> 图书玩具</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child6 from=$categories6 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child6 from=$categories6 item=cat}-->
+						<li><span>{$cat.cat_name|escape:html}</span></li>
+						<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=337" class="red r">更多&gt;</a>
@@ -466,52 +394,38 @@
 					<div class="slide-bd">
 						<ul>
 							  <!--{foreach from=$wanju name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+							<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+							<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child6 from=$categories6 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-								<!--{foreach from=$cat_id357_best_goods item=goods}-->
+								<!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+								    {$goods.shop_price}
+								    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+							<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							<!--{foreach from=$cat_id570_best_goods item=goods}-->
-                          <li>
-								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
-								<div class="title">
-									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
-									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
-								</div>
-							</li>
-                            
-<!-- { /foreach }-->	
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 
 			<div class="h"></div>
 			<div class="ad">
 				 <!--{foreach from=$f6tong name=ban item=banner}-->
-<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
-<!--{/foreach}-->	
+				<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+				<!--{/foreach}-->	
 			</div>
 			<div class="h20"></div>
 
@@ -522,9 +436,9 @@
 				<div class="sec-tit hd">
 					<div class="s-tit"><h3><b>7F</b> 家居百货</h3></div>
 					<ul class="s-tab-ul">
-						  <!–{foreach name=categories_child7 from=$categories7 item=cat}–>
-<li><span>{$cat.name|escape:html}</span></li>
-<!–{/foreach}–>
+						  <!--{foreach name=categories_child7 from=$categories7 item=cat}-->
+							<li><span>{$cat.cat_name|escape:html}</span></li>
+							<!--{/foreach}-->
 					</ul>
 					<em class="line-slide"></em>
 					<a href="/category.php?id=339" class="red r">更多&gt;</a>
@@ -534,33 +448,30 @@
 					<div class="slide-bd">
 						<ul>
 							  <!--{foreach from=$baihuo name=ban item=banner}-->
-<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
-<!--{/foreach}-->
+							<li><a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a></li>
+							<!--{/foreach}-->
 						</ul>
 					</div>
 				</div>
 				<div class="sec-con bd">
+					<!--{foreach name=categories_child7 from=$categories7 item=cat}-->
 					<div class="tab-item">
 						<ul class="img-ul">
-								<!--{foreach from=$cat_id590_best_goods item=goods}-->
+						  <!--{foreach from=$cat.best_goods item=goods}-->
                           <li>
 								<div class="pic"><a href="{$goods.url}" title="{$goods.name|escape:html}" target="_blank"><img src="{$goods.thumb}" /></a></div>
 								<div class="title">
 									<h3><a href="{$goods.url}" title="{$goods.name|escape:html}"  target="_blank">{$goods.short_name|truncate:10:true}</a></h3>
 									<strong class="price"><span> 
-    {$goods.shop_price}
-    </span></strong>
+								    {$goods.shop_price}
+								    </span></strong>
 								</div>
 							</li>
                             
-<!-- { /foreach }-->
+						<!-- { /foreach }-->
 						</ul>
 					</div>
-					<div class="tab-item">
-						<ul class="img-ul">
-							
-						</ul>
-					</div>
+					<!--{/foreach}-->
 				</div>
 			</div>
 

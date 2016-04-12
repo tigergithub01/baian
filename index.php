@@ -98,6 +98,8 @@ if ($act == 'cat_rec')
 /* 缓存编号 */
 $cache_id = sprintf('%X', crc32($_SESSION['user_rank'] . '-' . $_CFG['lang']));
 
+// clear_cache_files("index");
+
 if (!$smarty->is_cached('index.dwt', $cache_id))
 {
     assign_template();
@@ -105,7 +107,7 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     $position = assign_ur_here();
     $smarty->assign('page_title',      $position['title']);    // 页面标题
     $smarty->assign('ur_here',         $position['ur_here']);  // 当前位置
-	$smarty->assign('pvnewcomments', index_get_comments());
+// 	$smarty->assign('pvnewcomments', index_get_comments());
 
     /* meta information */
     $smarty->assign('keywords',        htmlspecialchars($_CFG['shop_keywords']));
@@ -117,7 +119,7 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
 	$F4=tui_product(335,10);//四楼精品
 	$F5=tui_product(334,10);//五楼楼精品
 	$F6=tui_product(337,10);//六楼精品
-	$F7=tui_product(339,10);//7楼精品 */
+	$F7=tui_product(339,10);//7楼精品 
     $smarty->assign('F1',$F1);
 	$smarty->assign('F2',$F2); 
     $smarty->assign('F3',$F3); 
@@ -125,6 +127,7 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     $smarty->assign('F5',$F5); 
     $smarty->assign('F6',$F6);
 	 $smarty->assign('F7',$F7); 
+	 */
 	 $cur_period = $GLOBALS['db']->getRow("select * from web_period order by period_id desc"); 
         	$left_articles = $GLOBALS['db']->getAll("select * from web_comment where isshow = 1 order by addtime desc limit 6 "); 
         	$act_baobao = $GLOBALS['db']->getRow("select * from web_join_info where period_id = '".$cur_period['period_id']."' and status = 1 order by vote_num desc ");
@@ -150,7 +153,7 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
 	
 	//	var_dump($listz);
 	//$ax=get_ecs_category_ids(332);*/
-  $F['1_img']=get_advlist('首页-分类ID332-左边图片', 2);
+ /*  $F['1_img']=get_advlist('首页-分类ID332-左边图片', 2);
   $F['1_left']=get_advlist('首页-分类ID332-底部图片-左', 1); 
   $F['1_right']=get_advlist('首页-分类ID332-底部图片-右', 1); 
   $F['2_img']=get_advlist('首页-分类ID333-左边图片', 2); 
@@ -172,66 +175,126 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
   $F['7_left']=get_advlist('首页-分类ID339-底部图片-左',1);
   $F['7_right']=get_advlist('首页-分类ID339-底部图片-右',1);
   $F['8_left']= get_advlist('首页_精品聚惠_左边',1); 
-  $F['8_right']= get_advlist('首页_精品聚惠_右边',1);
+  $F['8_right']= get_advlist('首页_精品聚惠_右边',1); */
   
   //热点文章
   //$listt= get_article_new（2,'art_id'）
-	  $smarty->assign('Fimg',$F); 
+// 	  $smarty->assign('Fimg',$F); 
+
+	/* 最新公告 */
   $smarty->assign('hotarticle',get_article_new(array(19),'art_id'));
-$smarty->assign( 'bestGoods344',get_category_recommend_goods('best', 
-$children));
-	$ax=get_category_recommend_goods('hot',$children) ;
+  
+/* $smarty->assign( 'bestGoods344',get_category_recommend_goods('best', 
+$children)); */
+
+// 	$ax=get_category_recommend_goods('hot',$children) ;
 	
-	$smarty->assign('pnam0',$plan);
+// 	$smarty->assign('pnam0',$plan);
 	// var_dump($F1['content']); 
  
 
     $smarty->assign('feed_url',        ($_CFG['rewrite'] == 1) ? 'feed.xml' : 'feed.php'); // RSS URL
 
     $smarty->assign('categories',      get_categories_tree()); // 分类树
-	$smarty->assign('categories1', get_child_tree('332')); // 指定分类下的小类
-	$smarty->assign('categories2', get_child_tree('333')); // 指定分类下的小类
-	$smarty->assign('categories3', get_child_tree('336')); // 指定分类下的小类
-	$smarty->assign('categories4', get_child_tree('335')); // 指定分类下的小类
-	$smarty->assign('categories5', get_child_tree('334')); // 指定分类下的小类
-	$smarty->assign('categories6', get_child_tree('337')); // 指定分类下的小类
-	$smarty->assign('categories7', get_child_tree('339')); // 指定分类下的小类
-    $smarty->assign('helps',           get_shop_help());       // 网店帮助
-    $smarty->assign('top_goods',       get_top10());           // 销售排行
-
-    $smarty->assign('best_goods',      get_recommend_goods('best'));    // 推荐商品
-    $smarty->assign('new_goods',       get_recommend_goods('new'));     // 最新商品
-    $smarty->assign('hot_goods',       get_recommend_goods('hot'));     // 热点文章
-    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品
-	$smarty->assign("huiju",getads(166,2));
-	$smarty->assign("ym",getads(159,2));
-	$smarty->assign("shipin",getads(160,2));
-	$smarty->assign("yongpin",getads(161,2));
-	$smarty->assign("fushi",getads(162,2));
-	$smarty->assign("tongchuang",getads(163,2));
-	$smarty->assign("wanju",getads(164,2));
-	$smarty->assign("baihuo",getads(165,2));
-	$smarty->assign("f1tong",getads(167,1));
-	$smarty->assign("f2tong",getads(168,1));
-	$smarty->assign("f3tong",getads(169,1));
-	$smarty->assign("f4tong",getads(170,1));
-	$smarty->assign("f5tong",getads(171,1));
-	$smarty->assign("f6tong",getads(172,1));
-	$smarty->assign("f7tong",getads(173,1));
-	$smarty->assign("dibu",getads(183,1));//首页底部广告图
     
-	$smarty->assign('brand_list',      get_brands());
-    $smarty->assign('promotion_info',  get_promotion_info()); // 增加一个动态显示所有促销信息的标签栏
+    /*孕妈专区精品  */
+	$smarty->assign('categories1', get_direct_children_bet_goods('332')); // 指定分类下的小类
+	
+	/* 宝宝食品精品  */
+	$smarty->assign('categories2', get_direct_children_bet_goods('333')); // 指定分类下的小类
+	
+	/* 宝宝用品精品    */
+	$smarty->assign('categories3', get_direct_children_bet_goods('336')); // 指定分类下的小类
+	
+	/*婴童服饰精品  */
+	$smarty->assign('categories4', get_direct_children_bet_goods('335')); // 指定分类下的小类
+	
+	/* 童车童床精品  */
+	$smarty->assign('categories5', get_direct_children_bet_goods('334')); // 指定分类下的小类
+	
+	/* 图书玩具精品  */
+	$smarty->assign('categories6', get_direct_children_bet_goods('337')); // 指定分类下的小类
+	
+	/* 家居百货精品  */
+	$smarty->assign('categories7', get_direct_children_bet_goods('339')); // 指定分类下的小类
+	
+	
+    $smarty->assign('helps',           get_shop_help());       // 网店帮助
+//     $smarty->assign('top_goods',       get_top10());           // 销售排行
 
-    $smarty->assign('invoice_list',    index_get_invoice_query());  // 发货查询
-    $smarty->assign('new_articles',    index_get_new_articles());   // 最新文章
-	$smarty->assign('class_articles_33', index_get_class_articles(33,3)); // 分类调用文章 
-    $smarty->assign('group_buy_goods', index_get_group_buy());      // 团购商品
-    $smarty->assign('auction_list',    index_get_auction());        // 拍卖活动
-	$smarty->assign('cat_id344_best_goods', index_get_cat_id_goods_best_list(344,10));
+//     $smarty->assign('best_goods',      get_recommend_goods('best'));    // 推荐商品
+//     $smarty->assign('new_goods',       get_recommend_goods('new'));     // 最新商品
+//     $smarty->assign('hot_goods',       get_recommend_goods('hot'));     // 热点文章
+    $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品
+    
+    /* 精品聚惠 */
+	$smarty->assign("huiju",getads(166,2));
+	
+	/* 孕妈专区左侧广告图 */
+	$smarty->assign("ym",getads(159,2));
+	
+	/* 宝宝食品左侧广告图 */
+	$smarty->assign("shipin",getads(160,2));
+	
+	/* 宝宝用品左侧广告图  */
+	$smarty->assign("yongpin",getads(161,2));
+	
+	/* 婴童服饰左侧广告图  */
+	$smarty->assign("fushi",getads(162,2));
+	
+	/* 童车童床左侧广告图  */
+	$smarty->assign("tongchuang",getads(163,2));
+	
+	/* 图书玩具左侧广告图 */
+	$smarty->assign("wanju",getads(164,2));
+	
+	/* 家居百货左侧广告图 */
+	$smarty->assign("baihuo",getads(165,2));
+	
+	/* 孕妈专区底部广告图 */
+	$smarty->assign("f1tong",getads(167,1));
+	
+	/* 宝宝食品底部广告图 */
+	$smarty->assign("f2tong",getads(168,1));
+	
+	/* 宝宝用品底部广告图 */
+	$smarty->assign("f3tong",getads(169,1));
+	
+	/* 婴童服饰底部广告图 */
+	$smarty->assign("f4tong",getads(170,1));
+	
+	/* 童车童床底部广告图 */
+	$smarty->assign("f5tong",getads(171,1));
+	
+	/* 图书玩具底部广告图 */
+	$smarty->assign("f6tong",getads(172,1));
+	
+	/* 家居百货底部广告图 */
+	$smarty->assign("f7tong",getads(173,1));
+	
+	//首页底部广告图
+	$smarty->assign("dibu",getads(183,1));
+    
+	/* 品牌专区 */
+	$smarty->assign('brand_list',      get_brands());
+	
+	
+//     $smarty->assign('promotion_info',  get_promotion_info()); // 增加一个动态显示所有促销信息的标签栏
+
+//     $smarty->assign('invoice_list',    index_get_invoice_query());  // 发货查询
+//     $smarty->assign('new_articles',    index_get_new_articles());   // 最新文章
+
+	/* 门店动态 */
+	$smarty->assign('class_articles_33', index_get_class_articles(33,3)); 
+//     $smarty->assign('group_buy_goods', index_get_group_buy());      // 团购商品
+//     $smarty->assign('auction_list',    index_get_auction());        // 拍卖活动
+    
+    
+	/* $smarty->assign('cat_id344_best_goods', index_get_cat_id_goods_best_list(344,10));
 	$smarty->assign('cat_id386_best_goods', index_get_cat_id_goods_best_list(386,10));
+	$smarty->assign('cat_id340_best_goods', index_get_cat_id_goods_best_list(340,10));
 	$smarty->assign('cat_id341_best_goods', index_get_cat_id_goods_best_list(341,10));
-	$smarty->assign('cat_id342_best_goods', index_get_cat_id_goods_best_list(342,10));
+	$smarty->assign('cat_id342_best_goods', index_get_cat_id_goods_best_list(342,10));	
 	$smarty->assign('cat_id421_best_goods', index_get_cat_id_goods_best_list(421,10));
 	$smarty->assign('cat_id548_best_goods', index_get_cat_id_goods_best_list(548,10));
 	$smarty->assign('cat_id355_best_goods', index_get_cat_id_goods_best_list(355,10));
@@ -240,13 +303,16 @@ $children));
 	$smarty->assign('cat_id347_best_goods', index_get_cat_id_goods_best_list(347,10));
 	$smarty->assign('cat_id570_best_goods', index_get_cat_id_goods_best_list(570,10));
 	$smarty->assign('cat_id357_best_goods', index_get_cat_id_goods_best_list(357,10));
-	$smarty->assign('cat_id590_best_goods', index_get_cat_id_goods_best_list(590,10));
-    $smarty->assign('shop_notice',     $_CFG['shop_notice']);       // 商店公告
+	$smarty->assign('cat_id590_best_goods', index_get_cat_id_goods_best_list(590,10)); */
+//     $smarty->assign('shop_notice',     $_CFG['shop_notice']);       // 商店公告
 	
- $smarty->assign('wap_index_ad',get_wap_advlist('wap首页幻灯广告', 5));  //wap首页幻灯广告位
+ 	
 
 	 
 
+	 /* 
+	 $smarty->assign('wap_index_ad',get_wap_advlist('wap首页幻灯广告', 5));  //wap首页幻灯广告位
+	 
 	 $smarty->assign('wap_index_ad1',get_wap_advlist('wap首页分类广告1', 3));  //wap首页分类广告位
 
 	 $smarty->assign('wap_index_ad2',get_wap_advlist('wap首页分类广告2', 3));
@@ -261,7 +327,7 @@ $children));
 
 	 $smarty->assign('wap_index_ad7',get_wap_advlist('wap首页分类广告7', 3));	
 
-	 $smarty->assign('wap_index_ad_btm',get_wap_advlist('wap首页底部告位', 2));//wap首页底部告位
+	 $smarty->assign('wap_index_ad_btm',get_wap_advlist('wap首页底部告位', 2));//wap首页底部告位 */
 
 	/* $smarty->assign('wap_tree1', get_wap_parent_id_tree(332));     //wap首页分类广告下子分类
 
@@ -292,10 +358,8 @@ $children));
     $smarty->assign('img_links',       $links['img']);
     $smarty->assign('txt_links',       $links['txt']);
     $smarty->assign('data_dir',        DATA_DIR);       // 数据目录
-	
- 
-$smarty->assign("flash",get_flash_xml());
-$smarty->assign('flash_count',count(get_flash_xml()));
+	$smarty->assign("flash",get_flash_xml());
+	$smarty->assign('flash_count',count(get_flash_xml()));
 
 
 

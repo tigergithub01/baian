@@ -200,6 +200,33 @@ function get_child_tree($tree_id = 0)
 }
 
 /**
+ * 获取分类下的精品商品
+ * @param number $cat_id
+ * @return Ambigous <multitype:, void>
+ */
+function get_direct_children_bet_goods($cat_id = 0){
+	/* $sql = 'SELECT cat_id,cat_name ,parent_id,is_show ' .
+			'FROM ' . $GLOBALS['ecs']->table('category') .
+			"WHERE parent_id = '$cat_id' AND is_show = 1 ORDER BY sort_order ASC, cat_id ASC";
+
+	$res = $GLOBALS['db']->getAll($sql);
+	$cat_arr = array();
+	foreach ($res AS $row)
+	{
+		$cat_arr[$row['cat_id']]['cat_id']   = $row['cat_id'];
+		$cat_arr[$row['cat_id']]['cat_name'] = $row['cat_name'];
+		$cat_arr[$row['cat_id']]['url']  = build_uri('category', array('cid' => $row['cat_id']), $row['cat_name']);
+	} */
+	
+	$cat_arr = get_direct_children_category($cat_id,$num = 10);
+	foreach ($cat_arr as $key => $value) {
+		$cat_arr[$key]['best_goods'] = index_get_cat_id_goods_best_list($cat_arr[$key]['cat_id'],$num);
+	}
+	
+	return $cat_arr;
+}
+
+/**
  * 调用当前分类的销售排行榜
  *
  * @access  public

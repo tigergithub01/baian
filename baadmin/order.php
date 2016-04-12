@@ -259,6 +259,15 @@ elseif ($_REQUEST['act'] == 'info')
          $ad_name = $db->getOne("SELECT ad_name FROM " .$ecs->table('ad'). " WHERE ad_id='$order[from_ad]'");
          $order['referer'] = $_LANG['from_ad_js'] . $ad_name . ' ('.$_LANG['from'] . $order['referer'].')';
     }
+    
+    /*门店自提显示自提点**/
+    if($order['point_id']){
+    	$pick_up_point =  $GLOBALS['db']->getRow("SELECT point_name,point_addr FROM ".$GLOBALS['ecs']->table('pick_up_point') ." WHERE point_id = '$order[point_id]'");
+    	if($pick_up_point){
+    		$order['pick_up_point_name'] = $pick_up_point['point_name'];
+    		$order['pick_up_point_addr'] = $pick_up_point['point_addr'];
+    	}
+    }
 
     /* 此订单的发货备注(此订单的最后一条操作记录) */
     $sql = "SELECT action_note FROM " . $ecs->table('order_action').

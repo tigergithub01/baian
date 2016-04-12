@@ -96,7 +96,15 @@
   </tr>
   <tr>
     <td><div align="right"><strong>{$lang.label_shipping}</strong></div></td>
-    <td>{if $exist_real_goods}{if $order.shipping_id > 0}<span id="shipping_name">{$order.shipping_name}</span>{else}{$lang.require_field}{/if}<a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>&nbsp;&nbsp;<input type="button" onclick="window.open('order.php?act=info&order_id={$order.order_id}&shipping_print=1')" class="button" value="{$lang.print_shipping}"> {if $order.insure_fee > 0}（{$lang.label_insure_fee}{$order.formated_insure_fee}）{/if}{/if}</td>
+    <td>{if $exist_real_goods}{if $order.shipping_id > 0}<span id="shipping_name">{$order.shipping_name}</span>{else}{$lang.require_field}{/if}<a href="order.php?act=edit&order_id={$order.order_id}&step=shipping" class="special">{$lang.edit}</a>&nbsp;&nbsp;<input type="button" onclick="window.open('order.php?act=info&order_id={$order.order_id}&shipping_print=1')" class="button" value="{$lang.print_shipping}"> {if $order.insure_fee > 0}（{$lang.label_insure_fee}{$order.formated_insure_fee}）{/if}{/if}
+    	<div class="con">
+				<!-- {if $order.pick_up_point_name} -->
+				<p class="info dn" style="display: block;">自提点： {$order.pick_up_point_name}</p>
+				<span class="info dn" style="display: block;">自提地址：{$order.pick_up_point_addr}</span>
+				<!-- {/if} -->
+			</div>
+    </td>
+    
     <td><div align="right"><strong>{$lang.label_shipping_time}</strong></div></td>
     <td>{$order.shipping_time}</td>
   </tr>

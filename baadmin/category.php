@@ -77,7 +77,7 @@ if ($_REQUEST['act'] == 'add')
 
     $smarty->assign('cat_select',   cat_list(0, 0, true));
     $smarty->assign('form_act',     'insert');
-    $smarty->assign('cat_info',     array('is_show' => 1, 'give_integral'=>-1, 'rank_integral'=>-1, 'integral' => 0));
+    $smarty->assign('cat_info',     array('is_show' => 1, 'give_integral'=>-1, 'rank_integral'=>-1, 'integral' => 0, 'give_integral_rate'=>1));
 
 
 
@@ -114,6 +114,7 @@ if ($_REQUEST['act'] == 'insert')
     $cat['give_integral']     = !empty($_POST['give_integral'])     ? intval($_POST['give_integral'])     : -1;
     $cat['rank_integral']     = !empty($_POST['rank_integral'])     ? intval($_POST['rank_integral'])     : -1;
     $cat['integral']     = !empty($_POST['integral'])     ? intval($_POST['integral'])     : 0;
+    $cat['give_integral_rate']     = !empty($_POST['give_integral_rate'])     ? intval($_POST['give_integral_rate'])     : 1;
 
     if (cat_exists($cat['cat_name'], $cat['parent_id']))
     {
@@ -279,6 +280,7 @@ if ($_REQUEST['act'] == 'update')
     $cat['give_integral']     = !empty($_POST['give_integral'])     ? intval($_POST['give_integral'])     : -1;
     $cat['rank_integral']     = !empty($_POST['rank_integral'])     ? intval($_POST['rank_integral'])     : -1;
     $cat['integral']     = !empty($_POST['integral'])     ? intval($_POST['integral'])     : 0;
+    $cat['give_integral_rate']     = !empty($_POST['give_integral_rate'])     ? intval($_POST['give_integral_rate'])     : 1;
     
     /* 判断分类名是否重复 */
 

@@ -734,7 +734,7 @@ function get_category_recommend_goods($type = '', $cats = '', $brand = 0, $min =
 function get_goods_info($goods_id)
 {
     $time = gmtime();
-    $sql = 'SELECT g.*, c.measure_unit, b.brand_id, b.brand_name AS goods_brand, m.type_money AS bonus_money, ' .
+    $sql = 'SELECT g.*, c.measure_unit, b.brand_id, b.brand_name AS goods_brand, m.type_money AS bonus_money,c.give_integral_rate AS give_integral_rate, ' .
                 'IFNULL(AVG(r.comment_rank), 0) AS comment_rank, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS rank_price " .
             'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .

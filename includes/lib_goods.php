@@ -823,8 +823,9 @@ function get_goods_info($goods_id)
         	$row['give_integral'] = $GLOBALS['db']->getOne("SELECT give_integral FROM " . $GLOBALS['ecs']->table('category'). " WHERE cat_id = '$row[cat_id]' LIMIT 1" );
         }
         
+        /* 如果商品和类别中"消费积分赠送设置"都为-1时，类别中的“消费多少元赠送消费积分1分”规则生效 */
         /*购买该商品时赠送消费积分数,-1表示按商品价格赠送*/
-        $row['give_integral'] = ($row['give_integral']==-1)?round($row['shop_price']):$row['give_integral'];
+        $row['give_integral'] = ($row['give_integral']==-1)?(round($row['shop_price']/$row['give_integral_rate'])):$row['give_integral'];
         
         /*赠送的积分折算成的购买金额， [积分换算比例，每100积分可抵多少元现金]*/
         $row['give_integral_amt'] = round($row['give_integral'] * $GLOBALS['_CFG']['integral_scale']  / 100);

@@ -2977,7 +2977,7 @@ function compute_discount()
  */
 function get_give_integral($is_checked)
 {
-        $sql = "SELECT SUM(c.goods_number * IF(g.give_integral > -1, g.give_integral, IF(cat.give_integral > -1, cat.give_integral, c.goods_price)))" .
+        $sql = "SELECT ROUND(SUM(c.goods_number * IF(g.give_integral > -1, g.give_integral, IF(cat.give_integral > -1, cat.give_integral, c.goods_price/cat.give_integral_rate))),0)" .
                 " FROM " . $GLOBALS['ecs']->table('cart') . " AS c, " .
                           $GLOBALS['ecs']->table('goods') . " AS g, " .
                           $GLOBALS['ecs']->table('category') . " AS cat " .
@@ -3013,7 +3013,7 @@ function integral_to_give($order)
     }
     else
     {
-        $sql = "SELECT ROUND(SUM(og.goods_number * IF(g.give_integral > -1, g.give_integral, IF(cat.give_integral > -1, cat.give_integral, og.goods_price))),0) AS custom_points, ROUND(SUM(og.goods_number * IF(g.rank_integral > -1, g.rank_integral, IF(cat.rank_integral > -1, cat.rank_integral, og.goods_price * 0.5))),0) AS rank_points " .
+        $sql = "SELECT ROUND(SUM(og.goods_number * IF(g.give_integral > -1, g.give_integral, IF(cat.give_integral > -1, cat.give_integral, og.goods_price/cat.give_integral_rate))),0) AS custom_points, ROUND(SUM(og.goods_number * IF(g.rank_integral > -1, g.rank_integral, IF(cat.rank_integral > -1, cat.rank_integral, og.goods_price * 0.5))),0) AS rank_points " .
                 "FROM " . $GLOBALS['ecs']->table('order_goods') . " AS og, " .
                           $GLOBALS['ecs']->table('goods') . " AS g, " .
                           $GLOBALS['ecs']->table('category') . " AS cat " .

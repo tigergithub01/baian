@@ -160,8 +160,10 @@ $_LANG['label_region'] = '所在地区：';
 
 $_LANG['label_shop_url'] = '网址：';
 $_LANG['label_shop_address'] = '地址：';
-$_LANG['label_service_phone'] = '电话：';
+$_LANG['label_service_phone'] = '客服：';
 $_LANG['label_print_time'] = '打印时间：';
+$_LANG['label_receive_order_user'] = '收货人：';
+$_LANG['label_fetch_order_user'] = '取货人：';
 
 $_LANG['label_suppliers'] = '选择供货商：';
 $_LANG['label_agency'] = '办事处：';
@@ -202,7 +204,7 @@ $_LANG['label_to_buyer'] = '商家给客户的留言：';
 $_LANG['save_order'] = '保存订单';
 $_LANG['notice_gb_order_amount'] = '（备注：团购如果有保证金，第一次只需支付保证金和相应的支付费用）';
 
-$_LANG['action_user'] = '操作者：';
+$_LANG['action_user'] = '操作员：';
 $_LANG['action_time'] = '操作时间';
 $_LANG['order_status'] = '订单状态';
 $_LANG['pay_status'] = '付款状态';

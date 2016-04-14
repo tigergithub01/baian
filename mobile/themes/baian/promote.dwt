@@ -21,7 +21,14 @@
 			<a href="javascript:history.back(-1);" class="back-btn"></a>
 			<h2>限时抢购（<span>共{$pager.record_count}件商品</span>）</h2>
 		</header>
-
+		
+		
+		<ul class="ul-tab1 fivetab">
+			<!--{foreach from=$date_list item=pr_dt}-->
+				<li  class="<!-- {if $pr_dt.selected } -->on<!-- {/if} -->"><a href="promote.html?dt={$pr_dt.idx}"><p><!-- {$pr_dt.formatted_date} --></p><p><!-- {if $pr_dt.curr } -->抢购中<!-- {else} -->即将开场<!-- {/if} --></p></a></li>
+            <!--{/foreach}--> 
+		</ul>
+		
 		<div class="w-box">
 		    <div id="tabBox1" class="tabBox tabBox-lz">
 				<!-- <div class="hd">
@@ -34,8 +41,8 @@
 				</div> -->
 				<div class="bd" id="tabBox1-bd">
 				
-				<div class="tit-lz">
-					<h3 class="st1">限时抢购<span class="datetime"><font id="leftTime">{$lang.please_waiting}</font></span></h3>
+				<div class="tit-lz promote_tit" style="<!-- {if $curr_dt >0 } -->display: none;<!-- {/if} -->">
+					<h3 class="st1"><span>限时抢购中</span><span class="datetime" style=""><font class="end_tip" style="">距结束</font></font><font id="leftTime">{$lang.please_waiting}</font></span></h3>
 				</div>
 					<div id="goods_list" class="con">
 						<!-- #BeginLibraryItem "/library/promote_goods_list.lbi" --><!-- #EndLibraryItem -->

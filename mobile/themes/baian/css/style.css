@@ -1202,3 +1202,18 @@ span.required{color: red;}
 .booking_list  .booking_time{color: red;}
 .booking_list  .dispose_note{/* font-size: .83em; */}
 .booking_list .status{padding: 20px 0px 10px 0px;color: #ea5504;}
+
+/* 限时抢购  */
+.ul-tab1.fivetab{}
+.ul-tab1.fivetab li{width: 20%;float: left;height: 80px;}
+.ul-tab1.fivetab li a{line-height: inherit;color: white;background: #333333;height: 80px;}
+.ul-tab1.fivetab li.on{border-bottom: none;}
+.ul-tab1.fivetab li.on a{background: #EA5503;}
+.tit-lz.promote_tit{
+	background-color: #dcdddd;color: #555;
+} 
+.tit-lz.promote_tit em{font-style: normal;width: 30px;height: 30px;display: inline-block;line-height: 30px;
+	border: 1px solid #fff;text-align: center;font-size: 20px;vertical-align: middle;background: #333333;color: white;
+}
+.tit-lz.promote_tit .datetime{float: right;}
+.tit-lz.promote_tit .end_tip{padding-right: 10px;}

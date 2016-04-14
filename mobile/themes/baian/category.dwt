@@ -186,9 +186,8 @@
                 //alert("滚动条已经到达顶部为0");
             }
 			
-            //console.log($(document).scrollTop()+":"+($(document).height() - $(window).height()));
-            if (($(document).scrollTop() >= $(document).height() - $(window).height()-1) || 
-            		($(document).scrollTop() >= $(document).height() - $(window).height())) {
+            //console.log($(document).scrollTop()+":"+$(document).height()+":"+$(window).height()+":"+($(document).height() - $(window).height()));
+            if (($(document).scrollTop() >= $(document).height() - $(window).height() - 10)) {
                 //alert("滚动条已经到达底部为" + $(document).scrollTop());
             	more_goods_list();
             }

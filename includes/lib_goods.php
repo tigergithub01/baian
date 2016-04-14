@@ -554,9 +554,9 @@ function get_promote_goods($cats = '')
  * @param number $size
  * @return Ambigous <multitype:, number, void>
  */
-function get_promote_goods_list($cats = '',$page = 1, $size = 20)
+function get_promote_goods_list($cats = '',$page = 1, $size = 20, $date = null)
 {
-	$time = gmtime();
+	$time = isset($date)? $date:gmtime();
 	$order_type = $GLOBALS['_CFG']['recommend_order'];
 	$sql = 'SELECT g.goods_id, g.goods_name, g.goods_name_style, g.market_price, g.shop_price AS org_price, g.promote_price, ' .
 			"IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, ".
@@ -566,8 +566,9 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20)
 			'LEFT JOIN ' . $GLOBALS['ecs']->table('brand') . ' AS b ON b.brand_id = g.brand_id ' .
 			"LEFT JOIN " . $GLOBALS['ecs']->table('member_price') . " AS mp ".
 			"ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' ".
-			'WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ' .
+			'WHERE g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 '.
 			" AND g.is_promote = 1 AND promote_start_date <= '$time' AND promote_end_date >= '$time' ";
+	
 	$sql .= $order_type == 0 ? ' ORDER BY g.sort_order, g.last_update DESC' : ' ORDER BY rnd';
 	$res = $GLOBALS['db']->selectLimit($sql, $size, ($page-1) * $size);
 	$goods = array();
@@ -575,7 +576,7 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20)
 		$idx = $row['goods_id'];
 		if ($row['promote_price'] > 0)
 		{
-			$promote_price = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date']);
+			$promote_price = bargain_price($row['promote_price'], $row['promote_start_date'], $row['promote_end_date'],$time);
 			$goods[$idx]['promote_price'] = $promote_price > 0 ? price_format($promote_price) : '';
 		}
 		else
@@ -1191,7 +1192,7 @@ function get_extension_goods($cats)
  * @param   string  $end        促销结束日期
  * @return  float   如果还在促销期则返回促销价，否则返回0
  */
-function bargain_price($price, $start, $end)
+function bargain_price($price, $start, $end, $time = null)
 {
     if ($price == 0)
     {
@@ -1199,7 +1200,7 @@ function bargain_price($price, $start, $end)
     }
     else
     {
-        $time = gmtime();
+        $time = isset($time)? $time : gmtime();
         if ($time >= $start && $time <= $end)
         {
             return $price;
@@ -1210,6 +1211,8 @@ function bargain_price($price, $start, $end)
         }
     }
 }
+
+
 
 /**
  * 获得指定的规格的价格

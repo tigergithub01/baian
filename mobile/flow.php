@@ -615,8 +615,8 @@ elseif ($_REQUEST['step'] == 'checkout')
      * 取得订单信息
      */
     $order = flow_order_info();
-	$order['shipping_id'] = 1; //默认配送方式ID
-	$order['pay_id'] = 1; //默认支付方式ID
+	$order['shipping_id'] = 0; //默认配送方式ID
+	$order['pay_id'] = 0; //默认支付方式ID
 	$smarty->assign('order', $order);
 
     /* 计算折扣 */

@@ -25,12 +25,12 @@
 			<!-- <div class="m-atart" style="background-image: url(images/pic-atart.png);"></div> -->
 	<!-- {/if} -->
 	
-	<div class="skip_page"><a href="javascript:void(0)" onclick="skip();">倒计时<span id="time">3</span>秒，直接跳过>></a></div>
+	<div class="skip_page"><a href="javascript:void(0)" onclick="skip();">倒计时<span id="time">2</span>秒，直接跳过>></a></div>
 	
 	<script type="text/javascript">
 		
 		//设定倒数秒数  
-		var t = 4;  
+		var t = 3;  
 		//显示倒数秒数  
 		function showTime(){  
 		    t -= 1;  

@@ -221,8 +221,9 @@ else
             }
             $val        = mysql_like_quote(trim($val));
             $sc_dsad    = $_REQUEST['sc_ds'] ? " OR goods_desc LIKE '%$val%'" : '';
-            $keywords  .= "(goods_name LIKE '%$val%' OR goods_sn LIKE '%$val%' OR keywords LIKE '%$val%' $sc_dsad)";
-
+//             $keywords  .= "(goods_name LIKE '%$val%' OR goods_sn LIKE '%$val%' OR keywords LIKE '%$val%' $sc_dsad)";
+            $keywords  .= "(goods_name LIKE '%$val%' OR keywords LIKE '%$val%' $sc_dsad)";
+            
             $sql = 'SELECT DISTINCT goods_id FROM ' . $ecs->table('tag') . " WHERE tag_words LIKE '%$val%' ";
             $res = $db->query($sql);
             while ($row = $db->FetchRow($res))

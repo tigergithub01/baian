@@ -327,6 +327,7 @@ elseif ($_REQUEST['act'] == 'info')
                     ON g.brand_id = b.brand_id
             WHERE o.order_id = '$order[order_id]'";
     $res = $db->query($sql);
+    $sequence_index = 1;
     while ($row = $db->fetchRow($res))
     {
         /* 虚拟商品支持 */
@@ -355,7 +356,8 @@ elseif ($_REQUEST['act'] == 'info')
             $row['brand_name'] = '';
             $row['package_goods_list'] = get_package_goods($row['goods_id']);
         }
-
+		
+        $row['sequence_index'] = ($sequence_index++);
         $goods_list[] = $row;
     }
 

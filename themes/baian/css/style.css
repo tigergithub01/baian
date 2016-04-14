@@ -870,6 +870,12 @@ input.error{
 	width: 65px;
 }
 
+/* 我的评价 - 已评级  */
+.user_center_cmt {margin-right: 20px;}
+.user_center_cmt p{margin-top: 10px;}
+.user_center_cmt p{line-height: normal;}
+.user_center_cmt li{border-top: 1px solid #c9caca;}
+
 
 
 

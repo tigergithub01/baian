@@ -415,6 +415,12 @@
 				});
 					  
 			  });
+			  
+			  function view_image(obj){
+				  var img_url = $(obj).attr('img_url');
+				  $("#img_photo_url").attr('src',img_url);
+				  $.fancybox.open("#image_show");
+			  }
 		  
 		  </script>
 		  <style type="text/css">
@@ -487,6 +493,32 @@
 	                       </div>
 	                       <div class="unit_price">{$goods.goods_price}</div>
 	                       <div class="goods_num">{$goods.goods_number}</div>
+	                       
+	                       
+	                       
+	                       <!-- 我的评论 start {if goods.$comments} -->
+						<div class="user_center_cmt">
+						<ul>
+					       <!-- {foreach from=$goods.comments item=comment} -->
+					       <li>
+								<div class="con">
+									<p class="top"><img style=""  src="images/stars{$comment.rank}.gif" alt="{$comment.comment_rank}" /><span style="">{$comment.add_time}</span></p>
+									<div style="clear: both;"></div>
+									<p>{$comment.content}</p>
+									
+									<!-- {if $comment.photos} -->
+									<p class="img" style="margin-top: 20px;">
+										<!-- {foreach from=$comment.photos item=photo} -->
+										<img style="width: 100px;height: 100px;margin-left: 15px;" alt="" src="/{$photo.thumb_url}" img_url="/{$photo.img_url}" onclick="view_image(this);">
+										<!-- {/foreach} -->
+									</p>
+									<!--{/if}-->
+								</div>
+							</li>
+				        <!-- {/foreach} -->
+				        </ul>
+				        </div>
+				        <!-- 我的评论 end {/if}-->
 	                   </td>
 	                   <!-- {if ($commented eq 0)} -->
 	                   <td>
@@ -565,6 +597,9 @@
 	       <!--{foreachelse}-->
 	       		<p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p>
 	       <!--{/foreach}-->
+	       
+	       <div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 600px;height: auto;"></div>
+	       
        </div>
         <div class="blank5"></div>
        <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->

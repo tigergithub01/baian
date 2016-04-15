@@ -596,7 +596,9 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20, $date = null)
 		$goods[$idx]['thumb']        = get_image_path($row['goods_id'], $row['goods_thumb'], true);
 		$goods[$idx]['goods_img']    = get_image_path($row['goods_id'], $row['goods_img']);
 		$goods[$idx]['url']          = build_uri('goods', array('gid' => $row['goods_id']), $row['goods_name']);
-		$time = gmtime();
+		$goods[$idx]['goods_store'] = get_goods_store($row['goods_id']);
+		
+		/* $time = gmtime(); */
 		if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date'])
 		{
 // 			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
@@ -608,6 +610,11 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20, $date = null)
 			$goods[$idx]['gmt_end_time'] = 0;
 		
 		}
+		
+		//是否是当天抢购
+		$goods[$idx]['curr'] = (local_date('M d, Y 0:0:0',$time) === local_date('M d, Y 0:0:0',gmtime()));
+		
+		
 	}
 	return $goods;
 }
@@ -619,9 +626,9 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20, $date = null)
  * @param string $cats
  * @return unknown
  */
-function get_promote_goods_list_count($cats = '')
+function get_promote_goods_list_count($cats = '',$date = null)
 {
-	$time = gmtime();
+	$time = isset($date)? $date:gmtime();
 	$order_type = $GLOBALS['_CFG']['recommend_order'];
 	$sql = "SELECT COUNT(1) " .
 			'FROM ' . $GLOBALS['ecs']->table('goods') . ' AS g ' .
@@ -2471,7 +2478,7 @@ function get_product($product_id,$goods_id=null)
  * @param unknown $product_id
  * @param unknown $address
  */
-function get_goods_store($goods_id,$product_id,$address=null){
+function get_goods_store($goods_id,$product_id = null,$address=null){
 	$sql = "SELECT IFNULL(goods_number,0) AS goods_number FROM " . $GLOBALS['ecs']->table('goods') . " WHERE goods_id = '$goods_id' LIMIT 1";
 	$goods_number = $GLOBALS['db']->getOne($sql);
 	

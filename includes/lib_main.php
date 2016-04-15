@@ -509,7 +509,7 @@ function get_shop_help()
  * @return  void
  */
 function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1,
-                        $keywords = '', $brand = 0, $price_min = 0, $price_max = 0, $display_type = 'list', $filter_attr='', $url_format='', $sch_array='',$filter_ext='')
+                        $keywords = '', $brand = 0, $price_min = 0, $price_max = 0, $display_type = 'list', $filter_attr='', $url_format='', $sch_array='',$filter_ext='',$promote_date = 0)
 {
     $sch = array('keywords'  => $keywords,
                  'sort'      => $sort,
@@ -557,7 +557,7 @@ function assign_pager($app, $cat, $record_count, $size, $sort, $order, $page = 1
             $uri_args = array('cid' => $cat, 'integral_min'=>$price_min, 'integral_max'=>$price_max, 'sort' => $sort, 'order' => $order, 'display' => $display_type);
             break;
        case 'promote': //限时抢购
-            $uri_args = array('sort' => $sort, 'order' => $order);
+            $uri_args = array('sort' => $sort, 'order' => $order, 'dt' =>$promote_date);
             break;
     }
     /* 分页样式 */

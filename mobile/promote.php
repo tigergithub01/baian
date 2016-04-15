@@ -52,6 +52,8 @@ if (1)
 // if (!$smarty->is_cached('promote.dwt', $cache_id))
 {
     /* 如果页面没有被缓存则重新获取页面的内容 */
+	//获取抢购日期
+	$dt= isset($_REQUEST['dt']) && intval($_REQUEST['dt'])  > 0 ? intval($_REQUEST['dt'])  : 0;
 
     assign_template('p', array());//TODO:？
 
@@ -59,10 +61,23 @@ if (1)
     $smarty->assign('page_title',       $position['title']);    // 页面标题
     $smarty->assign('ur_here',          $position['ur_here']);  // 当前位置
 	$smarty->assign('cat_name',   $cat['cat_name']);
-
 	
+	//最近5天
+	 $i = 0;
+	 $date_list = array();
+	 while ($i<5){
+	 	$date_list[$i]['idx'] = $i;
+	 	$date_list[$i]['dt'] = gmtime() + 3600 *24 * $i;
+	 	$date_list[$i]['formatted_date'] = local_date("n月d日",gmtime() + 3600 *24 * $i);
+	 	$date_list[$i]['curr'] = (($i==0)); //当前抢购中
+	 	$date_list[$i]['selected'] = (($i==$dt));//当前选中日期
+	 	$i++;
+	 }
+	 $smarty->assign('date_list',  $date_list);
+	 $smarty->assign('curr_dt',  $dt);
+	 	
 	//限时抢购记录数
-	$count  = get_promote_goods_list_count('');
+	$count  = get_promote_goods_list_count('',$selected_dt);
 	$pages  = ($count > 0) ? ceil($count / $size) : 1;
 	
 	if ($page > $pages)
@@ -71,7 +86,8 @@ if (1)
 	}
 	
 	//限时抢购记录
-	$goodslist = get_promote_goods_list('',$page,$size);
+	$selected_dt = $date_list[$dt]['dt']; //当前选中日期
+	$goodslist = get_promote_goods_list('',$page,$size,$selected_dt);
 	
     if($display == 'grid')
     {
@@ -84,12 +100,16 @@ if (1)
     $smarty->assign('goods_list',       $goodslist);
     $smarty->assign('helps',                get_shop_help());        // 网店帮助
 
-    assign_pager('promote', '', $count, $size, '', '',$page);
+    assign_pager('promote', '', $count, $size, '', '',$page, '', 0, 0, 0, '', '','','','',$selected_dt);
 //     assign_dynamic('category'); // 动态内容
     
     //猜你喜欢 &　看了又看
     $may_like_goods = com_sale_get_may_like_goods();
     $smarty->assign('may_like_goods',$may_like_goods);
+    
+    //限时抢购广告：
+    $promote_ads= getads(198,10);
+    $smarty->assign('promote_ads',$promote_ads);
 }
 
 

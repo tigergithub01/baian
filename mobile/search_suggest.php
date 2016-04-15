@@ -88,7 +88,8 @@ if ($keywords != "") {
 			if ($key > 0 && $key < count ( $arr_chr ) && count ( $arr_chr ) > 1) {
 				$keywords_sql .= $operator;
 			}
-			$keywords_sql .= "(goods_name LIKE '%$val%' OR goods_sn LIKE '%$val%' OR keywords LIKE '%$val%')";
+// 			$keywords_sql .= "(goods_name LIKE '%$val%' OR goods_sn LIKE '%$val%' OR keywords LIKE '%$val%')";
+			$keywords_sql .= "(goods_name LIKE '%$val%' OR keywords LIKE '%$val%')";
 		}
 		$keywords_sql .= ')';
 		

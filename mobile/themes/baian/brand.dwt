@@ -49,15 +49,13 @@
 		  <input type="hidden" id="price_max" name="price_max" value="0" />
 		  <input type="hidden" id="filter_attr" name="filter_attr" value="{$filter_attr}" />
 		  <input type="hidden" id="filter_ext" name="filter_ext" value="{$filter_ext}" />
-		  <input type="hidden" id="page" name="page" value="{$pager.page}" />
-		  <input type="hidden" id="sort" name="sort" value="{$pager.sort}" />
-		  <input type="hidden" id="order" name="order" value="{$pager.order}" />
-		  <input type="hidden" id="size" name="size" value="{$pager.size}" /> 
-		  <input type="hidden" id="record_count" name="record_count" value="{$pager.record_count}" />
-		  <input type="hidden" id="page_count" name="page_count" value="{$pager.page_count}" /> 
 		  <input type="hidden" id="promote_flag" name="promote_flag" value="{$promote_flag}" />
 		  <input type="hidden" id="integral_flag" name="integral_flag" value="{$integral_flag}" /> 
 		  <input type="hidden" id="bonus_flag" name="bonus_flag" value="{$bonus_flag}" />
+		  
+		  <!-- 滚动加载更多 -->
+		  <input type="hidden" id="scroll_loading_more" value="1" />
+		  <!-- #BeginLibraryItem "/library/pages_ajax.lbi" --><!-- #EndLibraryItem -->
 		  
 		<div class="h"></div>
 	</section>
@@ -136,7 +134,7 @@
 	<script type="text/javascript" src="js/TouchSlide.js"></script>
 	<script type="text/javascript">
 	$(function(){
-        $(window).scroll(function() {
+        /* $(window).scroll(function() {
             //$(document).scrollTop() 获取垂直滚动的距离
             //$(document).scrollLeft() 这是获取水平滚动条的距离
             if ($(document).scrollTop() <= 0) {
@@ -147,7 +145,7 @@
                 //alert("滚动条已经到达底部为" + $(document).scrollTop());
             	more_goods_list();
             }
-        });
+        }); */
         
         //slideOn();
         

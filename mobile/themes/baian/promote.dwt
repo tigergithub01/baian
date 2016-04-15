@@ -6,8 +6,16 @@
 	<meta name="keywords" content="{$keywords}" />
 	<meta name="description" content="{$description}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<script type="text/javascript" src="/mobile/themes/baian/js/script.js" ></script>
 	<!-- 公用样式与脚本 -->
 	<!-- #BeginLibraryItem "/library/page_common.lbi" --><!-- #EndLibraryItem -->
+	
+	<link rel="stylesheet" href="/mobile/themes/baian/css/touchslider.css" />
+	<script src="/mobile/themes/baian/js/jquery.touchslider.js" type="text/javascript"></script>
+	
+	<script type="text/javascript" src="/js/shopping_flow.js"></script>
+	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.json.min.js"></script>
+	
 
 </head>
 <body>
@@ -29,6 +37,32 @@
             <!--{/foreach}--> 
 		</ul>
 		
+		
+	
+		<!-- 轮播广告图 -->
+	<div class="touchslider" style="z-index: 100;position: relative;">
+		<div class="touchslider-viewport">
+			<div style="width:10000px">
+			<!--{foreach from=$promote_ads name=ban item=banner}-->
+			<ul class="touchslider-item">
+				<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img src="/{$banner.ad_code}"/></a></li>
+			</ul>
+			<!--{/foreach}-->
+		</div>
+		</div>
+		
+		<div class="touchslider-nav">
+		<!--{foreach from=$promote_ads name=ban item=banner}-->
+			<!--{if $smarty.foreach.ban.first}-->
+			<a class="touchslider-nav-item touchslider-nav-item-current"></a>
+			<!-- {else} -->
+			<a class="touchslider-nav-item"></a>
+			<!-- {/if} -->
+		<!--{/foreach}-->
+		</div>
+	</div>
+	<div class="h"></div>
+	
 		<div class="w-box">
 		    <div id="tabBox1" class="tabBox tabBox-lz">
 				<!-- <div class="hd">
@@ -60,15 +94,13 @@
 		  <input type="hidden" id="price_max" name="price_max" value="{$price_max}" />
 		  <input type="hidden" id="filter_attr" name="filter_attr" value="{$filter_attr}" />
 		  <input type="hidden" id="filter_ext" name="filter_ext" value="{$filter_ext}" />
-		  <input type="hidden" id="page" name="page" value="{$pager.page}" />
-		  <input type="hidden" id="sort" name="sort" value="{$pager.sort}" />
-		  <input type="hidden" id="order" name="order" value="{$pager.order}" />
-		  <input type="hidden" id="size" name="size" value="{$pager.size}" /> 
-		  <input type="hidden" id="record_count" name="record_count" value="{$pager.record_count}" />
-		  <input type="hidden" id="page_count" name="page_count" value="{$pager.page_count}" /> 
 		  <input type="hidden" id="promote_flag" name="promote_flag" value="{$promote_flag}" />
 		  <input type="hidden" id="integral_flag" name="integral_flag" value="{$integral_flag}" /> 
 		  <input type="hidden" id="bonus_flag" name="bonus_flag" value="{$bonus_flag}" />
+		  
+		  <!-- 滚动加载更多 -->
+		  <input type="hidden" id="scroll_loading_more" value="1" />
+		  <!-- #BeginLibraryItem "/library/pages_ajax.lbi" --><!-- #EndLibraryItem -->
 		  
 		<div class="h"></div>
 	</section>
@@ -147,7 +179,7 @@
 	<script type="text/javascript" src="js/TouchSlide.js"></script>
 	<script type="text/javascript">
 	$(function(){
-        $(window).scroll(function() {
+       /*  $(window).scroll(function() {
             //$(document).scrollTop() 获取垂直滚动的距离
             //$(document).scrollLeft() 这是获取水平滚动条的距离
             if ($(document).scrollTop() <= 0) {
@@ -158,9 +190,12 @@
                 //alert("滚动条已经到达底部为" + $(document).scrollTop());
             	more_goods_list();
             }
-        });
+        }); */
         
         //slideOn();
+        
+        //轮播广告栏
+	    $('.touchslider').touchSlider({mouseTouch: true,autoplay:true,duration:350});
         
         //切换tab页面
         $(".tabBox .hd ul li").click(function(e){

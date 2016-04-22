@@ -78,7 +78,7 @@
 				<div class="tit-lz promote_tit" style="<!-- {if $curr_dt >0 } -->display: none;<!-- {/if} -->">
 					<h3 class="st1"><span>限时抢购中</span><span class="datetime" style=""><font class="end_tip" style="">距结束</font></font><font id="leftTime">{$lang.please_waiting}</font></span></h3>
 				</div>
-					<div id="goods_list" class="con">
+					<div id="goods_list" class="con pager_list">
 						<!-- #BeginLibraryItem "/library/promote_goods_list.lbi" --><!-- #EndLibraryItem -->
 						
 					</div>

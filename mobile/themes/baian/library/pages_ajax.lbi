@@ -62,7 +62,7 @@
 			//alert('没有更多可以加载的数据。');
 			//showToastMessage('没有更多可以加载的数据。');
 			if(scroll_loading){
-				showToastMessage('没有更多可以加载的数据');
+				//showToastMessage('没有更多可以加载的数据');
 			}else{
 				$(".m-loading").hide();
 			}			

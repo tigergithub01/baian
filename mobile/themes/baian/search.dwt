@@ -33,7 +33,7 @@
 					</ul>
 				</div> -->
 				<div class="bd" id="tabBox1-bd">
-					<div id="goods_list" class="con">
+					<div id="goods_list" class="con pager_list">
 						<!-- #BeginLibraryItem "/library/goods_list.lbi" --><!-- #EndLibraryItem -->
 						
 					</div>

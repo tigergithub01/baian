@@ -44,7 +44,7 @@
     <!--{/if}-->
     
 	<li>
-		<div class="pic"><a href="{$goods.url}"><img class="lazy"  src="/{$goods.thumb}" alt=""></a></div>
+		<div class="pic" style="padding-top: 18px;"><a href="{$goods.url}"><img class="lazy"  src="/{$goods.thumb}" alt=""></a></div>
 		<div class="txt">
 			<h3 class="title"><a href="{$goods.url}">{$goods.name|escape:html}</a></h3>
 			<span class="promote_price">

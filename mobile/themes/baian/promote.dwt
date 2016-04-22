@@ -41,11 +41,11 @@
 	
 		<!-- 轮播广告图 -->
 	<div class="touchslider" style="z-index: 100;position: relative;">
-		<div class="touchslider-viewport">
+		<div class="touchslider-viewport" style="height: 150px;">
 			<div style="width:10000px">
 			<!--{foreach from=$promote_ads name=ban item=banner}-->
 			<ul class="touchslider-item">
-				<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img src="/{$banner.ad_code}"/></a></li>
+				<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img src="/{$banner.ad_code}"/ style="height: 150px;"></a></li>
 			</ul>
 			<!--{/foreach}-->
 		</div>

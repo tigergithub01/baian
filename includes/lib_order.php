@@ -1993,6 +1993,43 @@ function get_cart_goods($is_checked)
     return array('goods_list' => $goods_list, 'total' => $total);
 }
 
+
+/**
+ * 限时抢购限购数量
+ * @param unknown $user_id
+ * @return multitype: boolean string
+ */
+function jude_promote_limit($user_id){
+	$rtn = array('status'=>true,'msg'=>'');
+	$time = isset($time)? $time : gmtime();	
+	$day    = getdate();
+	$today_start_date  = local_mktime(0, 0, 0, $day['mon'], $day['mday'], $day['year']);
+	$today_end_date  = local_mktime(23, 59, 59, $day['mon'], $day['mday'], $day['year']);	
+	
+	$sql = "SELECT g.goods_id, g.goods_name, g.is_promote, g.promote_start_date, g.promote_end_date, c.goods_number, g.promote_limit_num ".
+			" FROM " . $GLOBALS['ecs']->table('cart') . " AS c " .
+			" LEFT JOIN ". $GLOBALS['ecs']->table('goods') ." AS g ON (c.goods_id = g.goods_id) ".
+			" WHERE c.session_id = '" . SESS_ID . "'  AND c.rec_type = '" . CART_GENERAL_GOODS . "'".
+			" AND c.parent_id = 0 AND c.is_gift = 0 AND c.is_checked = 1 ".
+			" AND (g.is_promote = 1 AND g.promote_start_date <= '$time' AND g.promote_end_date >= '$time')";
+	$rows = $GLOBALS['db']->getAll($sql);
+	foreach ($rows as $key => $row) {
+		//查询当前登录用户已经购买该商品的数量，是否超过限购数量
+		$og_sql = "SELECT sum(og.goods_number) from ecs_order_info o, ecs_order_goods og ".
+				" WHERE o.order_id = og.order_id AND og.is_gift = 0 AND og.extension_code <> 'package_buy'".
+				" AND o.user_id = '$user_id' AND o.add_time >= '$today_start_date' AND o.add_time <= '$today_end_date' ".
+				" AND og.goods_id = '$row[goods_id]' AND o.order_status ".db_create_in(array(OS_UNCONFIRMED, OS_CONFIRMED, OS_SPLITED,OS_SPLITING_PART));
+		$goods_number = $GLOBALS['db']->getOne($og_sql);
+		$goods_number = isset($goods_number)?$goods_number:0;
+		if($goods_number + $row['goods_number'] > $row['promote_limit_num']){
+			$rtn['status'] = false;
+			$rtn['msg'] = '商品"'.$row['goods_name']."\"每日限购数量为".$row['promote_limit_num']."。";
+			break;
+		}			
+	}
+	return $rtn;
+}
+
 /**
  * 取得收货人信息
  * @param   int     $user_id    用户编号

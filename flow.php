@@ -1767,6 +1767,12 @@ elseif ($_REQUEST['step'] == 'done')
         flow_cart_stock($_cart_goods_stock,$address);
         unset($cart_goods_stock, $_cart_goods_stock);
     }
+    
+    /*限时抢购商品检查限购数量 */
+    $promote_rtn = jude_promote_limit($_SESSION['user_id']);
+    if(!$promote_rtn['status']){
+    	show_message($promote_rtn['msg'], '', '', 'warning');
+    }
 
     /*
      * 检查用户是否已经登录

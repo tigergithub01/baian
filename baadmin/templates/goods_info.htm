@@ -269,8 +269,15 @@
           <tr id="promote_4">
             <td class="label" id="promote_5">{$lang.lab_promote_date}</td>
             <td id="promote_6">
-              <input name="promote_start_date" type="text" id="promote_start_date" size="24" value='{$goods.promote_start_date}' /><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('promote_start_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn1');" value="{$lang.btn_select}" class="button"/> - <input name="promote_end_date" type="text" id="promote_end_date" size="24" value='{$goods.promote_end_date}' /><input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('promote_end_date', '%Y-%m-%d %H:%M:%S', '24', false, 'selbtn2');" value="{$lang.btn_select}" class="button"/>
+              <input name="promote_start_date" type="text" id="promote_start_date" size="24" value='{$goods.promote_start_date}' />
+              <input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('promote_start_date', '%Y-%m-%d', '24', false, 'selbtn1');" value="{$lang.btn_select}" class="button"/> 
+              - <input name="promote_end_date" type="text" id="promote_end_date" size="24" value='{$goods.promote_end_date}' />
+              <input name="selbtn2" type="button" id="selbtn2" onclick="return showCalendar('promote_end_date', '%Y-%m-%d', '24', false, 'selbtn2');" value="{$lang.btn_select}" class="button"/>
             </td>
+          </tr>
+          <tr>
+            <td class="label">每日限购数量</td>
+            <td><input type="text" id="promote_limit_num" name="promote_limit_num" value="{$goods.promote_limit_num}" size="20" /></td>
           </tr>
           
           <!--<tr>
@@ -1230,6 +1237,7 @@
       document.forms['theForm'].elements['selbtn2'].disabled = !checked;
       $("#promote_start_date").attr("disabled",!checked);
       $("#promote_end_date").attr("disabled",!checked);
+      $("#promote_limit_num").attr("disabled",!checked);
   }
 
   function handleMomsuit(checked)

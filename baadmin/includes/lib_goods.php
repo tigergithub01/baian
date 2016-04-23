@@ -985,7 +985,8 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
                 $where .= ' AND g.is_new=1';
                 break;
             case 'is_promote':
-                $where .= " AND g.is_promote = 1 AND g.promote_price > 0 AND g.promote_start_date <= '$today' AND g.promote_end_date >= '$today'";
+            	$where .= " AND g.is_promote = 1 AND g.promote_price > 0 AND g.promote_end_date >= '$today'";
+                //$where .= " AND g.is_promote = 1 AND g.promote_price > 0 AND g.promote_start_date <= '$today' AND g.promote_end_date >= '$today'";
                 break;
             case 'all_type';
                 $where .= " AND (g.is_best=1 OR g.is_hot=1 OR g.is_new=1 OR (g.is_promote = 1 AND g.promote_price > 0 AND g.promote_start_date <= '" . $today . "' AND g.promote_end_date >= '" . $today . "'))";
@@ -1046,10 +1047,19 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
                     " FROM " . $GLOBALS['ecs']->table('goods') . " AS g WHERE is_delete='$is_delete' $where" .
                     " ORDER BY $filter[sort_by] $filter[sort_order] ".
                     " LIMIT " . $filter['start'] . ",$filter[page_size]"; */
-        $sql = "SELECT g.goods_id, g.goods_name, g.goods_type, g.goods_sn, g.shop_price, g.is_on_sale,g.purchase_price,".
+        /* $sql = "SELECT g.goods_id, g.goods_name, g.goods_type, g.goods_sn, g.shop_price, g.is_on_sale,g.purchase_price,".
           		" g.shop_price-purchase_price as profit, g.is_best, g.is_new, g.is_hot, g.sort_order, g.goods_number, g.integral, " .
         		" (g.promote_price > 0 AND g.promote_start_date <= '$today' AND g.promote_end_date >= '$today') AS is_promote, ".
         		" rmod.module_name" .
+        		" FROM " . $GLOBALS['ecs']->table('goods') . " AS g ".
+        		" LEFT JOIN " . $GLOBALS['ecs']->table('relative_module') . " AS rmod ON (g.relative_module = rmod.module_id) ".
+        		" WHERE g.is_delete='$is_delete' $where" .
+        		" ORDER BY $filter[sort_by] $filter[sort_order] ".
+        		" LIMIT " . $filter['start'] . ",$filter[page_size]"; */
+        $sql = "SELECT g.goods_id, g.goods_name, g.goods_type, g.goods_sn, g.shop_price, g.is_on_sale,g.purchase_price,".
+        		" g.shop_price-purchase_price as profit, g.is_best, g.is_new, g.is_hot, g.sort_order, g.goods_number, g.integral, " .
+        		" (g.promote_price > 0 AND g.promote_end_date >= '$today') AS is_promote, ".
+        		" rmod.module_name, g.promote_start_date, g.promote_end_date " .
         		" FROM " . $GLOBALS['ecs']->table('goods') . " AS g ".
         		" LEFT JOIN " . $GLOBALS['ecs']->table('relative_module') . " AS rmod ON (g.relative_module = rmod.module_id) ".
         		" WHERE g.is_delete='$is_delete' $where" .
@@ -1065,7 +1075,11 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         $filter = $result['filter'];
     }
     $row = $GLOBALS['db']->getAll($sql);
-
+	foreach ($row as $key => $value) {
+		$row[$key]['fmt_promote_end_date'] = local_date('Y-m-d',$row[$key]['promote_end_date']); 
+		$row[$key]['fmt_promote_start_date'] = local_date('Y-m-d',$row[$key]['promote_start_date']);
+	}
+    
     return array('goods' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
 }
 

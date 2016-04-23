@@ -598,7 +598,7 @@
 	       		<p style="text-align: c">你现在还没有<!-- {if ($commented eq 0)} -->待评价<!-- {else} -->已评价<!-- {/if} -->商品</p>
 	       <!--{/foreach}-->
 	       
-	       <div id="image_show"><img id="img_photo_url" alt="" src="" style="width: 600px;height: auto;"></div>
+	       <div id="image_show" style="display: none;"><img id="img_photo_url" alt="" src="" style="width: 600px;height: auto;"></div>
 	       
        </div>
         <div class="blank5"></div>

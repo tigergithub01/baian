@@ -77,10 +77,10 @@
             	/***全部选择**/
 	            $('.selcall').click(function(){
 	            	if($(this).is(':checked')) {     
-	            		$(".check_goods").attr("checked",'true');
+	            		$(".check_goods").prop("checked",'true');
 	            		$(".check_goods").parent().addClass("checked");
 	            		
-	            		$(".selcall").attr("checked",'true');
+	            		$(".selcall").prop("checked",'true');
 	            		$(this).parent().addClass("checked");
 	            		
 	            		
@@ -126,7 +126,7 @@
         			}
         		});
         		if(allChecked){
-        			$(".selcall").attr("checked",'true');
+        			$(".selcall").prop("checked",'true');
         			$(".selcall").parent().addClass("checked");
         		}else{
         			$(".selcall").removeAttr("checked"); 

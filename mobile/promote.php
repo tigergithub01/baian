@@ -75,6 +75,9 @@ if (1)
 	 }
 	 $smarty->assign('date_list',  $date_list);
 	 $smarty->assign('curr_dt',  $dt);
+	 
+	//当前选中日期
+	$selected_dt = $date_list[$dt]['dt']; 
 	 	
 	//限时抢购记录数
 	$count  = get_promote_goods_list_count('',$selected_dt);
@@ -86,7 +89,6 @@ if (1)
 	}
 	
 	//限时抢购记录
-	$selected_dt = $date_list[$dt]['dt']; //当前选中日期
 	$goodslist = get_promote_goods_list('',$page,$size,$selected_dt);
 	
     if($display == 'grid')

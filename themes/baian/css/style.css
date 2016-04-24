@@ -876,6 +876,19 @@ input.error{
 .user_center_cmt p{line-height: normal;}
 .user_center_cmt li{border-top: 1px solid #c9caca;}
 
+/* 限时抢购 */
+.ul-tab1{overflow: hidden;border-bottom: 1px solid #dcdddd;background-color: #fff;}
+.ul-tab1 li{width: 33.33%;float: left;height: 55px;}
+.ul-tab1 li.two{width: 50%;}
+.ul-tab1 li a{font-size: 22px;color: #595757;display: block;text-align: center;line-height: 55px;}
+.ul-tab1 li.on{border-bottom: 1px solid red;}
+.ul-tab1 li.on a{color: #ea5504;}
+
+.ul-tab1.fivetab{}
+.ul-tab1.fivetab li{width: 20%;float: left;height: 80px;}
+.ul-tab1.fivetab li a{line-height: inherit;color: white;background: #333333;height: 80px;}
+.ul-tab1.fivetab li.on{border-bottom: none;}
+.ul-tab1.fivetab li.on a{background: #EA5503;}
 
 
 

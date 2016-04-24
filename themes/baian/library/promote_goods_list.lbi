@@ -48,10 +48,19 @@
                             <div class="price"><span>抢购价<b><!-- {if $goods.promote_price neq ""} -->{$goods.promote_price}<!-- {else}-->{$goods.shop_price}<!--{/if}--></b></span><s style="color: #575757;font-size: 12px;float: right;">{$goods.shop_price}</s></div>
                             <!-- <span class="orange r">条评价</span> -->
                         </div>
-                        <div class="btnBox">
-                            <a href="javascript:addToCart({$goods.id})">立即购买</a>
-                            <a href="javascript:addToCart({$goods.id})">加入购物车</a>
-                            <a href="javascript:collect({$goods.id});">收藏</a>
+                        <div class="btnBox" style="text-align: center;border: 0px;padding-bottom: 5px;">
+                            <a href="javascript:collect({$goods.id});" style="color: #f08300;border: 1px solid #f08300;width: 60px;" >收藏</a>
+                            <!-- {if $goods.curr} 当天抢购 -->
+								<!-- {if $goods.goods_store gt 0 } -->
+								<a href="javascript:addToCart({$goods.id})" style="background-color: #f00;color: white;width: 60px;">立即抢购</a>
+								<!-- {else} -->
+								<a href='javascript:void(0)' onclick="return false;" class="btn btn_buy_empty" style="background-color: #898989;color: white;width: 60px;">已抢完</a>
+								<!-- {/if} -->
+							<!-- {else} -->
+								<a href='javascript:void(0)' onclick="return false;" class="btn btn_buy_empty" style="background-color: #898989;color: white;width: 60px;">即将开始</a>
+							<!-- {/if} -->	
+				
+                            
                         </div>
                         
     </li>

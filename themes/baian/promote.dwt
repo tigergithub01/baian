@@ -62,12 +62,37 @@
 					
 				<div class="i-rush r sbox" style="height: auto;">
 					
-					<div class="sec-tit">
-						<!-- <a href="" class="r">更多抢购&gt;</a> -->
-						<h3 class="stt1">限时抢购<span class="datetime"><font id="leftTime">{$lang.please_waiting}</font></span></h3>
-					</div>	
-				
+					<div id="banner">
+		<div class="fullSlide" style="min-width:inherit;height: 300px;">
+			<div class="wp pr">
+				<a class="prev"></a>
+				<a class="next"></a>
+			</div>
+			<div class="bd">
+				<ul style="height: 300px;">
+                <!--{foreach from=$promote_ads name=ban item=banner}-->
+<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img style="height: 300px;width: auto;" src="{$banner.ad_code}" alt=""></a></li>
+                    <!--{/foreach}-->
+				</ul>
+			</div>
+			<div class="hd" style="margin-right: auto;right: 5px;">
+				<ul></ul>
+			</div>
+		</div>
+	</div>
 					
+					
+				
+					<ul class="ul-tab1 fivetab">
+						<!--{foreach from=$date_list item=pr_dt}-->
+							<li  class="<!-- {if $pr_dt.selected } -->on<!-- {/if} -->"><a href="promote.html?dt={$pr_dt.idx}"><p><!-- {$pr_dt.formatted_date} --></p><p><!-- {if $pr_dt.curr } -->抢购中<!-- {else} -->即将开场<!-- {/if} --></p></a></li>
+			            <!--{/foreach}--> 
+					</ul>
+					
+					<div class="sec-tit" style="background-color: #dcdddd;height: 100px; text-align: center;<!-- {if $curr_dt >0 } -->display: none;<!-- {/if} -->">
+						<!-- <a href="" class="r">更多抢购&gt;</a> -->
+						<h3 class="stt1" style="margin-top: 25px;"><span style="background-color: #F95D5E;">距活动结束</span><span class="datetime"><font id="leftTime" color="#575757">{$lang.please_waiting}</font></span></h3>
+					</div>	
 					
 				    <div style="height:0px; line-height:0px; clear:both;"></div>
 				    <!-- #BeginLibraryItem "/library/promote_goods_list.lbi" --><!-- #EndLibraryItem -->
@@ -89,5 +114,16 @@
     <div class="h30"></div>
 
 <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<script type="text/javascript">
+$(function(){
+	$("#banner .fullSlide").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold", autoPlay:true, autoPage:true, trigger:"click" });
+	/* $('.fullSlide').hover(function(){
+   		$(this).find(".prev").fadeIn();
+   	},function(){
+   		$(this).find(".prev").fadeOut();
+   	}); */
+});
+</script>
 </body>
 </html>

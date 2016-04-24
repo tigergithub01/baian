@@ -1739,6 +1739,10 @@ elseif ($action == 'cancel_order')
 /*------------------------------------------------------ */
 elseif ($action == 'remove_order')
 {
+	
+	//用户不能删除订单
+	exit;
+	
 	include_once(ROOT_PATH . 'includes/lib_transaction.php');
 	include_once(ROOT_PATH . 'includes/lib_order.php');
 	

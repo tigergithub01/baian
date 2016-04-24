@@ -1152,6 +1152,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 
     /* 获得购物车中非超值礼包商品的总重量 */
    /*设置某个商品在在某些地区可以包邮，某些地区不能*/ 
+    /* modified by tiger.guo 20160424 赠品不计算运费 */
 	$sql = 'SELECT c.goods_id FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c, ' .
                 $GLOBALS['ecs']->table('goods_free_shipping_area') . ' AS r, ' .
                 $GLOBALS['ecs']->table('goods') . ' AS g ' .
@@ -1167,6 +1168,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 
 	//可减运费金额 added by tiger.guo 20151226
 	//可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
+	/* modified by tiger.guo 20160424 赠品不计算运费 */
     $sql    = 'SELECT SUM(g.goods_weight * c.goods_number) AS weight, ' .
                     'SUM(c.goods_price * c.goods_number) AS amount, ' .
                     'SUM(c.goods_number) AS number, '.
@@ -1174,7 +1176,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
                 'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
                 'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
                 "WHERE c.session_id = '" . SESS_ID . "' " .
-                "AND c.is_checked = 1 AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
+                "AND c.is_checked = 1  AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
     $row = $GLOBALS['db']->getRow($sql);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
 

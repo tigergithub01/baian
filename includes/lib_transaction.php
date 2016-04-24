@@ -1792,7 +1792,9 @@ function getOrderHandler($row){
         }
         else if ($row['order_status'] == OS_CANCELED){
         	//added by tiger.guo 20151220
-        	$handler= "<a href=\"user.php?act=remove_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_remove']."')) return false;\">".$GLOBALS['_LANG']['remove']."</a>";
+        	//modified by tiger.guo 20160424 用户不能删除订单
+        	$handler="";
+//         	$handler= "<a href=\"user.php?act=remove_order&order_id=" .$row['order_id']. "\" onclick=\"if (!confirm('".$GLOBALS['_LANG']['confirm_remove']."')) return false;\">".$GLOBALS['_LANG']['remove']."</a>";
         }
         else
         {

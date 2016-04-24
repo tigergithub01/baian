@@ -33,6 +33,9 @@ if ((DEBUG_MODE & 2) != 2)
 $page = isset($_REQUEST['page'])   && intval($_REQUEST['page'])  > 0 ? intval($_REQUEST['page'])  : 1;
 $size = isset($_CFG['page_size'])  && intval($_CFG['page_size']) > 0 ? intval($_CFG['page_size']) : 10;
 
+//获取抢购日期
+$dt= isset($_REQUEST['dt']) && intval($_REQUEST['dt'])  > 0 ? intval($_REQUEST['dt'])  : 0;
+
 
 /*------------------------------------------------------ */
 //-- PROCESSOR
@@ -45,8 +48,8 @@ setcookie('ECS[display]', $display, gmtime() + 86400 * 7);
 /* 页面的缓存ID */
 $cache_id = sprintf('%X', crc32($page . '-' . $_CFG['lang']));
 
-if (!$smarty->is_cached('promote.dwt', $cache_id))
-{
+// if (!$smarty->is_cached('promote.dwt', $cache_id))
+// {
     /* 如果页面没有被缓存则重新获取页面的内容 */
 
     assign_template('p', array());//TODO:？
@@ -56,9 +59,25 @@ if (!$smarty->is_cached('promote.dwt', $cache_id))
     $smarty->assign('ur_here',          $position['ur_here']);  // 当前位置
 	$smarty->assign('cat_name',   $cat['cat_name']);
 
+	//最近5天
+	$i = 0;
+	$date_list = array();
+	while ($i<5){
+		$date_list[$i]['idx'] = $i;
+		$date_list[$i]['dt'] = gmtime() + 3600 *24 * $i;
+		$date_list[$i]['formatted_date'] = local_date("n月d日",gmtime() + 3600 *24 * $i);
+		$date_list[$i]['curr'] = (($i==0)); //当前抢购中
+		$date_list[$i]['selected'] = (($i==$dt));//当前选中日期
+		$i++;
+	}
+	$smarty->assign('date_list',  $date_list);
+	$smarty->assign('curr_dt',  $dt);
+	
+	//当前选中日期
+	$selected_dt = $date_list[$dt]['dt'];
 	
 	//限时抢购记录数
-	$count  = get_promote_goods_list_count('');
+	$count  = get_promote_goods_list_count('',$selected_dt);
 	$pages  = ($count > 0) ? ceil($count / $size) : 1;
 	
 	if ($page > $pages)
@@ -67,7 +86,7 @@ if (!$smarty->is_cached('promote.dwt', $cache_id))
 	}
 	
 	//限时抢购记录
-	$goodslist = get_promote_goods_list('',$page,$size);
+	$goodslist = get_promote_goods_list('',$page,$size,$selected_dt);
 	
     if($display == 'grid')
     {
@@ -76,6 +95,9 @@ if (!$smarty->is_cached('promote.dwt', $cache_id))
             $goodslist[] = array();
         }
     }
+    
+    
+    
     
     $smarty->assign('goods_list',       $goodslist);
     $smarty->assign('helps',                get_shop_help());        // 网店帮助
@@ -86,9 +108,14 @@ if (!$smarty->is_cached('promote.dwt', $cache_id))
     //猜你喜欢 &　看了又看
     $may_like_goods = com_sale_get_may_like_goods();
     $smarty->assign('may_like_goods',$may_like_goods);
-}
+    
+    //限时抢购广告：
+    $promote_ads= getads(198,10);
+    $smarty->assign('promote_ads',$promote_ads);
+// }
 
-$smarty->display('promote.dwt', $cache_id);
+$smarty->display('promote.dwt');
+// $smarty->display('promote.dwt', $cache_id);
 
 
 

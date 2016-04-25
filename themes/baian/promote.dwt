@@ -94,8 +94,8 @@
 						<!-- <a href="" class="r">更多抢购&gt;</a> -->
 						
 						<h3 class="stt1" style="/* margin-top: 25px; */margin-left: 300px;">
-							<a style="float: left;" href="javascript:void(0)"><img alt="" src="../images/promote_bg.png"/></a>
-							<span class="datetime" style="float: left;margin-top: 40px;"><font id="leftTime" color="#575757">{$lang.please_waiting}</font></span>
+							<a style="float: left;" href="javascript:void(0)"><img alt="" src="../images/promote_bg.png"/><span style="position: relative;left: -180px;top: -35px;color:#f95d5e;">{$formatted_curr_dt}</span></a>
+							<span class="datetime" style="float: left;margin-top: 40px;position: relative;left: -45px;"><font id="leftTime" color="#575757">{$lang.please_waiting}</font></span>
 						</h3>
 					</div>	
 					

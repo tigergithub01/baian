@@ -72,6 +72,7 @@ $cache_id = sprintf('%X', crc32($page . '-' . $_CFG['lang']));
 	}
 	$smarty->assign('date_list',  $date_list);
 	$smarty->assign('curr_dt',  $dt);
+	$smarty->assign('formatted_curr_dt',  local_date("n月d日",gmtime()));
 	
 	//当前选中日期
 	$selected_dt = $date_list[$dt]['dt'];
@@ -115,7 +116,7 @@ $cache_id = sprintf('%X', crc32($page . '-' . $_CFG['lang']));
 // }
 
 $smarty->display('promote.dwt');
-// $smarty->display('promote.dwt', $cache_id);
+$smarty->display('promote.dwt', $cache_id);
 
 
 

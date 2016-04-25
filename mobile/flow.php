@@ -3087,12 +3087,13 @@ function flow_update_cart_goods($rec_id,$goods_number)
 		" WHERE rec_id='$key' AND session_id='" . SESS_ID . "'";
 		$goods = $GLOBALS['db']->getRow($sql);
 
-		$sql = "SELECT g.goods_name, g.goods_number ".
+		$sql = "SELECT g.goods_name, g.goods_number, g.is_promote, g.promote_start_date, g.promote_end_date, g.promote_limit_num ".
 				"FROM " .$GLOBALS['ecs']->table('goods'). " AS g, ".
 				$GLOBALS['ecs']->table('cart'). " AS c ".
 				"WHERE g.goods_id = c.goods_id AND c.rec_id = '$key'";
 		$row = $GLOBALS['db']->getRow($sql);
 
+		$time = isset($time)? $time : gmtime();
 		//查询：系统启用了库存，检查输入的商品数量是否有效
 		if (intval($GLOBALS['_CFG']['use_storage']) > 0 && $goods['extension_code'] != 'package_buy')
 		{
@@ -3104,6 +3105,14 @@ function flow_update_cart_goods($rec_id,$goods_number)
 				exit; */
 				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
 						$row['goods_number'], $row['goods_number'])];
+			}
+			
+			//特价商品限购
+			if($row['is_promote']==1 && $row['promote_start_date']<=$time && $row['promote_end_date']>=$time){
+				if ($row['promote_limit_num'] < $val){
+					return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
+							$row['promote_limit_num'], $row['promote_limit_num'])];
+				}
 			}
 			
 			/* 是货品 */

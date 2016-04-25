@@ -15,7 +15,7 @@
 		 	   var hour = Math.floor((goods_remain_seconds[key] / 3600) % 24);      //计算小时 
 		 	   var day = Math.floor((goods_remain_seconds[key] / 3600) / 24);        //计算天 
 	 	   	  //$("#leftTime"+key).html(hour + ":" + minite + ":" + second ); 
-		 	  $("#leftTime").html(hour + ":" + minite + ":" + second ); 
+		 	  $("#leftTime").html("<span>"+hour+"</span>" + ":" +"<span>"+ minite+"</span>" + ":"  +"<span>"+second +"</span>"); 
 	 	  } else {
 	 		  	//剩余时间小于或等于0的时候，就停止间隔函数 
 	 	  	 	window.clearInterval(goods_interValObj[key]); 

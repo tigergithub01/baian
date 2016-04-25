@@ -38,6 +38,7 @@
 .i-rush .sec-tit{color: #fff;background: #f08300;padding: 0 10px;}
 .i-rush .sec-tit a{color: #fff;}
 .i-rush .datetime{display: inline-block;margin-left: 15px;font-size: 18px;}
+.i-rush .datetime #leftTime span{background-color: white;}
 
 .rushScroll{ overflow:hidden; position:relative;}
 .rushScroll .bd{padding-bottom: 10px;}

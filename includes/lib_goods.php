@@ -850,7 +850,7 @@ function get_goods_info($goods_id)
         $time = gmtime();
         if ($time >= $row['promote_start_date'] && $time <= $row['promote_end_date']){
 //         	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
-        	$row['gmt_end_time']  = local_date('M d, Y 0:0:0',$row['promote_end_date']);
+        	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
         }else{
         	$row['gmt_end_time'] = null;
         }

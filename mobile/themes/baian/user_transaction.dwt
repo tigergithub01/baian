@@ -646,7 +646,7 @@
 				     <dl class="dl-login-reg">
 						<dd>
 							{$profile.mobile_phone}
-							<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile}" /> 
+							<input name="mobile_phone" id="mobile_phone" type="hidden" value="{$profile.mobile_phone}" /> 
 						</dd>
 						<dd>
 							<input type="text" placeholder="验证码" id="captcha" style="width: 150px;" name="captcha" class="text required"  style="ime-mode:disabled"  autocomplete="off" MaxLength="6"/>

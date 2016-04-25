@@ -31,7 +31,7 @@
     {if $use_storage}
     <th><a href="javascript:listTable.sort('goods_number'); ">{$lang.goods_number}</a>{$sort_goods_number}</th>
     {/if}
-    <th style="width: 20px;"><a href="javascript:listTable.sort('promote_end_date'); ">促销日期</a></th>
+    <th><a href="javascript:listTable.sort('promote_end_date'); ">促销日期</a></th>
     <th>{$lang.handler}</th>
   <tr>
   {foreach from=$goods_list item=goods}
@@ -54,7 +54,7 @@
     {if $use_storage}
     <td align="right"><span>{$goods.goods_number}</span></td>
     {/if}
-    <td align="right"><span title="{$goods.fmt_promote_start_date}至{$goods.fmt_promote_end_date}" style="{if $goods.is_promote}color:red;{/if}">{if $goods.is_promote}{$goods.fmt_promote_start_date}~{$goods.fmt_promote_end_date}{/if}</span></td>
+    <td align="right"><span title="{$goods.fmt_promote_start_date}至{$goods.fmt_promote_end_date}" style="{if $goods.is_promote}color:red;{/if}">{if $goods.is_promote}{$goods.fmt_promote_start_date}</br>{$goods.fmt_promote_end_date}{/if}</span></td>
     <td align="center">
       <a href="../goods.php?id={$goods.goods_id}" target="_blank" title="{$lang.view}"><img src="images/icon_view.gif" width="16" height="16" border="0" /></a>
       <a href="goods.php?act=edit&goods_id={$goods.goods_id}{if $code neq 'real_goods'}&extension_code={$code}{/if}" title="{$lang.edit}"><img src="images/icon_edit.gif" width="16" height="16" border="0" /></a>

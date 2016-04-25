@@ -52,7 +52,7 @@
                             <a href="javascript:collect({$goods.id});" style="color: #f08300;border: 1px solid #f08300;width: 60px;" >收藏</a>
                             <!-- {if $goods.curr} 当天抢购 -->
 								<!-- {if $goods.goods_store gt 0 } -->
-								<a href="javascript:addToCart({$goods.id})" style="background-color: #f00;color: white;width: 60px;">立即抢购</a>
+								<a href="{$goods.url}" style="background-color: #f00;color: white;width: 60px;">立即抢购</a>
 								<!-- {else} -->
 								<a href='javascript:void(0)' onclick="return false;" class="btn btn_buy_empty" style="background-color: #898989;color: white;width: 60px;">已抢完</a>
 								<!-- {/if} -->

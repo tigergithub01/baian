@@ -110,7 +110,7 @@ $cache_id = sprintf('%X', crc32($page . '-' . $_CFG['lang']));
     $smarty->assign('may_like_goods',$may_like_goods);
     
     //限时抢购广告：
-    $promote_ads= getads(198,10);
+    $promote_ads= getads(199,10);
     $smarty->assign('promote_ads',$promote_ads);
 // }
 

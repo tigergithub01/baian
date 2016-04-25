@@ -71,7 +71,7 @@
 			<div class="bd">
 				<ul style="height: 300px;">
                 <!--{foreach from=$promote_ads name=ban item=banner}-->
-<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img style="height: 300px;width: auto;" src="{$banner.ad_code}" alt=""></a></li>
+<li style="background:{$banner.description}"><a href="{$banner.ad_link}"><img style="height: 300px;width: 100%;" src="{$banner.ad_code}" alt=""></a></li>
                     <!--{/foreach}-->
 				</ul>
 			</div>

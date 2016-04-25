@@ -603,7 +603,7 @@ function get_promote_goods_list($cats = '',$page = 1, $size = 20, $date = null)
 		{
 // 			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
 // 			$goods['gmt_end_time']  = local_date('M d, Y 0:0:0',$row['promote_end_date']);
-			$goods[$idx]['gmt_end_time'] = local_date('M d, Y 0:0:0',$row['promote_end_date']);
+			$goods[$idx]['gmt_end_time'] = local_date('M d, Y H:i:s',$row['promote_end_date']);
 		}
 		else
 		{

@@ -54,7 +54,7 @@ if ($_REQUEST['act'] == 'list')
     $sort    = (isset($_REQUEST['sort'])  && in_array(trim(strtolower($_REQUEST['sort'])), array('goods_id', 'exchange_integral', 'last_update'))) ? trim($_REQUEST['sort'])  : $default_sort_order_type;
     $order   = (isset($_REQUEST['order']) && in_array(trim(strtoupper($_REQUEST['order'])), array('ASC', 'DESC')))                              ? trim($_REQUEST['order']) : $default_sort_order_method;
     $display = (isset($_REQUEST['display']) && in_array(trim(strtolower($_REQUEST['display'])), array('list', 'grid', 'text'))) ? trim($_REQUEST['display'])  : (isset($_COOKIE['ECS']['display']) ? $_COOKIE['ECS']['display'] : $default_display_type);
-    $display  = in_array($display, array('list', 'grid', 'text')) ? $display : 'text';
+    $display  = in_array($display, array('list', 'grid', 'text')) ? $display : 'grid';
     setcookie('ECS[display]', $display, gmtime() + 86400 * 7);
 
     /* 页面的缓存ID */

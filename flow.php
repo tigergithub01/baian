@@ -3103,6 +3103,14 @@ function flow_update_cart_goods($rec_id,$goods_number)
 						$row['goods_number'], $row['goods_number'])];
 			}
 			
+			//特价商品限购
+			if($row['is_promote']==1 && $row['promote_start_date']<=$time && $row['promote_end_date']>=$time){
+				if ($row['promote_limit_num'] < $val){
+					return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
+							$row['promote_limit_num'], $row['promote_limit_num'])];
+				}
+			}
+			
 			/* 是货品 */
 			$goods['product_id'] = trim($goods['product_id']);
 			if (!empty($goods['product_id']))

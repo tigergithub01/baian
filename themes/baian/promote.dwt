@@ -89,7 +89,7 @@
 			            <!--{/foreach}--> 
 					</ul>
 					
-					<div class="sec-tit" style="background-color: #dcdddd;height: 100px; text-align: center;<!-- {if $curr_dt >0 } -->display: none;<!-- {/if} -->">
+					<div class="sec-tit" style="background-color: #f2f2f3;height: 100px; text-align: center;<!-- {if $curr_dt >0 } -->display: none;<!-- {/if} -->">
 						
 						<!-- <a href="" class="r">更多抢购&gt;</a> -->
 						

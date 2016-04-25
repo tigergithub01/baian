@@ -54,7 +54,7 @@
 			<p class="btn promote_btn">
 				<!-- {if $goods.curr} 当天抢购 -->
 					<!-- {if $goods.goods_store gt 0 } -->
-					<a href='javascript:void(0)' onclick="addToCart({$goods.id},null,null)" class="btn btn_buy">立即抢购</a>
+					<a href='{$goods.url}' class="btn btn_buy">立即抢购</a>
 					<!-- {else} -->
 					<a href='javascript:void(0)' onclick="return false;" class="btn btn_buy_empty">已抢完</a>
 					<!-- {/if} -->

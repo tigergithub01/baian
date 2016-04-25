@@ -470,7 +470,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
 	   	   $goods['promote_end_date'] = $product['promote_end_date'];
 		   if (gmtime() >= $goods['promote_start_date'] && gmtime() <= $goods['promote_end_date']){
 		   	//         	$row['gmt_end_time']  = local_date('M d, Y H:i:s',$row['promote_end_date']);
-		   		$goods['gmt_end_time']  = local_date('M d, Y 0:0:0',$goods['promote_end_date']);
+		   		$goods['gmt_end_time']  = local_date('M d, Y H:i:s',$goods['promote_end_date']);
 		   }else{
 		   		$goods['gmt_end_time'] = null;
 		   }

@@ -1229,3 +1229,7 @@ span.required{color: red;}
 }
 .tit-lz.promote_tit .datetime{float: right;}
 .tit-lz.promote_tit .end_tip{padding-right: 10px;}
+
+/* 限时抢购表头 */
+.page_header{fixed;width: 640px;z-index: 1000;}
+

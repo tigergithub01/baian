@@ -16,15 +16,20 @@
 	<script type="text/javascript" src="/js/shopping_flow.js"></script>
 	<script type="text/javascript" src="/mobile/themes/baian/js/jquery.json.min.js"></script>
 	
+	<style>
+		/*去掉图片间的换行 */
+		#hd {display: none;}
+		#main{padding-top: 155px;}
+	</style>
 
 </head>
 <body>
+	
 	<!-- 搜索导航 -->
 	<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-
-	<!-- 主页面 -->
-	<section id="main" data-role="page" id="one">
-
+	
+	<section class="page_header" style="position: fixed;width: 640px;z-index: 1000;">
+	
 		<header id="head">
 			<a href="javascript:history.back(-1);" class="back-btn"></a>
 			<h2>限时抢购<!-- （<span>共{$pager.record_count}件商品</span>） --></h2>
@@ -36,6 +41,12 @@
 				<li  class="<!-- {if $pr_dt.selected } -->on<!-- {/if} -->"><a href="promote.html?dt={$pr_dt.idx}"><p><!-- {$pr_dt.formatted_date} --></p><p><!-- {if $pr_dt.curr } -->抢购中<!-- {else} -->即将开场<!-- {/if} --></p></a></li>
             <!--{/foreach}--> 
 		</ul>
+	</section>	
+	
+	<!-- 主页面 -->
+	<section id="main" data-role="page" id="one">
+
+		
 		
 		
 	

@@ -3093,7 +3093,6 @@ function flow_update_cart_goods($rec_id,$goods_number)
 				"WHERE g.goods_id = c.goods_id AND c.rec_id = '$key'";
 		$row = $GLOBALS['db']->getRow($sql);
 
-		$time = isset($time)? $time : gmtime();
 		//查询：系统启用了库存，检查输入的商品数量是否有效
 		if (intval($GLOBALS['_CFG']['use_storage']) > 0 && $goods['extension_code'] != 'package_buy')
 		{
@@ -3108,8 +3107,9 @@ function flow_update_cart_goods($rec_id,$goods_number)
 			}
 			
 			//特价商品限购
+			$time = isset($time)? $time : gmtime();
 			if($row['is_promote']==1 && $row['promote_start_date']<=$time && $row['promote_end_date']>=$time){
-				if ($row['promote_limit_num'] < $val){
+				if ($row['promote_limit_num']>0 && $row['promote_limit_num'] < $val){
 					return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
 							$row['promote_limit_num'], $row['promote_limit_num'])];
 				}

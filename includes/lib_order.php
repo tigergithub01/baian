@@ -2020,6 +2020,11 @@ function jude_promote_limit($user_id){
 			" WHERE c.session_id = '" . SESS_ID . "'  AND c.rec_type = '" . CART_GENERAL_GOODS . "'".
 			" AND c.parent_id = 0 AND c.is_gift = 0 AND c.is_checked = '$is_checked' ".
 			" AND (g.is_promote = 1 AND g.promote_start_date <= '$time' AND g.promote_end_date >= '$time')";
+	/* $sql = "SELECT g.goods_id ".
+			" FROM " . $GLOBALS['ecs']->table('cart') . " AS c " .
+			" LEFT JOIN ". $GLOBALS['ecs']->table('goods') ." AS g ON (c.goods_id = g.goods_id) ".
+			" WHERE c.session_id = '" . SESS_ID . "'  AND c.rec_type = '" . CART_GENERAL_GOODS . "'".
+			" AND c.parent_id = 0 AND c.is_gift = 0 AND c.is_checked = '$is_checked' "; */
 	$rows = $GLOBALS['db']->getAll($sql);
 	foreach ($rows as $key => $row) {
 		$promote_rtn = jude_promote_limit_goods($user_id, $row['goods_id'],0,$is_checked);
@@ -2051,9 +2056,12 @@ function jude_promote_limit_goods($user_id,$goods_id,$num = 0,$is_checked = 0){
 			" FROM " . $GLOBALS['ecs']->table('goods') . " AS g " .					
 			" WHERE g.goods_id= '$goods_id' ".
 			" AND (g.is_promote = 1 AND g.promote_start_date <= '$time' AND g.promote_end_date >= '$time')";	
+	/* $sql = "SELECT g.goods_id, g.goods_name, g.promote_limit_num ".
+			" FROM " . $GLOBALS['ecs']->table('goods') . " AS g " .
+			" WHERE g.goods_id= '$goods_id' "; */
 	$goods = $GLOBALS['db']->getRow($sql);
-	if(!isset($goods)){
-		//不是促销特价商品，不做限购判断
+	if(!$goods || $goods['promote_limit_num']<=0){
+		//不限购直接返回
 		return $rtn;
 	}
 	

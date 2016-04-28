@@ -319,7 +319,7 @@ mysqldump -hlocalhost -uroot -p********** goodsback > goodsback_201601100912.sql
 mysqldump -hlocalhost -uroot -p********** weixin > weixin_201601100912.sql
 mysqldump -hlocalhost -uroot -p********** wordpress > wordpress_201601100912.sql
 
-
+mysqldump -hlocalhost -uroot -pBaiAnShop2015 baianshop > baianshop_201604130952.sql
 
 
 linux查看文件大小：
@@ -654,6 +654,32 @@ images/201408/source_img/2008_G_1407090836414.jpg	images/201408/thumb_img/2008_t
 http://localhost:8086/mobile/user.php?act=booking_list
 
 1、“缺货登记”中“处理备注”为空时显示“无”。
+
+微信浏览器输入法挡住文本框的问题：
+http://m.blog.csdn.net/article/details?id=51005911
+http://blog.csdn.net/fungleo/article/details/51005911
+
+
+IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price
+=>
+g.shop_price AS shop_price
+
+http://localhost:8086/baadmin/order.php?act=templates
+
+A4纸的尺寸是210mm×297mm，
+当你设定的分辨率是72像素/英寸时，A4纸的尺寸的图像的像素是595×842，
+当你设定的分辨率是150像素/英寸时，A4纸的尺寸的图像的像素是1240×1754，
+当你设定的分辨率是300像素/英寸时，A4纸的尺寸的图像的像素是2479×3508，
+你选择不同的分辨率，图像像素大小也随之变化。 
+
+购货人：65px;
+付款时间：130px
+
+793.80
+常用的1024x768或800x600等标准的分辨率计算出来的dpi是一个常数：96，因此计算出来的毫米与像素的关系也约等于一个常数：
+基本上 1毫米 约等于 3.78像素
+
+210mm 约等于 793.80像素
 
 
 

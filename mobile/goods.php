@@ -556,11 +556,17 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
         $smarty->assign('bought_goods',        get_also_bought($goods_id));                      // 购买了该商品的用户还购买了哪些商品
         $smarty->assign('goods_rank',          get_goods_rank($goods_id));                       // 商品的销售排名
 		$smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
+		
+		/*关联板式顶部 */
 		$smarty->assign("xqtop",getads(184,1));
+		
+		/*关联板式底部  */
 		$smarty->assign("xqdibu",getads(185,1));
 		
+		//产品左侧广告图
+		$smarty->assign("cat_ads",get_cat_ads($goods['cat_id']));
+
 		
-		$smarty->assign("xqzc",getads(186,1));
 		
         $img_desc_arr = array();
         foreach($pictures as $key=>$val){

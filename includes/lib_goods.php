@@ -2682,5 +2682,14 @@ function get_buy_give_activity_list($goods_id){
 	return $buy_give_activity_list;
 }
 
+/* 分类广告图 */
+function get_cat_ads($cat_id){
+	$sql = "SELECT ad_img_url, ad_thumb_url, ad_img_original, ad_link " .
+			" FROM " . $GLOBALS['ecs']->table('category') .
+			" WHERE cat_id = '$cat_id'" ;
+	$cat_ads = $GLOBALS['db']->getRow($sql);
+	return $cat_ads;
+}
+
 
 ?>

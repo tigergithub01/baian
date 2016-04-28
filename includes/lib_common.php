@@ -3109,4 +3109,84 @@ function send_register_bonus($user_id, $bonus_type_id=0)
 	send_mail($user_info['user_name'], $user_info['email'], '注册送红包', $content, $tpl['is_html']);
 }
 
+/**
+ * 上传图片，重新格式化图片名称
+ * @param unknown $goods_id
+ * @param unknown $source_img
+ * @param string $position
+ * @param unknown $dir
+ * @return boolean|string
+ */
+function reformat_image_name_new($type,$goods_id, $source_img, $position='', $dir = 'images')
+{
+	$rand_name = gmtime() . sprintf("%03d", mt_rand(1,999));
+	$img_ext = substr($source_img, strrpos($source_img, '.'));
+	$sub_dir = date('Ym', gmtime());
+	if (!make_dir(ROOT_PATH.$dir.'/'.$sub_dir))
+	{
+		return false;
+	}
+	if (!make_dir(ROOT_PATH.$dir.'/'.$sub_dir.'/source_img'))
+	{
+		return false;
+	}
+	if (!make_dir(ROOT_PATH.$dir.'/'.$sub_dir.'/img'))
+	{
+		return false;
+	}
+	if (!make_dir(ROOT_PATH.$dir.'/'.$sub_dir.'/thumb_img'))
+	{
+		return false;
+	}
+
+	switch($type)
+	{
+
+		case 'source':
+			$img_name = $goods_id . '_P_' . $rand_name;
+			break;
+		case 'img':
+			$img_name = $goods_id . '_G_' . $rand_name;
+			break;
+		case 'thumb':
+			$img_name = $goods_id . '_thumb_P_' . $rand_name;
+			break;
+	}
+
+	if ($position == 'source')
+	{
+		if (move_image_file_new(ROOT_PATH.$source_img, ROOT_PATH.$dir.'/'.$sub_dir.'/source_img/'.$img_name.$img_ext))
+		{
+			return $dir.'/'.$sub_dir.'/source_img/'.$img_name.$img_ext;
+		}
+	}
+	elseif ($position == 'thumb')
+	{
+
+		if (move_image_file_new(ROOT_PATH.$source_img, ROOT_PATH.$dir.'/'.$sub_dir.'/thumb_img/'.$img_name.$img_ext))
+		{
+			return $dir.'/'.$sub_dir.'/thumb_img/'.$img_name.$img_ext;
+		}
+	}
+	else
+	{
+		if (move_image_file_new(ROOT_PATH.$source_img, ROOT_PATH.$dir.'/'.$sub_dir.'/img/'.$img_name.$img_ext))
+		{
+			return $dir.'/'.$sub_dir.'/img/'.$img_name.$img_ext;
+		}
+	}
+	return false;
+}
+
+function move_image_file_new($source, $dest)
+{
+	if (@copy($source, $dest))
+	{
+		@unlink($source);
+		return true;
+	}
+	return false;
+}
+
+
 ?>

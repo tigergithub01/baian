@@ -193,7 +193,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             'give_integral' => -1,
             'rank_integral' => -1,
         	'relative_module' => 0,
-        	'promote_limit_num' => 1,		
+        	'promote_limit_num' => -1,		
         );
 
         if ($code != '')
@@ -266,7 +266,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
                 'give_integral' => -1,
                 'rank_integral' => -1,
             	'relative_module' => 0,	
-            	'promote_limit_num' => 1,
+            	'promote_limit_num' => -1,
             );
         }
 		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
@@ -967,7 +967,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $relative_module = isset($_POST['relative_module']) ? intval($_POST['relative_module']) : 0;
     
     //每日限购数量
-    $promote_limit_num = isset($_POST['promote_limit_num']) ? intval($_POST['promote_limit_num']) : 1;
+    $promote_limit_num = isset($_POST['promote_limit_num']) ? intval($_POST['promote_limit_num']) : -1;
     
 
     /* 入库 */

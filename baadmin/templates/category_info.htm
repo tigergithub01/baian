@@ -165,6 +165,19 @@
               <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="noticPoints">{$lang.notice_integral}</span>
             </td>
           </tr>
+          <tr>
+            <td class="label">广告图片</td>
+            <td>
+              <input type="file" name="ad_img_file" size="35" />
+              {if $cat_info.ad_img_url}
+                <a href="goods.php?act=show_image&img_url={$cat_info.ad_img_url}" target="_blank"><img src="images/yes.gif" border="0" /></a>
+              {else}
+                <img src="images/no.gif" />
+              {/if}
+              <br /><input type="text" size="40" value="{$lang.lab_picture_url}" placeholder="图片外部URL"" style="color:#aaa;" onfocus="if (this.value == '{$lang.lab_picture_url}'){this.value='http://';this.style.color='#000';}" name="ad_img_url"/>
+             <p><input type="text" size="80" value="{$cat_info.ad_link}" name="ad_link"  placeholder="广告链接地址"/>
+            </td>
+          </tr>
       </table>
       <div class="button-div">
         <input type="submit" value="{$lang.button_submit}" />

@@ -16,6 +16,8 @@
 define('IN_ECS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
+include_once(ROOT_PATH . '/includes/cls_image.php');
+$image = new cls_image($_CFG['bgcolor']);
 $exc = new exchange($ecs->table("category"), $db, 'cat_id', 'cat_name');
 
 /* act操作项的初始化 */
@@ -115,6 +117,9 @@ if ($_REQUEST['act'] == 'insert')
     $cat['rank_integral']     = !empty($_POST['rank_integral'])     ? intval($_POST['rank_integral'])     : -1;
     $cat['integral']     = !empty($_POST['integral'])     ? intval($_POST['integral'])     : 0;
     $cat['give_integral_rate']     = !empty($_POST['give_integral_rate'])     ? intval($_POST['give_integral_rate'])     : 1;
+    
+    /* 广告链接地址 */
+    $cat['ad_link']     = !empty($_POST['ad_link'])     ? trim($_POST['ad_link'])     : '';
 
     if (cat_exists($cat['cat_name'], $cat['parent_id']))
     {
@@ -145,7 +150,11 @@ if ($_REQUEST['act'] == 'insert')
             $db->query($sql);
         }
         insert_cat_recommend($cat['cat_recommend'], $cat_id);
-
+        
+        /* 处理分类广告图片 */
+        remove_category_ad_image_file($cat_id);
+        handle_category_ad_image($cat_id, $_FILES['ad_img_file'], '', $_POST['ad_img_url'], $cat_id.'_ad');
+        
         admin_log($_POST['cat_name'], 'add', 'category');   // 记录管理员操作
         clear_cache_files();    // 清除缓存
 
@@ -282,6 +291,9 @@ if ($_REQUEST['act'] == 'update')
     $cat['integral']     = !empty($_POST['integral'])     ? intval($_POST['integral'])     : 0;
     $cat['give_integral_rate']     = !empty($_POST['give_integral_rate'])     ? intval($_POST['give_integral_rate'])     : 1;
     
+    /* 广告链接地址 */
+    $cat['ad_link']     = !empty($_POST['ad_link'])     ? trim($_POST['ad_link'])     : '';
+    
     /* 判断分类名是否重复 */
 
     if ($cat['cat_name'] != $old_cat_name)
@@ -350,6 +362,11 @@ if ($_REQUEST['act'] == 'update')
 
         //更新首页推荐
         insert_cat_recommend($cat['cat_recommend'], $cat_id);
+        
+        /* 处理分类广告图片 */
+        remove_category_ad_image_file($cat_id);
+        handle_category_ad_image($cat_id, $_FILES['ad_img_file'], '', $_POST['ad_img_url'], $cat_id.'_ad');
+        
         /* 更新分类信息成功 */
         clear_cache_files(); // 清除缓存
         admin_log($_POST['cat_name'], 'edit', 'category'); // 记录管理员操作
@@ -582,6 +599,10 @@ if ($_REQUEST['act'] == 'remove')
         if ($db->query($sql))
         {
             $db->query("DELETE FROM " . $ecs->table('nav') . "WHERE ctype = 'c' AND cid = '" . $cat_id . "' AND type = 'middle'");
+            
+            /* 删除分类广告图片 */
+        	remove_category_ad_image_file($cat_id);
+            
             clear_cache_files();
             admin_log($cat_name, 'remove', 'category');
         }
@@ -729,5 +750,202 @@ function insert_cat_recommend($recommend_type, $cat_id)
         $GLOBALS['db']->query("DELETE FROM ". $GLOBALS['ecs']->table("cat_recommend") . " WHERE cat_id=" . $cat_id);
     }
 }
+
+
+/**
+ * 保存某货品的相册图片
+ * @param   int     $goods_id
+ * @param   int     $product_id
+ * @param   array   $image_file
+ * @param   array   $image_descs
+ * @return  void
+ */
+function handle_category_ad_image($cat_id, $image_file, $image_desc, $image_url, $name_prefix)
+{
+		
+		$dir = 'category';
+		$dir_path = $GLOBALS['image']->data_dir . '/' . 'category';
+		
+		/* 是否处理缩略图 */
+		$proc_thumb = (isset($GLOBALS['shop_id']) && $GLOBALS['shop_id'] > 0)? false : true;
+		/* 是否成功上传 */
+		$flag = false;
+		if (isset($image_file['error']))
+		{
+			if ($image_file['error'] == 0)
+			{
+				$flag = true;
+			}
+		}
+		else
+		{
+			if ($image_file['tmp_name'] != 'none')
+			{
+				$flag = true;
+			}
+		}
+
+		if ($flag)
+		{
+			// 生成缩略图
+			if ($proc_thumb)
+			{
+				$thumb_url = $GLOBALS['image']->make_thumb($image_file['tmp_name'], $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height'], ROOT_PATH . $dir_path. '/');
+				$thumb_url = is_string($thumb_url) ? $thumb_url : '';
+			}
+
+			$upload = array(
+					'name' => $image_file['name'],
+					'type' => $image_file['type'],
+					'tmp_name' => $image_file['tmp_name'],
+					'size' => $image_file['size'],
+			);
+			if (isset($image_file['error']))
+			{
+				$upload['error'] = $image_file['error'];
+			}
+			$img_original = $GLOBALS['image']->upload_image($upload, $dir);
+			if ($img_original === false)
+			{
+				sys_msg($GLOBALS['image']->error_msg(), 1, array(), false);
+			}
+			$img_url = $img_original;
+
+			if (!$proc_thumb)
+			{
+				$thumb_url = $img_original;
+			}
+			// 如果服务器支持GD 则添加水印
+			if ($proc_thumb && gd_version() > 0)
+			{
+				$pos        = strpos(basename($img_original), '.');
+				$newname    = dirname($img_original) . '/' . $GLOBALS['image']->random_filename() . substr(basename($img_original), $pos);
+				copy('../' . $img_original, '../' . $newname);
+				$img_url    = $newname;
+
+				$GLOBALS['image']->add_watermark('../'.$img_url,'',$GLOBALS['_CFG']['watermark'], $GLOBALS['_CFG']['watermark_place'], $GLOBALS['_CFG']['watermark_alpha']);
+			}
+
+			/* 重新格式化图片名称 */
+			$img_original = reformat_image_name_new('source',$name_prefix, $img_original, 'source',$dir_path);
+			$img_url = reformat_image_name_new('img',$name_prefix, $img_url, 'img',$dir_path);
+			$thumb_url = reformat_image_name_new('thumb',$name_prefix, $thumb_url, 'thumb',$dir_path);
+			
+			/* $sql = "INSERT INTO " . $GLOBALS['ecs']->table('category_ad') . " (cat_id, img_url, img_desc, thumb_url, img_original) " .
+					"VALUES ('$cat_id', '$img_url', '$img_desc', '$thumb_url', '$img_original')"; */
+			$sql = "UPDATE " . $GLOBALS['ecs']->table('category') .
+			 " SET ad_img_url = '$img_url', ad_thumb_url ='$thumb_url', ad_img_original = '$img_original' " .
+			 " WHERE cat_id = '$cat_id'";
+			$GLOBALS['db']->query($sql);
+			/* 不保留商品原图的时候删除原图 */
+			if ($proc_thumb && !$GLOBALS['_CFG']['retain_original_img'] && !empty($img_original))
+			{
+				$GLOBALS['db']->query("UPDATE " . $GLOBALS['ecs']->table('category_ad') . " SET img_original='' WHERE `cat_id`='{$cat_id}'");
+				@unlink('../' . $img_original);
+			}
+		}
+		elseif (!empty($image_url) && ($image_url != $GLOBALS['_LANG']['img_file']) && ($image_url != 'http://') && copy(trim($image_url), ROOT_PATH . 'temp/' . basename($image_url)))
+		{
+			$image_url = trim($image_url);
+
+			//定义原图路径
+			$down_img = ROOT_PATH . 'temp/' . basename($image_url);
+
+			// 生成缩略图
+			if ($proc_thumb)
+			{
+				$thumb_url = $GLOBALS['image']->make_thumb($down_img, $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height'], ROOT_PATH . $dir_path);
+				$thumb_url = is_string($thumb_url) ? $thumb_url : '';
+				$thumb_url = reformat_image_name_new('thumb', $name_prefix, $thumb_url, 'thumb',$dir_path);
+			}
+
+			if (!$proc_thumb)
+			{
+				$thumb_url = htmlspecialchars($image_url);
+			}
+
+			/* 重新格式化图片名称 */
+			$img_url = $img_original = htmlspecialchars($image_url);
+			/* $sql = "INSERT INTO " . $GLOBALS['ecs']->table('category_ad') . " (cat_id, img_url, img_desc, thumb_url, img_original) " .
+					"VALUES ('$cat_id', '$img_url', '$img_desc', '$thumb_url', '$img_original')"; */
+			$sql = "UPDATE " . $GLOBALS['ecs']->table('category') .
+			" SET ad_img_url = '$img_url', ad_thumb_url ='$thumb_url', ad_img_original = '$img_original' " .
+			" WHERE cat_id = '$cat_id'";
+			
+			$GLOBALS['db']->query($sql);
+
+			@unlink($down_img);
+		}
+}
+
+/**
+ * 删除分类广告图相册
+ * @param unknown $product_id
+ */
+function remove_category_ad_images($cat_id){
+	$sql = "SELECT img_id " .
+			" FROM " . $GLOBALS['ecs']->table('category_ad') .
+			" WHERE cat_id = '$cat_id'";
+	$rows = $GLOBALS['db']->getAll($sql);
+	foreach ($rows as $key => $value) {
+		remove_category_ad_image($value['img_id']);
+	}
+}
+
+
+/**
+ * 删除分类广告图中的一张图片
+ * @param unknown $img_id
+ */
+function remove_category_ad_image($img_id){
+	/* 删除图片文件 */
+	$sql = "SELECT img_url, thumb_url, img_original " .
+			" FROM " . $GLOBALS['ecs']->table('category_ad') .
+			" WHERE img_id = '$img_id'";
+	$row = $GLOBALS['db']->getRow($sql);
+
+	if ($row['img_url'] != '' && is_file('../' . $row['img_url']))
+	{
+		@unlink('../' . $row['img_url']);
+	}
+	if ($row['thumb_url'] != '' && is_file('../' . $row['thumb_url']))
+	{
+		@unlink('../' . $row['thumb_url']);
+	}
+	if ($row['img_original'] != '' && is_file('../' . $row['img_original']))
+	{
+		@unlink('../' . $row['img_original']);
+	}
+
+	/* 删除数据 */
+	$sql = "DELETE FROM " . $GLOBALS['ecs']->table('category_ad') . " WHERE img_id = '$img_id' LIMIT 1";
+	$GLOBALS['db']->query($sql);
+}
+
+/**
+ * 清除分类广告图片
+ * @param unknown $img_id
+ */
+function remove_category_ad_image_file($cat_id){
+	/* 删除图片文件 */
+	$sql = "SELECT ad_img_url AS img_url, ad_thumb_url AS thumb_url, ad_img_original AS img_original " .
+			" FROM " . $GLOBALS['ecs']->table('category') .
+			" WHERE cat_id = '$cat_id'";
+	$row = $GLOBALS['db']->getRow($sql);
+
+	if ($row['img_url'] != '' && is_file('../' . $row['img_url']))
+	{
+		@unlink('../' . $row['img_url']);
+	}
+	if ($row['thumb_url'] != '' && is_file('../' . $row['thumb_url']))
+	{
+		@unlink('../' . $row['thumb_url']);
+	}
+	if ($row['img_original'] != '' && is_file('../' . $row['img_original']))
+	{
+		@unlink('../' . $row['img_original']);
+	}
+}
+
 
 ?>

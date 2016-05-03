@@ -234,9 +234,9 @@
               					<div class="radio goods_attr">
               					<!--{foreach from=$attr.attr_values item=goods_attr key=val_key}-->
               							<!-- {if ($goods_attr.is_checked eq 1)} -->
-											<label for="attr_id_{$goods_attr.goods_attr_id}" class="checked"><input name="chk_{$attr.attr_id}" goods_attr_id="{$goods_attr.goods_attr_id}" id="attr_id_{$goods_attr.goods_attr_id}" type="radio" value="{$goods_attr.attr_value}" checked="checked">{$goods_attr.attr_value}</label>
+											<label for="attr_id_{$goods_attr.attr_id}_{$val_key}" class="checked"><input name="chk_{$goods_attr.attr_id}" goods_attr_id="{$goods_attr.attr_id}" id="attr_id_{$goods_attr.attr_id}_{$val_key}" type="radio" value="{$goods_attr.attr_value}" checked="checked">{$goods_attr.attr_value}</label>
               							<!-- {else} -->
-											<label for="attr_id_{$goods_attr.goods_attr_id}"><input name="chk_{$attr.attr_id}" goods_attr_id="{$goods_attr.goods_attr_id}" id="attr_id_{$goods_attr.goods_attr_id}" type="radio" value="{$goods_attr.attr_value}">{$goods_attr.attr_value}</label>
+											<label for="attr_id_{$goods_attr.attr_id}_{$val_key}"><input name="chk_{$goods_attr.attr_id}" goods_attr_id="{$goods_attr.attr_id}" id="attr_id_{$goods_attr.attr_id}_{$val_key}" type="radio" value="{$goods_attr.attr_value}">{$goods_attr.attr_value}</label>
               							<!-- {/if} -->
               							
               					<!-- {/foreach} --> 
@@ -502,12 +502,14 @@
 		    
 		  //查找所有选中的商品属性值
             var selected_attributes = "";
+            var selected_attributes_val = "";
             var $selected_lis = $(".goods_attr input[type='radio']:checked");
             //console.debug($selected_lis);
             //var arr=new Array()
             $.each($selected_lis,function(index,v){
             	//console.debug(v);
             	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
+            	selected_attributes_val   +=  ($(v).val()+(($selected_lis.length==(index+1))?"":"|"));
             	//arr.push($(v).attr("goods_attr_id"));
             	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
             });
@@ -517,7 +519,7 @@
         	    url:'goods.php?act=select_attribute',     
         	    type:'post',  
         	    dataType:'json', 
-        	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
+        	    data:{'selected_attributes': selected_attributes,'selected_attributes_val': selected_attributes_val,'goods_id':{$goods.goods_id}},     
         	    async :true, 
         	    error:function(){ 
         	    	alert('更新出错！');
@@ -527,6 +529,8 @@
         	    	if(data.status==1){
         	    		var goods_url = data.content.goods_url;
         	    		window.location.href = goods_url;
+        	    	}else{
+        	    		alert(data.message);
         	    	}
         	    	
         	    }  

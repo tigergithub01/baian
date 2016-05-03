@@ -73,6 +73,90 @@
 			//$("#content").append("<p>selected " + format(item) + "</p>");
 		});
 	}
+	
+	/* 增加商品分组 */
+	function add_virtual_goods(){
+		$.ajax({     
+    	    url:'goods.php?act=add_virtual_goods',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'virtual_goods_name': $("#virtual_goods_name").val()},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    	    	//console.debug(data);
+    	    	if(data.error==1){
+    	    		alert(data.message)
+    	    		
+    	    	}else{
+    	    		//console.debug(data);
+    	    		$("#virtual_goods_id").append("<option value='"+data.content.virtual_goods_id+"'>"+data.content.goods_name+"</option>");
+    	    		$("#virtual_goods_id").val(data.content.virtual_goods_id);
+    	    	}    	    	
+    	    }  
+    	});
+	}
+	
+	function remove_virtual_goods(){
+		var virtual_goods_id = $("#virtual_goods_id").val();
+		var exists = false;
+		var success = false;
+		$.ajax({     
+    	    url:'goods.php?act=get_virtual_ref_count',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'virtual_goods_id': virtual_goods_id},     
+    	    async :false, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    	    	if(data.error==1){
+    	    		alert(data.message);
+    	    	}else{
+    	    		if(data.content.count>0){
+    	    			exists = true;
+    	    		}
+    	    		success = true;
+    	    	}   
+    	    }  
+    	});
+		
+		if(!success){
+			return false;
+		}
+		
+		if(exists){
+			if(!confirm('该商品分组已经被关联，是否删除?')){
+				return false;
+			}
+		}
+		
+		if(!confirm('是否确认删除选中商品分组?')){
+			return false;
+		}
+		
+		$.ajax({     
+    	    url:'goods.php?act=remove_virtual_goods',     
+    	    type:'post',  
+    	    dataType:'json', 
+    	    data:{'virtual_goods_id': virtual_goods_id},     
+    	    async :true, 
+    	    error:function(){ 
+    	    	alert('更新出错！');
+    	    },     
+    	    success:function(data){ 
+    	    	if(data.error==1){
+    	    		alert(data.message)
+    	    	}else{
+    	    		//console.debug(data);
+    	    		$("#virtual_goods_id option[value='"+virtual_goods_id+"']").remove();
+    	    	}    	    	
+    	    }  
+    	});
+	}
 </script>
 
 {if $warning}
@@ -618,8 +702,25 @@
           <tr>
             <td id="tbody-goodsAttr" colspan="2" style="padding:0">{$goods_attr_html}</td>
           </tr>
+          <tr>
+          <td class="label">商品分组（用于属性关联）</td>
+          <td>
+          <select name="virtual_goods_id" id="virtual_goods_id">
+          	<option value="0">{$lang.select_please}</option>
+          	{foreach from=$virtual_goods item=item key=key}
+          		<option value="{$item.virtual_goods_id}" {if $goods.virtual_goods_id eq $item.virtual_goods_id }selected="selected"{/if}>{$item.goods_name}</option>
+          	{/foreach}
+          </select>
+         	<input type="text" name="virtual_goods_name" id="virtual_goods_name" size="45"/>
+         	<input type="button" value="新增" onclick="add_virtual_goods();">
+         	<input type="button" value="删除" onclick="remove_virtual_goods();">
+          </td>
+          
+          </tr>
         </table>
         {/if}
+        
+        
         
 
         <!-- 商品相册 -->
@@ -1055,6 +1156,20 @@
         	  alert('买几送几请设置一个倍增规则!');
         	  return false;
           } 
+      }
+      
+      var attr_required_validate = true;
+      $.each($("#properties-table select.attr_required"),function(i,v){
+    	  //console.debug($(v).val());
+    	  if($(v).val()==''){
+    		  attr_required_validate = false;
+    		  return false;
+    	  }
+      });
+      
+      if(!attr_required_validate){
+    	  alert('必填商品属性不能为空!');
+    	  return false;
       }
       
       //TODO:买几送几商品名称情况后，自动将隐藏的商品编号清空。

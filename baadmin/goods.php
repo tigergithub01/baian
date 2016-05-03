@@ -68,6 +68,11 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
      $relative_module[$val['module_id']] = $val['module_name'];
     }*/
     $smarty->assign('relative_module', $relative_module);
+    
+    /*商品分组 */
+    $sql = 'SELECT * FROM ' .$GLOBALS['ecs']->table('virtual_goods'). ' ';
+    $virtual_goods = $db->getAll($sql);
+    $smarty->assign('virtual_goods', $virtual_goods);
 
     /* 模板赋值 */
     $goods_ur = array('' => $_LANG['01_goods_list'], 'virtual_card'=>$_LANG['50_virtual_card_list']);
@@ -193,7 +198,8 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
             'give_integral' => -1,
             'rank_integral' => -1,
         	'relative_module' => 0,
-        	'promote_limit_num' => -1,		
+        	'promote_limit_num' => -1,
+        	'virtual_goods_id' => 0,			
         );
 
         if ($code != '')
@@ -267,6 +273,7 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
                 'rank_integral' => -1,
             	'relative_module' => 0,	
             	'promote_limit_num' => -1,
+            	'virtual_goods_id' => 0,	
             );
         }
 		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
@@ -504,6 +511,12 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     }*/
     $smarty->assign('relative_module', $relative_module);
     /* wzys关联版式 end*/
+    
+    
+    /*商品分组 */
+    $sql = 'SELECT * FROM ' .$GLOBALS['ecs']->table('virtual_goods'). ' ORDER BY goods_name ';
+    $virtual_goods = $db->getAll($sql);
+    $smarty->assign('virtual_goods', $virtual_goods);
 
     /* 模板赋值 */
     $smarty->assign('code',    $code);
@@ -969,6 +982,10 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     //每日限购数量
     $promote_limit_num = isset($_POST['promote_limit_num']) ? intval($_POST['promote_limit_num']) : -1;
     
+    /* 关联商品分组编号 */
+    $virtual_goods_id = isset($_POST['virtual_goods_id']) ? intval($_POST['virtual_goods_id']) : 0;
+    
+    
 
     /* 入库 */
     if ($is_insert)
@@ -980,14 +997,14 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id,goods_title,reduce_ship_amt,".
-                    "pinyin, bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module, promote_limit_num)" .
+                    "pinyin, bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module, promote_limit_num, virtual_goods_id)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', '$is_on_sale', '$is_alone_sale', $is_shipping, ".
                     " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$rank_integral', '$suppliers_id','$goods_title','$reduce_ship_amt',".
-            		" '$pinyin', '$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module', '$promote_limit_num')";
+            		" '$pinyin', '$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module', '$promote_limit_num', '$virtual_goods_id')";
         }
         else
         {
@@ -996,14 +1013,14 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral,goods_title,reduce_ship_amt,".
-                    "pinyin,bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module, promote_limit_num)" .
+                    "pinyin,bonus, is_buy_gift, gift_start_date, gift_end_date, purchase_price, relative_module, promote_limit_num, virtual_goods_id)" .
                 "VALUES ('$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
                     " '$warn_number', '$_POST[integral]', '$give_integral', '$is_best', '$is_new', '$is_hot', 0, '$is_on_sale', '$is_alone_sale', $is_shipping, ".
                     " '$_POST[goods_desc]', '" . gmtime() . "', '". gmtime() ."', '$goods_type', '$code', '$rank_integral','$goods_title','$reduce_ship_amt',".
-            		" '$pinyin','$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module', '$promote_limit_num')";
+            		" '$pinyin','$bonus', '$is_buy_gift', '$gift_start_date', '$gift_end_date', '$purchase_price', '$relative_module', '$promote_limit_num', '$virtual_goods_id')";
         }
     }
     else
@@ -1078,6 +1095,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "gift_end_date = '$gift_end_date', " .
                 "relative_module = '$relative_module', " .
                 "promote_limit_num = '$promote_limit_num', " .
+                "virtual_goods_id = '$virtual_goods_id', " .
                 "goods_type = '$goods_type' " .
                 "WHERE goods_id = '$_REQUEST[goods_id]' LIMIT 1";
     }
@@ -3765,6 +3783,83 @@ elseif ($_REQUEST['act'] == 'ajax_query_goods'){
 		$goods[] = array('goods_id'=>$value['goods_id'],'goods_name'=>$value['goods_name'],'goods_sn'=>$value['goods_sn']);
 	}
 	die(json_encode($goods,JSON_UNESCAPED_UNICODE));
+}
+
+/*------------------------------------------------------ */
+//-- 新增商品分组
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'add_virtual_goods')
+{
+	check_authz_json('goods_manage');
+
+	$virtual_goods_name   = empty($_REQUEST['virtual_goods_name']) ? '' : trim($_REQUEST['virtual_goods_name']);
+	if(empty($virtual_goods_name)){
+		make_json_error("商品分组名称不能为空");
+	}
+	
+	$sql = "select count(1) FROM " . $ecs->table('virtual_goods') . " WHERE goods_name = '$virtual_goods_name'";
+	$count = $db->getOne($sql);
+	if($count>=1){
+		make_json_error("商品分组[".$virtual_goods_name.']已经存在！');
+	}	
+	
+	$sql = "INSERT INTO " . $GLOBALS['ecs']->table('virtual_goods') . " (goods_sn, goods_name) " .
+			"VALUES ('', '$virtual_goods_name')";
+	
+	if($GLOBALS['db']->query($sql)){
+		make_json_result(['virtual_goods_id'=>$GLOBALS['db']->insert_id(),'goods_name'=>$virtual_goods_name]);
+	}else{
+		make_json_error("商品分组添加失败");
+	}
+}
+
+/*------------------------------------------------------ */
+//-- 删除商品分组
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'remove_virtual_goods')
+{
+	check_authz_json('goods_manage');
+
+	$virtual_goods_id   = empty($_REQUEST['virtual_goods_id']) ? 0 : intval($_REQUEST['virtual_goods_id']);
+	if($virtual_goods_id == 0 ){
+		make_json_error("请选择需要删除的商品分组");
+	}
+
+	/* $sql = "select count(1) FROM " . $ecs->table('goods') . " WHERE virtual_goods_id = '$virtual_goods_id'";
+	$count = $db->getOne($sql);
+	if($count>=1){
+		make_json_error("商品分组[".$virtual_goods_name.']已经被其它商品关系，是否确认删除！');
+	} */
+	
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('goods') . " SET virtual_goods_id = 0 WHERE virtual_goods_id = '$virtual_goods_id'";	
+	$GLOBALS['db']->query($sql);	
+	
+	$sql = "DELETE FROM " . $GLOBALS['ecs']->table('virtual_goods') . " WHERE virtual_goods_id = '$virtual_goods_id'";
+	
+	
+
+	if($GLOBALS['db']->query($sql)){
+		make_json_result("商品分组删除成功");
+	}else{
+		make_json_error("商品分组删除失败");
+	}
+}
+
+/*------------------------------------------------------ */
+//-- 检查商品分组是否被关联
+/*------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'get_virtual_ref_count')
+{
+	check_authz_json('goods_manage');
+	
+	$virtual_goods_id   = empty($_REQUEST['virtual_goods_id']) ? 0 : intval($_REQUEST['virtual_goods_id']);
+	if($virtual_goods_id == 0 ){
+		make_json_error("请选择需要删除的商品分组");
+	}
+
+	$sql = "select count(1) FROM " . $ecs->table('goods') . " WHERE virtual_goods_id = '$virtual_goods_id'";
+	$count = $db->getOne($sql);
+	make_json_result(['count'=>$count]); 
 }
 
 /**

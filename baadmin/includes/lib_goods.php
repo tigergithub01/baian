@@ -792,7 +792,7 @@ function build_attr_html($cat_id, $goods_id = 0)
     foreach ($attr AS $key => $val)
     {
         $html .= "<tr><td class='label'>";
-        if ($val['attr_type'] == 1 || $val['attr_type'] == 2)
+        if ($val['attr_type'] == 2)
         {
             $html .= ($spec != $val['attr_id']) ?
                 "<a href='javascript:;' onclick='addSpec(this)'>[+]</a>" :
@@ -801,6 +801,10 @@ function build_attr_html($cat_id, $goods_id = 0)
         }
 
         $html .= "$val[attr_name]</td><td><input type='hidden' name='attr_id_list[]' value='$val[attr_id]' />";
+        
+        if ($val['attr_type'] == 1){
+        	$html .= "<span style='color:red;'>(必填*)</span>";
+        }
 
         if ($val['attr_input_type'] == 0)
         {
@@ -811,8 +815,14 @@ function build_attr_html($cat_id, $goods_id = 0)
             $html .= '<textarea name="attr_value_list[]" rows="3" cols="40">' .htmlspecialchars($val['attr_value']). '</textarea>';
         }
         else
-        {
-            $html .= '<select name="attr_value_list[]">';
+        {            
+            if ($val['attr_type'] == 1){
+            	//必填
+            	$html .= '<select name="attr_value_list[]" class="attr_required">';
+            }else{
+            	$html .= '<select name="attr_value_list[]">';
+            }
+            
             $html .= '<option value="">' .$GLOBALS['_LANG']['select_please']. '</option>';
 
             $attr_values = explode("\n", $val['attr_values']);

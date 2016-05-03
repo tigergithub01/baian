@@ -705,13 +705,13 @@
           <tr>
           <td class="label">商品分组（用于属性关联）</td>
           <td>
-          <select name="virtual_goods_id" id="virtual_goods_id">
+          <select name="virtual_goods_id" id="virtual_goods_id" style="width: 250px;">
           	<option value="0">{$lang.select_please}</option>
           	{foreach from=$virtual_goods item=item key=key}
           		<option value="{$item.virtual_goods_id}" {if $goods.virtual_goods_id eq $item.virtual_goods_id }selected="selected"{/if}>{$item.goods_name}</option>
           	{/foreach}
           </select>
-         	<input type="text" name="virtual_goods_name" id="virtual_goods_name" size="45"/>
+         	<input type="text" name="virtual_goods_name" id="virtual_goods_name" placeholder="请输入需要添加的商品分组名称" size="45"/>
          	<input type="button" value="新增" onclick="add_virtual_goods();">
          	<input type="button" value="删除" onclick="remove_virtual_goods();">
           </td>

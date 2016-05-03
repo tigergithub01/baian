@@ -118,11 +118,14 @@
 		        
 		        //查找所有选中的商品属性值
 		        var selected_attributes = "";
+		        var selected_attributes_val = "";
+		        
 		        var $selected_lis = $('.ul-sel li.on');
 		        //var arr=new Array()
 		        $.each($selected_lis,function(index,v){
 		        	//console.debug(v);
 		        	selected_attributes   +=  ($(v).attr("goods_attr_id")+(($selected_lis.length==(index+1))?"":"|"));
+		        	selected_attributes_val   +=  ($(v).attr("attr_value")+(($selected_lis.length==(index+1))?"":"|"));
 		        	//arr.push($(v).attr("goods_attr_id"));
 		        	//selected_attributes += '&attr['+index+']='+$(v).attr("goods_attr_id");
 		        });
@@ -132,7 +135,7 @@
 		    	    url:'goods.php?act=select_attribute',     
 		    	    type:'post',  
 		    	    dataType:'json', 
-		    	    data:{'selected_attributes': selected_attributes,'goods_id':{$goods.goods_id}},     
+		    	    data:{'selected_attributes': selected_attributes,'selected_attributes_val': selected_attributes_val,'goods_id':{$goods.goods_id}},     
 		    	    async :true, 
 		    	    error:function(){ 
 		    	    	alert('更新出错！');
@@ -142,7 +145,9 @@
 		    	    	if(data.status==1){
 		    	    		var goods_url = data.content.goods_url;
 		    	    		window.location.href = goods_url;
-		    	    	}
+		    	    	}else{
+	        	    		alert(data.message);
+	        	    	}
 		    	    	
 		    	    }  
 		    	});
@@ -417,9 +422,9 @@
                 					<!--{foreach from=$attr.attr_values item=goods_attr key=val_key}-->
                 					
                 							<!-- {if ($goods_attr.is_checked eq 1)} -->
-                								<li class="on" goods_attr_id="{$goods_attr.goods_attr_id}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
+                								<li class="on" goods_attr_id="{$goods_attr.attr_id}" attr_value="{$goods_attr.attr_value}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
                 							<!-- {else} -->
-                								<li class="" goods_attr_id="{$goods_attr.goods_attr_id}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
+                								<li class="" goods_attr_id="{$goods_attr.attr_id}" attr_value="{$goods_attr.attr_value}"><a href="javascript:void(0)">{$goods_attr.attr_value}</a></li>
                 							<!-- {/if} -->
                 					<!-- {/foreach} --> 
                 				</ul>

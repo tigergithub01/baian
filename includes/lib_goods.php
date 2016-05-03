@@ -2388,6 +2388,7 @@ function com_sale_goods_get_related_cats_by_cat_id($cat_id){
 
 /**
  * 获得商品已添加的规格列表
+ * modified by tiger.guo 20160503 产品表products不再使用
  *
  * @access      public
  * @params      integer         $goods_id
@@ -2400,17 +2401,49 @@ function get_products_specifications_list($goods_id)
 		return array();  //$goods_id不能为空
 	}
 
-	$sql = "SELECT DISTINCT g.goods_attr_id, g.attr_value, g.attr_id, a.attr_name
+	/* $sql = "SELECT DISTINCT g.goods_attr_id, g.attr_value, g.attr_id, a.attr_name
             FROM " . $GLOBALS['ecs']->table('goods_attr') . " AS g
                 INNER JOIN " . $GLOBALS['ecs']->table('attribute') . " AS a ON a.attr_id = g.attr_id
                 INNER JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON p.goods_id = g.goods_id
                 INNER JOIN " . $GLOBALS['ecs']->table('products_attr') . " AS pattr ON p.product_id = pattr.product_id
                 WHERE pattr.goods_attr_id = g.goods_attr_id AND p.goods_id = '$goods_id'
                 AND a.attr_type = 1
-                ORDER BY g.attr_id ASC";
+                ORDER BY g.attr_id ASC"; */
+	
+	$virtual_goods_id = $GLOBALS['db']->getOne("SELECT virtual_goods_id FROM ". $GLOBALS['ecs']->table('goods') ." WHERE goods_id = '$goods_id'");
+	if(empty($virtual_goods_id)){
+		return null;
+	}
+	
+	$goods_ids = $GLOBALS['db']->getCol("SELECT goods_id FROM ". $GLOBALS['ecs']->table('goods') ." WHERE virtual_goods_id = '$virtual_goods_id'");
+	if(empty($goods_ids)){
+		return null;
+	}	
+	
+	$sql = "SELECT DISTINCT g.attr_id, g.attr_value, g.attr_id, a.attr_name
+            FROM " . $GLOBALS['ecs']->table('goods_attr') . " AS g ".
+            " INNER JOIN " . $GLOBALS['ecs']->table('attribute') . " AS a ON a.attr_id = g.attr_id ".
+	        " WHERE g.goods_id ".db_create_in($goods_ids) .
+	        " AND a.attr_type = 1 ORDER BY g.attr_id ASC";
 	$results = $GLOBALS['db']->getAll($sql);
 
 	return $results;
+}
+
+/**
+ * 同一虚拟商品下的所有商品编号
+ * @param unknown $goods_id
+ * @return NULL|unknown
+ */
+function get_goods_list_same_virtual($goods_id){
+	$virtual_goods_id = $GLOBALS['db']->getOne("SELECT virtual_goods_id FROM ". $GLOBALS['ecs']->table('goods') ." WHERE goods_id = '$goods_id'");
+	if(empty($virtual_goods_id)){
+		return null;
+	}
+	
+	$goods_ids = $GLOBALS['db']->getCol("SELECT goods_id FROM ". $GLOBALS['ecs']->table('goods') ." WHERE virtual_goods_id = '$virtual_goods_id'");
+	
+	return $goods_ids;
 }
 
 /**

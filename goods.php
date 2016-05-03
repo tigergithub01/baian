@@ -126,12 +126,17 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_attribute')
 {
 	$selected_attributes = $_POST['selected_attributes'];
 	$attrs = explode("|", $selected_attributes);
+	
+	$selected_attributes_val = $_POST['selected_attributes_val'];
+	$attrs_val = explode("|", $selected_attributes_val);
+	
 	$goods_id = isset($_POST['goods_id'])?$_POST['goods_id']:null;
 	if(!isset($goods_id)){
 		lib_main_make_json_error("商品信息不存在!");
 		exit;
 	}
 	
+	/*
 // 	$condition = "";
 // 	foreach ($attrs as $value) {
 // 		$condition = $condition ."";
@@ -166,7 +171,37 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_attribute')
 		lib_main_make_json_error('根据属性查找产品失败');
 		exit();
 	}
+	*/
 	
+	$goods_ids = get_goods_list_same_virtual($goods_id);
+	$selected_goods_id=null;
+	foreach ($goods_ids as $gid) {
+		$sql = "SELECT attr_id, attr_value FROM " . $GLOBALS['ecs']->table('goods_attr') . " WHERE goods_id = '$gid'";
+		$goods_attr_list = $GLOBALS['db']->getAll($sql);
+		$flag = true;
+		foreach ($goods_attr_list as $goods_attr) {
+			if(!(in_array($goods_attr['attr_id'], $attrs) && in_array($goods_attr['attr_value'], $attrs_val))){
+				$flag = false;
+				break;
+			}
+		}
+	
+		//成功匹配到对应的产品
+		if($flag){
+			$selected_goods_id =$gid;
+			break;
+		}
+	
+	}
+	
+	if($selected_goods_id){
+		$goods_url = build_uri('goods', array('gid' => $selected_goods_id), $row['goods_name']);
+		lib_main_make_json_result('根据属性查找产品成功',['goods_url'=>$goods_url]);
+		exit();
+	}else{
+		lib_main_make_json_error('对不起，您选择的属性商品不存在！');
+		exit();
+	}
 }
 
 /*------------------------------------------------------ */
@@ -293,6 +328,7 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
     	//$properties = get_goods_properties($goods_id);  // 获得商品的规格和属性
     	/*属性选择start*/    	
     	/* 获取商品规格列表 */
+    	/*  代码不起作用，可以直接忽略，tiger.guo 20160513 start */
     	$product = null;
     	if($product_id){
     		//根据参数获取产品信息
@@ -317,12 +353,17 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
     		$sql = "SELECT goods_attr_id FROM " . $GLOBALS['ecs']->table('products_attr') . " WHERE product_id = '".$product['product_id']."'";
     		$product_attr_list = $GLOBALS['db']->getCol($sql);
     	}
+    	/*  代码不起作用，可以直接忽略，tiger.guo 20160513 end */
+    	
+    	
+    	$sql = "SELECT attr_value FROM " . $GLOBALS['ecs']->table('goods_attr') . " WHERE goods_id = '".$goods_id."'";
+    	$goods_attr_list = $GLOBALS['db']->getCol($sql);
     	
     	$attributes = get_products_specifications_list($goods_id);
     	foreach ($attributes as $attribute_value)
     	{
-    		$is_checked = (isset($product_attr_list) && in_array($attribute_value['goods_attr_id'], $product_attr_list))?1:0;
-    		$arr = ['goods_attr_id'=>$attribute_value['goods_attr_id'],'attr_value'=>$attribute_value['attr_value'],'is_checked'=>$is_checked];
+    		$is_checked = (isset($goods_attr_list) && in_array($attribute_value['attr_value'], $goods_attr_list))?1:0;
+    		$arr = ['attr_id'=>$attribute_value['attr_id'],'attr_value'=>$attribute_value['attr_value'],'is_checked'=>$is_checked];
     		$specifications[$attribute_value['attr_id']]['attr_values'][] = $arr;
     		 
     		// 	    	$arr['goods_attr_id']=$attribute_value['goods_attr_id'];
@@ -332,7 +373,6 @@ if (!$smarty->is_cached('goods.dwt', $cache_id))
     		$specifications[$attribute_value['attr_id']]['attr_id'] = $attribute_value['attr_id'];
     		$specifications[$attribute_value['attr_id']]['attr_name'] = $attribute_value['attr_name'];
     	}
-    		
     	$smarty->assign('specifications',       $specifications);
     	/*属性选择end*/
     	

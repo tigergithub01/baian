@@ -1176,7 +1176,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
                 'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
                 'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
                 "WHERE c.session_id = '" . SESS_ID . "' " .
-                "AND c.is_checked = 1  AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
+                "AND c.is_checked = 1 AND c.is_gift = 0  AND c.rec_type = '$type' $where AND c.extension_code != 'package_buy'";
     $row = $GLOBALS['db']->getRow($sql);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  
 
@@ -1468,7 +1468,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$product_i
         /* 检查该商品是否已经存在在购物车中 */
         $sql = "SELECT goods_number FROM " .$GLOBALS['ecs']->table('cart').
                 " WHERE session_id = '" .SESS_ID. "' AND goods_id = '$goods_id' ".
-                " AND parent_id = 0 AND goods_attr = '" .get_goods_attr_info($spec). "' " .
+                " AND parent_id = 0 AND is_gift = 0 AND goods_attr = '" .get_goods_attr_info($spec). "' " .
                 " AND extension_code <> 'package_buy' " .
                 " AND rec_type = 'CART_GENERAL_GOODS'";
         if($product_id){

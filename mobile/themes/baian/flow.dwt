@@ -728,7 +728,7 @@
 			<h3 class="s-nav-t c-tit3">
 			<a class="xg2" href="javascript:void(0);">
 			<span class="label_shipping_pay">配送及支付方式</span>
-			<span class="info dn"><span class="txt_shipping_name" id="txt_shipping_name">{$shipping.shipping_name} </span><span class="txt_payment_name" id="txt_payment_name">{$payment.pay_name}</span></span>
+			<span class="info dn txt_shipping_payment"><span class="txt_shipping_name" id="txt_shipping_name">{$shipping.shipping_name} </span><span class="txt_payment_name" id="txt_payment_name">{$payment.pay_name}</span></span>
 			</a>
 			</h3>
             <div id="ECS_SHIPPING_PARMENT" >

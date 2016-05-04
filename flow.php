@@ -650,8 +650,9 @@ elseif ($_REQUEST['step'] == 'checkout')
     $cod_disabled      = true;
 
     // 查看购物车中是否全为免运费商品，若是则把运费赋为零
-    $sql = 'SELECT count(*) FROM ' . $ecs->table('cart') . " WHERE `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
-    $shipping_count = $db->getOne($sql);
+//     $sql = 'SELECT count(*) FROM ' . $ecs->table('cart') . " WHERE `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0 AND is_checked = 1";
+//     $shipping_count = $db->getOne($sql);
+
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
     $shipping_count = get_not_free_shipping_count($region);
 	/*wzys设置某个商品在在某些地区可以包邮，某些地区不能end*/  

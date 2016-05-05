@@ -3188,5 +3188,33 @@ function move_image_file_new($source, $dest)
 	return false;
 }
 
+/**
+ * 用scwp进行分词
+ * @param unknown $text
+ * @return multitype:unknown
+ */
+function get_scwp_words($text){
+	$cws = scws_new();
+	$cws->set_charset('utf8');
+	$cws->set_ignore('yes');
+	//$cws->set_respond('xml'); // php/json/xml
+	
+	// 这里没有调用 set_dict 和 set_rule 系统会自动试调用 ini 中指定路径下的词典和规则文件
+	$cws->send_text($text);
+	// $cws->send_text("奶粉,");
+	
+	$result = array();
+	
+	while ($tmp = $cws->get_result())
+	{
+		foreach ($tmp as $key => $value) {
+			// 		var_dump($value['word']);
+			$result[] = $value['word'];
+		}
+	}
+	$cws->close();
+	return $result;
+}
+
 
 ?>

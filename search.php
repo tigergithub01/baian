@@ -203,12 +203,15 @@ else
         $arr = array ();
         $operator   = " AND ";
         // 先简单分解为单个文字,以后可以改为分词工具scws:eg,https://github.com/hightman/scws
-        for($i = 0; $i < mb_strlen ( $keyword ); $i ++) {
+        /* for($i = 0; $i < mb_strlen ( $keyword ); $i ++) {
         	$chr = mb_substr ( $keyword, $i, 1, 'utf-8' );
         	if (! empty ( $chr )) {
         		$arr [] = $chr;
         	}
-        }
+        } */
+        
+        //scws分词处理 tiger.guo 20160506
+        $arr = get_scwp_words($keyword);
         
 
         $keywords = 'AND (';

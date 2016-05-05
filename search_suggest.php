@@ -48,12 +48,15 @@ if ($keywords != "") {
 	// 先简单分解为单个文字,以后可以改为分词工具scws:eg,https://github.com/hightman/scws
 	$keywords = str_replace ( ' ', '', $keywords );
 	$arr_chr = array ();
-	for($i = 0; $i < mb_strlen ( $keywords ); $i ++) {
+	/* for($i = 0; $i < mb_strlen ( $keywords ); $i ++) {
 		$chr = mb_substr ( $keywords, $i, 1, 'utf-8' );
 		if (! empty ( $chr )) {
 			$arr_chr [] = $chr;
 		}
-	}
+	} */
+	
+	//scws分词处理 tiger.guo 20160506
+	$arr_chr = get_scwp_words($keyword);
 	
 	// 然后根据分词结果拼装sql,查询历史搜索关键词
 	$keywords_sql = " AND (";

@@ -117,8 +117,10 @@ function check_money($log_id, $money)
     $sql = 'SELECT order_amount FROM ' . $GLOBALS['ecs']->table('pay_log') .
               " WHERE log_id = '$log_id'";
     $amount = $GLOBALS['db']->getOne($sql);
-
-    if ($money == $amount)
+	
+    //added by tiger.guo 四舍五入保留一位小数，即保留到角，分忽略不计
+//     if ($money == $amount)
+    if (($money == $amount) || (round($money,1) == round($amount,1)))
     {
         return true;
     }

@@ -592,6 +592,23 @@ EOT;
     		return true;
     	}
 	}   
+	
+	
+	/**
+	 * 写入支付日志
+	 * @param unknown $file_name
+	 * @param unknown $content
+	 */
+	function write_pay_log($file_name,$content){
+		$log_dir = ROOT_PATH.'/'."data/logs/payment/wxpay";
+		if (!file_exists($log_dir)){
+			make_dir($log_dir);
+		}
+		$filename = $log_dir.'/'.$file_name.'.log';
+		$Ts=fopen($filename,"a+");
+		fputs($Ts,"\r\n".$content);
+		fclose($Ts);
+	}
 }
 
 ?>

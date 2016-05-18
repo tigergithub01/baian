@@ -19,7 +19,7 @@
 	<style>
 		/*去掉图片间的换行 */
 		#hd {display: none;}
-		#main{padding-top: 155px;}
+		#main{padding-top: 170px;}
 	</style>
 
 </head>

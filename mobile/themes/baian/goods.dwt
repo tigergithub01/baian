@@ -251,9 +251,11 @@
 					<th>数　量：</th>
 					<td>
 						<div class="buyNum">
-							<span class="minus">-</span>
-							<input name="number" type="text" id="number" value="1">
-							<span class="plus">+</span>
+							<script type="text/javascript" src="/mobile/themes/baian/js/goods.cut_add.js"></script>
+							<span class="minus" onclick="goods_cut({$goods.goods_id});">-</span>
+							<input name="number" type="text" id="number" value="1" onblur="change_goods_number({$goods.goods_id});">
+							<input type="hidden"  id="original_number" value="1" />
+							<span class="plus" onclick="goods_add({$goods.goods_id});">+</span>
 							<a class="orange" href="javascript:void(0)" onclick="return nav_div($('.zuBox'));">优惠套装></a>
 						</div>
 					</td>
@@ -537,14 +539,14 @@
         	});
 		});
 
-		$('.buyNum .minus').click(function(){
+		/* $('.buyNum .minus').click(function(){
 			var val = $(this).next('input').val()*1 - 1;
 			$(this).next('input').val(val);
 		});
 		$('.buyNum .plus').click(function(){
 			var val = $(this).prev('input').val()*1 + 1;
 			$(this).prev('input').val(val);
-		});
+		}); */
 		
 		//详情页图片延迟加载
 		$(".img-wp img").lazyload({ 
@@ -827,6 +829,8 @@
     	    }  
     	}); 
 	}
+	
+	
 	
 	</script>
 	

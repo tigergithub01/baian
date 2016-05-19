@@ -307,7 +307,7 @@
 	                		<dl style="display: none;">
 	                			<dt>数　量：</dt>
 	                			<dd>
-	                            <script type="text/javascript" src="/themes/baian/js/goods.cut_add.js"></script>
+	                            <script type="text/javascript" src="/mobile/themes/baian/js/goods.cut_add.js"></script>
 				                <span class="jian"><a class="btn-reduce" href="javascript:;" onclick="goods_cut();">-</a> </span>
 				                <input name="number" type="text" class="inp"  id="number" value="1" onblur=""/>
 				                <span class="jia"><a class="btn-add" href="javascript:;" onclick="goods_add();">+</a></span>

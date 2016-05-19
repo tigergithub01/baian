@@ -452,9 +452,10 @@
 	                			<dt>数　量：</dt>
 	                			<dd>
 	                            <script type="text/javascript" src="/themes/baian/js/goods.cut_add.js"></script>
-				                <span class="jian"><a class="btn-reduce" href="javascript:;" onclick="goods_cut();">-</a> </span>
-				                <input name="number" type="text" class="inp"  id="number" value="1" onblur=""/>
-				                <span class="jia"><a class="btn-add" href="javascript:;" onclick="goods_add();">+</a></span>
+				                <span class="jian"><a class="btn-reduce" href="javascript:;" onclick="goods_cut({$goods.goods_id});">-</a> </span>
+				                <input name="number" type="text" class="inp"  id="number" value="1" onblur="change_goods_number({$goods.goods_id});"/>
+				                <input type="hidden"  id="original_number" value="1" />
+				                <span class="jia"><a class="btn-add" href="javascript:;" onclick="goods_add({$goods.goods_id});">+</a></span>
 	                			</dd>
 	                		</dl>
 	                		<span class="ma">

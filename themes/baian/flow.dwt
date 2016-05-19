@@ -188,7 +188,7 @@
             }
             
             /***更新购物车内某商品的数量***/
-            function flow_update_cart_goods(rec_id,goods_number){
+            function flow_update_cart_goods(rec_id,goods_number,$num,$original_num){
             	$.ajax({     
             	    url:'flow.php?step=flow_update_cart_goods',     
             	    type:'post',  
@@ -218,7 +218,9 @@
             		    }else{
             		    	alert(data.message);
             		    	//更新出错，还原本行数据
-            		    	if(data.content!=null){
+            		    	$num.val($original_num.val());
+            		    	
+            		    	/* if(data.content!=null){
             		    		if(rec_id!=null){
             		    			$.each(data.content.goods_list,function(i,v){
                             			if(v.rec_id == rec_id){
@@ -230,7 +232,8 @@
             		    		}
                 		    	$("#total_goods_number").text(data.content.total.goods_number);
                 		    	$("#total_goods_amount").text(data.content.total.goods_price);
-            		    	}
+            		    	} */
+            		    	
             		    }
             	    }  
             	}); 
@@ -319,7 +322,7 @@
             
             /**更新购物车-减少商品数量***/
 			function goods_cut($val){
-				var num_val=document.getElementById('number'+$val);
+				/* var num_val=document.getElementById('number'+$val);
 				var new_num=num_val.value;
 				if(isNaN(new_num)){alert('请输入数字');return false}
 				var Num = parseInt(new_num);
@@ -328,24 +331,45 @@
 					flow_update_cart_goods($val,Num);
 				}else{
 					num_val.value=Num;
+				} */
+				
+				var $original_num = $('#original_number_'+$val);
+				var $num = $('#number'+$val);
+				var new_num=$num.val();
+				if(isNaN(new_num)){alert('请输入数字');return false}
+				var Num = parseInt(new_num);
+				if(Num>1){
+					Num=Num-1;
+					flow_update_cart_goods($val,Num,$num,$original_num);
+				}else{
+					$num.val(Num);
 				}
 			}
 			
 			/***更新购物车-增加商品数量**/
 			function goods_add($val){
-				var num_val=document.getElementById('number'+$val);
+				/* var num_val=document.getElementById('number'+$val);
 				var new_num=num_val.value;
 				if(isNaN(new_num)){alert('请输入数字');return false}
 				var Num = parseInt(new_num);
 				Num=Num+1;
 				num_val.value=Num;
 				//document.getElementById('updatecart').click();
-				flow_update_cart_goods($val,Num);
+				flow_update_cart_goods($val,Num); */
+				
+				var $original_num = $('#original_number_'+$val);
+				var $num = $('#number'+$val);
+				var new_num=$num.val();
+				if(isNaN(new_num)){alert('请输入数字');return false}
+				var Num = parseInt(new_num);
+				Num=Num+1;
+				
+				flow_update_cart_goods($val,Num,$num,$original_num);
 			}
 			
 			/**直接改变购物车中商品数量**/
 			function change_goods_number(rec_id){
-				var goods_number = $("#number"+rec_id).val();
+				/* var goods_number = $("#number"+rec_id).val();
 				
 				if(isNaN(goods_number)){
 					//alert('请输入数字');
@@ -355,7 +379,22 @@
 				if($("#number"+rec_id).val()<=1){
 					$("#number"+rec_id).val("1");
 				}
-				flow_update_cart_goods(rec_id,$("#number"+rec_id).val());
+				flow_update_cart_goods(rec_id,$("#number"+rec_id).val()); */
+				
+				var $original_num = $('#original_number_'+rec_id);
+				var $num = $('#number'+rec_id);
+				var goods_number = $num.val();
+				
+				if(isNaN(goods_number)){
+					//alert('请输入数字');
+					$num.val("1");
+				}
+				
+				if($num.val()<=1){
+					$num.val("1");
+				}
+				
+				flow_update_cart_goods(rec_id,$num.val(),$num,$original_num);
 			}
 			
 			 /*批量删除购物车中商品信息***/

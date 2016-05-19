@@ -98,6 +98,8 @@
 			class="inp" onblur="change_goods_number('{$goods.rec_id}');" onchange=""
 			title="{$lang.goods_number_tip}" style=""/>
 			
+			<input type="hidden"  id="original_number_{$goods.rec_id}" value="{$goods.goods_number}" />
+			
 			<span class="jia" onclick="goods_add('{$goods.rec_id}');">+</span>
                <!-- {else} -->
                {$goods.goods_number}

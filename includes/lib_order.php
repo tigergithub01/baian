@@ -1201,6 +1201,55 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 }
 
 /**
+ * 判断商品库存以及限购情况，详情页增加与减少商品数量时使用
+ * @param unknown $goods_id
+ * @param number $num
+ * @param string $address
+ */
+function jude_goods_number($goods_id, $num = 1, $address=null){
+	
+	/* 取得商品信息 */
+	$sql = "SELECT g.goods_number ".
+			" FROM " .$GLOBALS['ecs']->table('goods'). " AS g ".
+			" WHERE g.goods_id = '$goods_id'" ." AND g.is_delete = 0";
+	$goods = $GLOBALS['db']->getRow($sql);
+	if (empty($goods))
+	{
+		return ['success'=>false,'msg'=>$GLOBALS['_LANG']['goods_not_exists']];
+	}
+	
+	if ($GLOBALS['_CFG']['use_storage'] == 1)
+	{
+		//检查：商品购买数量是否大于总库存
+		if ($num > $goods['goods_number'])
+		{
+			return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['shortage'], $goods['goods_number'])];
+		}
+	
+	
+		//如果传入了配送地址，根据配送地址匹配、仓库检查库存情况
+		if($address){
+			$store_number = get_goods_store($goods_id, null, $address);
+			if ($num > $store_number){
+				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['shortage'], $store_number)];
+			}
+		}
+		
+		//TODO:检查礼包的库存
+// 		judge_package_stock($package_id,$num);
+	
+	}
+	
+	/*限时抢购商品检查限购数量 */
+	$promote_rtn = jude_promote_limit_goods($_SESSION['user_id'], $goods_id,$num);
+	if(!$promote_rtn['status']){
+		return ['success'=>false,'msg'=>$promote_rtn['msg']];
+	}
+	
+	return ['success'=>true,'msg'=>''];
+}
+
+/**
  * 添加商品到购物车
  *
  * @access  public
@@ -3656,6 +3705,192 @@ function get_pick_up_point_list($region_id_list){
 	return $arr;	
 }
 
+/**
+ * 更新购物车中的商品数量 - 某个商品的数量
+ * @param unknown $rec_id
+ * @param unknown $goods_number
+ */
+function flow_update_cart_goods($rec_id,$goods_number)
+{
 
+	$key = $rec_id;
+	$val = $goods_number;
+	/* 处理 */
+	$val = intval(make_semiangle($val));
+	if ($val <= 0 || !is_numeric($key))
+	{
+		continue;
+	}
+
+	$result = jude_cart_goods($rec_id, $goods_number);
+	if(!$result['success']){
+		//检查不合格返回
+		return $result;
+	}
+
+	/* 查询：检查该项是否为基本件 以及是否存在配件 */
+	/* 此处配件是指添加商品时附加的并且是设置了优惠价格的配件 此类配件都有parent_id goods_number为1 */
+	$sql = "SELECT b.goods_number, b.rec_id
+                FROM " .$GLOBALS['ecs']->table('cart') . " a, " .$GLOBALS['ecs']->table('cart') . " b
+                WHERE a.rec_id = '$key'
+                AND a.session_id = '" . SESS_ID . "'
+                AND a.extension_code <> 'package_buy'
+                AND b.parent_id = a.goods_id
+                AND b.session_id = '" . SESS_ID . "'";
+
+	$offers_accessories_res = $GLOBALS['db']->query($sql);
+
+	//订货数量大于0
+	if ($val > 0)
+	{
+		/* 判断是否为超出数量的优惠价格的配件 删除*/
+		$row_num = 1;
+		while ($offers_accessories_row = $GLOBALS['db']->fetchRow($offers_accessories_res))
+		{
+			if ($row_num > $val)
+			{
+				$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
+				" WHERE session_id = '" . SESS_ID . "' " .
+				"AND rec_id = '" . $offers_accessories_row['rec_id'] ."' LIMIT 1";
+				$GLOBALS['db']->query($sql);
+			}
+
+			$row_num ++;
+		}
+
+		/* 处理超值礼包 */
+		if ($goods['extension_code'] == 'package_buy')
+		{
+			//更新购物车中的商品数量
+			$sql = "UPDATE " .$GLOBALS['ecs']->table('cart').
+			" SET goods_number = '$val' WHERE rec_id='$key' AND session_id='" . SESS_ID . "'";
+		}
+		/* 处理普通商品或非优惠的配件 */
+		else
+		{
+			$attr_id    = empty($goods['goods_attr_id']) ? array() : explode(',', $goods['goods_attr_id']);
+			$goods_price = get_final_price($goods['goods_id'], $val, true, $attr_id,$goods['product_id']);
+
+			//更新购物车中的商品数量
+			$sql = "UPDATE " .$GLOBALS['ecs']->table('cart').
+			" SET goods_number = '$val', goods_price = '$goods_price' WHERE rec_id='$key' AND session_id='" . SESS_ID . "'";
+		}
+	}
+	//订货数量等于0
+	else
+	{
+		/* 如果是基本件并且有优惠价格的配件则删除优惠价格的配件 */
+		while ($offers_accessories_row = $GLOBALS['db']->fetchRow($offers_accessories_res))
+		{
+			$sql = "DELETE FROM " . $GLOBALS['ecs']->table('cart') .
+			" WHERE session_id = '" . SESS_ID . "' " .
+			"AND rec_id = '" . $offers_accessories_row['rec_id'] ."' LIMIT 1";
+			$GLOBALS['db']->query($sql);
+		}
+
+		$sql = "DELETE FROM " .$GLOBALS['ecs']->table('cart').
+		" WHERE rec_id='$key' AND session_id='" .SESS_ID. "'";
+	}
+
+	$GLOBALS['db']->query($sql);
+
+	//更新赠品的数量
+	add_goods_gift_to_cart($goods['goods_id']);
+
+	return ['success'=>true,'msg'=>''];
+}
+
+/**
+ * 检查购物车中商品数量是否合法
+ * @param unknown $rec_id
+ * @param unknown $goods_number
+ */
+function jude_cart_goods($rec_id,$goods_number)
+{
+
+	$key = $rec_id;
+	$val = $goods_number;
+	/* 处理 */
+	$val = intval(make_semiangle($val));
+	if ($val <= 0 || !is_numeric($key))
+	{
+		continue;
+	}
+
+	//查询：
+	$sql = "SELECT `goods_id`, `goods_attr_id`, `product_id`, `extension_code` FROM" .$GLOBALS['ecs']->table('cart').
+	" WHERE rec_id='$key' AND session_id='" . SESS_ID . "'";
+	$goods = $GLOBALS['db']->getRow($sql);
+
+	$sql = "SELECT g.goods_name, g.goods_number, g.is_promote, g.promote_start_date, g.promote_end_date, g.promote_limit_num ".
+			"FROM " .$GLOBALS['ecs']->table('goods'). " AS g, ".
+			$GLOBALS['ecs']->table('cart'). " AS c ".
+			"WHERE g.goods_id = c.goods_id AND c.rec_id = '$key'";
+	$row = $GLOBALS['db']->getRow($sql);
+
+	//查询：系统启用了库存，检查输入的商品数量是否有效
+	if (intval($GLOBALS['_CFG']['use_storage']) > 0 && $goods['extension_code'] != 'package_buy')
+	{
+		if ($row['goods_number'] < $val)
+		{
+
+			/* show_message(sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
+			 $row['goods_number'], $row['goods_number']));
+				exit; */
+			return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
+					$row['goods_number'], $row['goods_number'])];
+		}
+			
+		//特价商品限购
+		$time = isset($time)? $time : gmtime();
+		if($row['is_promote']==1 && $row['promote_start_date']<=$time && $row['promote_end_date']>=$time){
+			if ($row['promote_limit_num']>0 && $row['promote_limit_num'] < $val){
+				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
+						$row['promote_limit_num'], $row['promote_limit_num'])];
+			}
+		}
+			
+		/* 是货品 */
+		$goods['product_id'] = trim($goods['product_id']);
+		if (!empty($goods['product_id']))
+		{
+			/* 查询规格名称 start */
+			$sql = "SELECT c.attr_name,b.attr_value from ".$GLOBALS['ecs']->table('products_attr')." AS a
+					LEFT JOIN ".$GLOBALS['ecs']->table('goods_attr')." AS b ON (a.goods_attr_id = b.goods_attr_id)
+					LEFT JOIN ".$GLOBALS['ecs']->table('attribute')." c ON (b.attr_id = c.attr_id)
+					WHERE a.product_id = '".$goods['product_id']."'";
+			$attr_list = $GLOBALS['db']->getAll($sql);
+			foreach ($attr_list AS $attr)
+			{
+				$row['goods_name'] .= (' [' .$attr['attr_name'].':'. $attr['attr_value'] . '] ');
+			}
+			/* 查询规格名称 end */
+
+			$sql = "SELECT product_number FROM " .$GLOBALS['ecs']->table('products'). " WHERE goods_id = '" . $goods['goods_id'] . "' AND product_id = '" . $goods['product_id'] . "'";
+
+			$product_number = $GLOBALS['db']->getOne($sql);
+
+			if ($product_number < $val)
+			{
+				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
+						$product_number['product_number'], $product_number['product_number'])];
+				/* show_message(sprintf($GLOBALS['_LANG']['stock_insufficiency'], $row['goods_name'],
+				 $product_number['product_number'], $product_number['product_number']));
+				exit; */
+			}
+		}
+	}
+	elseif (intval($GLOBALS['_CFG']['use_storage']) > 0 && $goods['extension_code'] == 'package_buy')
+	{
+		if (judge_package_stock($goods['goods_id'], $val))
+		{
+			/* show_message($GLOBALS['_LANG']['package_stock_insufficiency']);
+				exit; */
+			return ['success'=>false,'msg'=>$GLOBALS['_LANG']['package_stock_insufficiency']];
+		}
+	}
+
+	return ['success'=>true,'msg'=>''];
+}
 
 ?>

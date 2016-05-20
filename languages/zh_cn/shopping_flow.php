@@ -35,6 +35,7 @@ $_LANG['goods_number_not_int'] = '请您输入正确的商品数量。';
 $_LANG['stock_insufficiency'] = '非常抱歉，您选择的商品 %s 的库存数量只有 %d，您最多只能购买 %d 件。';
 $_LANG['package_stock_insufficiency'] = '非常抱歉，您选择的超值礼包数量已经超出库存。请您减少购买量或联系商家。';
 $_LANG['promote_limit'] = '非常抱歉，您选择的商品 %s 的限购数量为 %d，您最多只能购买 %d 件。';
+$_LANG['promote_limit_1'] = '抱歉！本商品限购%d件。';
 $_LANG['shopping_flow'] = '购物流程';
 $_LANG['username_exists'] = '您输入的用户名已存在，请换一个试试。';
 $_LANG['email_exists'] = '您输入的电子邮件已存在，请换一个试试。';

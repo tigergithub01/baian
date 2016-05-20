@@ -2133,8 +2133,9 @@ function jude_promote_limit_goods($user_id,$goods_id,$num = 0,$is_checked = 0){
 	$order_goods_number = $GLOBALS['db']->getOne($og_sql);
 	if($order_goods_number + $cart_num + $num  > $goods['promote_limit_num']){
 		$rtn['status'] = false;
-		$rtn['msg'] = sprintf($GLOBALS['_LANG']['promote_limit'], $goods['goods_name'],
-							$goods['promote_limit_num'], $goods['promote_limit_num']);
+		/* $rtn['msg'] = sprintf($GLOBALS['_LANG']['promote_limit'], $goods['goods_name'],
+							$goods['promote_limit_num'], $goods['promote_limit_num']); */
+		$rtn['msg'] = sprintf($GLOBALS['_LANG']['promote_limit_1'],  $goods['promote_limit_num']);
 	}			
 	return $rtn;
 }
@@ -3845,8 +3846,9 @@ function jude_cart_goods($rec_id,$goods_number)
 		$time = isset($time)? $time : gmtime();
 		if($row['is_promote']==1 && $row['promote_start_date']<=$time && $row['promote_end_date']>=$time){
 			if ($row['promote_limit_num']>0 && $row['promote_limit_num'] < $val){
-				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
-						$row['promote_limit_num'], $row['promote_limit_num'])];
+				/* return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit'], $row['goods_name'],
+						$row['promote_limit_num'], $row['promote_limit_num'])]; */
+				return ['success'=>false,'msg'=>sprintf($GLOBALS['_LANG']['promote_limit_1'], $row['promote_limit_num'])];
 			}
 		}
 			

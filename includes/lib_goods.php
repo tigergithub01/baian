@@ -2049,7 +2049,7 @@ return $arr;
 */ 
 function index_get_class_articles($cat_aid, $cat_num) 
 { 
-$sql = "SELECT article_id, title,open_type,cat_id,file_url FROM " .$GLOBALS['ecs']->table('article'). " WHERE cat_id = ".$cat_aid." and is_open = 1 LIMIT " . $cat_num; 
+$sql = "SELECT article_id, title,open_type,cat_id,file_url,add_time FROM " .$GLOBALS['ecs']->table('article'). " WHERE cat_id = ".$cat_aid." and is_open = 1 ORDER BY add_time DESC LIMIT " . $cat_num; 
 $res = $GLOBALS['db']->getAll($sql); 
 $arr = array(); 
 foreach ($res AS $idx => $row) 

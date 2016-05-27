@@ -46,11 +46,11 @@
 																	<div style="display: block;">
 																		<!--{if ($smarty.foreach.pick_up_points.index == 0)}-->
 																			<label class="checkbox checked">
-																				<input type="checkbox" class="pick_up_point_ckb" onclick="select_pick_up_point(this);" checked="checked" name="point_id" value="{$pick_up_point.point_id}" title="{$pick_up_point.point_addr}">
+																				<input type="radio" class="pick_up_point_ckb" onclick="select_pick_up_point(this);" checked="checked" name="point_id" value="{$pick_up_point.point_id}" title="{$pick_up_point.point_addr}">
 																			</label>
 																		<!-- {else} -->
 																			<label class="checkbox">
-																				<input type="checkbox" class="pick_up_point_ckb" onclick="select_pick_up_point(this);" name="point_id" value="{$pick_up_point.point_id}" title="{$pick_up_point.point_addr}">
+																				<input type="radio" class="pick_up_point_ckb" onclick="select_pick_up_point(this);" name="point_id" value="{$pick_up_point.point_id}" title="{$pick_up_point.point_addr}">
 																			</label>
 																		<!-- {/if} -->
 																		<div class="txt_pickout_point">{$pick_up_point.point_name}：{$pick_up_point.point_addr}</div>

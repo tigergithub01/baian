@@ -1143,7 +1143,7 @@ input.error {
 .txt_payment_name{margin-left: 5px;}
 .txt_pickout_point{display: inline;position: relative;top: -6px;}
 .notice{color: red;font-size: 16px;}
-.txt_shipping_payment{float: right;padding-right: 25px;}
+.txt_shipping_payment{/* float: right; */padding-right: 25px;}
 
 #ECS_ORDERTOTAL {/* padding:5px 20px 5px 20px; */}
 #ECS_ORDERTOTAL .detail_pay_info {padding:5px 20px 5px 20px;}

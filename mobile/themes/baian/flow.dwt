@@ -1507,8 +1507,8 @@
 			$(".pick_up_point_ckb").parent().removeClass("checked");  
 			$(obj).parent().addClass("checked");
 			
-			$(".pick_up_point_ckb").attr('checked',false);			
-			$(obj).attr('checked',true);
+			/* $(".pick_up_point_ckb").attr('checked',false);			
+			$(obj).attr('checked',true); */
 		}
 		
 		/*选择是否需要发票**/

@@ -4823,19 +4823,22 @@ function return_user_surplus_integral_bonus($order)
     if (!empty($order['bonus_ids']))
     {
     	$bonus_list = explode(",", $order['bonus_ids']);
-    	foreach ($bonus_list as $bonus_id) {
-    		 unuse_bonus($bonus_id);
+    	$bonus_used_amount = explode(",", $order['bonus_used_amount']);
+    	foreach ($bonus_list as $key => $bonus_id) {
+    		$used_amount = $bonus_used_amount[$key];
+    		unuse_bonus($bonus_id,$used_amount);
     	}
     }
 
     /* 修改订单 */
     $arr = array(
         'bonus_id'  => 0,
-    	'bonus_ids'  => '',
         'bonus'     => 0,
         'integral'  => 0,
         'integral_money'    => 0,
-        'surplus'   => 0
+        'surplus'   => 0,
+    	'bonus_ids' => '',
+    	'bonus_used_amount' => '',
     );
     update_order($order['order_id'], $arr);
 }

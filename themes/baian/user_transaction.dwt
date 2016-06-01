@@ -1349,7 +1349,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
        	 <table class="s-order-table">
 			<tbody>
 				<tr>
-					<td>红包数量：<font color="#f08300">{$total_bonus.total_count}</font>  红包总金额：<font color="#f08300">{$total_bonus.formated_total_money} </font> 
+					<td>红包数量：<font color="#f08300">{$total_bonus.total_count}</font>  
+					红包总金额：<font color="#f08300">{$total_bonus.formated_total_money} </font> 
+					红包总余额：<font color="#f08300">{$total_bonus.formated_total_rest_money} </font> 
 					<form name="addBouns" action="user.php" method="post" onSubmit="return addBonus()">
         <div style="padding-top: 15px;">
          绑定红包：
@@ -1372,9 +1374,10 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                          <th>
                             	 红包序列号
                          </th>
-                         <th>
+                         <!-- <th>
                             	 红包金额
-                         </th>
+                         </th> -->
+                         <th>红包余额</th>
                          <th>
                             	截至使用日期
                          </th>
@@ -1387,13 +1390,16 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                  	  <!--{foreach from=$bonus item=item}-->	
                      <tr>
                          <td>
-                             {$item.type_name}	
+                             {$item.type_name}({$item.formated_type_money})	
                          </td>
                          <td>
                             {$item.bonus_sn}	
                          </td>
-                         <td>
+                        <!--  <td>
                          	  {$item.formated_type_money}	
+                         </td> -->
+                          <td>
+                         	  {$item.rest_money_formated}	
                          </td>
                          <td>
 				           {$item.use_enddate}

@@ -1733,7 +1733,7 @@ function user_bonus($user_id, $goods_amount = 0)
     $day    = getdate();
     $today  = local_mktime(23, 59, 59, $day['mon'], $day['mday'], $day['year']);
 
-    $sql = "SELECT t.type_id, t.type_name, t.type_money, b.bonus_id " .
+    $sql = "SELECT t.type_id, t.type_name, t.type_money, b.bonus_id, b.used_amount " .
             "FROM " . $GLOBALS['ecs']->table('bonus_type') . " AS t," .
                 $GLOBALS['ecs']->table('user_bonus') . " AS b " .
             "WHERE t.type_id = b.bonus_type_id " .
@@ -1741,8 +1741,9 @@ function user_bonus($user_id, $goods_amount = 0)
             "AND t.use_end_date >= '$today' " .
             "AND t.min_goods_amount <= '$goods_amount' " .
             "AND b.user_id<>0 " .
-            "AND b.user_id = '$user_id' " .
-            "AND b.order_id = 0";
+            " AND b.user_id = '$user_id' " .
+            " AND b.used_amount < t.type_money ";
+            //"AND b.order_id = 0";
     return $GLOBALS['db']->getAll($sql);
 }
 
@@ -1789,11 +1790,11 @@ function bonus_used($bonus_id)
  * @param   int     $order_id   订单id
  * @return  bool
  */
-function use_bonus($bonus_id, $order_id)
+function use_bonus($bonus_id, $order_id, $used_amount = 0.0)
 {
     $sql = "UPDATE " . $GLOBALS['ecs']->table('user_bonus') .
-            " SET order_id = '$order_id', used_time = '" . gmtime() . "' " .
-            "WHERE bonus_id = '$bonus_id' LIMIT 1";
+            " SET order_id = '$order_id', used_time = '" . gmtime() . "', used_amount = used_amount + $used_amount " .
+            " WHERE bonus_id = '$bonus_id' LIMIT 1";
 
     return  $GLOBALS['db']->query($sql);
 }
@@ -1804,14 +1805,15 @@ function use_bonus($bonus_id, $order_id)
  * @param   int     $order_id   订单id
  * @return  bool
  */
-function unuse_bonus($bonus_id)
+function unuse_bonus($bonus_id, $used_amount=0.0)
 {
-    $sql = "UPDATE " . $GLOBALS['ecs']->table('user_bonus') .
-            " SET order_id = 0, used_time = 0 " .
-            "WHERE bonus_id = '$bonus_id' LIMIT 1";
+	$sql = "UPDATE " . $GLOBALS['ecs']->table('user_bonus') .
+	" SET order_id = 0, used_time = 0, used_amount = used_amount - $used_amount " .
+	" WHERE bonus_id = '$bonus_id' LIMIT 1";
 
-    return  $GLOBALS['db']->query($sql);
+	return  $GLOBALS['db']->query($sql);
 }
+
 
 /**
  * 计算积分的价值（能抵多少钱）
@@ -2333,21 +2335,23 @@ function get_total_bonus()
  * @param   int     $order_id   订单号
  * @param   int     $is_used    是否使用了
  */
-function change_user_bonus($bonus_id, $order_id, $is_used = true)
+function change_user_bonus($bonus_id, $order_id, $is_used = true, $used_amount = 0.0)
 {
     if ($is_used)
     {
         $sql = 'UPDATE ' . $GLOBALS['ecs']->table('user_bonus') . ' SET ' .
-                'used_time = ' . gmtime() . ', ' .
-                "order_id = '$order_id' " .
-                "WHERE bonus_id = '$bonus_id'";
+                ' used_time = ' . gmtime() . ', ' .
+                " order_id = '$order_id' " .
+                " used_amount = used_amount + $used_amount " .
+                " WHERE bonus_id = '$bonus_id'";
     }
     else
     {
         $sql = 'UPDATE ' . $GLOBALS['ecs']->table('user_bonus') . ' SET ' .
-                'used_time = 0, ' .
-                'order_id = 0 ' .
-                "WHERE bonus_id = '$bonus_id'";
+                " used_time = 0, " .
+                " order_id = 0, " .
+                " used_amount = used_amount - $used_amount " .
+                " WHERE bonus_id = '$bonus_id'";
     }
     $GLOBALS['db']->query($sql);
 }

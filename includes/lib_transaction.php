@@ -916,7 +916,7 @@ function get_user_deposits($user_id, $num = 10, $start = 0)
 function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
 {
     /* 查询订单信息，检查状态 */
-    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status, add_time, bonus_ids FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
+    $sql = "SELECT user_id, order_id, order_sn , surplus , integral , bonus_id, order_status, shipping_status, pay_status, add_time, bonus_ids, bonus_used_amount FROM " .$GLOBALS['ecs']->table('order_info') ." WHERE order_id = '$order_id'";
     $order = $GLOBALS['db']->GetRow($sql);
 
     if (empty($order))
@@ -1006,8 +1006,10 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
         if ($order['user_id'] > 0 && !empty($order['bonus_ids']))
         {
 	        $bonus_list = explode(",", $order['bonus_ids']);
-	    	foreach ($bonus_list as $bonus_id) {
-	    		change_user_bonus($bonus_id, $order['order_id'], false);
+	        $bonus_used_amount = explode(",", $order['bonus_used_amount']);
+			foreach ($bonus_list as $key => $bonus_id) {
+				$used_amount = $bonus_used_amount[$key];
+	    		change_user_bonus($bonus_id, $order['order_id'], false, $used_amount);
 	    	}
         }        
 
@@ -1019,12 +1021,13 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
 
         /* 修改订单 */
         $arr = array(
-            'bonus_id'  => 0,
-        	'bonus_ids' => '',	
+            'bonus_id'  => 0,        	
             'bonus'     => 0,
             'integral'  => 0,
             'integral_money'    => 0,
-            'surplus'   => 0
+            'surplus'   => 0,
+        	'bonus_ids' => '',
+        	'bonus_used_amount' => '',
         );
         update_order($order['order_id'], $arr);
 

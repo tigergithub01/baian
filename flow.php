@@ -2191,7 +2191,7 @@ elseif ($_REQUEST['step'] == 'done')
     	foreach ($bonus_list as $key => $bonus_id) {
 //     	foreach ($bonus_list as $bonus_id) {
     		$used_amount = $bonus_list_used_amount[$key];
-    		use_bonus($bonus_id, $new_order_id, $used_amount);
+    		use_bonus($bonus_id, $new_order_id, $used_amount,'红包消费');
     	}
     }
         

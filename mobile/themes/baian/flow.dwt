@@ -982,11 +982,17 @@
 					<p style="<!-- {if $order_max_bonus > 0} -->display: block;<!-- {/if} -->">
 					<!-- 您有红包<span>￥10.00</span>，本次可用<span>￥{$order_max_bonus|default:0}</span>　 -->
 					<!-- {foreach from=$bonus_list item=bonus} -->
+					<div style="padding-top: 10px;">
 					<!-- {if $bonus.is_checked eq '1'} -->
-	                	<input type="checkbox" checked="checked" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp;<br/>
+						
+	                	<input style="width: 30px;height: 55px;padding: 0 5px 0 0;" type="checkbox" checked="checked" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}:0" bonus_id="{$bonus.bonus_id}" rest_money="{$bonus.rest_money}"/>{$bonus.type_name}[{$bonus.rest_money_formated}]&nbsp;&nbsp;
+	                	使用金额:<input type="text" name="bonus_list_used_amount[]" id="bonus_{$bonus.bonus_id}_used_amount" placeholder="" size="10" style="background-color: #EEEEEE;" value="0" readonly="readonly"/>
 					<!-- {else} -->
-						<input type="checkbox" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}"/>{$bonus.type_name}[{$bonus.bonus_money_formated}]&nbsp;&nbsp;<br/>
+						<input style="width: 30px;height: 55px;padding: 0 5px 0 0;" type="checkbox" onclick="return selectBonus(this);" name="bonus_list[]" id="bonus_{$bonus.bonus_id}" value="{$bonus.bonus_id}:0"  bonus_id="{$bonus.bonus_id}"  rest_money="{$bonus.rest_money}"/>{$bonus.type_name}[{$bonus.rest_money_formated}]&nbsp;&nbsp;
+						使用金额:<input type="text" name="bonus_list_used_amount[]" id="bonus_{$bonus.bonus_id}_used_amount" placeholder="" size="10" style="background-color: #EEEEEE;" value="0" readonly="readonly"/>
 					<!-- {/if} -->
+					<br/>
+					</div>
 	               	<!-- {/foreach} -->
 	                 
 	                 <br/>
@@ -1400,11 +1406,52 @@
 				return false;
 			}
 			
+			//自动分配红包金额
+			var obj_id = $(obj).attr("id");
+			var bonus_id = $(obj).attr("bonus_id");
+			
+			$(obj).val(bonus_id+":0");
+			$("#"+obj_id+"_used_amount").val(0);
+			
 			//获取选中的所有的红包
 			var bonuses = new Array();
+			var used_total = 0.0;
 			$.each($("input[name='bonus_list[]']:checked"),function(i,v){
-				bonuses.push($(v).val());
+				//红包使用金额
+				var obj_id = $(v).attr("id");
+				var bonus_id = $(v).attr("bonus_id");
+				var rest_money = parseFloat($(v).attr("rest_money"));
+				var used_amount = 0;
+				if(used_total < order_max_bonus){
+					if(used_total + rest_money < order_max_bonus){
+						used_amount = rest_money;
+					}else{
+						used_amount = order_max_bonus - used_total;
+					}					
+				}else{
+					
+				}
+				
+				//汇总
+				used_total += used_amount;
+				$(v).val(bonus_id+":"+used_amount);
+				$("#"+obj_id+"_used_amount").val(used_amount);	
+				
+				
     		});
+			
+			//勾选后，金额分配金额为零的自动取消勾选
+			$.each($("input[name='bonus_list[]']:checked"),function(i,v){
+				var obj_id = $(v).attr("id");
+				var used_amount = $("#"+obj_id+"_used_amount").val();	
+				if(parseFloat(used_amount)==0){
+					$(v).attr('checked',false);
+				}else{
+					bonuses.push($(v).val());
+				}
+				//console.debug(bonuses);
+			});
+			//console.debug(bonuses);
 			
 			/* var bonus_ids="";
 			$.each(bonuses,function(i,v){
@@ -1412,7 +1459,7 @@
     		}); */
 			//onfirm("本红包金额高于可用金额，每个只能使用一次，不找零哦！")){
 			$.ajax({
-				url:'/flow.php?step=select_bonus',
+				url:'flow.php?step=select_bonus',
 				type:'POST',
 				data:{'bonus':bonuses},
 				dataType:'json',
@@ -1421,7 +1468,7 @@
 						document.getElementById("ECS_ORDERTOTAL").innerHTML=data.content;
 					}else if(data.error=="notify"){
 						document.getElementById("ECS_ORDERTOTAL").innerHTML=data.content;
-						alert(data.message);
+						//alert(data.message);
 					}else{
 						alert(data.error);
 					}

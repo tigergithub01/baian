@@ -4816,7 +4816,7 @@ function return_user_surplus_integral_bonus($order)
 
     if ($order['bonus_id'] > 0)
     {
-        unuse_bonus($order['bonus_id']);
+        unuse_bonus($order['bonus_id'], $order['order_id']);
     }
     
     //多个红包退还
@@ -4826,7 +4826,7 @@ function return_user_surplus_integral_bonus($order)
     	$bonus_used_amount = explode(",", $order['bonus_used_amount']);
     	foreach ($bonus_list as $key => $bonus_id) {
     		$used_amount = $bonus_used_amount[$key];
-    		unuse_bonus($bonus_id,$used_amount);
+    		unuse_bonus($bonus_id, $order['order_id'], $used_amount);
     	}
     }
 

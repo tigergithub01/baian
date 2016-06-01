@@ -2146,7 +2146,7 @@ function save_order_address($address, $user_id)
  */
 function get_user_bouns_list($user_id, $num = 10, $start = 0)
 {
-    $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date,u.used_time ".
+    $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date, u.used_time, u.used_amount ".
            " FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
            $GLOBALS['ecs']->table('bonus_type'). " AS b".
            " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'" .
@@ -2187,6 +2187,10 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
         $row['used_time']     = local_date($GLOBALS['_CFG']['date_format'], $row['used_time']);
         $row['formated_type_money']   = price_format($row['type_money'], false);
         
+        $rest_money = $row['type_money'] - $row['used_amount'];
+        $row['rest_money'] = $rest_money;
+        $row['rest_money_formated'] = price_format($rest_money, false);
+        
         $arr[] = $row;
     }
     return $arr;
@@ -2195,13 +2199,15 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
 
 function get_user_bouns_sum($user_id)
 {
-	$sql = "SELECT count(1) AS total_count, sum(b.type_money) AS total_money".
+	$sql = "SELECT count(1) AS total_count, sum(b.type_money) AS total_money, sum(u.used_amount) AS total_used_amount, sum(b.type_money - u.used_amount) AS total_rest_money ".
 			" FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
 			$GLOBALS['ecs']->table('bonus_type'). " AS b".
 			" WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'";
 	$row = $GLOBALS['db']->getRow($sql);
 	if($row){
 		$row['formated_total_money']   = price_format($row['total_money'], false);
+		$row['formated_total_used_amount']   = price_format($row['total_used_amount'], false);
+		$row['formated_total_rest_money']   = price_format($row['total_rest_money'], false);
 	}
 	return $row;
 

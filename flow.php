@@ -836,7 +836,13 @@ elseif ($_REQUEST['step'] == 'checkout')
             			}
             		}
             	}
+            	//可用金额
             	$user_bonus[$key]['bonus_money_formated'] = price_format($val['type_money'], false);
+            	
+            	//剩余金额
+            	$rest_money = $val['type_money'] - $val['used_amount'];
+            	$user_bonus[$key]['rest_money'] = $rest_money;
+            	$user_bonus[$key]['rest_money_formated'] = price_format($rest_money, false);
             }
             $smarty->assign('bonus_list', $user_bonus);
         }
@@ -1806,7 +1812,17 @@ elseif ($_REQUEST['step'] == 'done')
     $_POST['point_id'] = isset($_POST['point_id']) ? intval($_POST['point_id']) : null;
 	
     //TODO:可以使用多个红包，bonus_id赋值待优化
-    $bonus_list = isset($_POST['bonus_list']) ? $_POST['bonus_list']: array();
+    $bonus_amount_list = isset($_POST['bonus_list']) ? $_POST['bonus_list']: array();
+    $bonus_list = array();
+    $bonus_list_used_amount = array();
+    foreach ($bonus_amount_list as $bonus_amount) {
+    	$bonus_amount_object = explode(":", $bonus_amount);
+    	$bonus_list[] = $bonus_amount_object[0];
+    	$bonus_list_used_amount[] = $bonus_amount_object[1];
+    }
+    
+//     $bonus_list = isset($_POST['bonus_list']) ? $_POST['bonus_list']: array();
+//     $bonus_list_used_amount = isset($_POST['bonus_list_used_amount']) ? $_POST['bonus_list_used_amount']: array();
     
     //TODO:inv_type应该保存的是发票类型，如“普通发票”、“增值税发票”
     $order = array(
@@ -1819,6 +1835,7 @@ elseif ($_REQUEST['step'] == 'done')
         'integral'        => isset($_POST['integral']) ? intval($_POST['integral']) : 0,
         'bonus_id'        => isset($_POST['bonus']) ? intval($_POST['bonus']) : 0,
     	'bonus_ids'       => implode(",", $bonus_list),
+    	'bonus_used_amount'	=> implode(",", $bonus_list_used_amount),
         'need_inv'        => empty($_POST['need_inv']) ? 0 : 1,
         'inv_type'        => $_POST['inv_type'],
         'inv_payee'       => trim($_POST['inv_payee']),
@@ -1907,14 +1924,27 @@ elseif ($_REQUEST['step'] == 'done')
     }
     
     //TODO：使用多个红包的时候，检查红包的合法性
-    if(!empty($bonus_list)){
-    	foreach ($bonus_list as $bonus_id) {
+	if(!empty($bonus_list)){
+    	$total_used_amount = 0;
+    	$order_max_bonus =  flow_available_bonus(1);
+    	foreach ($bonus_list as $key => $bonus_id) {
+//     	foreach ($bonus_list as $bonus_id) {
 	    	$bonus = bonus_info($bonus_id);
-	        if (empty($bonus) || $bonus['user_id'] != $user_id || $bonus['order_id'] > 0 || $bonus['min_goods_amount'] > cart_amount(true, $flow_type))
+	    	$used_amount = $bonus_list_used_amount[$key];
+	    	$total_used_amount += $used_amount;
+	        if (empty($bonus) || $bonus['user_id'] != $user_id /* || $bonus['order_id'] > 0 */ || $bonus['min_goods_amount'] > cart_amount(true, $flow_type))
 	        {
 	        	$order['bonus_ids'] = "";
+	        	$order['bonus_used_amount'] = "";
 	        	break;
 	        };
+	        
+	        //当前使用红包总金额大于订单可以使用的红包总金额，防止后入注入数据的情况
+	        if($total_used_amount > $order_max_bonus){
+	        	$order['bonus_ids'] = "";
+	        	$order['bonus_used_amount'] = "";
+	        	break;
+	        }
     	}
     }
 
@@ -2156,10 +2186,12 @@ elseif ($_REQUEST['step'] == 'done')
     }
     
     //同时使用多个红包的时候，更新红包使用情况
-    if(!empty($order['bonus_ids'])&& $temp_amout > 0){
+	if(!empty($order['bonus_ids'])&& $temp_amout > 0){
     	$bonus_list = explode(",", $order['bonus_ids']);
-    	foreach ($bonus_list as $bonus_id) {
-    		use_bonus($bonus_id, $new_order_id);
+    	foreach ($bonus_list as $key => $bonus_id) {
+//     	foreach ($bonus_list as $bonus_id) {
+    		$used_amount = $bonus_list_used_amount[$key];
+    		use_bonus($bonus_id, $new_order_id, $used_amount);
     	}
     }
         

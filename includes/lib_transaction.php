@@ -1009,7 +1009,7 @@ function cancel_order($order_id, $user_id = 0, $admin = 0, $action_note = '')
 	        $bonus_used_amount = explode(",", $order['bonus_used_amount']);
 			foreach ($bonus_list as $key => $bonus_id) {
 				$used_amount = $bonus_used_amount[$key];
-	    		change_user_bonus($bonus_id, $order['order_id'], false, $used_amount);
+	    		change_user_bonus($bonus_id, $order['order_id'], false, $used_amount,'红包消费金额退回');
 	    	}
         }        
 
@@ -1226,6 +1226,9 @@ function remove_order($order_id, $user_id = 0)
 	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_info'). " WHERE order_id = '$order_id'");
 	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_goods'). " WHERE order_id = '$order_id'");
 	$GLOBALS['db']->query("DELETE FROM ".$GLOBALS['ecs']->table('order_action'). " WHERE order_id = '$order_id'");
+	
+	//TODO:积分，红包，余额的处理
+	
 	$action_array = array('delivery', 'back');
 	del_delivery($order_id, $action_array);
 	

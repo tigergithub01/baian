@@ -1935,6 +1935,25 @@ function log_account_change($user_id, $user_money = 0, $frozen_money = 0, $rank_
 
 
 /**
+ * 红包使用明细
+ * @param unknown $order_id
+ * @param number $user_money
+ * @param string $use_desc
+ */
+function log_bonus_used($bonus_id, $order_id, $user_money = 0, $use_desc='')
+{
+	/* 插入红包使用记录 */
+	$bonus_used_log = array(
+			'bonus_id'		 => $bonus_id,
+			'order_id'       => $order_id,
+			'used_money'    => $user_money,
+			'use_time'  => gmtime(),
+			'use_desc'   => $use_desc,
+	);
+	$GLOBALS['db']->autoExecute($GLOBALS['ecs']->table('bonus_used_log'), $bonus_used_log, 'INSERT');
+}
+
+/**
  * 获得指定分类下的子分类的数组
  *
  * @access  public

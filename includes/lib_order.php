@@ -1790,12 +1790,15 @@ function bonus_used($bonus_id)
  * @param   int     $order_id   订单id
  * @return  bool
  */
-function use_bonus($bonus_id, $order_id, $used_amount = 0.0)
+function use_bonus($bonus_id, $order_id, $used_amount = 0.0, $use_desc='')
 {
     $sql = "UPDATE " . $GLOBALS['ecs']->table('user_bonus') .
             " SET order_id = '$order_id', used_time = '" . gmtime() . "', used_amount = used_amount + $used_amount " .
             " WHERE bonus_id = '$bonus_id' LIMIT 1";
-
+	
+    //红包使用记录
+    log_bonus_used($bonus_id, $order_id, $used_amount, $use_desc);
+    
     return  $GLOBALS['db']->query($sql);
 }
 
@@ -1805,12 +1808,15 @@ function use_bonus($bonus_id, $order_id, $used_amount = 0.0)
  * @param   int     $order_id   订单id
  * @return  bool
  */
-function unuse_bonus($bonus_id, $used_amount=0.0)
+function unuse_bonus($bonus_id, $order_id = 0, $used_amount=0.0)
 {
 	$sql = "UPDATE " . $GLOBALS['ecs']->table('user_bonus') .
 	" SET order_id = 0, used_time = 0, used_amount = used_amount - $used_amount " .
 	" WHERE bonus_id = '$bonus_id' LIMIT 1";
-
+	
+	//红包使用日志
+	log_bonus_used($bonus_id, $order_id, - $used_amount, '红包消费金额退回');
+	
 	return  $GLOBALS['db']->query($sql);
 }
 
@@ -2335,7 +2341,7 @@ function get_total_bonus()
  * @param   int     $order_id   订单号
  * @param   int     $is_used    是否使用了
  */
-function change_user_bonus($bonus_id, $order_id, $is_used = true, $used_amount = 0.0)
+function change_user_bonus($bonus_id, $order_id, $is_used = true, $used_amount = 0.0, $use_desc='')
 {
     if ($is_used)
     {
@@ -2344,6 +2350,7 @@ function change_user_bonus($bonus_id, $order_id, $is_used = true, $used_amount =
                 " order_id = '$order_id' " .
                 " used_amount = used_amount + $used_amount " .
                 " WHERE bonus_id = '$bonus_id'";
+        
     }
     else
     {
@@ -2351,9 +2358,12 @@ function change_user_bonus($bonus_id, $order_id, $is_used = true, $used_amount =
                 " used_time = 0, " .
                 " order_id = 0, " .
                 " used_amount = used_amount - $used_amount " .
-                " WHERE bonus_id = '$bonus_id'";
+                " WHERE bonus_id = '$bonus_id'";    
+        $used_amount = - $used_amount;
     }
     $GLOBALS['db']->query($sql);
+    
+    log_bonus_used($bonus_id, $order_id, $used_amount, $use_desc);
 }
 
 /**

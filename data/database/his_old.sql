@@ -1,3 +1,13 @@
+CREATE USER 'baian'@'%' IDENTIFIED BY 'BaiAnShop2015';
+CREATE DATABASE `baianshop` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON baianshop.* TO 'baian'@'%';
+
+CREATE DATABASE `baianwx` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON baianwx.* TO 'baian'@'%';
+
+CREATE DATABASE `baianmy14` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON baianmy14.* TO 'baian'@'%';
+
 alter table ecs_ad add description varchar(100) null COMMENT '描述，暂时用来存放背景颜色' ;
 
 ALTER TABLE `baianshop`.`ecs_goods` CHANGE COLUMN `goods_title` `goods_title` VARCHAR(120) NULL ;
@@ -360,7 +370,92 @@ update ecs_category set give_integral = -1;
 update ecs_category set rank_integral = -1;
 update ecs_category set integral = 0;
 
+CREATE TABLE `ecs_sms_code` (
+  `sms_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `phone_number` varchar(15) NOT NULL COMMENT '手机号码',
+  `code_type` int(11) DEFAULT NULL COMMENT '验证码用途类型（注册、找回密码、绑定手机号码）',
+  `sent_time` int(10) unsigned NOT NULL COMMENT '发送时间',
+  `expiration_time` int(10) unsigned DEFAULT NULL COMMENT '过期时间',
+  `verify_code` varchar(10) NOT NULL COMMENT '验证码',
+  `sms_content` varchar(200) DEFAULT NULL COMMENT '手机短信内容',  
+  PRIMARY KEY (`sms_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='手机验证码';
 
+
+CREATE TABLE `ecs_email_code` (
+  `email_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `email` varchar(15) NOT NULL COMMENT '邮箱地址',
+  `code_type` int(11) DEFAULT NULL COMMENT '验证码用途类型（注册、找回密码、绑定手机号码）',
+  `sent_time` int(10) unsigned NOT NULL COMMENT '发送时间',
+  `expiration_time` int(10) unsigned DEFAULT NULL COMMENT '过期时间',
+  `verify_code` varchar(10) NOT NULL COMMENT '验证码',
+  `email_content` varchar(200) DEFAULT NULL COMMENT '邮件内容',  
+  PRIMARY KEY (`email_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='邮箱验证码';
+
+
+ALTER TABLE ecs_sms_code ADD is_success tinyint(1) unsigned default 0 comment '是否成功?1:是,0:否';
+
+ALTER TABLE ecs_sms_code ADD err_msg VARCHAR(500)  comment '发送失败时的返回消息';
+
+CREATE TABLE `ecs_buy_give_package` (
+  `package_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '礼包编号',
+  `buy_give_id` int(10) unsigned NOT NULL COMMENT '关联买赠编号',
+  `give_number_activity` tinyint(2) NOT NULL DEFAULT '1' COMMENT '送几件',
+  `is_other_goods` varchar(255) NOT NULL DEFAULT '0' COMMENT '是否赠送其它商品',
+  `other_goods_id` mediumint(8) unsigned DEFAULT NULL COMMENT '赠送其它商品编号',
+  PRIMARY KEY (`package_id`),
+  CONSTRAINT `fk_bg_id_ref_bg_goods` FOREIGN KEY (`buy_give_id`) REFERENCES `ecs_buy_give_activity` (`buy_give_id`),
+  CONSTRAINT `fk_other_goods_id_ref_goods1` FOREIGN KEY (`other_goods_id`) REFERENCES `ecs_goods` (`goods_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='买几送几促销赠送礼包';
+
+
+alter table ecs_order_back add invoice_name varchar(200)  NULL COMMENT '快递公司';
+
+alter table ecs_users add photo_thumb_url varchar(255) comment '照片-缩略图';
+alter table ecs_users add baby_photo_thumb_url varchar(255) comment '宝宝照片-缩略图';
+update ecs_users set photo_thumb_url = photo_url where photo_thumb_url is null and photo_url is not null;
+update ecs_users set baby_photo_thumb_url = baby_photo_url where baby_photo_thumb_url is null and baby_photo_url is not null;
+
+INSERT INTO `ecs_shop_config`
+(
+`parent_id`,
+`code`,
+`type`,
+`store_range`,
+`store_dir`,
+`value`,
+`sort_order`)
+VALUES
+(
+4,
+'receive_order_days',
+'text',
+'',
+'',
+'10',
+1);
+
+
+
+update ecs_shop_config set store_range = '-1,0,64,128,256,512,1024,2048,4096,5120,6144,8192' where code = 'upload_size_limit';
+
+alter table ecs_goods add promote_limit_num int(11) null COMMENT '每日限购数量' default -1 ;
+
+CREATE TABLE `ecs_category_ad` (
+  `img_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `cat_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `img_url` varchar(255) NOT NULL DEFAULT '',
+  `img_desc` varchar(255) NOT NULL DEFAULT '',
+  `thumb_url` varchar(255) NOT NULL DEFAULT '',
+  `img_original` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`img_id`),
+ CONSTRAINT `fk_cat_ad_ref_cat` FOREIGN KEY (`cat_id`) REFERENCES `ecs_category` (`cat_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='商品类别广告图';
+
+alter table ecs_category_ad add ad_img_url varchar(255) null COMMENT '分类广告图' ;
+alter table ecs_category_ad add ad_img_original varchar(255) null COMMENT '分类广告原始图' ;
+alter table ecs_category_ad add ad_thumb_url varchar(255) null COMMENT '分类广告缩略图' ;
 
 
  

@@ -162,7 +162,7 @@ $_LANG['label_shop_url'] = '网址：';
 $_LANG['label_shop_address'] = '地址：';
 $_LANG['label_service_phone'] = '客服：';
 $_LANG['label_print_time'] = '打印时间：';
-$_LANG['label_receive_order_user'] = '收货人：';
+$_LANG['label_receive_order_user'] = '发货人：';
 $_LANG['label_fetch_order_user'] = '取货人：';
 
 $_LANG['label_suppliers'] = '选择供货商：';

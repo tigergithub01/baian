@@ -3045,6 +3045,7 @@ function compute_discount()
             "AND c.session_id = '" . SESS_ID . "' " .
             "AND c.parent_id = 0 " .
             "AND c.is_gift = 0 " .
+            "AND c.is_checked = 1 " .
             "AND rec_type = '" . CART_GENERAL_GOODS . "'";
     $goods_list = $GLOBALS['db']->getAll($sql);
     if (!$goods_list)

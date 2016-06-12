@@ -3582,6 +3582,7 @@ function cart_favourable_amount($favourable)
             "AND c.session_id = '" . SESS_ID . "' " .
             "AND c.rec_type = '" . CART_GENERAL_GOODS . "' " .
             "AND c.is_gift = 0 " .
+            "AND c.is_checked = 1 " .
             "AND c.goods_id > 0 ";
 
     /* 根据优惠范围修正sql */

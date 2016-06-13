@@ -253,6 +253,7 @@ $_LANG['add_bonus_sucess'] = '添加新的红包操作成功！';
 $_LANG['add_bonus_false'] = '添加新的红包操作失败！';
 $_LANG['bonus_add_expire'] = '该红包已经过期！';
 $_LANG['bonus_use_expire'] = '该红包已经过了使用期！';
+$_LANG['bonus_add_limit'] = '该类型红包只能绑定%s次！';
 
 /* 会员订单 */
 $_LANG['order_list_lnk'] = '我的订单列表';

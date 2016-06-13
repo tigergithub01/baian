@@ -43,6 +43,14 @@
       <input name="min_amount" type="text" id="min_amount" value="{$bonus_arr.min_amount}" size="20" />
       <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="Order_money_a">{$lang.order_money_notic}</span>    </td>
   </tr>
+  <tr id="2" style="display:none">
+    <td class="label">
+      <a href="javascript:showNotice('limit_add_times_a');" title="{$lang.form_notice}">
+      <img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>红包绑定次数限制</td>
+    <td>
+      <input name="limit_add_times" type="text" id="limit_add_times" value="{$bonus_arr.limit_add_times}" size="20" />
+      <br /><span class="notice-span" {if $help_open}style="display:block" {else} style="display:none" {/if} id="limit_add_times_a">线下红包绑定次数限制</span>    </td>
+  </tr>
   <tr>
     <td class="label">
       <a href="javascript:showNotice('Send_start_a');" title="{$lang.form_notice}">
@@ -135,6 +143,9 @@ function gObj(obj)
 function showunit(get_value)
 {
   gObj("1").style.display =  (get_value == 2) ? "" : "none";
+  
+  gObj("2").style.display =  (get_value == 3) ? "" : "none";
+  
   document.forms['theForm'].elements['selbtn1'].disabled  = (get_value != 1 && get_value != 2 && get_value != 4);
   document.forms['theForm'].elements['selbtn2'].disabled  = (get_value != 1 && get_value != 2 && get_value != 4);
 

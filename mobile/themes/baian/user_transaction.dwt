@@ -1319,21 +1319,86 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	          	<input type="submit" class="btn_submit a1" style="border:none;" value="{$lang.add_bonus}" />
 			</form>
 		</div>
+		</div>
 		
-		<h3>最近红包记录</h3>
-		<table class="lz-tabl3">
+		<div>
+		<h3 style="padding: 15px 0px 15px 20px;text-align: left;" >红包列表</h3>
+		</div>
+		
+		<div style="background: #fff;">
+			
+		<ul class="ul-add">
+			<!--{foreach from=$bonus item=item}-->	
+			<li>
+				<div>
+					<a class="info" href="javascript:void(0)" onclick="return nav_div($('#bonus_log_{$item.bonus_id}'));">
+						<p>
+							红包名称：<span style="">{$item.type_name}</span>
+													</p>
+						<p>红包金额：<span style="color: #ea5504">{$item.formated_type_money}</span></p>
+						<p>
+						序列号：<span style="">{$item.bonus_sn}	</span>
+						</p>
+						<p>红包余额：<span style="color: #ea5504">{$item.rest_money_formated}</span></p>
+						<p>截至使用日期：{$item.use_enddate}</p>
+					</a>	
+					<!-- <div class="operate">
+						{if $address eq $consignee.address_id}
+						<a class="link default" href="javascript:void(0)">[默认]</a>
+						{else}
+						<a class="link" href="user.php?act=default_consignee&id={$consignee.address_id}">设为默认</a>
+						{/if}
+						<a class="link" href="javascript:void(0)" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">修改</a>
+						<a class="link" onclick="return confirm('你确认要删除该收货地址吗？');" href="user.php?act=drop_consignee&id={$consignee.address_id}">删除</a> 
+					</div> -->
+				</div>
+				<div id="bonus_log_{$item.bonus_id}" class="m-pop" >
+					<header class="head">
+						<a href="javascript:void(0)" class="back-btn"
+							onclick="close_div($('#bonus_log_{$item.bonus_id}'))"></a>
+						<h2>红包消费记录</h2>
+					</header>
+				<div>
+					<!-- { if $item.log_list} -->
+					<!--{foreach from=$item.log_list item=log}-->
+						<ul>
+							<li>
+								<p>消费时间：{$log.formatted_use_time}</p>
+								<p>使用金额：<span style="color: #ea5504">{$log.formated_used_money}</span></p>
+								<p>订单：{$log.order_sn}</p>
+								<p>描述：{$log.use_desc}</p>
+							</li>
+						</ul>
+					<!-- {/foreach} -->
+					<!-- {else} -->
+					<div style="text-align: center;padding-top: 20px;">
+						此红包无消费记录
+					</div>
+					<!-- {/if} -->
+						
+				</div>		
+						
+						
+					</div>
+				</li>			
+			 <!--{/foreach} -->
+		</ul>
+		<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
+		</div>
+			
+		<!-- <table class="lz-tabl3">
 			<thead>
 				<tr>
 					<th>红包名称</th>
 					<th>序列号</th>
-					<!-- <th>红包金额</th> -->
+					<th>红包金额</th>
 					<th>红包余额</th>
 					<th>截至使用日期</th>
 					<th>状态</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!--{foreach from=$bonus item=item}-->	
+				{foreach from=$bonus item=item}	
                      <tr>
                          <td>
                              {$item.type_name}({$item.formated_type_money})	
@@ -1341,9 +1406,9 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                          <td>
                             {$item.bonus_sn}	
                          </td>
-                         <!-- <td>
+                         <td>
                          	  {$item.formated_type_money}	
-                         </td> -->
+                         </td>
                          <td>
                          	  {$item.rest_money_formated}	
                          </td>
@@ -1354,12 +1419,12 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 				           {$item.status}
                          </td>
                      </tr>
-                     <!--{/foreach} -->
+                     {/foreach}
 			</tbody>
-		</table>			
+		</table>	 -->		
 			                  
-		<!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem -->
-	</div>
+		
+	
 		    
     <!-- {/if} -->
    <!--用户红包结束 end-->

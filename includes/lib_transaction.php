@@ -2162,7 +2162,7 @@ function save_order_address($address, $user_id)
  */
 function get_user_bouns_list($user_id, $num = 10, $start = 0)
 {
-    $sql = "SELECT u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date, u.used_time, u.used_amount ".
+    $sql = "SELECT u.bonus_id, u.bonus_sn, u.order_id, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date, u.used_time, u.used_amount ".
            " FROM " .$GLOBALS['ecs']->table('user_bonus'). " AS u ,".
            $GLOBALS['ecs']->table('bonus_type'). " AS b".
            " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'" .
@@ -2207,6 +2207,20 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
         $row['rest_money'] = $rest_money;
         $row['rest_money_formated'] = price_format($rest_money, false);
         
+        //红包使用日志
+        $sql = "SELECT log.log_id, log.bonus_id, log.order_id, log.used_money, log.use_time, log.use_desc, o.order_sn ".
+        		" FROM " .$GLOBALS['ecs']->table('bonus_used_log'). " AS log ".
+        		" LEFT JOIN " . $GLOBALS['ecs']->table('order_info') . " AS o ".
+        		" ON (log.order_id = o.order_id) " .
+        		" WHERE log.bonus_id = '$row[bonus_id]' " .
+        		" ORDER BY log.use_time DESC";
+        $log_list = $GLOBALS['db']->getAll($sql);
+        foreach ($log_list as $key => $log) {
+        	$log_list[$key]['formatted_use_time'] = local_date($GLOBALS['_CFG']['time_format'], $log['use_time']);
+        	$log_list[$key]['formated_used_money']   = price_format($log['used_money'], false);
+        }
+        $row['log_list'] = $log_list;     
+
         $arr[] = $row;
     }
     return $arr;

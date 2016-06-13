@@ -187,6 +187,7 @@ if ($_REQUEST['act'] == 'add')
     $bonus_arr['use_start_date']    = local_date('Y-m-d');
     $bonus_arr['send_end_date']     = local_date('Y-m-d', $next_month);
     $bonus_arr['use_end_date']      = local_date('Y-m-d', $next_month);
+    $bonus_arr['limit_add_times']   = 1;
 
     $smarty->assign('bonus_arr',    $bonus_arr);
 
@@ -205,6 +206,7 @@ if ($_REQUEST['act'] == 'insert')
     /* 初始化变量 */
     $type_id     = !empty($_POST['type_id'])    ? intval($_POST['type_id'])    : 0;
     $min_amount  = !empty($_POST['min_amount']) ? intval($_POST['min_amount']) : 0;
+    $limit_add_times = !empty($_POST['limit_add_times']) ? intval($_POST['limit_add_times']) : 0;
 
     /* 检查类型是否有重复 */
     $sql = "SELECT COUNT(*) FROM " .$ecs->table('bonus_type'). " WHERE type_name='$type_name'";
@@ -219,9 +221,11 @@ if ($_REQUEST['act'] == 'insert')
     $send_enddate   = local_strtotime($_POST['send_end_date']);
     $use_startdate  = local_strtotime($_POST['use_start_date']);
     $use_enddate    = local_strtotime($_POST['use_end_date']);
+    
+   
 
     /* 插入数据库。 */
-    $sql = "INSERT INTO ".$ecs->table('bonus_type')." (type_name, type_money,send_start_date,send_end_date,use_start_date,use_end_date,send_type,min_amount,min_goods_amount)
+    $sql = "INSERT INTO ".$ecs->table('bonus_type')." (type_name, type_money,send_start_date,send_end_date,use_start_date,use_end_date,send_type,min_amount,min_goods_amount,limit_add_times)
     VALUES ('$type_name',
             '$_POST[type_money]',
             '$send_startdate',
@@ -229,7 +233,7 @@ if ($_REQUEST['act'] == 'insert')
             '$use_startdate',
             '$use_enddate',
             '$_POST[send_type]',
-            '$min_amount','" . floatval($_POST['min_goods_amount']) . "')";
+            '$min_amount','" . floatval($_POST['min_goods_amount']) . "', '$limit_add_times')";
 
     $db->query($sql);
     /* 记录管理员操作 */
@@ -290,6 +294,7 @@ if ($_REQUEST['act'] == 'update')
     $type_name   = !empty($_POST['type_name'])  ? trim($_POST['type_name'])    : '';
     $type_id     = !empty($_POST['type_id'])    ? intval($_POST['type_id'])    : 0;
     $min_amount  = !empty($_POST['min_amount']) ? intval($_POST['min_amount']) : 0;
+    $limit_add_times = !empty($_POST['limit_add_times']) ? intval($_POST['limit_add_times']) : 0;
 
     $sql = "UPDATE " .$ecs->table('bonus_type'). " SET ".
            "type_name       = '$type_name', ".
@@ -300,7 +305,8 @@ if ($_REQUEST['act'] == 'update')
            "use_end_date    = '$use_enddate', ".
            "send_type       = '$_POST[send_type]', ".
            "min_amount      = '$min_amount', " .
-           "min_goods_amount = '" . floatval($_POST['min_goods_amount']) . "' ".
+           "min_goods_amount = '" . floatval($_POST['min_goods_amount']) . "', ".
+           "limit_add_times      = '$limit_add_times' " .
            "WHERE type_id   = '$type_id'";
 
    $db->query($sql);

@@ -264,7 +264,7 @@ function add_bonus($user_id, $bouns_sn)
         if ($row['user_id'] == 0)
         {
             //红包没有被使用
-            $sql = "SELECT send_end_date, use_end_date ".
+            $sql = "SELECT send_end_date, use_end_date, limit_add_times ".
                    " FROM " . $GLOBALS['ecs']->table('bonus_type') .
                    " WHERE type_id = '" . $row['bonus_type_id'] . "'";
 
@@ -276,6 +276,19 @@ function add_bonus($user_id, $bouns_sn)
                 $GLOBALS['err']->add($GLOBALS['_LANG']['bonus_use_expire']);
                 return false;
             }
+            
+            //红包添加次数限制
+            $sql = "SELECT count(1) ".
+            		" FROM " . $GLOBALS['ecs']->table('user_bonus') .
+            		" WHERE bonus_type_id = '" . $row['bonus_type_id'] . "' AND user_id = '$user_id' ";
+            $added_times = $GLOBALS['db']->getOne($sql);
+            
+            if ($added_times >= $bonus_time['limit_add_times'])
+            {
+            	$GLOBALS['err']->add(sprintf($GLOBALS['_LANG']['bonus_add_limit'], $bonus_time['limit_add_times']));
+            	return false;
+            }
+            
 
             $sql = "UPDATE " .$GLOBALS['ecs']->table('user_bonus') . " SET user_id = '$user_id' ".
                    "WHERE bonus_id = '$row[bonus_id]'";

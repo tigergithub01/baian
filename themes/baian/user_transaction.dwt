@@ -1382,7 +1382,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
                             	截至使用日期
                          </th>
                          <th>
-                            	 状态
+                            	 
                          </th>
                      </tr>
                  </thead>
@@ -1405,8 +1405,37 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 				           {$item.use_enddate}
                          </td>
                          <td>
-				           {$item.status}
+				           	<a href="javascript:void(0)" onclick="($('#bonus_log_{$item.bonus_id}').css('display')=='none')?$('#bonus_log_{$item.bonus_id}').show():$('#bonus_log_{$item.bonus_id}').hide();">消费详情</a>
                          </td>
+                     </tr>
+                     <tr id="bonus_log_{$item.bonus_id}" style="display: none;">
+	                     <td colspan="5">
+	                     	<!-- { if $item.log_list} -->
+	                     	<table>
+	                     	<thead>
+			                     <tr>
+			                         <th>消费时间</th>
+			                         <th>使用金额</th>
+			                         <th>订单</th>
+			                         <th>描述 </th>
+			                     </tr>
+			                     </thead>
+			                     <tbody>
+						<!--{foreach from=$item.log_list item=log}-->
+								<tr>
+									<td>{$log.formatted_use_time}</td>
+									<td><span style="color: #ea5504">{$log.formated_used_money}</span></td>
+									<td>{$log.order_sn}</td>
+									<td>{$log.use_desc}</td>
+								</tr>
+								
+						<!-- {/foreach} -->
+						</tbody>
+						</table>
+						<!-- {else} -->
+							<span style="color: #ea5504">此红包无消费记录</span>
+						<!-- {/if} -->
+						</td>
                      </tr>
                      <!--{/foreach} -->
                  </tbody>

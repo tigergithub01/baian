@@ -1,6 +1,3 @@
-
-
-
 CREATE TABLE `ecs_favourable_act_detail` (
   `act_detail_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `act_id` int(10) unsigned NOT NULL COMMENT '关联活动编号',   

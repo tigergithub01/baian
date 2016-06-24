@@ -32,6 +32,7 @@
 			      		{elseif $goods.is_momsuit eq 0}
 			      		<a href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$goods.goods_name}</a>
 			      		{/if}
+			      		<span style="color: #ea5504;"><!--已分单,发货中 { if $order.original_order_status ==5 && $order.original_shipping_status ==5}  -->（已备货）<!-- {/if} --></span>
 			      		
 		                <!-- {if $goods.parent_id > 0} -->
 		                <span style="color:#FF0000">（{$lang.accessories}）</span>

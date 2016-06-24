@@ -783,7 +783,13 @@
 							  <a href="javascript:void(0)" ><img src="/{$goods.goods_thumb}" border="0"  /></a>
 				      	    </div>
 				     		<a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="suit_buy_title">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
-				      		<span class="price">{$goods.formated_goods_price}</span>
+				      		
+				      		<!-- {if ($goods.bonus gt 0)} -->
+					      	<p style="color:#ea5504;font-size: 0.8em;">可用红包：{$goods.bonus_formatted}</p>
+					      	<!-- {/if} -->
+				      		
+				      		<span class="price" style="float: none;">{$goods.formated_goods_price}</span>
+				      		
 				      		<div id="suit_{$goods.goods_id}" style="display:none">
 					          	<!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
 						    		<div class="suit_buy_content">
@@ -808,7 +814,10 @@
 					      		<a href="{$goods.goods_url}"  class="f6">{$goods.goods_name}</a>
 					      		{/if}
 					      		
-					      		
+					      		<br/>
+					      		<!-- {if ($goods.bonus gt 0)} -->
+					      		<span style="color:#ea5504;font-size: 0.8em;">可用红包：{$goods.bonus_formatted}</span>
+					      		<!-- {/if} -->
 				
 				                <!-- {if $goods.parent_id > 0} -->
 				                	<span style="color:#FF0000">（{$lang.accessories}）</span>

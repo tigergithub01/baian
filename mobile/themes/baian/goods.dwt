@@ -68,6 +68,10 @@
 							<!-- {if ($goods.bonus_money gt 0)} -->
                 			<span class="btn">送红包</span>{$goods.bonus_money_formatted} <br>
                 			<!-- {/if} -->
+                			
+                			<!-- {if ($goods.bonus gt 0)} -->
+                			<span class="btn">可用红包</span>{$goods.bonus_formatted} <br>
+                			<!-- {/if} -->
 	                		
 	                		<!-- {if ($goods.give_integral gt 0)} -->
 	                		<span class="btn">送积分</span>{$goods.give_integral}积分<br>

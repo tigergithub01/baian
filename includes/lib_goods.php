@@ -836,11 +836,13 @@ function get_goods_info($goods_id)
         $row['give_integral'] = ($row['give_integral']==-1)?(round($row['shop_price']/$row['give_integral_rate'])):$row['give_integral'];
         
         /*赠送的积分折算成的购买金额， [积分换算比例，每100积分可抵多少元现金]*/
-        $row['give_integral_amt'] = round($row['give_integral'] * $GLOBALS['_CFG']['integral_scale']  / 100);
-        
+        $row['give_integral_amt'] = round($row['give_integral'] * $GLOBALS['_CFG']['integral_scale']  / 100);        
 
         /* 赠送红包金额 */
         $row['bonus_money_formatted']   = ($row['bonus_money'] == 0) ? 0 : price_format($row['bonus_money'], false);
+        
+        /* 可用红包金额 */
+        $row['bonus_formatted']   = ($row['bonus'] == 0) ? 0 : price_format($row['bonus'], false);
 
         /* 修正商品图片 */
         $row['goods_img']   = get_image_path($goods_id, $row['goods_img']);

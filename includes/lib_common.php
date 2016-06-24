@@ -2624,7 +2624,7 @@ function get_package_info($id)
  */
 function get_package_goods($package_id)
 {
-    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id, pg.goods_price, g.goods_thumb  
+    $sql = "SELECT pg.goods_id, g.goods_name, pg.goods_number, p.goods_attr, p.product_number, p.product_id, pg.goods_price, g.goods_thumb, g.bonus   
             FROM " . $GLOBALS['ecs']->table('package_goods') . " AS pg
                 LEFT JOIN " .$GLOBALS['ecs']->table('goods') . " AS g ON pg.goods_id = g.goods_id
                 LEFT JOIN " . $GLOBALS['ecs']->table('products') . " AS p ON pg.product_id = p.product_id

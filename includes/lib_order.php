@@ -979,6 +979,22 @@ function cart_goods($type = CART_GENERAL_GOODS,$region_id_list=array(),$is_check
         	}
         }
         
+        /* 根据商品查询可用红包金额  START*/
+        if ($value['extension_code'] == 'package_buy'){
+        	$sql = "SELECT sum(IFNULL(g.bonus * pg.goods_number , 0)) AS bonus ".
+        			" FROM " . $GLOBALS['ecs']->table('package_goods') . " AS pg
+                LEFT JOIN " .$GLOBALS['ecs']->table('goods') . " AS g ON pg.goods_id = g.goods_id WHERE pg.package_id = '".$arr[$key]['goods_id']."'";
+        }else{
+        	$sql = "SELECT IFNULL(g.bonus, 0) AS bonus ".
+        	" FROM ".$GLOBALS['ecs']->table('goods')." AS g WHERE g.goods_id = '".$arr[$key]['goods_id']."'";
+        }
+        $bonus = $GLOBALS['db']->getOne($sql);
+        $arr[$key]['bonus'] = $bonus;
+        $arr[$key]['bonus_formatted']   = (empty($arr[$key]['bonus']) || $arr[$key]['bonus'] == 0) ? 0 : price_format($arr[$key]['bonus'], false);
+        /* 根据商品查询可用红包金额  END*/
+       
+        
+        
 		/*wzys设置某个商品在在某些地区可以包邮，某些地区不能*/  
 		if($value['is_shipping']==1)
 		{

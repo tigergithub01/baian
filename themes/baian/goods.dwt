@@ -228,6 +228,10 @@
 	                			<p><i>送红包</i> {$goods.bonus_money_formatted}</p> 
 	                			<!-- {/if} -->
 	                			
+	                			<!-- {if ($goods.bonus gt 0)} -->
+	                			<p><i>可用红包</i> {$goods.bonus_formatted}</p>
+	                			<!-- {/if} -->
+	                			
 	                			<!-- {if ($goods.give_integral gt 0)} -->
 	                			<p><i>送积分</i> {$goods.give_integral}积分</p>
 	                			<!-- {/if} -->

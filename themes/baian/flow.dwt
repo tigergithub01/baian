@@ -819,6 +819,12 @@
 			      		{elseif $goods.is_momsuit eq 0}
 			      		<a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a>
 			      		{/if}
+			      		
+			      		<!-- {if ($goods.bonus gt 0)} -->
+                			<p style="color:#ea5504;font-size: 0.8em;">可用红包：{$goods.bonus_formatted}</p>
+                		<!-- {/if} -->
+			      		
+			      		 
 		                <!-- {if $goods.parent_id > 0} -->
 		                <span style="color:#FF0000">（{$lang.accessories}）</span>
 		               <!-- {elseif $goods.is_gift} -->

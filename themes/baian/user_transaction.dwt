@@ -1556,6 +1556,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 	                   </td>
 	                   <td rowspan="{$smarty.foreach.goods_foreach.total}">
 	                       <div class="order_state">{$order.composite_status_name}</div>
+	                       <span class="order_state"><!--已分单,发货中 { if $order.original_order_status ==5 && $order.original_shipping_status ==5}  -->（已备货）<!-- {/if} --></span>
 	                       <a target="_blank" href="user.php?act=order_detail&order_id={$order.order_id}" class="a-btn">订单详情</a>
 	                   </td>
 	                   <td rowspan="{$smarty.foreach.goods_foreach.total}" style="width: 130px;">

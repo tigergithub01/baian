@@ -666,7 +666,7 @@
             <td><input type="text" id="reduce_ship_amt" name="reduce_ship_amt" value="{$goods.reduce_ship_amt}" size="40"   /></td>
           </tr>
           <tr>
-            <td class="label">促销商品可减运费金额：</td>
+            <td class="label">抢购商品可减运费金额：</td>
             <td><input type="text" id="promote_reduce_ship_amt" name="promote_reduce_ship_amt" value="{$goods.promote_reduce_ship_amt}" size="40"   /></td>
           </tr>
           <tr>
@@ -1359,6 +1359,7 @@
       $("#promote_start_date").attr("disabled",!checked);
       $("#promote_end_date").attr("disabled",!checked);
       $("#promote_limit_num").attr("disabled",!checked);
+      //$("#promote_reduce_ship_amt").attr("disabled",!checked);
   }
 
   function handleMomsuit(checked)

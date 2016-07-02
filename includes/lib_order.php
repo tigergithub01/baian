@@ -1098,6 +1098,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
     $package_row['number'] = 0;
 
     $packages_row['free_shipping'] = 1;
+    $time = gmtime();
 
     /* 计算超值礼包内商品的相关配送参数 */
     $sql = 'SELECT goods_id, goods_number, goods_price FROM ' . $GLOBALS['ecs']->table('cart') . " WHERE extension_code = 'package_buy' AND session_id = '" . SESS_ID . "' AND is_checked = 1";
@@ -1135,7 +1136,7 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
             	//可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
             	
                 $sql = 'SELECT SUM(g.goods_weight * pg.goods_number) AS weight, ' .
-                  	   'SUM(g.reduce_ship_amt * pg.goods_number) AS reduce_ship_amt, '.	
+                  	   "SUM((case when (g.is_promote = 1 AND g.promote_start_date <= '$time' AND g.promote_end_date >= '$time') then promote_reduce_ship_amt else reduce_ship_amt end ) * pg.goods_number) AS reduce_ship_amt, ".	
                     'SUM(pg.goods_number) AS number FROM ' .
                     $GLOBALS['ecs']->table('package_goods') . ' AS pg, ' .
                     $GLOBALS['ecs']->table('goods') . ' AS g ' .
@@ -1185,10 +1186,11 @@ function cart_weight_price($type = CART_GENERAL_GOODS,$region_id_list=array())
 	//可减运费金额 added by tiger.guo 20151226
 	//可减运费应该排除免费所辖区域 modified by tiger.guo 20160219
 	/* modified by tiger.guo 20160424 赠品不计算运费 */
+	/* 加入促销商品免运费金额 promote_reduce_ship_amt tiger.guo 20160702  */
     $sql    = 'SELECT SUM(g.goods_weight * c.goods_number) AS weight, ' .
                     'SUM(c.goods_price * c.goods_number) AS amount, ' .
                     'SUM(c.goods_number) AS number, '.
-                    'SUM(g.reduce_ship_amt * c.goods_number) AS reduce_ship_amt '.
+                    "SUM((case when (g.is_promote = 1 AND g.promote_start_date <= '$time' AND g.promote_end_date >= '$time') then promote_reduce_ship_amt else reduce_ship_amt end )  * c.goods_number) AS reduce_ship_amt ".
                 'FROM ' . $GLOBALS['ecs']->table('cart') . ' AS c '.
                 'LEFT JOIN ' . $GLOBALS['ecs']->table('goods') . ' AS g ON g.goods_id = c.goods_id '.
                 "WHERE c.session_id = '" . SESS_ID . "' " .

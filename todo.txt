@@ -468,6 +468,35 @@ COMMIT
 #heland
 -A RH-Firewall-1-INPUT -p tcp -s 212.7.0.0/16 --dport 80   -j REJECT
 
+-A RH-Firewall-1-INPUT -p tcp -s 171.215.62.37 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 112.80.253.70 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 183.18.78.116 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 49.223.100.56 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 58.49.13.6 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 171.41.12.110 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 111.227.12.178 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 58.62.67.69--dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 222.78.76.80 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 119.32.93.160 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 221.6.45.218 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 157.122.160.130 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 114.88.34.194 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 112.80.253.70 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 221.6.45.218--dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 49.223.100.56 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 180.173.107.149 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 117.29.102.23 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 58.221.42.210 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 122.189.48.166 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 123.115.173.12 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 117.166.252.90 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 220.176.204.109 --dport 80   -j REJECT
+
+-A RH-Firewall-1-INPUT -p tcp -s 120.24.216.32 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 39.128.29.38 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 218.16.41.183 --dport 80   -j REJECT
+-A RH-Firewall-1-INPUT -p tcp -s 103.21.142.173 --dport 80   -j REJECT
+
 
 
 
@@ -680,6 +709,32 @@ A4纸的尺寸是210mm×297mm，
 基本上 1毫米 约等于 3.78像素
 
 210mm 约等于 793.80像素
+
+2241
+
+
+
+./configure --with-scws=/usr/local/scws --with-php-config=/www/wdlinux/php/bin/php-config
+
+
+支付金额比较精确到角，因为微信支付有时会差一分钱（原因未查明）。
+
+
+手机版自提点选择，选择自提点不起作用。
+
+一个品牌做满减，这个品牌下的商品就不要单独做满减了。 ->情况不存在
+一个类别做满减，这个类别下的商品就不要单独做满减了。 ->情况不存在
+
+
+线下红包
+查看端口访问情况：
+netstat -tln | grep 89
+
+打开端口访问权限
+-A RH-Firewall-1-INPUT -p tcp -m state -m tcp --dport 21 --state NEW -j ACCEPT
+
+优化电脑板积分兑换详情页
+
 
 
 

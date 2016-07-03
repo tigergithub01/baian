@@ -60,8 +60,11 @@ if ($_REQUEST['act'] == 'list')
     /* 页面的缓存ID */
     $cache_id = sprintf('%X', crc32($cat_id . '-' . $display . '-' . $sort  .'-' . $order  .'-' . $page . '-' . $size . '-' . $_SESSION['user_rank'] . '-' .
         $_CFG['lang'] . '-' . $integral_max . '-' .$integral_min));
+    
+    $is_ajax_fetch = isset($_REQUEST['is_ajax_fetch']) ? intval($_REQUEST['is_ajax_fetch']) : 0;
 
-    if (!$smarty->is_cached('exchange.dwt', $cache_id))
+    if(1)
+//     if (!$smarty->is_cached('exchange.dwt', $cache_id))
     {
         /* 如果页面没有被缓存则重新获取页面的内容 */
 
@@ -127,13 +130,32 @@ if ($_REQUEST['act'] == 'list')
         $may_like_goods = com_sale_get_may_like_goods(null, null, null);
         $smarty->assign('may_like_goods',$may_like_goods);
         
-        $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
+//         $smarty->assign('promotion_goods', get_promote_goods()); // 特价商品,限时抢购
         
-        assign_dynamic('exchange_list'); // 动态内容
+//         assign_dynamic('exchange_list'); // 动态内容
     }
 
     $smarty->assign('feed_url',         ($_CFG['rewrite'] == 1) ? "feed-typeexchange.xml" : 'feed.php?type=exchange'); // RSS URL
-    $smarty->display('exchange_list.dwt', $cache_id);
+    
+    
+    if($is_ajax_fetch==1){
+    	include_once('includes/cls_json.php');
+    	$json = new JSON;
+    	$result = array('error' => '', 'content' => '');
+    	$result['content'] = $smarty->fetch('library/exchange_list.lbi');
+    	$result['filter'] = array('category' => 0, 'brand' => 0,
+    			'price_min'=>0, "price_max"=>0,
+    			"filter_attr" =>'',"filter_ext" =>'',
+    			"page" => $page, "size" =>$size,"sort"=>'',"order"=>'',
+    			"record_count" => $count,
+    			"page_count"=>($count = $count > 0 ? intval(ceil($count / $size)) : 1)
+    	);
+    	die($json->encode($result));
+    }else{
+    	$smarty->display('exchange_list.dwt');
+    	// 	$smarty->display('exchange_list.dwt', $cache_id);
+    }
+    
 }
 
 /*------------------------------------------------------ */

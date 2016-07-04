@@ -476,7 +476,7 @@ $_LANG['ws_order_submitted'] = "您的订单已提交成功，请记住您的订
 $_LANG['ws_price_list'] = '价格单';
 
 /* 积分兑换部分语言项 */
-$_LANG['exchange'] = '积分商城';
+$_LANG['exchange'] = '积分兑换';
 $_LANG['exchange_integral'] = '消耗积分：';
 $_LANG['exchange_goods'] = "立刻兑换";
 $_LANG['eg_error_login'] = '对不起，您没有登录，不能参加兑换，请您先登录！';

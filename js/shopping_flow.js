@@ -1007,7 +1007,7 @@ function selectShipping(obj)
 	  $(".CAC_POINT_LIST").hide();
   }
 
-  var now = new Date();
+  var now = new Date();  
 
   Ajax.call('flow.php?step=select_shipping', 'shipping=' + obj.value, orderShippingSelectedResponse, 'GET', 'JSON');
 
@@ -1072,7 +1072,7 @@ function orderShippingSelectedResponse(result)
   }
 
 
-
+  result.operate = 'select_shipping';
   orderSelectedResponse(result);
 
 }
@@ -1411,6 +1411,31 @@ function orderSelectedResponse(result)
   }
 
   catch (ex) { }
+  
+  if(result.operate!=null && result.operate=='select_shipping'){
+	//选择配送方式时如果应付款金额为零时，自动选择支付方式，电脑版选择“支付宝”，微信选择“微信支付”  
+	  try{
+		  var total_fee_amt = parseFloat($("#total_fee_amt").val());
+		  //console.debug(result.operate);
+		  //console.debug(total_fee_amt);
+		  var checked_payments = $("#ECS_SHIPPING_PARMENT").find("input[type='radio'][name='payment']:checked"); //是否已经选择了支付方式
+		  if(total_fee_amt==0 && (checked_payments.length==0)){
+			var default_pay_type = 'alipay';
+			var ua = window.navigator.userAgent.toLowerCase();
+		    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+		    	//微信
+		    	default_pay_type = 'wxpay';
+		  }
+		  var $pay_type = $("#ECS_SHIPPING_PARMENT").find("input[pay_code='"+default_pay_type+"']");
+		  //console.debug($pay_type.val());
+		  $pay_type.click();
+		  $pay_type.parent().addClass("checked");//针对手机版起作用
+		  }	  
+	  }catch (ex) { 
+		  
+	  }
+  }
+  
 
 }
 

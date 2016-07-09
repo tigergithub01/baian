@@ -73,7 +73,7 @@
 					            <tr>
 						    	<td width="10%" height="25">&nbsp;</td>
 					              <td valign="top" height=25 width="27%">
-					              		<input type="radio" name="payment" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
+					              		<input type="radio" name="payment" pay_code="{$payment.pay_code}" value="{$payment.pay_id}"  isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/> 
 					              		{$payment.pay_name}
 					              		
 					              		<input type="hidden" id="payment_name_{$payment.pay_id}" value="{$payment.pay_name}"/>

@@ -323,6 +323,29 @@ elseif ($_REQUEST['act'] == 'view')
             $smarty->assign('specification',       $properties['spe']);                              // 商品规格
 
             $smarty->assign('pictures',            get_goods_gallery($goods_id));                    // 商品相册
+            
+            /*属性选择start*/
+            $sql = "SELECT attr_value FROM " . $GLOBALS['ecs']->table('goods_attr') . " WHERE goods_id = '".$goods_id."'";
+	    	$goods_attr_list = $GLOBALS['db']->getCol($sql);
+	    	
+	    	$attributes = get_products_specifications_list($goods_id);
+	    	foreach ($attributes as $attribute_value)
+	    	{
+	    		$is_checked = (isset($goods_attr_list) && in_array($attribute_value['attr_value'], $goods_attr_list))?1:0;
+	    		$arr = ['attr_id'=>$attribute_value['attr_id'],'attr_value'=>$attribute_value['attr_value'],'is_checked'=>$is_checked];
+	    		$specifications[$attribute_value['attr_id']]['attr_values'][] = $arr;
+	    		 
+	    		// 	    	$arr['goods_attr_id']=$attribute_value['goods_attr_id'];
+	    		// 	    	$arr['attr_value']=$attribute_value['attr_value'];
+	    		// 	    	$specifications[$attribute_value['attr_id']]['attr_values'] = $arr;
+	    		// 	    	$specifications[$attribute_value['attr_id']]['attr_values'] = ['goods_attr_id'=>$attribute_value['goods_attr_id'],'attr_value'=>$attribute_value['attr_value']];
+	    		$specifications[$attribute_value['attr_id']]['attr_id'] = $attribute_value['attr_id'];
+	    		$specifications[$attribute_value['attr_id']]['attr_name'] = $attribute_value['attr_name'];
+	    	}
+	    		
+	    	$smarty->assign('specifications',       $specifications);
+            /*属性选择end*/
+            
 
             assign_dynamic('exchange_goods');
         }
@@ -386,7 +409,8 @@ elseif ($_REQUEST['act'] == 'buy')
     $user_points = $user_info['pay_points']; // 用户的积分总数
     if ($goods['exchange_integral'] > $user_points)
     {
-        show_message($_LANG['eg_error_integral'], array($_LANG['back_up_page']), array($back_act), 'error');
+//         show_message($_LANG['eg_error_integral'], array($_LANG['back_up_page']), array($back_act), 'error');
+    	show_message(sprintf($_LANG['eg_error_integral_1'], $user_points), array($_LANG['back_up_page']), array($back_act), 'error');
     }
 
     /* 查询：取得规格 */

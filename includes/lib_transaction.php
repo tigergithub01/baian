@@ -1718,6 +1718,18 @@ function get_order_detail($order_id, $user_id = 0)
     $order['composite_status'] = get_order_cs_status($order['order_status'], $order['shipping_status'], $order['pay_status'],$payment_is_cod);
     $order['composite_status_name'] = $GLOBALS['_LANG']['cs'][$order['composite_status']];
     
+    //是否已申请退货
+    $is_order_backed = is_order_backed($order['order_id']);
+    $order['is_order_backed'] = $is_order_backed;
+     
+    //是否已评价
+    $is_commented = is_commented($order['order_id']);
+    $order['is_commented'] = $is_commented;
+     
+    //配送编码
+    $shipping_code = $GLOBALS['db']->getOne("SELECT shipping_code FROM " . $GLOBALS['ecs']->table('shipping') ." WHERE shipping_id = $order[shipping_id]");
+    $order['shipping_code'] = $shipping_code;    
+    
     $order['handler'] = getOrderHandler($order);
     
     

@@ -539,7 +539,7 @@
         	    url:'goods.php?act=select_attribute',     
         	    type:'post',  
         	    dataType:'json', 
-        	    data:{'selected_attributes': selected_attributes,'selected_attributes_val': selected_attributes_val,'goods_id':{$goods.goods_id}},     
+        	    data:{'selected_attributes': selected_attributes,'selected_attributes_val': selected_attributes_val,'goods_id':{$goods.goods_id},"exchange":'1'},     
         	    async :true, 
         	    error:function(){ 
         	    	alert('更新出错！');

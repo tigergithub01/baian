@@ -27,19 +27,23 @@
 			     		 </div>
 			      <!-- { else } -->
 			      		<h3>
+			      		 <!-- {if $goods.parent_id > 0} -->
+		                <span style="color:#FF0000">（{$lang.accessories}）</span>
+		               <!-- {elseif $goods.is_gift} -->
+		                <span style="color:#FF0000">（{$lang.largess}）</span>
+		                <!-- {/if} -->
+		                
 			      		{if $goods.is_momsuit eq 1}
 			      		<a href="user.php?act=order_detail&order_id={$order.order_id}"  class="f6">{$goods.goods_name}</a>
 			      		{elseif $goods.is_momsuit eq 0}
 			      		<a href="user.php?act=order_detail&order_id={$order.order_id}" class="f6">{$goods.goods_name}</a>
 			      		{/if}
-			      		<span style="color: #ea5504;"><!--已分单,发货中 { if $order.original_order_status ==5 && $order.original_shipping_status ==5}  -->（货已备齐）<!-- {/if} --></span>
-			      		
-		                <!-- {if $goods.parent_id > 0} -->
-		                <span style="color:#FF0000">（{$lang.accessories}）</span>
-		               <!-- {elseif $goods.is_gift} -->
-		                <span style="color:#FF0000">（{$lang.largess}）</span>
-		                <!-- {/if} -->
 		                </h3>
+		                <!--已分单,发货中 { if $order.original_order_status ==5 && $order.original_shipping_status ==5}  -->
+			                <h3 style="height: 1.5em;margin-top: 2px;">
+			                	<span style="color: #ea5504;">（货已备齐<!-- {if $order.shipping_code eq 'cac' } 门店自提显示自提点 start--> ,请到门店自提<!-- {/if} -->）</span>
+			                </h3>
+		                <!-- {/if} -->
 		          <!-- {/if} -->
 					          
 					<!-- <h3><a href="user.php?act=order_detail&order_id={$order.order_id}">{$goods.goods_name}</a></h3> -->

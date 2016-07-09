@@ -1628,7 +1628,10 @@
             <tr>
               <td align="left" bgcolor="#FFFFFF">
               	<p class="info">
-              	<span style="text-align:center; margin-top:20px; padding-bottom:10px;">{$lang.remember_order_number}: <font style="color:#ea5504;">{$order.order_sn}</font></span>
+              	<span style="text-align:center; margin-top:20px; padding-bottom:10px;">{$lang.remember_order_number}<font style="color:#ea5504;">{$order.order_sn}</font></span>
+              	<!--{if ($order.shipping_id eq 4)} 门店自提增加“货已备齐”提示-->
+              	<span style="text-align:center; margin-top:20px; padding-bottom:10px;color:#ea5504;font-size: 0.85em;">请关注用户中心该订单的状态，当显示”货已备齐“就可以上门自提了</span>
+              	<!-- {/if} -->
               	</p>
               </td>
             </tr>

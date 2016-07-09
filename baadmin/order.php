@@ -5384,10 +5384,27 @@ function order_list()
         {
             $row[$key]['can_remove'] = 0;
         }
+        
+        //是否有退款申请
+       $row[$key]['is_order_backed'] = is_order_backed($row[$key]['order_id']);
     }
     $arr = array('orders' => $row, 'filter' => $filter, 'page_count' => $filter['page_count'], 'record_count' => $filter['record_count']);
 
     return $arr;
+}
+
+
+/*
+ * 订单是否已经申请退货
+ */
+function is_order_backed($order_id,$goods_id=''){
+	$status_list = array(OBS_AUDITING,OBS_AUDITED,OBS_SHIPPING,OBS_FINISHED);
+	$sql = "SELECT COUNT(1) FROM  ".$GLOBALS['ecs']->table('order_back')." AS ob WHERE ob.order_id = '$order_id' AND ob.status ".db_create_in($status_list);
+	if(!empty($goods_id)){
+		$sql.= " AND ob.goods_id = '$goods_id'";
+	}
+	$count = $GLOBALS['db']->getOne($sql);
+	return ($count>0)?true:false;
 }
 
 /**

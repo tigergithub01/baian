@@ -195,9 +195,24 @@ if (!empty($_REQUEST['act']) && $_REQUEST['act'] == 'select_attribute')
 	}
 	
 	if($selected_goods_id){
-		$goods_url = build_uri('goods', array('gid' => $selected_goods_id), $row['goods_name']);
-		lib_main_make_json_result('根据属性查找产品成功',['goods_url'=>$goods_url]);
-		exit();
+		//判断是否为积分商城商品切换
+		$exchange_flag = isset($_REQUEST['exchange'])?intval($_REQUEST['exchange']):0;
+		if($exchange_flag){
+			/* 判断此商品是否可以用积分兑换 */
+			$count = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['ecs']->table("exchange_goods") ." WHERE goods_id = '$selected_goods_id' AND is_exchange=1");
+			if($count>=1){
+				$goods_url = build_uri('exchange_goods', array('gid' => $selected_goods_id), $row['goods_name']);
+				lib_main_make_json_result('根据属性查找产品成功',['goods_url'=>$goods_url]);
+				exit;
+			}else{
+				lib_main_make_json_error('对不起，您选择的属性不参与积分兑换！');
+				exit();
+			}
+		}else{
+			$goods_url = build_uri('goods', array('gid' => $selected_goods_id), $row['goods_name']);
+			lib_main_make_json_result('根据属性查找产品成功',['goods_url'=>$goods_url]);
+			exit();
+		}
 	}else{
 		lib_main_make_json_error('对不起，您选择的属性商品不存在！');
 		exit();

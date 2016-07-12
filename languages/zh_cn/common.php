@@ -482,6 +482,7 @@ $_LANG['exchange_goods'] = "立刻兑换";
 $_LANG['eg_error_login'] = '对不起，您没有登录，不能参加兑换，请您先登录！';
 $_LANG['eg_error_status'] = '对不起，该商品已经取消，现在不能兑换！';
 $_LANG['eg_error_integral'] = '对不起，您现有的积分值不够兑换本商品！';
+$_LANG['eg_error_integral_1'] = '对不起，您现有的积分为%d分，不够兑换本商品！';
 $_LANG['notice_eg_integral'] = '积分商城商品需要消耗积分：';
 $_LANG['eg_error_number'] = '对不起，该商品库存不足，现在不能兑换！';
 

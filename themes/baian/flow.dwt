@@ -1486,6 +1486,9 @@
          
          <h6 style="text-align:center; margin-top:20px; border-bottom:#C91422 2px solid; padding-bottom:10px;">{$lang.remember_order_number}: <font style="color:red">{$order.order_sn}</font></h6>
          
+         <!--{if ($order.shipping_id eq 4)} 门店自提增加“货已备齐”提示-->
+         <span style="text-align:center; margin-top:20px; padding-bottom:10px;color:#ff0000;font-size: 0.85em;display: block;">请关注用户中心该订单的状态，当显示”货已备齐“就可以上门自提了</span>
+         <!-- {/if} -->
          <!-- {if $nfsum > 4} -->
          <!--<form action="flow.php?step=deposit" id="depositForm" name="depositForm" method="post">
          <h6 style="text-align:center; margin-top:20px; border-bottom:#C91422 2px solid; padding-bottom:10px;">
@@ -1523,6 +1526,8 @@
 				border: 2px solid;
 				border-radius: 6px;
 				cursor: pointer;
+				display: block;
+				margin: 10px 0 10px 0;
 				 }
 			</style>
           </table>

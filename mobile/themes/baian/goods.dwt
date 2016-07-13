@@ -20,7 +20,32 @@
 		.img-wp {font-size: 0px;}
 		.img-wp br{display: none;}
 		/* .img-wp img{display: block;} */
+		
+		
+		
+
+
 	</style>
+	
+	<script type="text/javascript">
+	$(function(){
+		var tofixedItem = $(".ul-subBox");
+		var y = tofixedItem.offset().top + tofixedItem.height();
+		/* 根据滚动条位置固定操作工具栏 */
+		 $(window).scroll(function(){
+		    //console.debug("scrollTop:"+$(window).scrollTop());
+		    //console.debug("y:"+y);
+		    if($(window).scrollTop()>= y){
+		    	tofixedItem.addClass("fixbottom_toolbar");		 
+	    		$(".nav_bottom").hide();
+		    }else{
+		    	tofixedItem.removeClass("fixbottom_toolbar");
+		    	$(".nav_bottom").show();	
+		    }
+		});
+	});
+	
+	</script>
 </head>
 <body>
 	

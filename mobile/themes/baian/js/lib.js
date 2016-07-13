@@ -137,9 +137,21 @@ $(document).ready(function($) {
 		}
 	}).blur(function(){
 		$(".nav_bottom").show();
-	});
+	})	
 	
 });
+
+/* 根据滚动条位置固定操作工具栏 */
+function showHideBottomBar(element,pos){
+	if($(window).scrollTop()>= pos){
+		element.addClass("fixbottom_toolbar");		 
+    	$(".nav_bottom").hide();
+    }else{
+    	element.removeClass("fixbottom_toolbar");
+    	$(".nav_bottom").show();	
+    }
+}
+
 
 /**
  * 打开指定DIV

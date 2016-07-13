@@ -21,6 +21,21 @@
 		.img-wp br{display: none;}
 		/* .img-wp img{display: block;} */
 	</style>
+	
+	<script type="text/javascript">
+		$(function(){
+			/* 根据滚动条位置固定操作工具栏  start*/
+			var btns = $(".ul-subBox");
+			var pos = btns.offset().top + btns.height();
+			
+			 $(window).scroll(function(){
+			    //console.debug("scrollTop:"+$(window).scrollTop());
+			    //console.debug("y:"+y);
+				 showHideBottomBar(btns,pos);
+			 });
+			 /* 根据滚动条位置固定操作工具栏  end*/
+		});
+	</script>
 </head>
 <body>
 	

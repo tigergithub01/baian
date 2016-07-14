@@ -1031,7 +1031,7 @@
    			</li>
    			 <!-- {/if} 是否使用余额end -->
    		</ul>
-   		<div class="subBox" style="position: fixed;bottom: 0;width: 100%;padding: 15px;">
+   		<div class="subBox fixed_bottom_btns">
 			<input type="button" value="完成" class="btn4" onclick="close_div($('.jsxx'));">
 		</div>
 		

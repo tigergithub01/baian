@@ -38,7 +38,7 @@
 	</li>
 	<!-- {else} -->
 	<div>
-		<a class="lz-btn1" href="javascript:void(0)" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">新增收货地址</a>
+		<a class="lz-btn1" href="javascript:void(0)" style="position: fixed;bottom: 0;width: 100%;" name="submit" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">新增收货地址</a>
 		<!-- <td>
 			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee"/><span style="padding-left: 5px;">添加新地址</span>
 		</td> -->
@@ -126,11 +126,10 @@
 		                  </td>
 		                </tr>
 		                <tr>
-		                  <td>&nbsp;</td>
 		                  <td colspan="3" align="center" bgcolor="#ffffff"><!-- {if $consignee.address_id} -->
-		                    <input type="button" name="submit" class="btn lz-btn1" value="保存并使用" onclick="return select_address('{$consignee.address_id}');" />
+		                    <input type="button" style="position: fixed;bottom: 0;width: 100%;" name="submit" class="btn lz-btn1" value="保存并使用" onclick="return select_address('{$consignee.address_id}');" />
 		                    <!-- {else} -->
-		                    <input type="button" name="submit" class="btn lz-btn1"  value="新增并使用" onclick="return select_address('{$consignee.address_id}');"/>
+		                    <input type="button" style="position: fixed;bottom: 0;width: 100%;" name="submit" class="btn lz-btn1"  value="新增并使用" onclick="return select_address('{$consignee.address_id}');"/>
 		                    <!-- {/if} -->
 		                    <input type="hidden" name="is_ajax" value="1" />
 		                    <input name="address_id" type="hidden" value="{$consignee.address_id}" />

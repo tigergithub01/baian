@@ -71,6 +71,10 @@
             <script type="text/javascript">
             $(function(){
             	
+            	//隐藏导航条,将按钮固定在底部
+            	$(".nav_bottom").hide();
+            	$(".goto-buy").addClass("fixbottom_toolbar");
+            	
             	//自动选中，反选“全部”复选框 
             	autoCheckAll();
             	
@@ -1027,7 +1031,7 @@
    			</li>
    			 <!-- {/if} 是否使用余额end -->
    		</ul>
-   		<div class="subBox">
+   		<div class="subBox" style="position: fixed;bottom: 0;width: 100%;padding: 15px;">
 			<input type="button" value="完成" class="btn4" onclick="close_div($('.jsxx'));">
 		</div>
 		
@@ -1063,6 +1067,9 @@
 	 	
 	 	<script type="text/javascript">
 		$(function(){
+			
+			//隐藏底部导航
+			$(".nav_bottom").hide();
 			
 			/***点击修改收货地址链接***/
 			$(".xg1").click(function(){

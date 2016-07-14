@@ -316,7 +316,7 @@
 						<!--{/foreach}-->
 					</ul>
 					<div>
-						<ul style="padding: 20px;">
+						<ul style="padding: 20px;position: fixed;bottom: 0;width: 100%;">
 							<li class="all">
 								<div class="h5"></div>
 								<p class="">套装价：<span class="f14 price">{$pg.package_price}</span></p>

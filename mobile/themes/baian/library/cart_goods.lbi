@@ -152,7 +152,7 @@
 			 
 		</div>
 		<div class="h"></div>
-		<div class="w-box chart_oper_all">
+		<div class="w-box chart_oper_all" style="height: 100px;">
 			<p class="drop">
 				<a style="display: block;" href="javascript:void(0)" onclick="return drop_goods_batch();">删除</a>　　
 			</p>

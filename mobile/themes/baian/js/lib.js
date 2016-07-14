@@ -112,7 +112,7 @@ $(document).ready(function($) {
 		}
         
 	}).blur(function(){
-		$(".nav_bottom").show();
+		//$(".nav_bottom").show();
 	});
 	
 	$("input[type='password']").focus(function() {
@@ -124,7 +124,7 @@ $(document).ready(function($) {
 			$("body").animate({scrollTop: $(this).offset().top-100 + 'px'}, 200);
 		}
 	}).blur(function(){
-		$(".nav_bottom").show();
+		//$(".nav_bottom").show();
 	});
 	
 	$("textarea").focus(function() {
@@ -136,7 +136,7 @@ $(document).ready(function($) {
 			$("body").animate({scrollTop: $(this).offset().top-100 + 'px'}, 200);
 		}
 	}).blur(function(){
-		$(".nav_bottom").show();
+		//$(".nav_bottom").show();
 	})	
 	
 });

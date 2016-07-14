@@ -25,11 +25,13 @@
 		
 
 
+
 	</style>
 	
 	<script type="text/javascript">
 		$(function(){
 			/* 根据滚动条位置固定操作工具栏  start*/
+			/*
 			var btns = $(".ul-subBox");
 			var pos = btns.offset().top + btns.height();
 			
@@ -38,6 +40,8 @@
 			    //console.debug("y:"+y);
 				 showHideBottomBar(btns,pos);
 			 });
+			 */
+			 $(".nav_bottom").hide();
 			 /* 根据滚动条位置固定操作工具栏  end*/
 		});
 	</script>
@@ -351,7 +355,32 @@
 					</div>
 					<!-- 推荐组合 end-->	
 			</div>
-
+			
+			<div class="goods_nav">
+			<ul class="goods_nav_ul_fmenu">
+				<li><a href="/mobile/index.html"> <span class="ico"><img
+					src="images/f-i1.png" alt=""></span>
+				<h3>首页</h3>
+				</a></li>
+				<li><a href="/mobile/dialog_1.htm"> <span class="ico"><img
+							src="images/f-i3.png" alt=""></span>
+						<h3>客服</h3>
+				</a></li>
+				<li><a href="/mobile/flow.php?step=cart"> <span class="ico"><img
+							src="images/f-i4.png" alt=""></span>
+						<h3>购物车</h3>
+				</a></li>
+			</ul>
+			<ul class="subBox">
+				<li><input style="" class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
+				<li><input style="background: #f08300;" class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}')" value="加入购物车" ></li>
+				<!-- 
+				<li>
+					<a href="javascript:void(0)" onclick="collect('{$goods.goods_id}');"><span class="orange collect_btn_txt" style="">收藏</span></a>
+				</li>
+				 -->
+			</ul>
+			<!-- 
 			<ul class="ul-subBox">
 				<li><input class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
 				<li><a  href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')" class="btn3">加入购物车</a></li>
@@ -360,6 +389,7 @@
 					<a href="javascript:void(0)" onclick="collect('{$goods.goods_id}');"><span class="orange collect_btn_txt" style="">收藏</span></a>
 				</li>
 			</ul>
+			 -->
 			</form>
 		</div>
 		<div class="h"></div>

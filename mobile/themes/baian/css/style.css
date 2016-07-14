@@ -1253,17 +1253,15 @@ span.required{color: red;}
 .goods_nav{
 	position: fixed;bottom: 0;left: 0;z-index: 1001;width: 100%;
 	background-color: white;
+	border-top: 1px solid #ddd;
 }
 
 .goods_nav_ul_fmenu {
     /* position: fixed; */
     width: 45%;
     height: 100px;
-    left: 0;
-    bottom: 0;
     z-index: 999;
     background: #fff;
-    border-top: 1px solid #ddd;
     float: left;
 }
 
@@ -1287,6 +1285,13 @@ span.required{color: red;}
 
 .goods_nav .subBox li input[type='button']{
    width: 100%;height: 100%;
+}
+
+/* 按钮固定底部 */
+.fixed_bottom_btns{
+	/* position:fixed; */
+	bottom: 0;
+	width: 100%;
 }
 
 

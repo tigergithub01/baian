@@ -116,7 +116,7 @@
 					</ul>
 					<div class="h"></div>
 					
-					<div class="subBox" style="position: fixed;bottom: 0;width: 100%;padding: 15px;" >
+					<div class="subBox fixed_bottom_btns">
 						<input type="button" class="btn4" onclick="return select_shipping_payment();" value="保存配送及支付方式">
 					</div>
 					

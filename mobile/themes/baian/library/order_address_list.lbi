@@ -38,7 +38,10 @@
 	</li>
 	<!-- {else} -->
 	<div>
+		<input type="button" style="width: 100%;" name="submit" class="lz-btn1 fixed_bottom_btns" value="新增收货地址" onclick="nav_div($('#addr_box_{$consignee.address_id}'));" />
+		<!-- 
 		<a class="lz-btn1 fixed_bottom_btns" href="javascript:void(0)" name="submit" onclick="nav_div($('#addr_box_{$consignee.address_id}'))">新增收货地址</a>
+		 -->
 		<!-- <td>
 			<input type="radio" id="radio_{$consignee.address_id}" onclick="click_address_row('{$consignee.address_id}');" class="consignee_radio" value="{$consignee.address_id}" name="consignee"/><span style="padding-left: 5px;">添加新地址</span>
 		</td> -->

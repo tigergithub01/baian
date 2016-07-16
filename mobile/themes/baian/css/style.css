@@ -1289,9 +1289,10 @@ span.required{color: red;}
 
 /* 按钮固定底部 */
 .fixed_bottom_btns{
-	/* position:fixed; */
+	position: absolute;
 	bottom: 0;
 	width: 100%;
+	padding: 0px 0px 20px 0px;
 }
 
 

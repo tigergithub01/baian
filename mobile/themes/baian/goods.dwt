@@ -372,8 +372,8 @@
 				</a></li>
 			</ul>
 			<ul class="subBox">
-				<li><input style="" class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
 				<li><input style="background: #f08300;" class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}')" value="加入购物车" ></li>
+				<li><input style="" class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
 				<!-- 
 				<li>
 					<a href="javascript:void(0)" onclick="collect('{$goods.goods_id}');"><span class="orange collect_btn_txt" style="">收藏</span></a>

@@ -52,7 +52,7 @@
 	</div>
 	
 	<div class="h"></div>
- 		<div class="w-box goto-buy" style="position: fixed;bottom: 0;width: 100%;padding: 15px;">
+ 		<div class="w-box goto-buy" style="position: fixed;bottom: 0;width: 100%;">
  		<span style="vertical-align: middle;height: 80px;line-height: 80px;">
  		应付总额（含运费）: <span class="red">{$total.amount_formated}</span>
  		</span>

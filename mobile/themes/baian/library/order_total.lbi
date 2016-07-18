@@ -1,6 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="/js/utils.js"></script>
-  <div class="w-box detail_pay_info" style="padding-bottom: 50px;">
+  <div class="w-box detail_pay_info" style="padding-bottom: 65px;">
   <!-- {if $smarty.session.user_id > 0 and ($config.use_integral or $config.use_bonus)} -->
   <p>    {$lang.complete_acquisition}
       <!-- {if $config.use_integral} 是否使用积分-->
@@ -53,7 +53,9 @@
 	
 	<div class="h"></div>
  		<div class="w-box goto-buy" style="position: fixed;bottom: 0;width: 100%;padding: 15px;">
+ 		<span style="vertical-align: middle;height: 80px;line-height: 80px;">
  		应付总额（含运费）: <span class="red">{$total.amount_formated}</span>
+ 		</span>
  		<input type="hidden" id="total_fee_amt" value="{$total.amount}">
   {if $is_group_buy}
   {$lang.notice_gb_order_amount}{/if}
@@ -62,5 +64,5 @@
 	<!--{/if}-->
 	
  		
-	<input type="submit"  style="width: 200px;" class="btn" id="btn_submit_order"  value="提交订单"/>
+	<input type="submit"  style="width: 200px;height: 75px;" class="btn" id="btn_submit_order"  value="提交订单"/>
 	</div>

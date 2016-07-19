@@ -320,7 +320,7 @@
 						<!--{/foreach}-->
 					</ul>
 					<div>
-						<ul style="position:absolute;bottom: 0;width: 100%;padding-left:5px; ">
+						<ul style="position:inherit ;bottom: 0;width: 100%;padding-left:5px; ">
 							<li class="all package_btns">
 								<div class="h5" style="display: none;"></div>
 								<p class="package_price" style="float: left;">套装价：<span class="f14 price" style="">{$pg.package_price}</span></p>

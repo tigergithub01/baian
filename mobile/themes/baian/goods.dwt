@@ -292,7 +292,7 @@
 			</table>
 			
 			
-			<div class="zuBox m-pop">
+			<div class="zuBox m-pop open">
 			
 				<header id="head">
 					<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.zuBox'))"></a>
@@ -320,14 +320,17 @@
 						<!--{/foreach}-->
 					</ul>
 					<div>
-						<ul style="padding: 20px;position: fixed;bottom: 0;width: 100%;">
+						<ul style="position: fixed;bottom: 0;width: 100%;padding-left:5px; ">
 							<li class="all">
-								<div class="h5"></div>
-								<p class="">套装价：<span class="f14 price">{$pg.package_price}</span></p>
-								<p class="">原&#12288;价：<span class="yj f14 price" style="text-decoration: line-through;font-size: 24px;">{$pg.subtotal}</span></p>
-								<p class="">立即省：<span class="f14 price">{$pg.saving}</span></p>
-								<div class="h"></div>
-								<p><a class="btn3" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">加入购物车</a></p>
+								<div class="h5" style="display: none;"></div>
+								<p class="" style="float: left;">套装价：<span class="f14 price" style="color: red;line-height: 100px;">{$pg.package_price}</span></p>
+								<p class="" style="display: none;">原&#12288;价：<span class="yj f14 price" style="text-decoration: line-through;font-size: 24px;">{$pg.subtotal}</span></p>
+								<p class="" style="display: none;">立即省：<span class="f14 price">{$pg.saving}</span></p>
+								<div class="h" style="display: none;"></div>
+								<p style="float: right;margin-right: 10px;">
+								<a class="btn3" style="height: 100px;line-height: 100px;width:180px;float: left;" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">加入购物车</a>
+								<a class="btn3" style="background: red;height: 100px;line-height: 100px;width:180px;float: left;" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}',1)">立即购买</a>
+								</p>
 							</li>
 						</ul>
 					</div>	

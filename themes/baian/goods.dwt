@@ -523,7 +523,7 @@
 							<p>原&#12288;价：<b class="yj f14">{$pg.subtotal}</b></p>
 							<p>立即省：<b class="f14">{$pg.saving}</b></p>
 							<div class="h"></div>
-							<p><a href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">立即购买</a></p>
+							<p><a href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}',1)">立即购买</a></p>
 						</li>
 					</ul>
 					<!--{/foreach}-->

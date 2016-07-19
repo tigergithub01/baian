@@ -873,13 +873,14 @@ function doane(event)
 /* *
  * 添加礼包到购物车
  */
-function addPackageToCart(packageId)
+function addPackageToCart(packageId,one_step_buy)
 {
   var package_info = new Object();
   var number       = 1;
 
   package_info.package_id = packageId
   package_info.number     = number;
+  package_info.one_step_buy = (one_step_buy==null?0:1);
 
   Ajax.call('flow.php?step=add_package_to_cart', 'package_info=' + $.toJSON(package_info), addPackageToCartResponse, 'POST', 'JSON');
 }
@@ -914,7 +915,8 @@ function addPackageToCartResponse(result)
 
     if (result.one_step_buy == '1')
     {
-      location.href = cart_url;
+      //location.href = cart_url;
+      location.href = 'flow.php?step=checkout';
     }
     else
     {

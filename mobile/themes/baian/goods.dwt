@@ -321,15 +321,15 @@
 					</ul>
 					<div>
 						<ul style="position: fixed;bottom: 0;width: 100%;padding-left:5px; ">
-							<li class="all">
+							<li class="all package_btns">
 								<div class="h5" style="display: none;"></div>
-								<p class="" style="float: left;">套装价：<span class="f14 price" style="color: red;line-height: 100px;">{$pg.package_price}</span></p>
+								<p class="package_price" style="float: left;">套装价：<span class="f14 price" style="">{$pg.package_price}</span></p>
 								<p class="" style="display: none;">原&#12288;价：<span class="yj f14 price" style="text-decoration: line-through;font-size: 24px;">{$pg.subtotal}</span></p>
 								<p class="" style="display: none;">立即省：<span class="f14 price">{$pg.saving}</span></p>
 								<div class="h" style="display: none;"></div>
-								<p style="float: right;margin-right: 10px;">
-								<a class="btn3" style="height: 100px;line-height: 100px;width:180px;float: left;" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">加入购物车</a>
-								<a class="btn3" style="background: red;height: 100px;line-height: 100px;width:180px;float: left;" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}',1)">立即购买</a>
+								<p class="tobuy" style="">
+								<a class="btn3 addtocart" style="" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}')">加入购物车</a>
+								<a class="btn3 buy" style="" href="javascript:void(0)" onclick="addPackageToCart('{$pg.act_id}',1)">立即购买</a>
 								</p>
 							</li>
 						</ul>

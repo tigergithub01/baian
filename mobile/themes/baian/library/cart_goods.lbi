@@ -148,7 +148,7 @@
 			<span class="total_number" style="display: none;"><b id="total_goods_number">{$total.goods_number}</b> 件</span>
 			<span class="total-price">总价<em>（不含运费）:</em></span>
 			<span class="red" id="total_goods_amount">{$total.goods_amount}</span>
-			<a class="btn" style="position: relative;top: -10px;" href="javascript:void(0)" onclick="return checkout();" id="toSettlement" >去结算</a></span>
+			<a class="btn" style="" href="javascript:void(0)" onclick="return checkout();" id="toSettlement" >去结算</a></span>
 			 
 		</div>
 		<div class="h"></div>

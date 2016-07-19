@@ -64,5 +64,5 @@
 	<!--{/if}-->
 	
  		
-	<input type="submit"  style="width: 200px;height: 75px;" class="btn" id="btn_submit_order"  value="提交订单"/>
+	<input type="submit"  style="width: 160px;height: 80px;" class="btn" id="btn_submit_order"  value="提交订单"/>
 	</div>

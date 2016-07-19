@@ -1295,5 +1295,39 @@ span.required{color: red;}
 	padding: 0px 0px 20px 0px;
 }
 
+/* 套餐 */
+.package_btns{
+	
+}
+
+.package_btns .package_price{
+	float: left;
+}
 
 
+.package_btns .package_price span.price{
+	color: red;line-height: 80px;
+}
+
+.package_btns .tobuy{
+	float: right;margin-right: 10px;
+}
+
+
+.package_btns .tobuy a.addtocart{
+	height: 80px;line-height: 80px;width:160px;float: left;
+}
+
+.package_btns .tobuy a.buy{
+	background: red;height: 80px;line-height: 80px;width:160px;float: left;
+}
+
+/* 订单提交页面 */
+#btn_submit_order{
+	width: 160px;height: 80px;font-size: 24px;
+}
+
+/* 购物车去结算  */
+#toSettlement{
+	position: relative;top: -10px;width:160px;font-size: 24px;
+}

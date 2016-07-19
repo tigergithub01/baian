@@ -292,7 +292,7 @@
 			</table>
 			
 			
-			<div class="zuBox m-pop open">
+			<div class="zuBox m-pop">
 			
 				<header id="head">
 					<a href="javascript:void(0)" class="back-btn" onclick="close_div($('.zuBox'))"></a>

@@ -146,6 +146,7 @@ if ($_REQUEST['step'] == 'add_to_cart')
         clear_cart();
     }
     
+    /* 一步购物  */
     if($goods->one_step_buy==1){
     	checked_cart(CART_GENERAL_GOODS,0);
     	clear_cart(CART_GENERAL_GOODS,null,$goods->goods_id);
@@ -2553,6 +2554,14 @@ elseif ($_REQUEST['step'] == 'add_package_to_cart')
     {
         clear_cart();
     }
+    
+    /* 一步购物  */
+    if($package->one_step_buy==1){
+    	checked_cart(CART_GENERAL_GOODS,0);
+    	clear_cart(CART_GENERAL_GOODS,null,$package->package_id);
+    	/* 标记购物流程为普通商品 */
+    	$_SESSION['flow_type'] = CART_GENERAL_GOODS;
+    }
 
     /* 商品数量是否合法 */
     if (!is_numeric($package->number) || intval($package->number) <= 0)
@@ -2575,7 +2584,8 @@ elseif ($_REQUEST['step'] == 'add_package_to_cart')
             }
 
             $result['content'] = insert_cart_info();
-            $result['one_step_buy'] = $_CFG['one_step_buy'];
+            //$result['one_step_buy'] = $_CFG['one_step_buy'];
+            $result['one_step_buy'] = $package->one_step_buy;
         }
         else
         {

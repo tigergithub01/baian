@@ -397,7 +397,7 @@
 		</div>
 		<div class="h"></div>
 
-		<div class="w-box">
+		<div class="w-box" style="padding-bottom: 80px;">
 		    <div id="tabBox2" class="tabBox">
 				<div class="hd">
 					<ul>

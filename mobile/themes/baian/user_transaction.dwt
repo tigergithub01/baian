@@ -2023,7 +2023,7 @@ value="back_submit" /><input type="hidden" name="back_sn" value="{$back_sn}" />
 					                </tr>
 								</table>
 						
-								<div class="subBox" style="position: fixed;bottom: 0;width: 100%;padding: 0;">
+								<div class="subBox fixed_bottom_btns">
 									<!-- {if $consignee.address_id} -->
 				                    <input type="submit" name="submit" class="btn_submit lz-btn1" style="width: 80%;" value="{$lang.confirm_edit}" />
 				                    <!-- 

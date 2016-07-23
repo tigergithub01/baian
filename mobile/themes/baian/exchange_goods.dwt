@@ -356,18 +356,37 @@
 					</div>
 					<!-- 推荐组合 end-->	
 			</div>
-
-			<ul class="ul-subBox">
+			<div class="goods_nav">
+			<ul class="goods_nav_ul_fmenu">
+				<li><a href="/mobile/index.html"> <span class="ico"><img
+					src="images/f-i1.png" alt=""></span>
+				<h3>首页</h3>
+				</a></li>
+				<li><a href="/mobile/dialog_1.htm"> <span class="ico"><img
+							src="images/f-i3.png" alt=""></span>
+						<h3>客服</h3>
+				</a></li>
+				<li><a href="/mobile/flow.php?step=cart"> <span class="ico"><img
+							src="images/f-i4.png" alt=""></span>
+						<h3>购物车</h3>
+				</a></li>
+			</ul>
+			
+			<ul class="subBox">
 				<li style="display: none;"><input class="btn4" type="button" onclick="addToCart({$goods.goods_id},null,'{$product_id}',null,1)" value="立即购买"></li>
 				<li style="display: none;"><a  href='javascript:void(0)' onclick="addToCart({$goods.goods_id},null,'{$product_id}')" class="btn3">加入购物车</a></li>
 				<li style="padding-left: 150px;">
 					<input class="btn4" type="button" onclick="exchange_buy('{$goods.goods_id}');" value="立即兑换">
 				</li>
+				
+				<!-- 
 				<li>
 					<a href='javascript:void(0)' class="collect_btn" onclick="collect('{$goods.goods_id}');"></a>				
 					<a href="javascript:void(0)" onclick="collect('{$goods.goods_id}');"><span class="orange collect_btn_txt" style="">收藏</span></a>
 				</li>
+				 -->
 			</ul>
+			</div>
 			</form>
 		</div>
 		<div class="h"></div>

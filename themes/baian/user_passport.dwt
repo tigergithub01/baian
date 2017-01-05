@@ -332,7 +332,10 @@
             </ul>
             <div class="loginBox2">
                 <div class="login-r r">
-                    <a href=""><img src="images/bg-login.jpg" alt=""></a>
+                	<!--{foreach from=$yhdl name=ban item=banner}-->
+<a href="{$banner.ad_link}"><img src="{$banner.ad_code}" alt=""></a>
+<!--{/foreach}-->
+                    <!-- <a href=""><img src="images/bg-login.jpg" alt=""></a> -->
                 </div>
                 <form action="user.php" method="post" name="formUser" id="formUser" onsubmit="">
                     <table>

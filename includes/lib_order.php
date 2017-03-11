@@ -3791,6 +3791,10 @@ function flow_update_cart_goods($rec_id,$goods_number)
 
 			$row_num ++;
 		}
+		
+		//根据$rec_id获取商品编号 added by tiger.tuo 20170311
+		$sql = "SELECT * FROM " . $GLOBALS['ecs']->table('cart') ." WHERE rec_id = '$rec_id'";
+		$goods = $GLOBALS['db']->getRow($sql);		
 
 		/* 处理超值礼包 */
 		if ($goods['extension_code'] == 'package_buy')
@@ -3803,6 +3807,8 @@ function flow_update_cart_goods($rec_id,$goods_number)
 		else
 		{
 			$attr_id    = empty($goods['goods_attr_id']) ? array() : explode(',', $goods['goods_attr_id']);
+			
+			//获取最终商品价格
 			$goods_price = get_final_price($goods['goods_id'], $val, true, $attr_id,$goods['product_id']);
 
 			//更新购物车中的商品数量

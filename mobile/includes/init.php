@@ -281,6 +281,29 @@ if (!defined('INIT_NO_USERS'))
     }
 }
 
+/***获取微信公众平台OPENID，暂时存放在SESSEION中**/
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
+	if(!isset($_SESSION['OPENID'])){
+		require(ROOT_PATH . 'includes/modules/payment/wxpay/WxPay.JsApiPay.php');
+		require(ROOT_PATH . 'includes/lib_payment.php');
+		
+		//获取系统内配置的支付账号信息
+		$payment = get_payment('wxpay');
+		if($payment){
+			$APPID = $payment['wxpay_app_id'];
+			$APPSECRET= $payment['wxpay_app_secret'];
+		}		
+// 		$APPID = 'wx54747450599e343c'; //APPID
+// 		$APPSECRET = 'dc4c70f5414c6eb600faf2db9352fb7f';  //APPSECRET
+		$tools = new JsApiPay();
+		$openId = $tools->GetOpenid($APPID, $APPSECRET);
+		$_SESSION['OPENID'] =$openId; //也可以将OPENID放到数据库中
+	}else{
+// 		var_dump($_SESSION['OPENID']);
+	}
+	
+}
+
 if ((DEBUG_MODE & 1) == 1)
 {
     error_reporting(E_ALL);

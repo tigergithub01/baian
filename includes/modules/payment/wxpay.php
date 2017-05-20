@@ -130,8 +130,6 @@ class wxpay
 		
 		$this->setParameter("notify_url", $GLOBALS['ecs']->url() . 'respondWx.php');
 		
-		$log::DEBUG('notify_url==>' . $GLOBALS['ecs']->url() . 'respondWx.php');
-		
 // 		$this->setParameter("notify_url", return_url(basename(__FILE__, '.php')));
 		//订单生成的机器IP
 		$this->setParameter("spbill_create_ip", real_ip());
@@ -165,8 +163,7 @@ class wxpay
 	        }else {
 	            // 这里是取消支付或者其他意外情况，可以弹出错误信息或做其他操作
 	           WeixinJSBridge.log(res.err_msg);
-			   //alert(res.err_code+res.err_desc+res.err_msg);
-				alert('支付请求不成功');
+			   alert(res.err_code+res.err_desc+res.err_msg);
 	           //alert('未知原因支付失败，请改用其他支付方式');
 				
 	        }
@@ -198,6 +195,14 @@ EOT;
 
     /**
      * 响应操作
+     * 
+     *  {"appid":"wx54747450599e343c","bank_type":"CMB_DEBIT","cash_fee":"1",
+     *  "fee_type":"CNY","is_subscribe":"Y","mch_id":"1218715401",
+     *  "nonce_str":"4MFj2ni7FyOu4JnC9zFATLDRy4MUnsfh","openid":"of9wzuAvLkIKX3zDTalSezJWXO30",
+     *  "out_trade_no":"2017052057948","result_code":"SUCCESS","return_code":"SUCCESS",
+     *  "sign":"34826D9E984282BF692D00B7A372598E","time_end":"20170520033433","total_fee":"1",
+     *  "trade_type":"JSAPI","transaction_id":"4007852001201705201620139332"}
+     *  
      */
     function respond()
     {
@@ -215,8 +220,8 @@ EOT;
     		return false;
     	}
     	
-    	//验证签名
-    	$sign= $this->getSign($arr);
+    	//验证签名（TODO：这里还是有问题，验证签名不成功，隐患）
+    	$sign= $this->calculateSign($arr);
     	$log::DEBUG("sign===> $sign");
 //     	if($arr['sign'] != $sign){
 //     		//签名验证错误!
@@ -280,12 +285,13 @@ EOT;
 
 	//生成随机数
 	function create_noncestr( $length = 32 ) {  
-		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  
+		return md5(uniqid('', true));
+		/* $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  
 		$str ="";  
 		for ( $i = 0; $i < $length; $i++ )  {  
 			$str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);			  
 		}  
-		return $str;  
+		return $str; */  
 	}
 	
 	
@@ -316,7 +322,7 @@ EOT;
 		$this->parameters["appid"] = $this->payments['wxpay_app_id'];//公众账号ID
 	   	$this->parameters["mch_id"] = $this->payments['wxpay_partnerid'];//商户号
 	    $this->parameters["nonce_str"] = $this->create_noncestr();//随机字符串
-	    $this->parameters["sign"] = $this->getSign($this->parameters);//签名		
+	    $this->parameters["sign"] = $this->calculateSign($this->parameters);//签名		
 	    return  $this->arrayToXml($this->parameters);
 	}
 	
@@ -382,14 +388,28 @@ EOT;
 	{
 		foreach ($Obj as $k => $v)
 		{
+			//TODO:验证的时候应该去掉sign和key
 			$Parameters[$k] = $v;
 		}
+		
+		$logHandler= new CLogFileHandler(ROOT_PATH. "logs/payment/wxpay/".date('Y-m-d').'.log');
+		$log = Log::Init($logHandler, 15);
+// 		$log::DEBUG('---start print sign parameters');
+// 		$log::DEBUG(json_encode($Parameters));
+// 		$log::DEBUG('---end print sign parameters');
+		
+		
 		//签名步骤一：按字典序排序参数
 		ksort($Parameters);
 		$String = $this->formatBizQueryParaMap($Parameters, false);
 		//echo '【string1】'.$String.'</br>';
 		//签名步骤二：在string后加入KEY
 		$String = $String."&key=".$this->payments['wxpay_partnerkey'];
+		
+		$log::DEBUG('---start print sign str');
+		$log::DEBUG(json_encode($String));
+		$log::DEBUG('---end print sign str');
+		
 		//echo "【string2】".$String."</br>";
 		//签名步骤三：MD5加密
 		$String = md5($String);
@@ -408,6 +428,10 @@ EOT;
 	 */
 	function calculateSign($arr)
 	{
+		//固定加密字段,便于验证签名
+// 		$arr['appId'] = $this->payments['wxpay_app_id'];
+// 		$arr['nonceStr'] = $this->create_noncestr();
+		
 		ksort($arr);
 		
 		$buff = "";
@@ -419,7 +443,7 @@ EOT;
 		
 		$buff = trim($buff, "&");
 		
-		return strtoupper(md5($buff . "&key=" . $this->app_key));
+		return strtoupper(md5($buff . "&key=" . $this->payments['wxpay_partnerkey']));
 	}
 	
 	/**
@@ -461,7 +485,7 @@ EOT;
 	    $jsApiObj["nonceStr"] = $this->create_noncestr();
 		$jsApiObj["package"] = "prepay_id=$this->prepay_id";
 	    $jsApiObj["signType"] = "MD5";
-	    $jsApiObj["paySign"] = $this->getSign($jsApiObj);
+	    $jsApiObj["paySign"] = $this->calculateSign($jsApiObj);
 	    $this->parameters = json_encode($jsApiObj);		
 		return $this->parameters;
 	}

@@ -23,8 +23,6 @@ require_once ROOT_PATH . 'includes/cls_log.php';
 $logHandler= new CLogFileHandler(ROOT_PATH. "logs/payment/wxpay/".date('Y-m-d').'.log');
 $log = Log::Init($logHandler, 15);
 
-$log::DEBUG(".start respond 0 .");
-
 /* 支付方式代码 */
 $pay_code = !empty($_REQUEST['code']) ? trim($_REQUEST['code']) : '';
 $pay_code='wxpay'; //写死支付方式为微信支付
@@ -36,15 +34,12 @@ if (empty($pay_code) && !empty($_REQUEST['v_pmode']) && !empty($_REQUEST['v_pstr
     $pay_code = 'cappay';
 }
 
-$log::DEBUG(".start respond 1.");
-
 //获取快钱神州行支付方式
 if (empty($pay_code) && ($_REQUEST['ext1'] == 'shenzhou') && ($_REQUEST['ext2'] == 'ecshop'))
 {
     $pay_code = 'shenzhou';
 }
 
-$log::DEBUG(".start respond1. $pay_code ");
 
 /* 参数是否为空 */
 if (empty($pay_code))
@@ -82,8 +77,6 @@ else
         if (file_exists($plugin_file))
         {
             /* 根据支付方式代码创建支付类的对象并调用其响应操作方法 */
-        	
-        	$log::DEBUG(".start include file. $plugin_file");
         	
             include_once($plugin_file);
 

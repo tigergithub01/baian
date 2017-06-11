@@ -180,7 +180,13 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
   //热点文章
   //$listt= get_article_new（2,'art_id'）
 // 	  $smarty->assign('Fimg',$F); 
-
+	
+	/**限时抢购标题*/
+	$promote_art_id = 180; 
+	$art_promote = $GLOBALS['db']->getRow("select * FROM ".  $ecs->table('article'). " WHERE article_id = " .  $promote_art_id);
+	$smarty->assign('art_promote',$art_promote);
+	
+	
 	/* 最新公告 */
   $smarty->assign('hotarticle',get_article_new(array(19),'art_id'));
   

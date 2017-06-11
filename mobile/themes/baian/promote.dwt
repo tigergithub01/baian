@@ -38,7 +38,7 @@
 		
 		<ul class="ul-tab1 fivetab">
 			<!--{foreach from=$date_list item=pr_dt}-->
-				<li  class="<!-- {if $pr_dt.selected } -->on<!-- {/if} -->"><a href="promote.html?dt={$pr_dt.idx}"><p><!-- {$pr_dt.formatted_date} --></p><p><!-- {if $pr_dt.curr } -->抢购中<!-- {else} -->即将开场<!-- {/if} --></p></a></li>
+				<li  class="<!-- {if $pr_dt.selected } -->on<!-- {/if} -->"><a href="promote.html?dt={$pr_dt.idx}"><p><!-- {$pr_dt.formatted_date} --></p><p><!-- {if $pr_dt.curr } -->抢购中<!-- {else} -->即将开抢<!-- {/if} --></p></a></li>
             <!--{/foreach}--> 
 		</ul>
 	</section>	

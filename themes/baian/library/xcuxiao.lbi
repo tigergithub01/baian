@@ -69,7 +69,10 @@ function clock(key)
 <!--{foreach from=$promotion_goods key=key item=goods name=name}-->
 <!--{if $smarty.foreach.name.first}-->
 <div class="sec-tit">
+						<div style="float: right;">
+						<span style="float: left;margin-right: 20px;overflow: hidden;width: 700px;height: 30px;"><!-- {if isset($art_promote)} -->{$art_promote.description}<!-- {/if} --></span>
 						<a href="promote.html" class="r" target="_blank">更多抢购&gt;</a>
+						</div>
 						<h3 class="stt1">限时抢购<span class="datetime"><font id="leftTime{$key}">{$lang.please_waiting}</font></span></h3>
 					</div>	
 <script>
